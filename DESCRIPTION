@@ -1,0 +1,9 @@
+Package: flow
+Type: Package
+Title: R pacakge which manages workflows and queues jobs in HPCC cluster
+Version: 0.3
+Date: 2014-05-01
+Author: Sahil Seth
+Maintainer: S. Seth <sseth@mdanderson.org>
+Description: Submitting R objects to the queue
+License: GPL
