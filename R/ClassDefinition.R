@@ -21,7 +21,8 @@ setClass("queue", representation(submit.cmd = "character", ## submit job
 setClass("job", representation(queue = "queue",
                                cmd = "character")) # a string of cmd to run
                                
-setClass("flow", representation(jobs = "list"))
+setClass("flow", representation(jobs = "list",
+                                mode = "character"))
 
 
 #### ---------------------- Functions to create new classes
@@ -37,6 +38,7 @@ job <- function(queue,cmd){
 }
 
 submit.job
+
 ## 
 if(FALSE){
   hpcc.command.format <- "#{CMD} | qsub -N #{NAME} -q #{QUEUE} -l #{NODES}:#{PPN} -l #{WALLTIME} -S /bin/bash -d #{HOME} -V -e #{STDERR} -o #{STDERR} -m ae -M #{EMAIL}"
