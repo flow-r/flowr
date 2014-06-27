@@ -11,7 +11,7 @@ setClass("queue", representation(submit_exe = "character", ## submit job
                                  jobname = "character", ## name of a job, in the batch queue
                                  nodes = "numeric", ## number of nodes
                                  cpu = "numeric",   ## number of cpus
-                                 dependency = "character", ## job id
+                                 dependency = "list", ## job id
                                  walltime = "character", ## walltime
                                  cwd = "character", ## home
                                  stderr = "character", ## stderr
@@ -31,6 +31,7 @@ setClass("job", representation(cmds = "character",
                                name = "character",## for creating stdout etc
                                base_path = "character",
                                id = "character", ## can be multiple
+                               status = "character", ## status
                                submission_type = "character", ## scatter, serial
                                dependency_type = "character", ## gather, serial
                                previous_job = "character",
@@ -39,14 +40,17 @@ setClass("job", representation(cmds = "character",
 
 setClass("flow", representation(jobs = "list",
                                 flow_base_path = "character",
-                                trigger_base_path = "character",
+                                flow_path = "character",
+                                trigger_path = "character",
+                                desc = "character",
+                                status = "character", ## status
                                 mode = "character", ## what kind of flow this is
                                 name = "character"))
 
 
 #### ---------------------- Functions to create new classes
 queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
-                  dependency="",jobname="name",
+                  dependency=list(),jobname="name",
                   walltime="72:00:00",cwd="~/flows",
                   stderr="~/flows/tmp",stdout="~/flows",email=Sys.getenv("USER"),
                   type="torque",format="",
@@ -83,9 +87,10 @@ queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
 
 ## submission_type: this decides that the cmds to be submittion in which manner
 ## flow_type: if multi dependencies, wait for all or according to order
-job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob", q_obj = new("queue"),
-                submission_type=c("scatter", "serial"),
-                dependency_type = c("none", "gather", "serial"), ...){
+job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
+                q_obj = new("queue"),
+                submission_type=c("scatter", "serial"),status="",
+                dependency_type = c("none", "gather", "serial", "burst"), ...){
     ## replace some of the arguments
     if(!missing(q_obj)){ ## if queue is provided use that to replace the things
         #mget(names(formals()),sys.frame(sys.nframe()))
@@ -98,19 +103,20 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob", q_o
     }
     submission_type <- match.arg(submission_type)
     dependency_type <- match.arg(dependency_type)
-    object <- new("job",cmds = cmds, object, name = name, submission_type = submission_type, dependency_type = dependency_type,
-                  ...)
+    object <- new("job",cmds = cmds, object, name = name, submission_type = submission_type,
+                  dependency_type = dependency_type,status=status,...)
     return(object)
 }
 
 
-flow <- function(jobs=list(new("job")), name="newflow",
-                 mode=c("scheduler","trigger","R"), flow_base_path="~/flow", trigger_base_path="~/trigger"){
+flow <- function(jobs=list(new("job")), name="newflow", desc,
+                 mode=c("scheduler","trigger","R"), flow_base_path="~/flows",
+                 trigger_path="", flow_path="", status=""){
     mode <- match.arg(mode)
     jobnames <-  sapply(jobs, slot, "name")
     names(jobs) = jobnames
     object <<- new("flow", jobs=jobs, mode = mode, name = name, flow_base_path=flow_base_path,
-                  trigger_base_path=trigger_base_path)
+                  trigger_path=trigger_path, flow_path=flow_path, desc=desc, status=status)
     return(object)
 }
 
