@@ -40,6 +40,7 @@ setMethod("plot", signature(x = "flow"), definition=.plot_flow)
 
 
 .plot_flow_dat <- function(x, detailed=FALSE, pdf=FALSE, pdffile=sprintf("flow.pdf"), ...){
+  if(nrow(x) < 2) return(c("need a few more jobs.."))
   jobnames=unique(as.c(x$jobnames))
   dat_compl <- x[complete.cases(x),]
   dat_uniq <- x[sapply(jobnames, function(j) which(x$jobnames==j)[1]),]
