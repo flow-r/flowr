@@ -2,7 +2,11 @@ Package: flow
 Type: Package
 Title: R pacakge which manages workflows and queues jobs in HPCC cluster
 Version: 0.4
-Depends: methods, stats, diagram, uuid
+Depends:
+    methods,
+    stats,
+    diagram,
+    uuid
 Date: 2014-05-01
 Author: Sahil Seth
 Maintainer: S. Seth <sseth@mdanderson.org>

@@ -1,3 +1,4 @@
+
 .create_jobs_mat <- function(x){
   jobnames <- sapply(x@jobs, slot, "name")
   prev_jobs <- sapply(x@jobs, slot, "previous_job")

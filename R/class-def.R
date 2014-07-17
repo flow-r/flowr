@@ -6,6 +6,8 @@
 
 #### ----------------------- Declaring new classes
 #### ----------------------- This class is a link between cluster and job management
+#' queue defines the class
+#' @exportClass queue
 setClass("queue", representation(submit_exe = "character", ## submit job
                                  queue = "character", ## type of queue
                                  jobname = "character", ## name of a job, in the batch queue
@@ -27,6 +29,8 @@ setClass("lsf", contains = "queue")
 setClass("sge", contains = "queue")
 
 #### ----------------------- represents a single job
+#' job defines the class
+#' @exportClass job
 setClass("job", representation(cmds = "character",
                                name = "character",## for creating stdout etc
                                base_path = "character",
@@ -38,6 +42,8 @@ setClass("job", representation(cmds = "character",
                                next_job = "character"),
          contains = "queue") ## a string of cmd to run
 
+#' flow defines the class
+#' @exportClass flow
 setClass("flow", representation(jobs = "list",
                                 flow_base_path = "character",
                                 flow_path = "character",
@@ -49,6 +55,33 @@ setClass("flow", representation(jobs = "list",
 
 
 #### ---------------------- Functions to create new classes
+#' Create a \code{queue} object which containg details about how a job is submitted.
+#'
+#' This function defines the queue used to submit jobs to the cluster. In essence details about the
+#' computing cluster in use.
+#'
+#' @param object this is not used currenlty, ignore.
+#' @param submit_exe the exact command used to submit jobs to the cluster example \code{qsub}
+#' \code{bsub} etc.
+#' @param queue the type of queue your group usually uses
+#' @param nodes number of nodes you would like to request. \emph{optional} [Used by class job]
+#' @param cpu number of cpus you would like to reserve [Used by class job]
+#' @param dependency a list of jobs to complete before starting this one [Used by class job]
+#' @param jobname name of this job in the computing cluster [Used by class job]
+#' @param walltime max walltime of a job. [Used by class job]
+#' @param cwd [Used by class job]
+#' @param stderr [Used by class job]
+#' @param stdout [Used by class job]
+#' @param email [Used by class job]
+#' @param type Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]
+#' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'. 
+#' This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
+#' dependencies. More on them here: 
+#' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node.
+#' @keywords queue
+#' @export
+#' @examples
+#' queue(type='lsf')
 queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
                   dependency=list(),jobname="name",
                   walltime="72:00:00",cwd="~/flows",
@@ -87,9 +120,23 @@ queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
 
 ## submission_type: this decides that the cmds to be submittion in which manner
 ## flow_type: if multi dependencies, wait for all or according to order
+#' job class
+#' #' @param cmds
+#' @param base_path
+#' @param parent_flow
+#' @param name
+#' @param q_obj
+#' @param submission_type
+#' @param status
+#' @param dependency_type
+#' @param ...
+#' @export
+#' @examples
+#' q_obj <- queue(type="torque")
+#' j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=1)
 job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
                 q_obj = new("queue"),
-                submission_type=c("scatter", "serial"),status="",
+                submission_type=c("scatter", "serial"), status="",
                 dependency_type = c("none", "gather", "serial", "burst"), ...){
     ## replace some of the arguments
     if(!missing(q_obj)){ ## if queue is provided use that to replace the things
@@ -108,7 +155,16 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
     return(object)
 }
 
-
+#' Flow constructor
+#' @param jobs
+#' @param name
+#' @param desc
+#' @param mode
+#' @param flow_base_path
+#' @param trigger_path
+#' @param flow_path
+#' @param status
+#' @export
 flow <- function(jobs=list(new("job")), name="newflow", desc,
                  mode=c("scheduler","trigger","R"), flow_base_path="~/flows",
                  trigger_path="", flow_path="", status=""){
@@ -134,8 +190,8 @@ if(FALSE){
 
     source("~/Dropbox/public/github.flow/R/generic.R")
     source("~/Dropbox/public/github.flow/R/class-def.R")
-    q_obj <- queue(type="torque")
     debug(job)
+    q_obj <- queue(type="torque")
     cpu_aln=1
     j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=cpu_aln)
 
