@@ -24,6 +24,13 @@ setGeneric("submit_flow", function (f_obj, ...){
 if (!isGeneric("plot"))
     setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
+#' @title test_queue
+#' @description test_queue
+#' @param q_obj
+#' @param ...
+#' @export
+#' @examples
+#' test_queue(q_obj = q_obj, ... = ...)
 setMethod("test_queue", signature(q_obj= "queue"), function (q_obj, verbose = FALSE){
     cmd.0 <- create_queue_cmd(q_obj)
     if(verbose) print(cmd.0)
@@ -33,30 +40,16 @@ setMethod("test_queue", signature(q_obj= "queue"), function (q_obj, verbose = FA
 })
 
 
-## setMethod("create_queue_cmd", signature(q_obj = "queue"), function (q_obj, ...){
-##     if(q_obj@dependency_type=="gather"){
-##         if(q_obj@type=="torque")
-##             q_obj@dependency <- sprintf("-W depend=afterok:%s",paste(q_obj@dependency, collapse=":"))
-##         else if(q_obj@type=="lsf")
-##             q_obj@dependency <- sprintf("-w '%s'",paste(q_obj@dependency, sep=" && "))
-##     }else if (q_obj@dependency_type=="serial"){
-##         if(q_obj@type=="torque")
-##             q_obj@dependency <- sprintf("-W %s",paste(" depend=afterok:",q_obj@dependency[index], sep=""))
-##         else if(q_obj@type=="lsf")
-##             q_obj@dependency <- sprintf("-w '%s'",q_obj@dependency[index])
-##     }else{
-##         q_obj@dependency <- ""
-##     }
-##     l <- slots_as_list(q_obj, names=slotNames("queue"))
-##     l <- l[! names(l) %in% c("format","type")] ### ignore a few of the slots
-##     names(l) = toupper(names(l)) ## get list of slots
-##     ## l <- c("CMD"=cmd)
-##     .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH
-##     cmd <- system(sprintf("eval echo %s ",q_obj@format),intern=TRUE)
-##     return(cmd=cmd)
-## })
-## #cmd <- sprintf("%s %s",create_queue_cmd(j_obj), file=files[i])
 
+#' @title .create_queue_cmd
+#' @description .create_queue_cmd
+#' @param j_obj
+#' @param file
+#' @param index
+#' @param ...
+#' @export
+#' @examples
+#' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 .create_queue_cmd <- function(j_obj, file, index, ...){
    ## ----- this job depends on multiple jobs. create a string with multiple job ids
     if(j_obj@dependency_type=="gather"){
@@ -95,6 +88,17 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
 
 
 #### --------------------- submit job as part of a flow, this would be called from function flow
+#' @title .submit_job
+#' @description .submit_job
+#' @param j_obj
+#' @param f_obj
+#' @param execute
+#' @param verbose
+#' @param wd
+#' @param job_id
+#' @param ...
+#' @examples
+#' .submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, verbose = TRUE, wd = wd, job_id = job_id, ... = ...)
 .submit_job <- function (j_obj, f_obj,execute = FALSE, verbose = TRUE, wd, job_id,...){
     ## ========= create the name of the job with its index in the supplied flow
     if(!j_obj@status %in% c("processed","submitted","running","completed","error"))
@@ -143,7 +147,8 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.sub
 
 ## TESTS
 ## number of commands in a serial job should match that of dependency
-.submit_flow <- function(f_obj, attach_uuid=TRUE, execute=FALSE){
+.submit_flow <- function(f_obj, attach_uuid = TRUE, execute = FALSE,
+                         make_flow_plot = TRUE, ...){
     if(!f_obj@status %in% c("processed","submitted","running","completed","exit"))
         f_obj@flow_path <- sprintf("%s/%s-%s",f_obj@flow_base_path, f_obj@desc, UUIDgenerate())
     ##jobnames <- sapply(f_obj@jobs, function(x) x@name)
@@ -159,7 +164,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.sub
             f_obj@jobs[[i]]@dependency <- split(x, row(x))
         }
         ## ------ submit the job
-        f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i)
+        f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, ...)
         ## ------ check if this is NOT last job in the flow
         ## if(i < length(f_obj@jobs)){
         ##     next_job <- f_obj@jobs[[i]]@next_job
@@ -169,13 +174,35 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.sub
     }
     f_obj@status <- "processed"
     if(execute)    f_obj@status <- "submitted"
-    try(plot(f_obj, detailed=TRUE, pdf=TRUE, pdffile=sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
+    if(make_flow_plot){
+      try(plot(f_obj, detailed = TRUE, pdf = TRUE, 
+               pdffile = sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
+    }
     return(f_obj)
 }
-setMethod("submit_flow", signature(f_obj = "flow"),definition=.submit_flow)
+#' @title submit_flow
+#' @description submit_flow
+#' @aliases submit_flow
+#' @param f_obj \code{object} of class \code{flow}. 
+#' @param attach_uuid \code{logical} Whether to attach a random string to the submitted flow names. Look for them in your \code{basepath} folder (typically \code{~/flows/FLOW_NAME/FLOW_DESCRIPTION_UUID}). Refer to \code{desc} and \code{name} paramters of \link{flow}.
+#' @param execute \code{logical} whether or not to submit the jobs
+#' @param make_flow_plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
+#' @param ... Any additional parameter are passed on to \link{submit_job} function
+#' @export
+#' @examples
+#' submit_flow(f_obj = f_obj, ... = ...)
+setMethod("submit_flow", signature(f_obj = "flow"), definition = .submit_flow)
 
 
 #### ----------------------- submit loner job
+#' @title submit_job
+#' @description submit_job
+#' @param j_obj
+#' @param f_obj
+#' @param ...
+#' @export
+#' @examples
+#' submit_job(j_obj = j_obj, f_obj = f_obj, ... = ...)
 setMethod("submit_job", signature(j_obj = "job"),
 function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
     require(uuid)
@@ -200,3 +227,27 @@ function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
 ## trace("create_queue_cmd", browser, exit=browser, signature = c("queue","character"));
 ## cmd <- create_queue_cmd(j_obj, file=files[i])
 ## untrace("create_queue_cmd", signature = c("queue","character"));
+
+## setMethod("create_queue_cmd", signature(q_obj = "queue"), function (q_obj, ...){
+##     if(q_obj@dependency_type=="gather"){
+##         if(q_obj@type=="torque")
+##             q_obj@dependency <- sprintf("-W depend=afterok:%s",paste(q_obj@dependency, collapse=":"))
+##         else if(q_obj@type=="lsf")
+##             q_obj@dependency <- sprintf("-w '%s'",paste(q_obj@dependency, sep=" && "))
+##     }else if (q_obj@dependency_type=="serial"){
+##         if(q_obj@type=="torque")
+##             q_obj@dependency <- sprintf("-W %s",paste(" depend=afterok:",q_obj@dependency[index], sep=""))
+##         else if(q_obj@type=="lsf")
+##             q_obj@dependency <- sprintf("-w '%s'",q_obj@dependency[index])
+##     }else{
+##         q_obj@dependency <- ""
+##     }
+##     l <- slots_as_list(q_obj, names=slotNames("queue"))
+##     l <- l[! names(l) %in% c("format","type")] ### ignore a few of the slots
+##     names(l) = toupper(names(l)) ## get list of slots
+##     ## l <- c("CMD"=cmd)
+##     .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH
+##     cmd <- system(sprintf("eval echo %s ",q_obj@format),intern=TRUE)
+##     return(cmd=cmd)
+## })
+## #cmd <- sprintf("%s %s",create_queue_cmd(j_obj), file=files[i])

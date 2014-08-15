@@ -156,22 +156,29 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 }
 
 #' Flow constructor
-#' @param jobs
-#' @param name
-#' @param desc
-#' @param mode
-#' @param flow_base_path
-#' @param trigger_path
-#' @param flow_path
-#' @param status
+#' @param jobs \code{list} A list of jobs to be included in this flow
+#' @param name \code{character} Name of the flow. Defaults to \code{'newname'}
+#' Used in \link{submit_flow} to name the working directories.
+#' @param desc \code{character} Description of the flow
+#' This is used to name folders (when submitting jobs, see \link{submit_flow}).
+#' It is good practice to avoid spaces and other special characters. 
+#' An underscore '_' seems like a good word separator.
+#' Defaults to 'my_super_flow'. We usually use this to put sample names of the data.
+#' @param mode \code{character} Mode of submission of the flow. 
+#' @param flow_base_path The base path of all the flows you would submit.
+#' Defaults to \code{~/flows}. Best practice to ignore it.
+#' @param trigger_path \code{character}
+#' Defaults to \code{~/flows/trigger}. Best practice to ignore it.
+#' @param flow_path \code{character}
+#' @param status \code{character} Not used at this time
 #' @export
-flow <- function(jobs=list(new("job")), name="newflow", desc,
+flow <- function(jobs=list(new("job")), name="newflow", desc = "my_super_flow",
                  mode=c("scheduler","trigger","R"), flow_base_path="~/flows",
                  trigger_path="", flow_path="", status=""){
     mode <- match.arg(mode)
     jobnames <-  sapply(jobs, slot, "name")
     names(jobs) = jobnames
-    object <<- new("flow", jobs=jobs, mode = mode, name = name, flow_base_path=flow_base_path,
+    object <- new("flow", jobs=jobs, mode = mode, name = name, flow_base_path=flow_base_path,
                   trigger_path=trigger_path, flow_path=flow_path, desc=desc, status=status)
     return(object)
 }

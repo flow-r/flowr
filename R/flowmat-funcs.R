@@ -11,13 +11,20 @@ if(FALSE){
 }
 
 ### generate code from dat
+#' @title generate_flow_code
+#' @description generate_flow_code
+#' @param x
+#' @param ...
+#' @export
+#' @examples
+#' generate_flow_code(x = x, ... = ...)
 generate_flow_code <- function(x, ...){
   fobj <- x
   ## this would take in a flowmat and produce a code to generate it
   jobnames <- sapply(fobj@jobs, slot, "name")
   code_jobs <- sapply(jobnames, function(j){
     prev_jobs=fobj@jobs[[j]]@previous_job;prev_jobs <- ifelse(length(prev_jobs) > 1, prev_jobs, "none")
-    cpu=fobj@jobs[[j]]@cpu;cmds=fobj@jobs[[j]]@cmds
+    cpu = fobj@jobs[[j]]@cpu;cmds=fobj@jobs[[j]]@cmds
     code_cmd <- sprintf("cmd_%s <- '%s'", j, cmds)
     code_job <- sprintf("jobj_%s <- job(name = '%s', q_obj = qobj, previous_job = '%s', cpu = '%s', cmd=cmd_%s)",
                         j, j, prev_jobs, cpu, j)

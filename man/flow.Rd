@@ -3,26 +3,33 @@
 \alias{flow}
 \title{Flow constructor}
 \usage{
-flow(jobs = list(new("job")), name = "newflow", desc,
+flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
   mode = c("scheduler", "trigger", "R"), flow_base_path = "~/flows",
   trigger_path = "", flow_path = "", status = "")
 }
 \arguments{
-\item{jobs}{}
+\item{jobs}{\code{list} A list of jobs to be included in this flow}
 
-\item{name}{}
+\item{name}{\code{character} Name of the flow. Defaults to \code{'newname'}
+Used in \link{submit_flow} to name the working directories.}
 
-\item{desc}{}
+\item{desc}{\code{character} Description of the flow
+This is used to name folders (when submitting jobs, see \link{submit_flow}).
+It is good practice to avoid spaces and other special characters.
+An underscore '_' seems like a good word separator.
+Defaults to 'my_super_flow'. We usually use this to put sample names of the data.}
 
-\item{mode}{}
+\item{mode}{\code{character} Mode of submission of the flow.}
 
-\item{flow_base_path}{}
+\item{flow_base_path}{The base path of all the flows you would submit.
+Defaults to \code{~/flows}. Best practice to ignore it.}
 
-\item{trigger_path}{}
+\item{trigger_path}{\code{character}
+Defaults to \code{~/flows/trigger}. Best practice to ignore it.}
 
-\item{flow_path}{}
+\item{flow_path}{\code{character}}
 
-\item{status}{}
+\item{status}{\code{character} Not used at this time}
 }
 \description{
 Flow constructor

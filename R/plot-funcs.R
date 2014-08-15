@@ -1,4 +1,9 @@
-
+#' @title .create_jobs_mat
+#' @description .create_jobs_mat
+#' @param x
+#' @export
+#' @examples
+#' .create_jobs_mat(x = x)
 .create_jobs_mat <- function(x){
   jobnames <- sapply(x@jobs, slot, "name")
   prev_jobs <- sapply(x@jobs, slot, "previous_job")
@@ -35,12 +40,30 @@
 .plot_flow <- function(x, detailed=FALSE, pdf=FALSE, pdffile=sprintf("%s.pdf",x@name), ...){
   require(diagram)
   dat <- .create_jobs_mat(x)
-  .plot_flow_dat(x=dat, detailed=FALSE, pdf=FALSE, pdffile=sprintf("%s.pdf",x@name), ...)
+  .plot_flow_dat(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...)
 }
-setMethod("plot", signature(x = "flow"), definition=.plot_flow)
+
+setGeneric("plot_flow", function (x, ...){
+  standardGeneric("plot_flow")
+})
+
+#' @title plot_flow
+#' @description plot_flow
+#' @aliases plot_flow
+#' @aliases plot
+#' @param x Object of class \code{flow}
+#' @param detailed include some details
+#' @param pdf create a pdf instead of plotting interactively
+#' @param pdffile output file name for the pdf file
+#' @param ... experimental
+#' @exportMethod plot_flow
+#' @examples
+#' plot_flow(x = x, pdf = TRUE)
+setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)
+setMethod("plot", signature(x = "flow"), definition=plot_flow)
 
 
-.plot_flow_dat <- function(x, detailed=FALSE, pdf=FALSE, pdffile=sprintf("flow.pdf"), ...){
+.plot_flow_dat <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"), ...){
   if(nrow(x) < 2) return(c("need a few more jobs.."))
   jobnames=unique(as.c(x$jobnames))
   dat_compl <- x[complete.cases(x),]
