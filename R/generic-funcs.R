@@ -1,3 +1,4 @@
+
 as.c=as.character; as.n=as.numeric
 
 slots_as_list <- function(x, names=slotNames(x)){

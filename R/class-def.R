@@ -21,6 +21,7 @@ setClass("queue", representation(submit_exe = "character", ## submit job
                                  email = "character", ## email
                                  type = "character",  ## torque etc
                                  format = "character", ## cmd format
+                                 extra_opts= "character", ## extra options for your queue
                                  server = "character")) ## address of head node
 
 setClass("local", contains = "queue")
@@ -73,10 +74,11 @@ setClass("flow", representation(jobs = "list",
 #' @param stderr [Used by class job]
 #' @param stdout [Used by class job]
 #' @param email [Used by class job]
+#' @param extra_opts [Used by class job]
 #' @param type Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]
-#' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'. 
+#' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'.
 #' This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
-#' dependencies. More on them here: 
+#' dependencies. More on them here:
 #' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node.
 #' @keywords queue
 #' @export
@@ -86,25 +88,25 @@ queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
                   dependency=list(),jobname="name",
                   walltime="72:00:00",cwd="~/flows",
                   stderr="~/flows/tmp",stdout="~/flows",email=Sys.getenv("USER"),
-                  type="torque",format="",
+                  type="torque",format="", extra_opts = "",
                   server="localhost"){
     if(!missing(object)){
     }
     if(type=="torque"){
-        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -S /bin/bash -d ${CWD} -V -e ${STDERR} -o ${STDOUT} -m ae -M ${EMAIL} ${CMD} ${DEPENDENCY}"
+        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -S /bin/bash -d ${CWD} -V -e ${STDERR} -o ${STDOUT} -m ae -M ${EMAIL} ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
         object <- new("torque", submit_exe="qsub",queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
-                      cwd=cwd,stderr=stderr,stdout=stdout,email=email,type=type,
-                      format=format,
+                      cwd=cwd,stderr=stderr,stdout=stdout,email = email,type=type,
+                      format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="lsf"){
-        format="bsub -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} ${DEPENDENCY} '<' ${CMD} "
+        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
         object <- new("lsf", submit_exe="bsub",queue=queue,
                           nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
                       cwd=cwd,stderr=stderr,stdout=stdout,email=email,type=type,
-                      format=format,
+                      format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="local"){
         object <- new("local", submit_exe="bash ",jobname=jobname)
@@ -112,7 +114,7 @@ queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
         object <- new("queue", submit_exe=submit_exe,queue=queue,
                       nodes=nodes,
                       cpu=cpu,dependency=dependency,walltime=walltime,
-                      cwd=cwd,stderr=stderr,stdout=stdout,email=email,type=type,
+                      cwd=cwd,stderr=stderr,stdout=stdout,email=email,type=type, extra_opts = extra_opts,
                       jobname=jobname,format=format,server=server)
     }
     return(object)
@@ -161,10 +163,10 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 #' Used in \link{submit_flow} to name the working directories.
 #' @param desc \code{character} Description of the flow
 #' This is used to name folders (when submitting jobs, see \link{submit_flow}).
-#' It is good practice to avoid spaces and other special characters. 
+#' It is good practice to avoid spaces and other special characters.
 #' An underscore '_' seems like a good word separator.
 #' Defaults to 'my_super_flow'. We usually use this to put sample names of the data.
-#' @param mode \code{character} Mode of submission of the flow. 
+#' @param mode \code{character} Mode of submission of the flow.
 #' @param flow_base_path The base path of all the flows you would submit.
 #' Defaults to \code{~/flows}. Best practice to ignore it.
 #' @param trigger_path \code{character}

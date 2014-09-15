@@ -39,8 +39,6 @@ setMethod("test_queue", signature(q_obj= "queue"), function (q_obj, verbose = FA
     system(cmd)
 })
 
-
-
 #' @title .create_queue_cmd
 #' @description .create_queue_cmd
 #' @param j_obj
@@ -59,6 +57,7 @@ setMethod("test_queue", signature(q_obj= "queue"), function (q_obj, verbose = FA
             dependency <- sprintf("-w '%s'",paste(j_obj@dependency, collapse=" && "))
     }else if (j_obj@dependency_type=="serial"){
         ## if submission is scatter and dependency is serial, do burst
+        ## basically recycle the dependency for all the subsequent jobs
         if(length(j_obj@dependency)==1) index=1
         if(j_obj@type=="torque")
             dependency <- sprintf("-W %s",paste(" depend=afterok:", j_obj@dependency[[index]], sep="", collapse=":"))
@@ -85,7 +84,6 @@ setMethod("test_queue", signature(q_obj= "queue"), function (q_obj, verbose = FA
     return(cmd=cmd)
 }
 setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), definition=.create_queue_cmd)
-
 
 #### --------------------- submit job as part of a flow, this would be called from function flow
 #' @title .submit_job
@@ -157,12 +155,14 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.sub
     for(i in 1:length(f_obj@jobs)){
         ## ------ check if there are any dependencies
         previous_job <- f_obj@jobs[[i]]@previous_job
-        if(length(previous_job)!=0){
-            ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
-            ## -------- can have multiple dependencies
-            x <- do.call(cbind, lapply(previous_job, function(y) f_obj@jobs[[y]]@id))
-            f_obj@jobs[[i]]@dependency <- split(x, row(x))
-        }
+        if(length(previous_job)!=0){ ## should not be char 0
+            if(!is.na(previous_job) & !is.null(previous_job) & !previous_job %in% c("", "NA")){ ## should not be NA OR NULL
+                ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
+                ## -------- can have multiple dependencies
+                x <- do.call(cbind, lapply(previous_job, function(y) f_obj@jobs[[y]]@id))
+                f_obj@jobs[[i]]@dependency <- split(x, row(x))
+            }## prev_jobs should have length more than 1. And should not be null
+        } ## should have positive length
         ## ------ submit the job
         f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, ...)
         ## ------ check if this is NOT last job in the flow
@@ -175,15 +175,15 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.sub
     f_obj@status <- "processed"
     if(execute)    f_obj@status <- "submitted"
     if(make_flow_plot){
-      try(plot(f_obj, detailed = TRUE, pdf = TRUE, 
-               pdffile = sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
+        try(.plot_flow(f_obj, detailed = TRUE, pdf = TRUE,
+                       pdffile = sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
     }
     return(f_obj)
 }
 #' @title submit_flow
 #' @description submit_flow
 #' @aliases submit_flow
-#' @param f_obj \code{object} of class \code{flow}. 
+#' @param f_obj \code{object} of class \code{flow}.
 #' @param attach_uuid \code{logical} Whether to attach a random string to the submitted flow names. Look for them in your \code{basepath} folder (typically \code{~/flows/FLOW_NAME/FLOW_DESCRIPTION_UUID}). Refer to \code{desc} and \code{name} paramters of \link{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
 #' @param make_flow_plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
