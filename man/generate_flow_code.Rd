@@ -14,6 +14,8 @@ generate_flow_code(x, ...)
 generate_flow_code
 }
 \examples{
+\dontrun{
 generate_flow_code(x = x, ... = ...)
+}
 }
 

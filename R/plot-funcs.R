@@ -37,10 +37,13 @@
 }
 
 ## ------------- make a flowchart using the object
-.plot_flow <- function(x, detailed=FALSE, pdf=FALSE, pdffile=sprintf("%s.pdf",x@name), ...){
+.plot_flow <- function(x, detailed = TRUE, pdf = FALSE, pdffile=sprintf("%s.pdf",x@name), type = c(1,2), ...){
   require(diagram)
+	type = match.arg(type)
   dat <- .create_jobs_mat(x)
-  .plot_flow_dat(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...)
+  switch(type,
+  			 '1' = .plot_flow_dat_type1(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
+  			 '2' = .plot_flow_dat_type2(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
 }
 
 setGeneric("plot_flow", function (x, ...){
@@ -55,17 +58,18 @@ setGeneric("plot_flow", function (x, ...){
 #' @param detailed include some details
 #' @param pdf create a pdf instead of plotting interactively
 #' @param pdffile output file name for the pdf file
+#' @param type 1 is original, and 2 is a elipse with less details
 #' @param ... experimental
 #' @exportMethod plot_flow
-#' @examples
-#' plot_flow(x = x, pdf = TRUE)
+#' @examples \dontrun{
+#' plot_flow(x = x, pdf = TRUE)}
 setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)
 setMethod("plot", signature(x = "flow"), definition=plot_flow)
 
 
 #' @param x a data.frame
 #' @param detailed include some details
-.plot_flow_dat <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
+.plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
                            width, height, ...){
     if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
@@ -125,4 +129,59 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
         }
     }
     if(pdf) dev.off()
+}
+.plot_flow_dat = .plot_flow_dat_type1
+
+.plot_flow_dat_type2 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
+																 width, height, 
+																 curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
+																 segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
+																 cex.txt = 0.8, ## labels
+																 box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, 
+                                 box.lcol = "lightskyblue4", relsize = 0.85,...){
+	if(missing(height))  height = 2.5 * nrow(x)
+	if(missing(width)) width = 2 * nrow(x)
+	if(nrow(x) < 2) return(c("need a few more jobs.."))
+	jobnames=unique(as.c(x$jobnames))
+	dat_compl <- x[complete.cases(x),]
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobnames==j)[1]),]
+	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
+	colnames(m) = rownames(m) = jobnames
+	## -------- get positions
+	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+	m[dat_compl$jobnames, dat_compl$prev_jobs] = dat_compl$dep_type
+  ##### some options
+  if(pdf){
+    #box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
+	}
+	if(pdf) pdf(file=pdffile, width = width, height = height)
+	p <- plotmat(m, 
+							 curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
+							 segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
+							 cex.txt = cex.txt, ## labels
+							 box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd, 
+               shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
+	if(pdf) dev.off()	
+}
+
+
+##----- plotmat of diagram
+if(FALSE){
+	jobnames=unique(as.c(x$jobnames))
+	dat_compl <- x[complete.cases(x),]
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobnames==j)[1]),]
+	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
+	colnames(m) = rownames(m) = jobnames
+	## -------- get positions
+	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+	m[dat_compl$jobnames, dat_compl$prev_jobs] = dat_compl$dep_type
+	p <- plotmat(m, 
+					curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
+					segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
+					cex.txt = 0.8, ## labels
+					box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
+					relsize = 0.85) ## box
+	
+
+	
 }

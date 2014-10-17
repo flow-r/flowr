@@ -1,13 +1,16 @@
 
 if(FALSE){
   
-
+  
   qobj <- queue(type = "lsf", queue = "normal")
   job1 <- job(name = "myjob1", q_obj = qobj)
-  job2 <- job(name = "myjob2", q_obj = qobj, previous_job = "myjob1")
-  job3 <- job(name = "myjob3", q_obj = qobj, previous_job = "myjob2")
+  job2 <- job(name = "myjob2", q_obj = qobj)
+  job3 <- job(name = "myjob3", q_obj = qobj, previous_job = c("myjob2", "myjob1"))
   fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
+  plot_flow(fobj)
+  
   x <- fobj
+  
 }
 
 ### generate code from dat
@@ -17,7 +20,9 @@ if(FALSE){
 #' @param ...
 #' @export
 #' @examples
+#' \dontrun{
 #' generate_flow_code(x = x, ... = ...)
+#' }
 generate_flow_code <- function(x, ...){
   fobj <- x
   ## this would take in a flowmat and produce a code to generate it

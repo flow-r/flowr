@@ -1,12 +1,13 @@
-## A class that contains bam file information
-## Copyright 2014, Sahil Seth, all rights reserved
-## sahil.seth@me.com
-## A few functions to supplement those already in this package.
+### A class that contains bam file information
+### Copyright 2014, Sahil Seth, all rights reserved
+### sahil.seth@me.com
+### A few functions to supplement those already in this package.
 #### -----------------------
 
 #### ----------------------- Declaring new classes
 #### ----------------------- This class is a link between cluster and job management
-#' queue defines the class
+
+#' @title queue defines the class
 #' @exportClass queue
 setClass("queue", representation(submit_exe = "character", ## submit job
                                  queue = "character", ## type of queue
@@ -84,17 +85,18 @@ setClass("flow", representation(jobs = "list",
 #' @export
 #' @examples
 #' queue(type='lsf')
-queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
-                  dependency=list(),jobname="name",
-                  walltime="72:00:00",cwd="~/flows",
-                  stderr="~/flows/tmp",stdout="~/flows",email=Sys.getenv("USER"),
-                  type="torque",format="", extra_opts = "",
-                  server="localhost"){
+queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
+                  dependency = list(), jobname = "name",
+                  walltime = "72:00:00", cwd="~/flows",
+                  stderr = "~/flows/tmp", stdout = "~/flows",
+                  email = Sys.getenv("USER"),
+                  type = "torque", format = "", extra_opts = "",
+                  server = "localhost"){
     if(!missing(object)){
     }
     if(type=="torque"){
         format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -S /bin/bash -d ${CWD} -V -e ${STDERR} -o ${STDOUT} -m ae -M ${EMAIL} ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
-        object <- new("torque", submit_exe="qsub",queue=queue,
+        object <- new("torque", submit_exe="qsub", queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
                       cwd=cwd,stderr=stderr,stdout=stdout,email = email,type=type,
@@ -131,15 +133,19 @@ queue <- function(object, submit_exe,queue="long",nodes=1,cpu=24,
 #' @param submission_type
 #' @param status
 #' @param dependency_type
+#' @param cpu no of cpu's reserved
+#' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.
 #' @param ...
 #' @export
 #' @examples
 #' q_obj <- queue(type="torque")
 #' j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=1)
 job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
-                q_obj = new("queue"),
+                q_obj = new("queue"), previous_job = '', cpu = 1,
                 submission_type=c("scatter", "serial"), status="",
                 dependency_type = c("none", "gather", "serial", "burst"), ...){
+    ## convert to numeric if possible
+    cpu <- as.numeric(cpu)
     ## replace some of the arguments
     if(!missing(q_obj)){ ## if queue is provided use that to replace the things
         #mget(names(formals()),sys.frame(sys.nframe()))
@@ -153,6 +159,7 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
     submission_type <- match.arg(submission_type)
     dependency_type <- match.arg(dependency_type)
     object <- new("job",cmds = cmds, object, name = name, submission_type = submission_type,
+                  previous_job = previous_job,
                   dependency_type = dependency_type,status=status,...)
     return(object)
 }
@@ -185,7 +192,6 @@ flow <- function(jobs=list(new("job")), name="newflow", desc = "my_super_flow",
     return(object)
 }
 
-##
 if(FALSE){
 
     #q.obj <- queue(type="torque")
@@ -196,9 +202,8 @@ if(FALSE){
     ## class(q)
     ## test_queue(q, verbose=TRUE)
     ## hpcc.command.format <- "#{CMD} | qsub -N #{NAME} -q #{QUEUE} -l #{NODES}:#{PPN} -l #{WALLTIME} -S /bin/bash -d #{HOME} -V -e #{STDERR} -o #{STDERR} -m ae -M #{EMAIL}"
-
-    source("~/Dropbox/public/github.flow/R/generic.R")
-    source("~/Dropbox/public/github.flow/R/class-def.R")
+#     source("~/Dropbox/public/github.flow/R/generic.R")
+#     source("~/Dropbox/public/github.flow/R/class-def.R")
     debug(job)
     q_obj <- queue(type="torque")
     cpu_aln=1

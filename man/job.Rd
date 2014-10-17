@@ -5,9 +5,9 @@
 #'}
 \usage{
 job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
-  q_obj = new("queue"), submission_type = c("scatter", "serial"),
-  status = "", dependency_type = c("none", "gather", "serial", "burst"),
-  ...)
+  q_obj = new("queue"), previous_job = "", cpu = 1,
+  submission_type = c("scatter", "serial"), status = "",
+  dependency_type = c("none", "gather", "serial", "burst"), ...)
 }
 \arguments{
 \item{cmds}{}
@@ -19,6 +19,10 @@ job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 \item{name}{}
 
 \item{q_obj}{}
+
+\item{previous_job}{character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.}
+
+\item{cpu}{no of cpu's reserved}
 
 \item{submission_type}{}
 

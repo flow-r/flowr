@@ -23,6 +23,7 @@
 submit_flow
 }
 \examples{
-submit_flow(f_obj = f_obj, ... = ...)
+\dontrun{
+submit_flow(f_obj = f_obj, ... = ...)}
 }
 

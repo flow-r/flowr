@@ -18,6 +18,7 @@
 submit_job
 }
 \examples{
-submit_job(j_obj = j_obj, f_obj = f_obj, ... = ...)
+\dontrun{
+submit_job(j_obj = j_obj, f_obj = f_obj, ... = ...)}
 }
 

@@ -1,87 +1,108 @@
-
-#### -----------------------
-
-setGeneric("test_queue", function(q_obj, ...){
-    standardGeneric("test_queue")
-})
-
 setGeneric("create_queue_cmd", function (q_obj, file, ...){
-    standardGeneric("create_queue_cmd")
+  standardGeneric("create_queue_cmd")
 })
 
 setGeneric("create_queue_cmd", function (j_obj, file, ...){
-    standardGeneric("create_queue_cmd")
+  standardGeneric("create_queue_cmd")
 })
 
 setGeneric("submit_job", function (j_obj, f_obj, ...){
-    standardGeneric("submit_job")
+  standardGeneric("submit_job")
 })
 
 setGeneric("submit_flow", function (f_obj, ...){
-    standardGeneric("submit_flow")
+  standardGeneric("submit_flow")
 })
 
 if (!isGeneric("plot"))
-    setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
+  setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
 
 #' @title test_queue
-#' @description test_queue
+#' @description This function attempts to test the submission of a job to the queue.
+#' We would first submit one single job, then submit another with a dependency to see if configuration works. This would create a folder in home called 'flows'.
 #' @param q_obj
-#' @param ...
+#' @param ... These params are passed onto \code{queue}. \code{?queue}, for more information
 #' @export
 #' @examples
-#' test_queue(q_obj = q_obj, ... = ...)
-setMethod("test_queue", signature(q_obj= "queue"), function (q_obj, verbose = FALSE){
-    cmd.0 <- create_queue_cmd(q_obj)
-    if(verbose) print(cmd.0)
-    cmd <- sprintf("echo 'sleep 1' | %s", cmd.0)
-    if( verbose ) print (cmd)
-    system(cmd)
-})
+#' \dontrun{
+#' test_queue(q_obj = q_obj, ... = ...)}
+test_queue <- function(q_obj, verbose = TRUE, ...){
+  if(missing(q_obj)){
+    type <- readline("What type of cluster is this? Possible values: lsf, torque, sge\n>>> ");
+    queue_prompt <- paste0("What queue does your group usually use?\n",
+                           "For intitutions this could be",
+                           "long, medium, normal, priority.\n",
+                           "Not sure? Its best to consult your sysadmins.\n>>> ")
+    queue <- readline(prompt = queue_prompt)
+    q_obj <- queue(type = type, queue = queue, ...)
+  }
+  j_obj1 <- job(cmd = 'sleep 60', q_obj = q_obj, name = 'job1')
+  j_obj2 <- job(cmd = 'sleep 60', q_obj = q_obj, name = 'job2',
+                previous_job = 'job1')
+  if(verbose) cat("Creating a 'flow' of two jobs. Check 'flows' folder in your home for a",
+                  "new directory called test_....\n",
+                  "You may also do bjobs/qstat or a respective command for your",
+                  "scheduler to look at these jobs.\n\n\n")
+  f_obj <- flow(jobs = list(j_obj1, j_obj2), desc = "test", flow_base_path = "~/flows")
+  tmp <- submit_flow(f_obj, execute = TRUE, make_flow_plot = FALSE)
+  cat("Flow path:\t", tmp@flow_path, "\n")
+  cat("First job ID: \t", tmp@jobs[[1]]@id, "\n")
+  cat("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
+  cat("Path to logs (1):\t", tmp@jobs[[1]]@stdout, "\n")
+  cat("Path to logs (2):\t", tmp@jobs[[1]]@stdout, "\n")
+  ## cmd.0 <- .create_queue_cmd(j_obj)
+  ## if(verbose) cat("An example command string looks like:\n", cmd.0)
+  ## cmd <- sprintf("echo 'sleep 1' | %s", cmd.0)
+  ## if( verbose ) print (cmd)
+  ## system(cmd)
+  return(tmp)
+}
+#debug(test_queue)
 
 #' @title .create_queue_cmd
 #' @description .create_queue_cmd
+#' @aliases create_queue_cmd
 #' @param j_obj
-#' @param file
+#' @param file This is the path to the file to run
 #' @param index
 #' @param ...
 #' @export
 #' @examples
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 .create_queue_cmd <- function(j_obj, file, index, ...){
-   ## ----- this job depends on multiple jobs. create a string with multiple job ids
-    if(j_obj@dependency_type=="gather"){
-        if(j_obj@type=="torque")
-            dependency <- sprintf("-W depend=afterok:%s",paste(j_obj@dependency, collapse=":"))
-        else if(j_obj@type=="lsf")
-            dependency <- sprintf("-w '%s'",paste(j_obj@dependency, collapse=" && "))
-    }else if (j_obj@dependency_type=="serial"){
-        ## if submission is scatter and dependency is serial, do burst
-        ## basically recycle the dependency for all the subsequent jobs
-        if(length(j_obj@dependency)==1) index=1
-        if(j_obj@type=="torque")
-            dependency <- sprintf("-W %s",paste(" depend=afterok:", j_obj@dependency[[index]], sep="", collapse=":"))
-        else if(j_obj@type=="lsf")
-            dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]], collapse=" && "))
-    }else if (j_obj@dependency_type=="burst"){
-        ## if submission is scatter and dependency is serial, do burst
-        index=1
-        if(j_obj@type=="torque")
-            dependency <- sprintf("-W %s",paste(" depend=afterok:", j_obj@dependency[[index]], sep="", collapse=":"))
-        else if(j_obj@type=="lsf")
-            dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]], collapse=" && "))
-    }else{
-        dependency <- ""
-    }
-    l <- slots_as_list(j_obj, names=slotNames("queue"))
-    l <- l[! names(l) %in% c("format","type", "dependency")] ### ignore a few of the slots
-    l <- c(l, dependency=dependency) ## add dependency to the list
-    names(l) = toupper(names(l)) ## get list of slots
-    l <- c(l, "CMD"=file)
-    .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH
-    ##cmd <- system(sprintf("eval echo %s ",j_obj@format),intern=TRUE)
-    cmd <- system(sprintf("echo %s ",j_obj@format),intern=TRUE)
-    return(cmd=cmd)
+  ## ----- this job depends on multiple jobs. create a string with multiple job ids
+  if(j_obj@dependency_type=="gather"){
+    if(j_obj@type=="torque")
+      dependency <- sprintf("-W depend=afterok:%s",paste(j_obj@dependency, collapse=":"))
+    else if(j_obj@type=="lsf")
+      dependency <- sprintf("-w '%s'",paste(j_obj@dependency, collapse=" && "))
+  }else if (j_obj@dependency_type=="serial"){
+    ## if submission is scatter and dependency is serial, do burst
+    ## basically recycle the dependency for all the subsequent jobs
+    if(length(j_obj@dependency)==1) index=1
+    if(j_obj@type=="torque")
+      dependency <- sprintf("-W %s",paste(" depend=afterok:", j_obj@dependency[[index]], sep="", collapse=":"))
+    else if(j_obj@type=="lsf")
+      dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]], collapse=" && "))
+  }else if (j_obj@dependency_type=="burst"){
+    ## if submission is scatter and dependency is serial, do burst
+    index=1
+    if(j_obj@type=="torque")
+      dependency <- sprintf("-W %s",paste(" depend=afterok:", j_obj@dependency[[index]], sep="", collapse=":"))
+    else if(j_obj@type=="lsf")
+      dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]], collapse=" && "))
+  }else{
+    dependency <- ""
+  }
+  l <- slots_as_list(j_obj, names=slotNames("queue"))
+  l <- l[! names(l) %in% c("format","type", "dependency")] ### ignore a few of the slots
+  l <- c(l, dependency=dependency) ## add dependency to the list
+  names(l) = toupper(names(l)) ## get list of slots
+  l <- c(l, "CMD"=file)
+  .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH
+  ##cmd <- system(sprintf("eval echo %s ",j_obj@format),intern=TRUE)
+  cmd <- system(sprintf("echo %s ",j_obj@format),intern=TRUE)
+  return(cmd=cmd)
 }
 setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), definition=.create_queue_cmd)
 
@@ -98,87 +119,95 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
 #' @examples
 #' .submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, verbose = TRUE, wd = wd, job_id = job_id, ... = ...)
 .submit_job <- function (j_obj, f_obj,execute = FALSE, verbose = TRUE, wd, job_id,...){
-    ## ========= create the name of the job with its index in the supplied flow
-    if(!j_obj@status %in% c("processed","submitted","running","completed","error"))
-        j_obj@jobname <- sprintf("%s.%s",job_id,j_obj@name)
-    wd <- file.path(f_obj@flow_path, j_obj@jobname) ## j_obj@name: is indexed
-    dir.create (wd, recursive=TRUE, showWarnings=FALSE);
-    trigger_path=f_obj@trigger_path=file.path(f_obj@flow_path,"trigger") ## comes from the flow
-    dir.create(trigger_path, showWarnings=FALSE)
-    j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- file.path(dirname(wd),"tmp") ## FLOWBASE
-    ## ------------ this would be based on number of submission type
-    if(j_obj@submission_type %in% c("serial")){
-        j_obj@cmds <-  paste("## ------", names(j_obj@cmds), "\n", j_obj@cmds, "\n\n", collapse="")
-    }
-    ## if(j_obj@submission_type %in% c("scatter")){
-    files <- sprintf("%s/%s_cmd_%s.sh",wd, j_obj@name, 1:length(j_obj@cmds))
-    ## ------- do this for all commands (in case of scatter)
-    jobids <- sapply(1:length(j_obj@cmds), function(i){
-        ## -------   make a long job name to capture the run
-        obj <- j_obj;
-        obj@jobname <- sprintf("%s_%s-%s",j_obj@jobname,basename(f_obj@flow_path),i)
-        cmd <- .create_queue_cmd(obj, file=files[i], index=i)
-        ## ------- make the script
-        beforescript <- c("#!/bin/env bash"," ## ------- submit command",
-                          sprintf("## %s", cmd),
-                          "echo 'BGN at' `date`")
-        afterscript <- c(sprintf("echo $? > %s/trigger/trigger_%s_%s.txt", f_obj@flow_path, j_obj@name,i),
-                         "echo 'END at' `date`")
-        script <- c(beforescript,j_obj@cmds[i], afterscript)
-        write(script, files[i])
-        if(execute){
-            jobid <- system(cmd, intern = TRUE)
-            return(jobid)
-        } ## execute
-        return("") ## if no execute return the cmd
-    }) ## for loop
-    if(j_obj@type=="lsf" & execute)
-        j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1",jobids)
-    else
-        j_obj@id <- jobids
-    ## }## submissiontype
-    j_obj@status <- "processed"
-    if(execute) j_obj@status <- "submitted"
-    return(j_obj)
+  ## ========= create the name of the job with its index in the supplied flow
+  if(!j_obj@status %in% c("processed","submitted","running","completed","error"))
+    j_obj@jobname <- sprintf("%03d.%s", job_id,j_obj@name)
+  wd <- file.path(f_obj@flow_path, j_obj@jobname) ## j_obj@name: is indexed
+  dir.create (wd, recursive=TRUE, showWarnings=FALSE);
+  trigger_path=f_obj@trigger_path=file.path(f_obj@flow_path,"trigger") ## comes from the flow
+  dir.create(trigger_path, showWarnings=FALSE)
+  j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- file.path(dirname(wd),"tmp") ## FLOWBASE
+  ## ------------ this would be based on number of submission type
+  if(j_obj@submission_type %in% c("serial")){
+    j_obj@cmds <-  paste("## ------", names(j_obj@cmds),
+                         "\n", j_obj@cmds, "\n\n", collapse="")
+  }
+  ## if(j_obj@submission_type %in% c("scatter")){
+  files <- sprintf("%s/%s_cmd_%s.sh",wd, j_obj@name, 1:length(j_obj@cmds))
+  ## ------- do this for all commands (in case of scatter)
+  jobids <- sapply(1:length(j_obj@cmds), function(i){
+    ## -------   make a long job name to capture the run
+    obj <- j_obj;
+    obj@jobname <- sprintf("%s_%s-%s",j_obj@jobname,basename(f_obj@flow_path),i)
+    cmd <- .create_queue_cmd(obj, file=files[i], index=i)
+    ## ------- make the script
+    beforescript <- c("#!/bin/env bash"," ## ------- submit command",
+                      sprintf("## %s", cmd),
+                      "echo 'BGN at' `date`")
+    afterscript <- c(sprintf("echo $? > %s/trigger/trigger_%s_%s.txt",
+                             f_obj@flow_path, j_obj@jobname,i),
+                     "echo 'END at' `date`")
+    script <- c(beforescript,j_obj@cmds[i], afterscript)
+    write(script, files[i])
+    if(execute){
+      jobid <- system(cmd, intern = TRUE)
+      return(jobid)
+    } ## execute
+    return("") ## if no execute return the cmd
+  }) ## for loop
+  if(j_obj@type=="lsf" & execute)
+    j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1",jobids)
+  else
+    j_obj@id <- jobids
+  ## }## submissiontype
+  j_obj@status <- "processed"
+  if(execute) j_obj@status <- "submitted"
+  return(j_obj)
 }
-setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.submit_job)
 
+setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .submit_job)
 ## TESTS
 ## number of commands in a serial job should match that of dependency
 .submit_flow <- function(f_obj, attach_uuid = TRUE, execute = FALSE,
                          make_flow_plot = TRUE, ...){
-    if(!f_obj@status %in% c("processed","submitted","running","completed","exit"))
-        f_obj@flow_path <- sprintf("%s/%s-%s",f_obj@flow_base_path, f_obj@desc, UUIDgenerate())
-    ##jobnames <- sapply(f_obj@jobs, function(x) x@name)
-    ##names(f_obj@jobs) <- jobnames
+  if(!f_obj@status %in% c("processed","submitted","running","completed","exit"))
+    f_obj@flow_path <- sprintf("%s/%s-%s",f_obj@flow_base_path, f_obj@desc, UUIDgenerate())
+  ##jobnames <- sapply(f_obj@jobs, function(x) x@name)
+  ##names(f_obj@jobs) <- jobnames
+  ### ---------- Error handling
+  if(length(f_obj@jobs[[1]]@dependency_type) > 0 & f_obj@jobs[[1]]@dependency_type !="none")
+    stop("Seems like the first job has a dependency, please check")
+  if(!file.exists(file.path(f_obj@flow_path,"tmp"))) ## create if it does not exist
     dir.create(file.path(f_obj@flow_path,"tmp"), showWarnings=FALSE, recursive=TRUE)
-    for(i in 1:length(f_obj@jobs)){
-        ## ------ check if there are any dependencies
-        previous_job <- f_obj@jobs[[i]]@previous_job
-        if(length(previous_job)!=0){ ## should not be char 0
-            if(!is.na(previous_job) & !is.null(previous_job) & !previous_job %in% c("", "NA")){ ## should not be NA OR NULL
-                ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
-                ## -------- can have multiple dependencies
-                x <- do.call(cbind, lapply(previous_job, function(y) f_obj@jobs[[y]]@id))
-                f_obj@jobs[[i]]@dependency <- split(x, row(x))
-            }## prev_jobs should have length more than 1. And should not be null
-        } ## should have positive length
-        ## ------ submit the job
-        f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, ...)
-        ## ------ check if this is NOT last job in the flow
-        ## if(i < length(f_obj@jobs)){
-        ##     next_job <- f_obj@jobs[[i]]@next_job
-        ##     if(length(next_job)!=0)     #if we have the next job
-        ##         f_obj@jobs[[next_job]]@dependency <- f_obj@jobs[[i]]@id
-        ## }
-    }
-    f_obj@status <- "processed"
-    if(execute)    f_obj@status <- "submitted"
-    if(make_flow_plot){
-        try(.plot_flow(f_obj, detailed = TRUE, pdf = TRUE,
-                       pdffile = sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
-    }
-    return(f_obj)
+  for(i in 1:length(f_obj@jobs)){
+    ## ------ check if there are any dependencies
+    previous_job <- f_obj@jobs[[i]]@previous_job
+    if(length(previous_job)!=0){ ## should not be char 0
+      ## should not be NA OR NULL
+      if(!is.na(previous_job) & !is.null(previous_job) & !previous_job %in% c("", "NA", ".")){
+        ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
+        ## -------- can have multiple dependencies
+        x <- do.call(cbind, lapply(previous_job, function(y)
+          f_obj@jobs[[y]]@id))
+        f_obj@jobs[[i]]@dependency <- split(x, row(x))
+      }## prev_jobs should have length more than 1. And should not be null
+    } ## should have positive length
+    ## ------ submit the job
+    f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, ...)
+    ## ------ check if this is NOT last job in the flow
+    ## if(i < length(f_obj@jobs)){
+    ##     next_job <- f_obj@jobs[[i]]@next_job
+    ##     if(length(next_job)!=0)     #if we have the next job
+    ##         f_obj@jobs[[next_job]]@dependency <- f_obj@jobs[[i]]@id
+    ## }
+  }
+  f_obj@status <- "processed"
+  if(execute)    f_obj@status <- "submitted"
+  if(make_flow_plot){
+    try(.plot_flow(f_obj, detailed = FALSE, pdf = TRUE,
+                   pdffile = sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
+  }
+  return(f_obj)
 }
 #' @title submit_flow
 #' @description submit_flow
@@ -190,7 +219,8 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"),definition=.sub
 #' @param ... Any additional parameter are passed on to \link{submit_job} function
 #' @export
 #' @examples
-#' submit_flow(f_obj = f_obj, ... = ...)
+#' \dontrun{
+#' submit_flow(f_obj = f_obj, ... = ...)}
 setMethod("submit_flow", signature(f_obj = "flow"), definition = .submit_flow)
 
 
@@ -202,28 +232,30 @@ setMethod("submit_flow", signature(f_obj = "flow"), definition = .submit_flow)
 #' @param ...
 #' @export
 #' @examples
-#' submit_job(j_obj = j_obj, f_obj = f_obj, ... = ...)
+#' \dontrun{
+#' submit_job(j_obj = j_obj, f_obj = f_obj, ... = ...)}
 setMethod("submit_job", signature(j_obj = "job"),
-function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
-    require(uuid)
-    ## if(verbose) cat(j_obj@base_path, j_obj@name, "\n")
-    if(missing(wd)){
-        wd <- file.path(j_obj@base_path,paste(j_obj@name,
-                                              uuid::UUIDgenerate(),sep="_"))
-    }
-    dir.create(wd, recursive=TRUE)
-    script <- c(j_obj@cmd, sprintf("echo $? > %s/trigger_%s.txt", wd,j_obj@name))
-    file <- sprintf("%s/%s.sh", wd, j_obj@name)
-    write(script, file)
-    j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- wd
-    cmd <- sprintf("%s %s",create_queue_cmd(j_obj), file)
-    if (verbose) print(cmd)
-    if(execute){
-        jobid <- system(cmd, intern = TRUE)
-        j_obj@id <- jobid
-    }
-    return(j_obj)
-})
+          function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
+            require(uuid)
+            ## if(verbose) cat(j_obj@base_path, j_obj@name, "\n")
+            if(missing(wd)){
+              wd <- file.path(j_obj@base_path,paste(j_obj@name,
+                                                    uuid::UUIDgenerate(),sep="_"))
+            }
+            dir.create(wd, recursive=TRUE, showWarnings = FALSE)
+            script <- c(j_obj@cmd, sprintf("echo $? > %s/trigger_%s.txt", wd,j_obj@name))
+            file <- sprintf("%s/%s.sh", wd, j_obj@name)
+            write(script, file)
+            j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- wd
+            cmd <- sprintf("%s %s",create_queue_cmd(j_obj), file)
+            if (verbose) print(cmd)
+            if(execute){
+              jobid <- system(cmd, intern = TRUE)
+              j_obj@id <- jobid
+            }
+            return(j_obj)
+          })
+
 ## trace("create_queue_cmd", browser, exit=browser, signature = c("queue","character"));
 ## cmd <- create_queue_cmd(j_obj, file=files[i])
 ## untrace("create_queue_cmd", signature = c("queue","character"));

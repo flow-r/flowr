@@ -5,8 +5,8 @@
 \alias{plot_flow,flow-method}
 \title{plot_flow}
 \usage{
-\S4method{plot_flow}{flow}(x, detailed = FALSE, pdf = FALSE,
-  pdffile = sprintf("\%s.pdf", x@name), ...)
+\S4method{plot_flow}{flow}(x, detailed = TRUE, pdf = FALSE,
+  pdffile = sprintf("\%s.pdf", x@name), type = c(1, 2), ...)
 }
 \arguments{
 \item{x}{Object of class \code{flow}}
@@ -17,12 +17,15 @@
 
 \item{pdffile}{output file name for the pdf file}
 
+\item{type}{1 is original, and 2 is a elipse with less details}
+
 \item{...}{experimental}
 }
 \description{
 plot_flow
 }
 \examples{
-plot_flow(x = x, pdf = TRUE)
+\dontrun{
+plot_flow(x = x, pdf = TRUE)}
 }
 

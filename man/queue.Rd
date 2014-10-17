@@ -3,11 +3,11 @@
 \alias{queue}
 \title{Create a \code{queue} object which containg details about how a job is submitted.}
 \usage{
-queue(object, submit_exe, queue = "long", nodes = 1, cpu = 24,
+queue(object, submit_exe, queue = "long", nodes = 1, cpu = 1,
   dependency = list(), jobname = "name", walltime = "72:00:00",
   cwd = "~/flows", stderr = "~/flows/tmp", stdout = "~/flows",
   email = Sys.getenv("USER"), type = "torque", format = "",
-  server = "localhost")
+  extra_opts = "", server = "localhost")
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}
@@ -40,6 +40,8 @@ queue(object, submit_exe, queue = "long", nodes = 1, cpu = 24,
 \item{format}{We have a default format for the final command line string generated for 'lsf' and 'torque'.
 This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
 dependencies. More on them here:}
+
+\item{extra_opts}{[Used by class job]}
 
 \item{server}{This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node.}
 }
