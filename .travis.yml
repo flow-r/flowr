@@ -9,7 +9,7 @@ script: ./travis-tool.sh run_tests
 
 env:
   - global:
-    - WARNINGS_ARE_ERRORS=1
+    - WARNINGS_ARE_ERRORS=0
     - R_BUILD_ARGS='--no-manual'
     - R_CHECK_ARGS='--no-manual --as-cran'
 
