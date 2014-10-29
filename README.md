@@ -1,4 +1,4 @@
-[![Build Status](https://magnum.travis-ci.com/sahilseth/flow.svg?token=LbEE1Qe6FYpCSwPfjFtn&branch=master)](https://magnum.travis-ci.com/sahilseth/flow)
+[![Build Status](https://magnum.travis-ci.com/sahilseth/flow.svg?token=LbEE1Qe6FYpCSwPfjFtn&branch=master)](https://travis-ci.org/sahilseth/flow)
 
 flow
 ======
@@ -48,7 +48,10 @@ There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) s
 qsub -hold_jid
 ## <comma separated list of job-ids, can also be a job id pattern such as 2722*> : will start the current job/job -array only after completion of all jobs in the comma separated list
 ## SGE arrary
-qsub -t 1-10:1 -N arrayJob \ !./my-arrayJobScript.sh## LSF job arrarys:Syntax
+qsub -t 1-10:1 -N arrayJob \ !
+./my-arrayJobScript.sh
+## LSF job arrarys:
+Syntax
 The bsub syntax used to create a job array follows:
 bsub -J "arrayName[indexList, ...]" myJob 
 Where:
