@@ -1,4 +1,4 @@
-[![Build Status](https://magnum.travis-ci.com/sahilseth/flow.svg?token=LbEE1Qe6FYpCSwPfjFtn&branch=master)](https://travis-ci.org/sahilseth/flow)
+[![Build Status](https://travis-ci.org/sahilseth/flow.png)](https://travis-ci.org/sahilseth/flow)
 
 flow
 ======
