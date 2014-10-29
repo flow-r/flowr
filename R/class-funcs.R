@@ -20,7 +20,7 @@ if (!isGeneric("plot"))
 #' @title test_queue
 #' @description This function attempts to test the submission of a job to the queue.
 #' We would first submit one single job, then submit another with a dependency to see if configuration works. This would create a folder in home called 'flows'.
-#' @param q_obj
+#' @param q_obj queue object
 #' @param ... These params are passed onto \code{queue}. \code{?queue}, for more information
 #' @export
 #' @examples

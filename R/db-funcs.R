@@ -14,7 +14,7 @@ get_connection <- function(path = "/scratch/iacs/iacs_dep/sseth/.flow/flow.sqlit
 #' @description get_flow_status
 #' @aliases flow:::status
 #' @param x path to the flow; may be without the uuid
-#' @param cores
+#' @param cores number of cores to use
 #' @export
 #' @importFrom knitr kable
 #' @importFrom parallel mclapply

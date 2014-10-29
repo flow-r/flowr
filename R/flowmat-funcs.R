@@ -16,12 +16,12 @@ if(FALSE){
 ### generate code from dat
 #' @title generate_flow_code
 #' @description generate_flow_code
-#' @param x
-#' @param ...
+#' @param x flow object
+#' @param ... currently ignored
 #' @export
 #' @examples
 #' \dontrun{
-#' generate_flow_code(x = x, ... = ...)
+#' generate_flow_code(x = x)
 #' }
 generate_flow_code <- function(x, ...){
   fobj <- x
