@@ -149,7 +149,11 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
 	colnames(m) = rownames(m) = jobnames
 	## -------- get positions
 	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-	m[dat_compl$jobnames, dat_compl$prev_jobs] = dat_compl$dep_type
+	dat_compl$dep_type = ifelse(dat_compl$dep_type %in% c(".", "none") |
+                                is.na(dat_compl$dep_type) | is.null(dat_compl$dep_type), 0, dat_compl$dep_type)
+  for(i in 1:nrow(dat_compl)){ 
+    m[dat_compl$jobnames[i], dat_compl$prev_jobs[i]] = dat_compl$dep_type[i]
+  }
   ##### some options
   if(pdf){
     #box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
