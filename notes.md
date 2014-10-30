@@ -1,4 +1,3 @@
-<!---
 ```
 qsub -hold_jid
 ## <comma separated list of job-ids, can also be a job id pattern such as 2722*> : will start the current job/job -array only after completion of all jobs in the comma separated list
@@ -74,7 +73,7 @@ Uses -J for dependencies
 #PBS -J 1-10
 PBS_ARRAY_INDEX
 ```
-<!---
+
 ```
 qsub -hold_jid
 ## <comma separated list of job-ids, can also be a job id pattern such as 2722*> : will start the current job/job -array only after completion of all jobs in the comma separated list
@@ -150,5 +149,4 @@ Uses -J for dependencies
 #PBS -J 1-10
 PBS_ARRAY_INDEX
 ```
---->
 
