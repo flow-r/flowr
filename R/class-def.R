@@ -125,17 +125,17 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
 ## submission_type: this decides that the cmds to be submittion in which manner
 ## flow_type: if multi dependencies, wait for all or according to order
 #' job class
-#' #' @param cmds
+#' @param cmds the commands to run
 #' @param base_path base path
-#' @param parent_flow name of the parent flow
-#' @param name name of this job
+#' @param parent_flow parent flow
+#' @param name name of the job
 #' @param q_obj queue object
-#' @param submission_type what type of submission: scatter, serial, burst
-#' @param status update the status of this job
-#' @param dependency_type what type of dependency: gather, serial
+#' @param submission_type submission type
+#' @param status status
+#' @param dependency_type depedency type
 #' @param cpu no of cpu's reserved
 #' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.
-#' @param ... passed on to creation of job object
+#' @param ... other passed onto object creation
 #' @export
 #' @examples
 #' q_obj <- queue(type="torque")

@@ -6,7 +6,9 @@
 test_queue(q_obj, verbose = TRUE, ...)
 }
 \arguments{
-\item{q_obj}{}
+\item{q_obj}{queue object}
+
+\item{verbose}{toggle}
 
 \item{...}{These params are passed onto \code{queue}. \code{?queue}, for more information}
 }

@@ -1,14 +1,16 @@
 Package: flow
 Type: Package
 Title: R pacakge which manages workflows and queues jobs in HPCC cluster
-Version: 0.6
+Version: 0.7
 Depends:
     methods,
     stats,
     diagram,
     uuid
 Imports:
-    knitr
+    knitr,
+    ggplot2,
+    RSQLite
 Date: 2014-05-01
 Author: Sahil Seth
 Maintainer: S. Seth <sseth@mdanderson.org>

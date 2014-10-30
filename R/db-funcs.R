@@ -1,5 +1,6 @@
 
-
+#' @importFrom RSQLite dbConnect
+#' @importFrom RSQLite SQLite
 get_connection <- function(path = "/scratch/iacs/iacs_dep/sseth/.flow/flow.sqlite"){
   #   library(sqldf)
   db <- dbConnect(SQLite(), dbname = path)
@@ -15,6 +16,8 @@ get_connection <- function(path = "/scratch/iacs/iacs_dep/sseth/.flow/flow.sqlit
 #' @aliases flow:::status
 #' @param x path to the flow; may be without the uuid
 #' @param cores number of cores to use
+#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
+#' @param get_mem_usage under progress, whether to extract mem_usage of jobs
 #' @export
 #' @importFrom knitr kable
 #' @importFrom parallel mclapply
@@ -24,7 +27,7 @@ get_connection <- function(path = "/scratch/iacs/iacs_dep/sseth/.flow/flow.sqlit
 get_flow_status <- function(x, cores = 6, out_format = "rst", get_mem_usage = TRUE){
   ## get the total jobs
   require(parallel)
-  wds = list.files(path = dirname(x), pattern = basename(x), full.name = TRUE)
+  wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
   for(wd in wds){
     files_cmd <- list.files(wd, pattern = "cmd", full.names = TRUE, recursive = TRUE)
     ## dirname, JOBNAME_cmd_JOBINDEX
@@ -73,9 +76,10 @@ parse_lsf_out <- function(x){
   return(list(cpu = cpu, avg_mem = avg_mem, max_mem = max_mem, max_swap = max_swap))
 }
 
+#' @title .get_flow_memory_ibm
+#' @import ggplot2
 .get_flow_memory_ibm <- function(x, odir = "~/tmp"){
-  require(ggplot2)
-  wds = list.files(path = dirname(x), pattern = basename(x), full.name = TRUE)
+  wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
   for(wd in wds){
     #files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
     files_out <- list.files(wd, pattern = "output$", full.names = TRUE, recursive = TRUE)
@@ -95,23 +99,25 @@ parse_lsf_out <- function(x){
     mat_res$cpu = as.numeric(mat_res$cpu)
     
     mytheme <- theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
-    p <- ggplot(mat_res, aes(x = jobname, y = avg_mem)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme
+    p <- with(mat_res,
+              ggplot(mat_res, aes(x = jobname, y = avg_mem)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
     ggsave(sprintf("%s/%s.avg_mem.pdf", odir, basename(wd)), p)
     
-    p <- ggplot(mat_res, aes(x = jobname, y = max_mem)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme
+    p <- with(mat_res,
+              ggplot(mat_res, aes(x = jobname, y = max_mem)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
     ggsave(sprintf("%s/%s.max_mem.pdf", odir, basename(wd)), p)
     
-    p <- ggplot(mat_res, aes(x = jobname, y = max_swap)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme
+    p <- with(mat_res,
+              ggplot(mat_res, aes(x = jobname, y = max_swap)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
     ggsave(sprintf("%s/%s.max_swap.pdf", odir, basename(wd)), p)
     
-    p <- ggplot(mat_res, aes(x = jobname, y = cpu)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme
+    p <- with(mat_res,
+              ggplot(mat_res, aes(x = jobname, y = cpu)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
     ggsave(sprintf("%s/%s.cpu_time.pdf", odir, basename(wd)), p)
-    
-    
-  #  head(mat_cmd)
+    ##  head(mat_cmd)
     
   }
-    
+  
   
 }
 

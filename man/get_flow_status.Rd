@@ -4,12 +4,16 @@
 \alias{get_flow_status}
 \title{get_flow_status}
 \usage{
-get_flow_status(x, cores = 6, out_format = "rst")
+get_flow_status(x, cores = 6, out_format = "rst", get_mem_usage = TRUE)
 }
 \arguments{
 \item{x}{path to the flow; may be without the uuid}
 
-\item{cores}{}
+\item{cores}{number of cores to use}
+
+\item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html...}
+
+\item{get_mem_usage}{under progress, whether to extract mem_usage of jobs}
 }
 \description{
 get_flow_status

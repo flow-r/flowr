@@ -38,7 +38,6 @@
 
 ## ------------- make a flowchart using the object
 .plot_flow <- function(x, detailed = TRUE, pdf = FALSE, pdffile=sprintf("%s.pdf",x@name), type = c(1,2), ...){
-  require(diagram)
 	type = match.arg(type)
   dat <- .create_jobs_mat(x)
   switch(type,
@@ -61,6 +60,7 @@ setGeneric("plot_flow", function (x, ...){
 #' @param type 1 is original, and 2 is a elipse with less details
 #' @param ... experimental
 #' @exportMethod plot_flow
+#' @import diagram
 #' @examples \dontrun{
 #' plot_flow(x = x, pdf = TRUE)}
 setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)

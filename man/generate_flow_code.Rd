@@ -6,16 +6,16 @@
 generate_flow_code(x, ...)
 }
 \arguments{
-\item{x}{}
+\item{x}{flow object}
 
-\item{...}{}
+\item{...}{currently ignored}
 }
 \description{
 generate_flow_code
 }
 \examples{
 \dontrun{
-generate_flow_code(x = x, ... = ...)
+generate_flow_code(x = x)
 }
 }
 

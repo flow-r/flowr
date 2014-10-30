@@ -6,6 +6,21 @@ setGeneric("create_queue_cmd", function (j_obj, file, ...){
   standardGeneric("create_queue_cmd")
 })
 
+#' @export
+#' @docType methods
+#' @rdname submit_job-methods
+#' @title submit_job
+#' @description submit_job
+#' @param j_obj job object
+#' @param f_obj flow object
+#' @param execute execute: logical
+#' @param verbose logical
+#' @param wd working direcotry
+#' @param job_id job id
+#' @param ... not used
+#' @examples \dontrun{
+#' submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, verbose = TRUE, wd = wd, job_id = job_id, ... = ...)
+#' }
 setGeneric("submit_job", function (j_obj, f_obj, ...){
   standardGeneric("submit_job")
 })
@@ -21,6 +36,7 @@ if (!isGeneric("plot"))
 #' @description This function attempts to test the submission of a job to the queue.
 #' We would first submit one single job, then submit another with a dependency to see if configuration works. This would create a folder in home called 'flows'.
 #' @param q_obj queue object
+#' @param verbose toggle
 #' @param ... These params are passed onto \code{queue}. \code{?queue}, for more information
 #' @export
 #' @examples
@@ -36,8 +52,8 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
     queue <- readline(prompt = queue_prompt)
     q_obj <- queue(type = type, queue = queue, ...)
   }
-  j_obj1 <- job(cmd = 'sleep 60', q_obj = q_obj, name = 'job1')
-  j_obj2 <- job(cmd = 'sleep 60', q_obj = q_obj, name = 'job2',
+  j_obj1 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job1')
+  j_obj2 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job2',
                 previous_job = 'job1')
   if(verbose) cat("Creating a 'flow' of two jobs. Check 'flows' folder in your home for a",
                   "new directory called test_....\n",
@@ -107,17 +123,6 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), definition=.create_queue_cmd)
 
 #### --------------------- submit job as part of a flow, this would be called from function flow
-#' @title .submit_job
-#' @description .submit_job
-#' @param j_obj
-#' @param f_obj
-#' @param execute
-#' @param verbose
-#' @param wd
-#' @param job_id
-#' @param ...
-#' @examples
-#' .submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, verbose = TRUE, wd = wd, job_id = job_id, ... = ...)
 .submit_job <- function (j_obj, f_obj,execute = FALSE, verbose = TRUE, wd, job_id,...){
   ## ========= create the name of the job with its index in the supplied flow
   if(!j_obj@status %in% c("processed","submitted","running","completed","error"))
@@ -165,7 +170,12 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
   return(j_obj)
 }
 
+
+#' @rdname submit_job-methods
+#' @aliases submit_job,job,flow,job-method
 setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .submit_job)
+
+
 ## TESTS
 ## number of commands in a serial job should match that of dependency
 .submit_flow <- function(f_obj, attach_uuid = TRUE, execute = FALSE,
@@ -225,18 +235,8 @@ setMethod("submit_flow", signature(f_obj = "flow"), definition = .submit_flow)
 
 
 #### ----------------------- submit loner job
-#' @title submit_job
-#' @description submit_job
-#' @param j_obj
-#' @param f_obj
-#' @param ...
-#' @export
-#' @examples
-#' \dontrun{
-#' submit_job(j_obj = j_obj, f_obj = f_obj, ... = ...)}
 setMethod("submit_job", signature(j_obj = "job"),
           function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
-            require(uuid)
             ## if(verbose) cat(j_obj@base_path, j_obj@name, "\n")
             if(missing(wd)){
               wd <- file.path(j_obj@base_path,paste(j_obj@name,
