@@ -26,7 +26,7 @@ fobj <- flow(jobs = list(jobj1, jobj2)))
 As of now we have tested this on the following clusters:
 
 Platform|submission commnd|Works?|queue type (name used in [flow](https://github.com/sahilseth/flow))
----|---|
+-:|-:|-:|
 LSF HPC 7|bsub|Not tested|lsf
 LSF 9.1|bsub|Yes|lsf
 Torque|qsub|Yes|torque
