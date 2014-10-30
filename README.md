@@ -25,13 +25,14 @@ fobj <- flow(jobs = list(jobj1, jobj2)))
 
 As of now we have tested this on the following clusters:
 
-|Platform|submission commnd|Works?|queue type (name used in [flow](https://github.com/sahilseth/flow))
-|---|---|---|
+|Platform|submission commnd|Works?|queue type *|
+|:---|:---:|:---:|:---:|
 |LSF HPC 7|bsub|Not tested|lsf
 |LSF 9.1|bsub|Yes|lsf
 |Torque|qsub|Yes|torque
 |SGE|qsub|Not implemented|
 
+*queue short-name used in [flow](https://github.com/sahilseth/flow)
 
 There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems available and we try to support the major players. Adding support is quite easy if we have access to them (otherwise not). Your favoroite not in the list? Send a [message](mailto:sahil.seth@me.com)
 
