@@ -44,6 +44,7 @@ There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) s
 - [SGE](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
 	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine), you may also see another at [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html). Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
 
+<!---
 ```
 qsub -hold_jid
 ## <comma separated list of job-ids, can also be a job id pattern such as 2722*> : will start the current job/job -array only after completion of all jobs in the comma separated list
@@ -119,7 +120,7 @@ Uses -J for dependencies
 #PBS -J 1-10
 PBS_ARRAY_INDEX
 ```
-
+<!---
 
 
 
