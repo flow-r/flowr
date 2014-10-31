@@ -14,7 +14,7 @@ This lets the user concentrate more on the type of analysis than its implmentati
 Just get me started...
 
 ```
-install.packages(devtools)
+install.packages('devtools')
 devtools:::install_github("sahilseth/flow")
 require(flow)
 qobj <- queue(type="lsf", queue="normal")
