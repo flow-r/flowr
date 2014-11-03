@@ -98,7 +98,7 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
     if(!missing(object)){
     }
     if(type=="torque"){
-        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
         object <- new("torque", submit_exe="qsub", queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
@@ -108,7 +108,7 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
                       format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="lsf"){
-        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
+        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -m ${MEMORY} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
         object <- new("lsf", submit_exe="bsub",queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,

@@ -68,7 +68,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
   cat("First job ID: \t", tmp@jobs[[1]]@id, "\n")
   cat("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
   cat("Path to logs (1):\t", tmp@jobs[[1]]@stdout, "\n")
-  cat("Path to logs (2):\t", tmp@jobs[[1]]@stdout, "\n")
+  cat("Path to logs (2):\t", tmp@jobs[[2]]@stdout, "\n")
   ## cmd.0 <- .create_queue_cmd(j_obj)
   ## if(verbose) cat("An example command string looks like:\n", cmd.0)
   ## cmd <- sprintf("echo 'sleep 1' | %s", cmd.0)
