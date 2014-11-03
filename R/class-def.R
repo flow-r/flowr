@@ -14,6 +14,7 @@ setClass("queue", representation(submit_exe = "character", ## submit job
                                  jobname = "character", ## name of a job, in the batch queue
                                  nodes = "numeric", ## number of nodes
                                  cpu = "numeric",   ## number of cpus
+                                 memory = "character", ## memory to be reserved
                                  dependency = "list", ## job id
                                  walltime = "character", ## walltime
                                  cwd = "character", ## home
@@ -27,6 +28,7 @@ setClass("queue", representation(submit_exe = "character", ## submit job
 
 setClass("local", contains = "queue")
 setClass("torque", contains = "queue")
+setClass("pbs", contains = "queue")
 setClass("lsf", contains = "queue")
 setClass("sge", contains = "queue")
 
@@ -41,6 +43,7 @@ setClass("job", representation(cmds = "character",
                                submission_type = "character", ## scatter, serial
                                dependency_type = "character", ## gather, serial
                                previous_job = "character",
+                               script = "character", ## the final script which has been used (if multiple cmds the last one)
                                next_job = "character"),
          contains = "queue") ## a string of cmd to run
 
@@ -87,7 +90,7 @@ setClass("flow", representation(jobs = "list",
 #' queue(type='lsf')
 queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
                   dependency = list(), jobname = "name",
-                  walltime = "72:00:00", cwd="~/flows",
+                  walltime = "72:00:00", cwd="~/flows", memory = "1",
                   stderr = "~/flows/tmp", stdout = "~/flows",
                   email = Sys.getenv("USER"),
                   type = "torque", format = "", extra_opts = "",
@@ -95,19 +98,22 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
     if(!missing(object)){
     }
     if(type=="torque"){
-        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -S /bin/bash -d ${CWD} -V -e ${STDERR} -o ${STDOUT} -m ae -M ${EMAIL} ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
         object <- new("torque", submit_exe="qsub", queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
-                      cwd=cwd,stderr=stderr,stdout=stdout,email = email,type=type,
+                      cwd=cwd,#stderr=stderr,
+                      memory=memory,
+                      stdout=stdout,email = email,type=type,
                       format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="lsf"){
         format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
         object <- new("lsf", submit_exe="bsub",queue=queue,
-                          nodes=nodes,cpu=cpu,jobname=jobname,
+                      nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
-                      cwd=cwd,stderr=stderr,stdout=stdout,email=email,type=type,
+                      memory=memory,
+                      cwd=cwd, stderr=stderr, stdout=stdout,email=email,type=type,
                       format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="local"){
@@ -142,7 +148,7 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
 #' j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=1)
 job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
                 q_obj = new("queue"), previous_job = '', cpu = 1,
-                submission_type=c("scatter", "serial"), status="",
+                submission_type=c("scatter", "serial"), status="", script = "",
                 dependency_type = c("none", "gather", "serial", "burst"), ...){
     ## convert to numeric if possible
     cpu <- as.numeric(cpu)

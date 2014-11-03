@@ -50,17 +50,20 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
                            "long, medium, normal, priority.\n",
                            "Not sure? Its best to consult your sysadmins.\n>>> ")
     queue <- readline(prompt = queue_prompt)
-    q_obj <- queue(type = type, queue = queue, ...)
+    extra <- readline(prompt = "extra options to the queue\n>>>")
+    q_obj <- queue(type = type, queue = queue, extra_opts = extra, ...)
   }
   j_obj1 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job1')
+  #cat("Submitted first job with script:", j_obj1@script, "\n")
   j_obj2 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job2',
-                previous_job = 'job1')
+                previous_job = 'job1', dependency_type = "serial")
+  #cat("Submitted second job with script:", j_obj2@script, "\n")
   if(verbose) cat("Creating a 'flow' of two jobs. Check 'flows' folder in your home for a",
                   "new directory called test_....\n",
                   "You may also do bjobs/qstat or a respective command for your",
                   "scheduler to look at these jobs.\n\n\n")
   f_obj <- flow(jobs = list(j_obj1, j_obj2), desc = "test", flow_base_path = "~/flows")
-  tmp <- submit_flow(f_obj, execute = TRUE, make_flow_plot = FALSE)
+  tmp <- submit_flow(f_obj, execute = TRUE, make_flow_plot = FALSE, verbose = TRUE)
   cat("Flow path:\t", tmp@flow_path, "\n")
   cat("First job ID: \t", tmp@jobs[[1]]@id, "\n")
   cat("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
@@ -123,7 +126,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), definition=.create_queue_cmd)
 
 #### --------------------- submit job as part of a flow, this would be called from function flow
-.submit_job <- function (j_obj, f_obj,execute = FALSE, verbose = TRUE, wd, job_id,...){
+.submit_job <- function (j_obj, f_obj, execute = FALSE, verbose = FALSE, wd, job_id,...){
   ## ========= create the name of the job with its index in the supplied flow
   if(!j_obj@status %in% c("processed","submitted","running","completed","error"))
     j_obj@jobname <- sprintf("%03d.%s", job_id,j_obj@name)
@@ -153,6 +156,7 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
                              f_obj@flow_path, j_obj@jobname,i),
                      "echo 'END at' `date`")
     script <- c(beforescript,j_obj@cmds[i], afterscript)
+    if(verbose) cat("Submitting using script:\n", cmd, "\n")
     write(script, files[i])
     if(execute){
       jobid <- system(cmd, intern = TRUE)
@@ -161,8 +165,8 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
     return("") ## if no execute return the cmd
   }) ## for loop
   if(j_obj@type=="lsf" & execute)
-    j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1",jobids)
-  else
+    j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
+  else ## for all other the output is considered to be the jobid
     j_obj@id <- jobids
   ## }## submissiontype
   j_obj@status <- "processed"
@@ -179,7 +183,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
 ## TESTS
 ## number of commands in a serial job should match that of dependency
 .submit_flow <- function(f_obj, attach_uuid = TRUE, execute = FALSE,
-                         make_flow_plot = TRUE, ...){
+                         make_flow_plot = TRUE, verbose = FALSE, ...){
   if(!f_obj@status %in% c("processed","submitted","running","completed","exit"))
     f_obj@flow_path <- sprintf("%s/%s-%s",f_obj@flow_base_path, f_obj@desc, UUIDgenerate())
   ##jobnames <- sapply(f_obj@jobs, function(x) x@name)
@@ -203,7 +207,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
       }## prev_jobs should have length more than 1. And should not be null
     } ## should have positive length
     ## ------ submit the job
-    f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, ...)
+    f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, verbose = verbose, ...)
     ## ------ check if this is NOT last job in the flow
     ## if(i < length(f_obj@jobs)){
     ##     next_job <- f_obj@jobs[[i]]@next_job
