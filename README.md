@@ -45,4 +45,4 @@ There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) s
 - [SGE](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
 	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine), you may also see another at [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html). Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
 
-(http://en.wikipedia.org/wiki/Comparison_of_cluster_software)[http://en.wikipedia.org/wiki/Comparison_of_cluster_software]
+(http://en.wikipedia.org/wiki/Comparison\_of\_cluster\_software)[http://en.wikipedia.org/wiki/Comparison\_of\_cluster\_software]
