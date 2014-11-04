@@ -108,7 +108,9 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
                       format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="lsf"){
-        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -m ${MEMORY} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
+        ## restrict cores to one node
+        ## bsub -q myqueue -J myjob -o myout -e myout -n cpu -cwd mywd -m mem -W 02:00 < script.sh
+        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -m ${MEMORY} -R span[ptile=1] -W ${WALLTIME} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
         object <- new("lsf", submit_exe="bsub",queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
@@ -120,7 +122,7 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
         object <- new("local", submit_exe="bash ",jobname=jobname)
     }else{
         object <- new("queue", submit_exe=submit_exe,queue=queue,
-                      nodes=nodes,
+                      nodes=nodes, memory=memory,
                       cpu=cpu,dependency=dependency,walltime=walltime,
                       cwd=cwd,stderr=stderr,stdout=stdout,email=email,type=type, extra_opts = extra_opts,
                       jobname=jobname,format=format,server=server)
