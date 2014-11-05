@@ -6,7 +6,7 @@ repo_url: https://github.com/tomchristie/mkdocs/
 
 pages:
 - ['index.md', 'Home']
-- ['user-guide/writing-your-docs.md', 'User Guide', 'Writing your docs']
+- ['contents/installation.md', 'Installation', 'How to install']
 - ['user-guide/styling-your-docs.md', 'User Guide', 'Styling your docs']
 - ['user-guide/configuration.md', 'User Guide', 'Configuration']
 - ['about/license.md', 'About', 'License']
