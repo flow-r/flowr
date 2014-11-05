@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Flow : R package to submit jobs to a queue system using object oriented programming">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Flow</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/sahilseth/flow">View on GitHub</a>
+
+          <h1 id="project_title">Flow</h1>
+          <h2 id="project_tagline">R package to submit jobs to a queue system using object oriented programming</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/sahilseth/flow/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/sahilseth/flow/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><a href="https://travis-ci.org/sahilseth/flow"><img src="https://travis-ci.org/sahilseth/flow.png" alt="Build Status"></a></p>
+
+<h1>
+<a id="flow" class="anchor" href="#flow" aria-hidden="true"><span class="octicon octicon-link"></span></a>flow</h1>
+
+<p>R pacakge to design (and submit) complex workflows, such that optimization/parallelization is easy.</p>
+
+<p>Here is a shiny app, <a href="https://sseth.shinyapps.io/flow_creator/">flow_creator</a> for you start building your <code>shiny</code> flow.
+[<code>guest; guestpass</code>]</p>
+
+<p>The process of submitting jobs uses the <code>dependency</code> feature of submitting jobs to a computing cluster.
+This lets the user concentrate more on the type of analysis than its implmentation. Also the pipeline becomes really portable across platforms and institutions.</p>
+
+<p>Just get me started...</p>
+
+<pre><code>install.packages('devtools')
+devtools:::install_github("sahilseth/flow")
+require(flow)
+qobj &lt;- queue(type="lsf", queue="normal")
+jobj1 &lt;- job()
+jobj2 &lt;- job()
+fobj &lt;- flow(jobs = list(jobj1, jobj2)))
+</code></pre>
+
+<p>As of now we have tested this on the following clusters:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Platform</th>
+<th align="center">submission commnd</th>
+<th align="center">Works?</th>
+<th align="center">queue type *</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">LSF HPC 7</td>
+<td align="center">bsub</td>
+<td align="center">Not tested</td>
+<td align="center">lsf</td>
+</tr>
+<tr>
+<td align="left">LSF 9.1</td>
+<td align="center">bsub</td>
+<td align="center">Yes</td>
+<td align="center">lsf</td>
+</tr>
+<tr>
+<td align="left">Torque</td>
+<td align="center">qsub</td>
+<td align="center">Yes</td>
+<td align="center">torque</td>
+</tr>
+<tr>
+<td align="left">SGE</td>
+<td align="center">qsub</td>
+<td align="center">Not implemented</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+
+<p>*queue short-name used in <a href="https://github.com/sahilseth/flow">flow</a></p>
+
+<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them (otherwise not). Your favoroite not in the list? Send a <a href="mailto:sahil.seth@me.com">message</a></p>
+
+<ul>
+<li>
+<a href="http://en.wikipedia.org/wiki/Portable_Batch_System">PBS wiki</a>:
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">Torque wiki</a></li>
+<li>MD Anderson, <a href="http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html">University of Houston</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="http://en.wikipedia.org/wiki/Platform_LSF">LSF</a>:
+
+<ul>
+<li>Harvard Medicla School uses: <a href="https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF">LSF HPC 7</a>.</li>
+<li>Also Used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">SGE</a>
+
+<ul>
+<li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a>, you may also see another at <a href="http://www.biostat.jhsph.edu/bit/cluster-usage.html">JHSPH</a>. Dependecy info <a href="https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies">here</a>
+</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">http://en.wikipedia.org/wiki/Comparison_of_cluster_software</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Flow maintained by <a href="https://github.com/sahilseth">sahilseth</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
