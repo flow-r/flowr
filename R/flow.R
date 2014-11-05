@@ -1,5 +1,5 @@
 #' @title convert command matrix to specific flow
-#' @description
+#' @description convert commands to flow
 cmds_to_flow <- function(cmd.list,
                          samplename = "",
                          infomat,

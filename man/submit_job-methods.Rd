@@ -9,7 +9,7 @@
 submit_job(j_obj, f_obj, ...)
 
 \S4method{submit_job}{job,flow}(j_obj, f_obj, execute = FALSE,
-  verbose = TRUE, wd, job_id, ...)
+  verbose = FALSE, wd, job_id, ...)
 }
 \arguments{
 \item{j_obj}{job object}

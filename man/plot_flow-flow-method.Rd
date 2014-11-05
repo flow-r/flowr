@@ -22,7 +22,7 @@
 \item{...}{experimental}
 }
 \description{
-plot_flow
+plot the flow object
 }
 \examples{
 \dontrun{

@@ -6,7 +6,7 @@
 \title{submit_flow}
 \usage{
 \S4method{submit_flow}{flow}(f_obj, attach_uuid = TRUE, execute = FALSE,
-  make_flow_plot = TRUE, ...)
+  make_flow_plot = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{f_obj}{\code{object} of class \code{flow}.}

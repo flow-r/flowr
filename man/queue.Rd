@@ -5,9 +5,9 @@
 \usage{
 queue(object, submit_exe, queue = "long", nodes = 1, cpu = 1,
   dependency = list(), jobname = "name", walltime = "72:00:00",
-  cwd = "~/flows", stderr = "~/flows/tmp", stdout = "~/flows",
-  email = Sys.getenv("USER"), type = "torque", format = "",
-  extra_opts = "", server = "localhost")
+  cwd = "~/flows", memory = "1", stderr = "~/flows/tmp",
+  stdout = "~/flows", email = Sys.getenv("USER"), type = "torque",
+  format = "", extra_opts = "", server = "localhost")
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}

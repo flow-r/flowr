@@ -5,7 +5,7 @@
 \usage{
 job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
   q_obj = new("queue"), previous_job = "", cpu = 1,
-  submission_type = c("scatter", "serial"), status = "",
+  submission_type = c("scatter", "serial"), status = "", script = "",
   dependency_type = c("none", "gather", "serial", "burst"), ...)
 }
 \arguments{

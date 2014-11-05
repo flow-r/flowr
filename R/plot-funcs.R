@@ -1,9 +1,9 @@
 #' @title .create_jobs_mat
-#' @description .create_jobs_mat
+#' @description create_jobs_mat
 #' @param x
 #' @export
-#' @examples
-#' .create_jobs_mat(x = x)
+#' @examples \dontrun{
+#' .create_jobs_mat(x = x)}
 .create_jobs_mat <- function(x){
   jobnames <- sapply(x@jobs, slot, "name")
   prev_jobs <- sapply(x@jobs, slot, "previous_job")
@@ -50,7 +50,7 @@ setGeneric("plot_flow", function (x, ...){
 })
 
 #' @title plot_flow
-#' @description plot_flow
+#' @description plot the flow object
 #' @aliases plot_flow
 #' @aliases plot
 #' @param x Object of class \code{flow}
@@ -67,8 +67,6 @@ setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)
 setMethod("plot", signature(x = "flow"), definition=plot_flow)
 
 
-#' @param x a data.frame
-#' @param detailed include some details
 .plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
                            width, height, ...){
     if(missing(height))  height = 2.5 * nrow(x)
