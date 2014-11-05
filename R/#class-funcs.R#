@@ -150,8 +150,6 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
     cmd <- .create_queue_cmd(obj, file=files[i], index=i)
     ## ------- make the script; add support for other shells, zsh etc OR detect shell
     beforescript <- c("#!/bin/env bash",
-                      "## ------- submit command",
-                      "source ~/.bashrc",
                       sprintf("## %s", cmd),
                       "echo 'BGN at' `date`")
     afterscript <- c(sprintf("echo $? > %s/trigger/trigger_%s_%s.txt",

@@ -98,7 +98,7 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
     if(!missing(object)){
     }
     if(type=="torque"){
-        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
         object <- new("torque", submit_exe="qsub", queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
