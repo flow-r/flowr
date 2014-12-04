@@ -1,10 +1,10 @@
-#' @title .create_jobs_mat
+#' @title create_jobs_mat
 #' @description create_jobs_mat
 #' @param x
 #' @export
 #' @examples \dontrun{
 #' .create_jobs_mat(x = x)}
-.create_jobs_mat <- function(x){
+create_jobs_mat <- function(x){
   jobnames <- sapply(x@jobs, slot, "name")
   prev_jobs <- sapply(x@jobs, slot, "previous_job")
   prev_jobs <- sapply(prev_jobs, function(x) ifelse(length(x) > 0, paste(x,collapse=","), NA))
@@ -35,6 +35,7 @@
   }
   return(dat)
 }
+.create_jobs_mat=create_jobs_mat
 
 ## ------------- make a flowchart using the object
 .plot_flow <- function(x, detailed = TRUE, pdf = FALSE, pdffile=sprintf("%s.pdf",x@name), type = c(1,2), ...){

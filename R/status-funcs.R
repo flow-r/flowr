@@ -70,7 +70,7 @@ parse_lsf_out <- function(x){
 
 #' @title .get_flow_memory_ibm
 #' @import ggplot2
-.get_flow_memory_ibm <- function(x, odir = "~/tmp"){
+get_flow_memory_ibm <- function(x, odir = "~/tmp"){
   wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
   for(wd in wds){
     #files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
@@ -106,12 +106,9 @@ parse_lsf_out <- function(x){
     p <- with(mat_res,
               ggplot(mat_res, aes(x = jobname, y = cpu)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
     ggsave(sprintf("%s/%s.cpu_time.pdf", odir, basename(wd)), p)
-    ##  head(mat_cmd)
-    
-  }
-  
-  
-}
+    ##  head(mat_cmd) 
+  }# for loop
+}# function
 
 
 
@@ -128,8 +125,7 @@ dump_flow_details <- function(fobj){
   write.table(flow_mat, sep = "\t", quote = FALSE, row.names = FALSE,
               file = sprintf("%s/%s-flow_details.txt",fobj@flow_path, fobj@name))
 }
-  
-}
+
 
 
 if(FALSE){

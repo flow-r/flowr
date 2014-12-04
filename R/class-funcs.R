@@ -78,7 +78,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 }
 #debug(test_queue)
 
-#' @title .create_queue_cmd
+#' @title create_queue_cmd
 #' @description .create_queue_cmd
 #' @aliases create_queue_cmd
 #' @param j_obj
@@ -88,7 +88,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 #' @export
 #' @examples
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
-.create_queue_cmd <- function(j_obj, file, index, ...){
+create_queue_cmd <- function(j_obj, file, index, ...){
   ## ----- this job depends on multiple jobs. create a string with multiple job ids
   if(j_obj@dependency_type=="gather"){
     if(j_obj@type=="torque")
@@ -123,6 +123,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
   cmd <- system(sprintf("echo %s ",j_obj@format),intern=TRUE)
   return(cmd=cmd)
 }
+.create_queue_cmd=create_queue_cmd
 setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), definition=.create_queue_cmd)
 
 #### --------------------- submit job as part of a flow, this would be called from function flow
