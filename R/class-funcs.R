@@ -131,9 +131,9 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
   if(!j_obj@status %in% c("processed","submitted","running","completed","error"))
     j_obj@jobname <- sprintf("%03d.%s", job_id,j_obj@name)
   wd <- file.path(f_obj@flow_path, j_obj@jobname) ## j_obj@name: is indexed
-  dir.create (wd, recursive=TRUE, showWarnings=FALSE);
+  if(!file.exists(wd)) dir.create (wd, recursive=TRUE, showWarnings=FALSE);
   trigger_path=f_obj@trigger_path=file.path(f_obj@flow_path,"trigger") ## comes from the flow
-  dir.create(trigger_path, showWarnings=FALSE)
+  if(!file.exists(trigger_path)) dir.create(trigger_path, showWarnings=FALSE)
   j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- file.path(dirname(wd),"tmp") ## FLOWBASE
   ## ------------ this would be based on number of submission type
   if(j_obj@submission_type %in% c("serial")){
@@ -150,8 +150,6 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
     cmd <- .create_queue_cmd(obj, file=files[i], index=i)
     ## ------- make the script; add support for other shells, zsh etc OR detect shell
     beforescript <- c("#!/bin/env bash",
-                      "## ------- submit command",
-                      "source ~/.bashrc",
                       sprintf("## %s", cmd),
                       "echo 'BGN at' `date`")
     afterscript <- c(sprintf("echo $? > %s/trigger/trigger_%s_%s.txt",
@@ -186,8 +184,12 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
 ## number of commands in a serial job should match that of dependency
 .submit_flow <- function(f_obj, attach_uuid = TRUE, execute = FALSE,
                          make_flow_plot = TRUE, verbose = FALSE, ...){
-  if(!f_obj@status %in% c("processed","submitted","running","completed","exit"))
-    f_obj@flow_path <- sprintf("%s/%s-%s",f_obj@flow_base_path, f_obj@desc, UUIDgenerate())
+  if(!f_obj@status %in% c("processed","submitted","running","completed","exit")){
+    #uid = UUIDgenerate() # shorten the uuid
+    tm = format(Sys.time(), "%Y-%m-%d-%H-%M-%S")
+    uid = paste(as.character(sample(c(letters, toupper(letters), 0:9), size = 8)), collapse = "")
+    f_obj@flow_path <- sprintf("%s/%s-%s-%s",f_obj@flow_base_path, f_obj@desc, tm, uid)
+  }
   ##jobnames <- sapply(f_obj@jobs, function(x) x@name)
   ##names(f_obj@jobs) <- jobnames
   ### ---------- Error handling
@@ -218,10 +220,19 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
     ## }
   }
   f_obj@status <- "processed"
-  if(execute)    f_obj@status <- "submitted"
-  if(make_flow_plot){
-    try(.plot_flow(f_obj, detailed = FALSE, pdf = TRUE,
-                   pdffile = sprintf("%s/%s.pdf",f_obj@flow_path, f_obj@name)))
+  if(execute){
+    f_obj@status <- "submitted"
+    cat(sprintf("\nFlow has been submitted. Track it from terminal using:\nRscript -e 'flow:::status(\"%s\")'\n", f_obj@flow_path))
+    ## dumpt the flow details
+    try(dump_flow_details(fobj = f_obj))
+  }
+  if(make_flow_plot & length(f_obj@jobs) > 2){
+    try(
+      .plot_flow(f_obj, detailed = FALSE, pdf = TRUE, type = '1',
+                   pdffile = sprintf("%s/%s-flow_design.pdf",f_obj@flow_path, f_obj@name))
+      )
+  }else{
+    if(verbose) cat("Skipping plots...\n")
   }
   return(f_obj)
 }

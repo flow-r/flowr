@@ -2,4 +2,8 @@ site_name: flow - streamline workflows
 pages:
 - [index.md, Home]
 - [about.md, About]
+- [flowmd.md, flowmd]
+- [flowrd2html.md, flowrd2html]
+- [flow.html, flowhtml]
+- [flow2.md, flow2]
 theme: readthedocs

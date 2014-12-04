@@ -90,15 +90,29 @@ setClass("flow", representation(jobs = "list",
 #' queue(type='lsf')
 queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
                   dependency = list(), jobname = "name",
-                  walltime = "72:00:00", cwd="~/flows", memory = "1",
+                  walltime, cwd="~/flows", memory,
                   stderr = "~/flows/tmp", stdout = "~/flows",
                   email = Sys.getenv("USER"),
                   type = "torque", format = "", extra_opts = "",
                   server = "localhost"){
     if(!missing(object)){
     }
+    if(missing(walltime)){
+      walltime = switch(type, 
+                        torque = "72:00:00",
+                        lsf = "72:00",
+                        "24:00")
+      cat("Setting default time to: ", walltime, ". If this is more than queue max (/improper format), job will fail.\n")
+    }
+    if(missing(memory)){
+      memory = switch(type, 
+                      lsf = "10000",
+                      torque = "10g",
+                      "1000")
+      cat("Setting default memory to: ", memory, ". If this is more than queue max (/improper format), job will fail.\n")
+    }
     if(type=="torque"){
-        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+        format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
         object <- new("torque", submit_exe="qsub", queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
@@ -110,7 +124,7 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
     }else if(type=="lsf"){
         ## restrict cores to one node
         ## bsub -q myqueue -J myjob -o myout -e myout -n cpu -cwd mywd -m mem -W 02:00 < script.sh
-        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=1] -W ${WALLTIME} ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} "
+        format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
         object <- new("lsf", submit_exe="bsub",queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,
                       dependency=dependency,walltime=walltime,
