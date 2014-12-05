@@ -18,6 +18,8 @@
 
 \item{make_flow_plot}{\code{logical} whether to make a flow plot (saves it in the flow working directory)}
 
+\item{verbose}{logical.}
+
 \item{...}{Any additional parameter are passed on to \link{submit_job} function}
 }
 \description{

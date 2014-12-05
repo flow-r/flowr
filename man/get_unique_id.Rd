@@ -7,6 +7,10 @@
 get_unique_id(prefix = "id", suffix = "", random_length = 8)
 }
 \arguments{
+\item{prefix}{="id"}
+
+\item{suffix}{}
+
 \item{random_length}{}
 
 \item{base}{}

@@ -2,11 +2,21 @@
 % Please edit documentation in R/status-funcs.R
 \name{get_flow_memory_ibm}
 \alias{get_flow_memory_ibm}
-\title{.get_flow_memory_ibm}
+\title{get_flow_memory_ibm}
 \usage{
 get_flow_memory_ibm(x, odir = "~/tmp")
 }
+\arguments{
+\item{x}{}
+
+\item{odir}{}
+}
 \description{
-.get_flow_memory_ibm
+get_flow_memory_ibm
+}
+\examples{
+\dontrun{
+get_flow_memory_ibm(x = x, odir = ~/tmp)
+}
 }
 
