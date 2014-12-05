@@ -123,7 +123,7 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
             textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
                      shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
         if(detailed){
-            textplain(elpos[i,] - detail.offset, boxsize, lab = detailed.labs[i],
+            textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs[i],
                       cex=detail.cex, col=textcol)
         }
     }

@@ -3,7 +3,7 @@
 
 #' @title get_flow_status
 #' @description get_flow_status
-#' @aliases flow:::status
+#' @aliases status
 #' @param x path to the flow; may be without the uuid
 #' @param cores number of cores to use
 #' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
@@ -68,7 +68,14 @@ parse_lsf_out <- function(x){
   return(list(cpu = cpu, avg_mem = avg_mem, max_mem = max_mem, max_swap = max_swap))
 }
 
-#' @title .get_flow_memory_ibm
+#' @title get_flow_memory_ibm
+#' @description get_flow_memory_ibm
+#' @param x
+#' @param odir
+#' @export
+#' @examples \dontrun{
+#' get_flow_memory_ibm(x = x, odir = ~/tmp)
+#' }
 #' @import ggplot2
 get_flow_memory_ibm <- function(x, odir = "~/tmp"){
   wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)

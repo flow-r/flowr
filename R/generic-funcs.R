@@ -22,6 +22,8 @@ replace_slots <- function(object, ...){
 #' @description get_unique_id
 #' @param base
 #' @param random_length
+#' @param prefix ="id"
+#' @param suffix
 #' @export
 #' @examples \dontrun{
 #' get_unique_id(base = id, random_length = 8)}

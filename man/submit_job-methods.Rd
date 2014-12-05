@@ -32,7 +32,8 @@ submit_job
 }
 \examples{
 \dontrun{
-submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, verbose = TRUE, wd = wd, job_id = job_id, ... = ...)
+submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE,
+verbose = TRUE, wd = wd, job_id = job_id)
 }
 }
 

@@ -19,7 +19,8 @@ setGeneric("create_queue_cmd", function (j_obj, file, ...){
 #' @param job_id job id
 #' @param ... not used
 #' @examples \dontrun{
-#' submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, verbose = TRUE, wd = wd, job_id = job_id, ... = ...)
+#' submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, 
+#' verbose = TRUE, wd = wd, job_id = job_id)
 #' }
 setGeneric("submit_job", function (j_obj, f_obj, ...){
   standardGeneric("submit_job")
@@ -244,6 +245,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
 #' @param attach_uuid \code{logical} Whether to attach a random string to the submitted flow names. Look for them in your \code{basepath} folder (typically \code{~/flows/FLOW_NAME/FLOW_DESCRIPTION_UUID}). Refer to \code{desc} and \code{name} paramters of \link{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
 #' @param make_flow_plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
+#' @param verbose logical.
 #' @param ... Any additional parameter are passed on to \link{submit_job} function
 #' @export
 #' @examples

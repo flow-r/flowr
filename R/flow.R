@@ -84,7 +84,7 @@ cmds_to_flow <- function(cmd.list,
   len = length(jobs)
   #debug(flow:::.submit_flow)
   #mypack:::reload('flow')
-  f_obj_uuid <- flow:::.submit_flow(f_obj, execute = execute, make_flow_plot = TRUE)
+  f_obj_uuid <- .submit_flow(f_obj, execute = execute, make_flow_plot = TRUE)
 #   if(sum(flow:::.create_jobs_mat(f_obj)$prev_jobs != ".") > 2){ ## at least 0.1some have dep.
 #     cat("Plotting...\n")
 #     try(flow:::.plot_flow(x = f_obj, type = '1',
