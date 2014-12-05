@@ -87,8 +87,9 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 #' @param index
 #' @param ...
 #' @export
-#' @examples
+#' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
+#' }
 create_queue_cmd <- function(j_obj, file, index, ...){
   ## ----- this job depends on multiple jobs. create a string with multiple job ids
   if(j_obj@dependency_type=="gather"){
