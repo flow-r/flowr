@@ -96,16 +96,18 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
                   type = "torque", format = "", extra_opts = "",
                   server = "localhost"){
     if(!missing(object)){
+      object = replace_slots(object = object, ...)
+      return(object)
     }
     if(missing(walltime)){
-      walltime = switch(type, 
+      walltime = switch(type,
                         torque = "72:00:00",
                         lsf = "72:00",
                         "24:00")
       cat("Setting default time to: ", walltime, ". If this is more than queue max (/improper format), job will fail.\n")
     }
     if(missing(memory)){
-      memory = switch(type, 
+      memory = switch(type,
                       lsf = "10000",
                       torque = "10g",
                       "1000")
@@ -124,6 +126,10 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
     }else if(type=="lsf"){
         ## restrict cores to one node
         ## bsub -q myqueue -J myjob -o myout -e myout -n cpu -cwd mywd -m mem -W 02:00 < script.sh
+        ## -r: rerun
+        ## -W: walltime
+        ## -M: max mem
+        ## -R rusage[mem=16385]: min mem (reserved mem)
         format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
         object <- new("lsf", submit_exe="bsub",queue=queue,
                       nodes=nodes,cpu=cpu,jobname=jobname,

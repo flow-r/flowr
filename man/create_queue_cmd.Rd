@@ -19,6 +19,8 @@ create_queue_cmd(j_obj, file, index, ...)
 .create_queue_cmd
 }
 \examples{
+\dontrun{
 .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
+}
 }
 

@@ -200,10 +200,12 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
     stop("Seems like the first job has a dependency, please check")
   if(!file.exists(file.path(f_obj@flow_path,"tmp"))) ## create if it does not exist
     dir.create(file.path(f_obj@flow_path,"tmp"), showWarnings=FALSE, recursive=TRUE)
+  ## loop on jobs
   for(i in 1:length(f_obj@jobs)){
     ## ------ check if there are any dependencies
     previous_job <- f_obj@jobs[[i]]@previous_job
-    if(length(previous_job)!=0){ ## should not be char 0
+    dep_type = f_obj@jobs[[i]]@dependency_type
+    if(length(previous_job)!=0){ ## prev job should not be of length 0. need ., NA, "" for missing
       ## should not be NA OR NULL
       if(!is.na(previous_job) & !is.null(previous_job) & !previous_job %in% c("", "NA", ".")){
         ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
@@ -211,9 +213,13 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
         x <- do.call(cbind, lapply(previous_job, function(y)
           f_obj@jobs[[y]]@id))
         f_obj@jobs[[i]]@dependency <- split(x, row(x))
-      }## prev_jobs should have length more than 1. And should not be null
-    } ## should have positive length
-    ## ------ submit the job
+        ## prev_jobs should have length more than 1. And should not be null
+      }else if(length(dep_type) > 0 & !dep_type %in% c("none") & previous_job %in% c("", "NA", ".")){
+      	## if prev job is null, but depedency is mentioned
+      	stop(paste("Previous job name missing for job: ", f_obj@jobs[[i]]@name))
+      }  	
+    }
+      ## ------ submit the job
     f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, verbose = verbose, ...)
     ## ------ check if this is NOT last job in the flow
     ## if(i < length(f_obj@jobs)){

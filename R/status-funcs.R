@@ -131,9 +131,24 @@ dump_flow_details <- function(fobj){
   flow_mat = do.call(rbind, ret)
   write.table(flow_mat, sep = "\t", quote = FALSE, row.names = FALSE,
               file = sprintf("%s/%s-flow_details.txt",fobj@flow_path, fobj@name))
+  return(file.path(fobj@flow_path))
 }
 
-
+#' kill_flow
+#' @export
+kill_flow <- function(fobj, wd, kill_cmd = "bkill"){
+  if(missing(wd)){
+    wd = dump_flow_details(fobj)
+  }
+  det_file = tail(list.files(wd, pattern = "flow_details", full.names = TRUE), 1)
+  flow_details = read.table(det_file, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
+  cmds <- sprintf("%s %s", kill_cmd, flow_details$jobid)
+  tmp <- sapply(cmds, function(x){
+    cat(x, "\n")
+    system(x, intern = TRUE)
+  })
+  invisible(tmp)
+}
 
 if(FALSE){
   x = "/scratch/iacs/ngs_runs/140917_SN746_0310_AC5GKGACXX/logs/"
