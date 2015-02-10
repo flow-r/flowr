@@ -34,7 +34,7 @@ As of now we have tested this on the following clusters:
 
 *queue short-name used in [flow](https://github.com/sahilseth/flow)
 
-There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems available and we try to support the major players. Adding support is quite easy if we have access to them (otherwise not). Your favoroite not in the list? Send a [message](mailto:sahil.seth@me.com)
+There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? Send a [message](mailto:sahil.seth@me.com)
 
 - [PBS wiki](http://en.wikipedia.org/wiki/Portable_Batch_System):
 	- [Torque wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
