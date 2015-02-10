@@ -5,7 +5,7 @@ flow
 
 R pacakge to design (and submit) complex workflows, such that optimization/parallelization is easy.
 
-Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you start building your `shiny` flow.
+Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your `shiny` flow.
 [`guest; guestpass`]
 
 The process of submitting jobs uses the `dependency` feature of submitting jobs to a computing cluster.
