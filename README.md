@@ -9,7 +9,7 @@ Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) fo
 [`guest; guestpass`]
 
 The process of submitting jobs uses the `dependency` feature of submitting jobs to a computing cluster.
-This lets the user concentrate more on the type of analysis than its implmentation. Also the pipeline becomes really portable across platforms and institutions.
+This lets the user concentrate more on the type of analysis than its implmentation. Also the pipeline becomes really portable across platforms and computing clusters.
 
 Just get me started...
 
