@@ -1,6 +1,6 @@
 .onAttach <- function(lib, pkg){
   packageStartupMessage("Flow: streamlining workflows")
-  file.link(system.file(package = pkg, "scripts/flusso"))
+  file.link(system.file(package = pkg, "scripts/flowr"), "~/bin/")
 }
 
 .onDeatch <- function(lib, pkg) {

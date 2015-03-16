@@ -36,7 +36,7 @@ get_params <- function(paramPairs){
 }
 
 
-library(flow, quietly=!verbose, warn.conflicts=verbose)
+library(flowr, quietly=!verbose, warn.conflicts=verbose)
 
 args <- commandArgs(trailingOnly = TRUE)
 params <- get_params(args)
