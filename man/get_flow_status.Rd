@@ -5,7 +5,8 @@
 \alias{status}
 \title{get_flow_status}
 \usage{
-get_flow_status(x, cores = 6, out_format = "rst", get_mem_usage = TRUE)
+get_flow_status(x, cores = 6, out_format = "markdown",
+  get_mem_usage = TRUE)
 }
 \arguments{
 \item{x}{path to the flow; may be without the uuid}

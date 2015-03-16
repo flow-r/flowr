@@ -92,15 +92,20 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 #' }
 create_queue_cmd <- function(j_obj, file, index, ...){
   ## ----- this job depends on multiple jobs. create a string with multiple job ids
+  ## ----- introduce possibility that the jobid is empty, or missing especially for reruns
   if(j_obj@dependency_type=="gather"){
+    ## dependency may be a list with few elements: multi jobs
+    ## multiple lists with length 1 each
+    ## easiest to unlist, and WAIT for ALL of them
     if(j_obj@type=="torque")
-      dependency <- sprintf("-W depend=afterok:%s",paste(j_obj@dependency, collapse=":"))
+      dependency <- sprintf("-W depend=afterok:%s", paste(unlist(j_obj@dependency), collapse = ":"))
     else if(j_obj@type=="lsf")
-      dependency <- sprintf("-w '%s'",paste(j_obj@dependency, collapse=" && "))
+      #dependency <- sprintf("-w '%s'", paste(j_obj@dependency, collapse=" && "))
+      dependency <- sprintf("-w '%s'", paste(unlist(j_obj@dependency), collapse = " && "))
   }else if (j_obj@dependency_type=="serial"){
     ## if submission is scatter and dependency is serial, do burst
     ## basically recycle the dependency for all the subsequent jobs
-    if(length(j_obj@dependency)==1) index=1
+    if(length(j_obj@dependency)==1) index=1 ## recycle the first into the rest
     if(j_obj@type=="torque")
       dependency <- sprintf("-W %s",paste(" depend=afterok:", j_obj@dependency[[index]], sep="", collapse=":"))
     else if(j_obj@type=="lsf")
@@ -114,6 +119,10 @@ create_queue_cmd <- function(j_obj, file, index, ...){
       dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]], collapse=" && "))
   }else{
     dependency <- ""
+  }
+  ## this might be the case if re-run, when only a subset of jobs are to be rerun
+  if(length(j_obj@dependency) == 0){
+    dependency <- ""    
   }
   l <- slots_as_list(j_obj, names=slotNames("queue"))
   l <- l[! names(l) %in% c("format","type", "dependency")] ### ignore a few of the slots
@@ -154,6 +163,8 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
     ## ------- make the script; add support for other shells, zsh etc OR detect shell
     beforescript <- c("#!/bin/env bash",
                       sprintf("## %s", cmd),
+                      sprintf("touch %s/trigger/trigger_%s_%s.txt",
+                              f_obj@flow_path, j_obj@jobname,i),
                       "echo 'BGN at' `date`")
     afterscript <- c(sprintf("echo $? > %s/trigger/trigger_%s_%s.txt",
                              f_obj@flow_path, j_obj@jobname,i),
@@ -185,13 +196,14 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
 
 ## TESTS
 ## number of commands in a serial job should match that of dependency
-.submit_flow <- function(f_obj, attach_uuid = TRUE, execute = FALSE,
+.submit_flow <- function(f_obj, uuid, execute = FALSE,
                          make_flow_plot = TRUE, verbose = FALSE, ...){
+  ## the case of resubmission
+  if(missing(uuid)){
+    uuid = get_unique_id(f_obj@desc)
+  }
   if(!f_obj@status %in% c("processed","submitted","running","completed","exit")){
-    #uid = UUIDgenerate() # shorten the uuid
-    tm = format(Sys.time(), "%Y-%m-%d-%H-%M-%S")
-    uid = paste(as.character(sample(c(letters, toupper(letters), 0:9), size = 8)), collapse = "")
-    f_obj@flow_path <- sprintf("%s/%s-%s-%s",f_obj@flow_base_path, f_obj@desc, tm, uid)
+    f_obj@flow_path <- sprintf("%s/%s",f_obj@flow_base_path, uuid)
   }
   ##jobnames <- sapply(f_obj@jobs, function(x) x@name)
   ##names(f_obj@jobs) <- jobnames
@@ -207,7 +219,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
     dep_type = f_obj@jobs[[i]]@dependency_type
     if(length(previous_job)!=0){ ## prev job should not be of length 0. need ., NA, "" for missing
       ## should not be NA OR NULL
-      if(!is.na(previous_job) & !is.null(previous_job) & !previous_job %in% c("", "NA", ".")){
+      if(!is.na(previous_job[1]) & !is.null(previous_job[1]) & !previous_job[1] %in% c("", "NA", ".")){
         ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
         ## -------- can have multiple dependencies
         x <- do.call(cbind, lapply(previous_job, function(y)
@@ -220,7 +232,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
       }  	
     }
       ## ------ submit the job
-    f_obj@jobs[[i]] <- submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, verbose = verbose, ...)
+    f_obj@jobs[[i]] <- .submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, verbose = verbose, ...)
     ## ------ check if this is NOT last job in the flow
     ## if(i < length(f_obj@jobs)){
     ##     next_job <- f_obj@jobs[[i]]@next_job
@@ -233,8 +245,9 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
     f_obj@status <- "submitted"
     cat(sprintf("\nFlow has been submitted. Track it from terminal using:\nRscript -e 'flow:::status(\"%s\")'\n", f_obj@flow_path))
     ## dumpt the flow details
-    try(dump_flow_details(fobj = f_obj))
   }
+  try(dump_flow_details(fobj = f_obj))
+  try(save(f_obj, file = sprintf("%s/flow_details.rda", f_obj@flow_path)))
   if(make_flow_plot & length(f_obj@jobs) > 2){
     try(
       .plot_flow(f_obj, detailed = FALSE, pdf = TRUE, type = '1',
@@ -249,7 +262,9 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
 #' @description submit_flow
 #' @aliases submit_flow
 #' @param f_obj \code{object} of class \code{flow}.
-#' @param attach_uuid \code{logical} Whether to attach a random string to the submitted flow names. Look for them in your \code{basepath} folder (typically \code{~/flows/FLOW_NAME/FLOW_DESCRIPTION_UUID}). Refer to \code{desc} and \code{name} paramters of \link{flow}.
+#' @param uuid \code{character} A character string pointing to the folder (unique) where all the logs and other files are processed. This is optional and defaults to:
+#'  \code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}. 
+#'  Refer to \code{desc} and \code{name} paramters of \link{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
 #' @param make_flow_plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
 #' @param verbose logical.

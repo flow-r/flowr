@@ -1,0 +1,26 @@
+\frametitle{Example: a simple workflow}
+
+\section{simple}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Let us say we have a `Torque' cluster
+\item
+  We have two jobs with 1 CPU each and second is dependent on the first
+  \textbackslash{}begin\{columns\} \column{.65\textwidth}
+\end{itemize}
+
+\begin{verbatim}
+qobj <- queue(type="torque", verbose = FALSE)
+jobj1 <- job(q_obj=qobj, cmd="sleep 2", name="job1")
+jobj2 <- job(q_obj=qobj, cmd = "sleep 2", name="job2",
+             previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj)
+\end{verbatim}
+
+\column{.35\textwidth}
+\includegraphics[page=1, type=pdf,ext=.pdf,read=.pdf, width=0.4\textwidth]{slides_files/figure-beamer/simple-1}
+\textbackslash{}end\{columns\}
+

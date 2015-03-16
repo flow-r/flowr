@@ -7,7 +7,7 @@
 \title{plot_flow}
 \usage{
 \S4method{plot_flow}{flow}(x, detailed = TRUE, pdf = FALSE,
-  pdffile = sprintf("\%s.pdf", x@name), type = c(1, 2), ...)
+  pdffile = sprintf("\%s.pdf", x@name), type = c("1", "2"), ...)
 }
 \arguments{
 \item{x}{Object of class \code{flow}}

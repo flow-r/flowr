@@ -14,41 +14,72 @@
 #' @examples
 #' \dontrun{
 #' get_flow_status(x = x, cores = 6)}
-get_flow_status <- function(x, cores = 6, out_format = "rst", get_mem_usage = TRUE){
+get_flow_status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
   ## get the total jobs
   require(parallel)
-  wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+  #wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+  wds = get_wds(x)  
   for(wd in wds){
     files_cmd <- list.files(wd, pattern = "cmd", full.names = TRUE, recursive = TRUE)
     ## dirname, JOBNAME_cmd_JOBINDEX
     mat_cmd <- data.frame(do.call(rbind,
                                   strsplit(gsub(".*/(.*)/(.*)_cmd_([0-9]*).sh",
                                                 "\\1,\\2,\\3", files_cmd), split = ",")),
+                          file = files_cmd,
                           stringsAsFactors = FALSE)
-    colnames(mat_cmd) = c("job_id", "job_name", "num")
+    colnames(mat_cmd) = c("job_id", "job_name", "num", "file")
     #triggers <- sprintf("%s/trigger/trigger_%s_%s.txt", wd, mat_cmd$job_id, mat_cmd$num)
     triggers = sprintf("%s/trigger/trigger_%s_%s.txt", dirname(dirname(files_cmd)),
                        mat_cmd$job_id, mat_cmd$num)
     status <- unlist(mclapply(triggers, function(y){
-      if(file.exists(y))
-        tmp <- try(as.numeric(scan(y, what = "character", quiet = TRUE)))
-      else
+      if(file.exists(y)){
+        tmp <- as.numeric(scan(y, what = "character", quiet = TRUE))
+        tmp <- ifelse(length(tmp) > 0, tmp, -1) ## -1 mean not completed
+        return(tmp)
+      }else
         return(NA)
       #ifelse(length(tmp) < 1 | grepl("Error", tmp), NA, tmp)
     }))
-    mat_cmd = data.frame(mat_cmd, status = status)
+    ## STATUS -1 MEANS started
+    mat_cmd = data.frame(mat_cmd, started = !is.na(status), status = status)
+    flow_mat = try(update_flow_mat(wd = wd, mat_cmd = mat_cmd))
     jobs_total <- tapply(mat_cmd$job_id, INDEX = mat_cmd$job_id, length)
-    jobs_compl <- tapply(mat_cmd$status, INDEX = mat_cmd$job_id, function(z) sum(!is.na(z)))
-    jobs_status <- tapply(mat_cmd$status, INDEX = mat_cmd$job_id, sum, na.rm = TRUE)
-    sum <- data.frame(total = jobs_total, completed = jobs_compl, exit_status = jobs_status)
+    jobs_compl <- tapply(mat_cmd$status, INDEX = mat_cmd$job_id, function(z) sum(z > -1, na.rm = TRUE)) ## counts no. more than -1
+    jobs_status <- tapply(mat_cmd$status, INDEX = mat_cmd$job_id, function(z) sum(ifelse(z>0, 1, 0), na.rm = TRUE))
+    jobs_started <- tapply(mat_cmd$started, INDEX = mat_cmd$job_id, function(z) sum(z))
+    sum <- data.frame(total = jobs_total, started = jobs_started, completed = jobs_compl, exit_status = jobs_status)
     print(paste0("Showing status of: ", wd))
     write.table(sum, file.path(wd, "flow_status.txt"), quote = FALSE, sep = "\t")
     tmp <- knitr::kable(sum, out_format, output = FALSE)
     print(tmp)
   }
-  invisible(sum)
+  invisible(flow_mat)
   #return(sum)
 }
+
+
+get_wds <- function(x){
+  wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
+  rownames(subset(file.info(wds), isdir == TRUE))
+}
+
+## read and update flow_details status
+# wd = "/scratch/iacs/iacs_dep/sseth/flows/JZ/telseq/my_super_flow-2015-02-15-20-11-21-UZOwi8Q2"
+update_flow_mat <- function(wd, mat_cmd){
+  fl = list.files(wd, pattern = "flow_details.txt", full.names = TRUE)
+  flow_mat = read.table(fl, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+  rownames(flow_mat) = paste(flow_mat$jobname, flow_mat$job_no, sep = "_")
+  rownames(mat_cmd) = paste(mat_cmd$job_id, mat_cmd$num, sep = "_")
+  flow_mat$started = mat_cmd[rownames(flow_mat), 'started']## track using rownames
+  flow_mat$exit_code = mat_cmd[rownames(flow_mat), 'status']## track using rownames
+  flow_mat$file = mat_cmd[rownames(flow_mat),'file']
+  write.table(flow_mat, sep = "\t", quote = FALSE, row.names = FALSE, file = fl)
+#   head(flow_mat)
+#   head(mat_cmd)
+  #dim(flow_mat)
+  invisible(flow_mat)
+}
+
 
 #' @export
 status = get_flow_status
@@ -58,79 +89,81 @@ get_flow_memory <- function(){
   
 }
 
-
-parse_lsf_out <- function(x){
-  text <- scan(x, what = "character", sep = "\t")
-  cpu = gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2])
+# n= number of lines to read
+parse_lsf_out <- function(x, scale_time = 1/3600, n = 100){
+  text <- scan(x, what = "character", sep = "\t", n = n)
+  cpu_time = gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2])
   avg_mem = gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2])
   max_mem = gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2])
   max_swap = gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2])
-  return(list(cpu = cpu, avg_mem = avg_mem, max_mem = max_mem, max_swap = max_swap))
+  return(list(cpu_time = as.numeric(cpu_time) * scale_time, avg_mem = avg_mem, max_mem = max_mem, max_swap = max_swap))
 }
 
-#' @title get_flow_memory_ibm
-#' @description get_flow_memory_ibm
+#' @title get_resources
+#' @description get_resources currenty this only works on LSF
 #' @param x
 #' @param odir
 #' @export
 #' @examples \dontrun{
-#' get_flow_memory_ibm(x = x, odir = ~/tmp)
+#' get_resources(x = x, odir = ~/tmp)
 #' }
 #' @import ggplot2
-get_flow_memory_ibm <- function(x, odir = "~/tmp"){
-  wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+get_resources <- function(x, odir, ...){
+  wds = get_wds(x)
   for(wd in wds){
-    #files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
-    files_out <- list.files(wd, pattern = "output$", full.names = TRUE, recursive = TRUE)
-    mat_cmd <- data.frame(do.call(rbind,
-                                  strsplit(gsub(".*/(.*)/.*/(.*)\\.([0-9]*)\\.([0-9]*)\\.output",
-                                                "\\1,\\2,\\3", files_out), split = ",")),
-                          stringsAsFactors = FALSE)
-    colnames(mat_cmd) = c('oprefix', 'jobname', 'num')
-    mat_cmd <- cbind(mat_cmd, outfile = files_out)
-    resources <- do.call(rbind, mclapply(as.c(mat_cmd$outfile), function(i) parse_lsf_out(i), mc.cores = 5))
-    mat_res <- cbind(mat_cmd, resources);dim(mat_res)
-    
-    ## restructure for plotting:
-    mat_res$avg_mem = as.numeric(mat_res$avg_mem)
-    mat_res$max_mem = as.numeric(mat_res$max_mem)
-    mat_res$max_swap = as.numeric(mat_res$max_swap)
-    mat_res$cpu = as.numeric(mat_res$cpu)
-    
-    mytheme <- theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
-    p <- with(mat_res,
-              ggplot(mat_res, aes(x = jobname, y = avg_mem)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
-    ggsave(sprintf("%s/%s.avg_mem.pdf", odir, basename(wd)), p)
-    
-    p <- with(mat_res,
-              ggplot(mat_res, aes(x = jobname, y = max_mem)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
-    ggsave(sprintf("%s/%s.max_mem.pdf", odir, basename(wd)), p)
-    
-    p <- with(mat_res,
-              ggplot(mat_res, aes(x = jobname, y = max_swap)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
-    ggsave(sprintf("%s/%s.max_swap.pdf", odir, basename(wd)), p)
-    
-    p <- with(mat_res,
-              ggplot(mat_res, aes(x = jobname, y = cpu)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme)
-    ggsave(sprintf("%s/%s.cpu_time.pdf", odir, basename(wd)), p)
-    ##  head(mat_cmd) 
-  }# for loop
+    if(missing(odir)) odir = wd
+    try(get_resources_lsf(wd, ...))
+    }# for loop
 }# function
 
+get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
+  flow_mat = read.table(file.path(wd, "flow_details.txt"), sep = "\t", header = TRUE)
+  rownames(flow_mat) = flow_mat$jobid
+  #files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
+  files_out <- list.files(wd, pattern = pattern, full.names = TRUE, recursive = TRUE)
+  jobid = tools:::file_path_sans_ext(basename(files_out))
+  names(files_out) = jobid
+  #     mat_cmd <- data.frame(do.call(rbind,
+  #                                   strsplit(gsub(".*/(.*)/.*/(.*)\\.([0-9]*)\\.([0-9]*)\\.output",
+  #                                                 "\\1,\\2,\\3", files_out), split = ",")),
+  #                           stringsAsFactors = FALSE)
+  #colnames(mat_cmd) = c('oprefix', 'jobname', 'num')
+  #mat_cmd <- cbind(mat_cmd, outfile = files_out)
+  flow_mat$outfile = files_out[as.c(flow_mat$jobid)]
+  tmp = mclapply(as.c(flow_mat$outfile), function(i) try(parse_lsf_out(i)), mc.cores = cores)
+  resources <- do.call(rbind, tmp)
+  mat_res <- cbind(flow_mat, resources);dim(mat_res)
+  ## restructure for plotting:
+  mat_res$avg_mem = as.numeric(mat_res$avg_mem)
+  mat_res$max_mem = as.numeric(mat_res$max_mem)
+  mat_res$max_swap = as.numeric(mat_res$max_swap)
+  mat_res$cpu = as.numeric(mat_res$cpu)
+  mytheme <- theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
+  dat = reshape2:::melt(mat_res, measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu"))
+  p <- ggplot(dat, aes(x = jobname, y = value)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme
+  p <- p + facet_wrap(~variable, scales = "free_y")
+  ggsave(sprintf("%s/resources_utilized.pdf", wd), p)
+}
 
 
 dump_flow_details <- function(fobj){
   ret <- lapply(1:length(fobj@jobs), function(i){
-    ids = fobj@jobs[[i]]@id
+    ids = fobj@jobs[[i]]@id ## jobid for submission
     deps = fobj@jobs[[i]]@dependency
     deps = sapply(deps, paste, collapse = ";")
-    mat = cbind(jobname = fobj@jobs[[i]]@name, jobid = ids, 
+    prev = fobj@jobs[[i]]@previous_job ## works for single type jobs
+    #ifelse(prev != "") prev = paste(prev, 1:length(fobj@jobs[[prev]]@id), sep = "_")
+    job_no = 1:length(ids)
+    job_id = paste(fobj@jobs[[i]]@jobname, job_no, sep = "_")
+    mat = cbind(jobname = fobj@jobs[[i]]@jobname, jobnm = fobj@jobs[[i]]@name, 
+                job_no = job_no, job_sub_id = ids,
+                job_id = job_id,prev = prev,
                 dependency = ifelse(is.null(unlist(deps)), NA, unlist(deps)), 
-                status = fobj@jobs[[i]]@status)
+                status = fobj@jobs[[i]]@status, exit_code = NA)
   })
   flow_mat = do.call(rbind, ret)
   write.table(flow_mat, sep = "\t", quote = FALSE, row.names = FALSE,
-              file = sprintf("%s/%s-flow_details.txt",fobj@flow_path, fobj@name))
+              file = sprintf("%s/flow_details.txt",fobj@flow_path, fobj@name))
   return(file.path(fobj@flow_path))
 }
 

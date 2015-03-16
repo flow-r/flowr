@@ -5,7 +5,7 @@
 \title{job class}
 \usage{
 job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
-  q_obj = new("queue"), previous_job = "", cpu = 1,
+  q_obj = new("queue"), previous_job = "", cpu = 1, memory, walltime,
   submission_type = c("scatter", "serial"), status = "", script = "",
   dependency_type = c("none", "gather", "serial", "burst"), ...)
 }
@@ -24,19 +24,19 @@ job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 
 \item{cpu}{no of cpu's reserved}
 
-\item{submission_type}{submission type}
+\item{submission_type}{submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.}
 
 \item{status}{status}
 
 \item{dependency_type}{depedency type}
 
-\item{...}{other passed onto object creation}
+\item{...}{other passed onto object creation. Example: memory, walltime, cpu}
 }
 \description{
 job class
 }
 \examples{
 q_obj <- queue(type="torque")
-j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=1)
+j_obj <- job(q_obj=q_obj, cmd = "sleep 2", cpu=1)
 }
 

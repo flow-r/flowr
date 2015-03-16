@@ -39,7 +39,9 @@ setClass("job", representation(cmds = "character",
                                name = "character",## for creating stdout etc
                                base_path = "character",
                                id = "character", ## can be multiple
+                               uid = "character",
                                status = "character", ## status
+                               exit_code = "numeric", ## status
                                submission_type = "character", ## scatter, serial
                                dependency_type = "character", ## gather, serial
                                previous_job = "character",
@@ -88,12 +90,11 @@ setClass("flow", representation(jobs = "list",
 #' @export
 #' @examples
 #' queue(type='lsf')
-queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
-                  dependency = list(), jobname = "name",
-                  walltime, cwd="~/flows", memory,
+queue <- function(object, submit_exe, queue="long", 
+                  nodes=1, cpu=1, dependency = list(), jobname = "name",walltime, cwd="~/flows", memory,
                   stderr = "~/flows/tmp", stdout = "~/flows",
                   email = Sys.getenv("USER"),
-                  type = "torque", format = "", extra_opts = "",
+                  type = "torque", format = "", extra_opts = "", verbose = TRUE,
                   server = "localhost"){
     if(!missing(object)){
       object = replace_slots(object = object, ...)
@@ -104,14 +105,16 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
                         torque = "72:00:00",
                         lsf = "72:00",
                         "24:00")
-      cat("Setting default time to: ", walltime, ". If this is more than queue max (/improper format), job will fail.\n")
+      if(verbose) 
+        cat("Setting default time to: ", walltime, ". If this is more than queue max (/improper format), job will fail. You may change this in job()\n")
     }
     if(missing(memory)){
       memory = switch(type,
                       lsf = "10000",
                       torque = "10g",
                       "1000")
-      cat("Setting default memory to: ", memory, ". If this is more than queue max (/improper format), job will fail.\n")
+      if(verbose) 
+        cat("Setting default memory to: ", memory, ". If this is more than queue max (/improper format), job will fail.\n")
     }
     if(type=="torque"){
         format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
@@ -132,10 +135,10 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
         ## -R rusage[mem=16385]: min mem (reserved mem)
         format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
         object <- new("lsf", submit_exe="bsub",queue=queue,
-                      nodes=nodes,cpu=cpu,jobname=jobname,
-                      dependency=dependency,walltime=walltime,
+                      nodes=nodes, cpu=cpu, jobname=jobname,
+                      dependency=dependency, walltime=walltime,
                       memory=memory,
-                      cwd=cwd, stderr=stderr, stdout=stdout,email=email,type=type,
+                      cwd=cwd, stderr=stderr, stdout=stdout, email=email,type=type,
                       format=format, extra_opts = extra_opts,
                       server=server)
     }else if(type=="local"){
@@ -158,18 +161,18 @@ queue <- function(object, submit_exe, queue="long", nodes=1, cpu=1,
 #' @param parent_flow parent flow
 #' @param name name of the job
 #' @param q_obj queue object
-#' @param submission_type submission type
+#' @param submission_type submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.
 #' @param status status
 #' @param dependency_type depedency type
 #' @param cpu no of cpu's reserved
 #' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.
-#' @param ... other passed onto object creation
+#' @param ... other passed onto object creation. Example: memory, walltime, cpu
 #' @export
 #' @examples
 #' q_obj <- queue(type="torque")
-#' j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=1)
+#' j_obj <- job(q_obj=q_obj, cmd = "sleep 2", cpu=1)
 job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
-                q_obj = new("queue"), previous_job = '', cpu = 1,
+                q_obj = new("queue"), previous_job = '', cpu = 1, memory, walltime,
                 submission_type=c("scatter", "serial"), status="", script = "",
                 dependency_type = c("none", "gather", "serial", "burst"), ...){
     ## convert to numeric if possible
@@ -182,11 +185,12 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
         args <- lapply(args,eval, sys.frame(-1)) ## by getting the values from a frame above
         object <- do.call("replace_slots", args=c(object=q_obj,args))
     }else{
-        q_obj <- new("queue")
+      formals(queue)
+      object <- new("queue", ...)
     }
     submission_type <- match.arg(submission_type)
     dependency_type <- match.arg(dependency_type)
-    object <- new("job",cmds = cmds, object, name = name, submission_type = submission_type,
+    object <- new("job", cmds = cmds, object, name = name, submission_type = submission_type,
                   previous_job = previous_job,
                   dependency_type = dependency_type,status=status,...)
     return(object)

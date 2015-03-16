@@ -22,7 +22,6 @@ cmds_to_flow <- function(cmd.list,
   infomat$dep_type = ifelse(infomat$previous_job==".", "none", "serial")
   #infomat$previous_jobs = ifelse(infomat$previous_job==".", NULL, infomat$previous_job) ## prev job null
   #infomat <- cbind(jobnames, sub_type, cpus, prev_jobs, dep_type)
-
   ## Error handling: missing in info
   missing.info = names(cmd.list)[!names(cmd.list) %in% infomat$jobname]
   if(length(missing.info) > 0){
@@ -33,7 +32,9 @@ cmds_to_flow <- function(cmd.list,
     ## removing from commands if missing in infomat
     cmd.list = cmd.list[names(cmd.list) %in% infomat$jobname]
   }
-  missing.prev = infomat$previous_job[!infomat$previous_job %in% c(infomat$jobname, ".", NA, "NA")]
+  ## chck if prev jobs have a job defined
+  prev_jobs = strsplit(infomat$previous_job, ",")
+  missing.prev = infomat$previous_job[!unlist(prev_jobs) %in% c(infomat$jobname, ".", NA, "NA")]
   if(length(missing.prev) > 0)
     stop("\n\nMessage:\nOops issue with infomat.\n",
          "It seems these previous job names are missing from the jobname column:\n",
@@ -50,16 +51,18 @@ cmds_to_flow <- function(cmd.list,
     cmds = cmd.list[[i]]; jobnm = names(cmd.list)[i]
     #cmds = unique(cmds);
     prev_job = unlist(subset(infomat, jobname == jobnm, select = 'previous_job'))
-    prev_job = strsplit(prev_job, ",")[[1]]
+    prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
     cpu = as.numeric(unlist(subset(infomat, jobname == jobnm, select = 'cpu_reserved')))
     walltime = as.character(unlist(subset(infomat, jobname == jobnm, select = 'walltime')))
     memory = as.character(unlist(subset(infomat, jobname == jobnm, select = 'memory_reserved')))
     queue = as.character(unlist(subset(infomat, jobname == jobnm, select = 'queue')))    
     dep_type = as.character(unlist(subset(infomat, jobname == jobnm, select = 'dep_type')))
     sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
-    ##
-    if(length(cmd.list[[prev_job]]) == 0){
-      dep_type = "none"
+    ## guess dep_type
+    if(length(prev_job) > 1){
+    	dep_type = "gather"
+    }else if(length(cmd.list[[prev_job]]) == 0){
+    	dep_type = "none"
     }else if(length(cmd.list[[prev_job]]) == length(cmds) ){ ## if same length, serial
       dep_type = "serial"
     }else if(length(cmd.list[[prev_job]]) > length(cmds) & length(cmds) == 1  ){ ## if same length, serial

@@ -6,13 +6,15 @@
 \alias{submit_flow,flow-method}
 \title{submit_flow}
 \usage{
-\S4method{submit_flow}{flow}(f_obj, attach_uuid = TRUE, execute = FALSE,
+\S4method{submit_flow}{flow}(f_obj, uuid, execute = FALSE,
   make_flow_plot = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{f_obj}{\code{object} of class \code{flow}.}
 
-\item{attach_uuid}{\code{logical} Whether to attach a random string to the submitted flow names. Look for them in your \code{basepath} folder (typically \code{~/flows/FLOW_NAME/FLOW_DESCRIPTION_UUID}). Refer to \code{desc} and \code{name} paramters of \link{flow}.}
+\item{uuid}{\code{character} A character string pointing to the folder (unique) where all the logs and other files are processed. This is optional and defaults to:
+\code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}.
+Refer to \code{desc} and \code{name} paramters of \link{flow}.}
 
 \item{execute}{\code{logical} whether or not to submit the jobs}
 

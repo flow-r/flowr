@@ -38,7 +38,7 @@ create_jobs_mat <- function(x){
 .create_jobs_mat=create_jobs_mat
 
 ## ------------- make a flowchart using the object
-.plot_flow <- function(x, detailed = TRUE, pdf = FALSE, pdffile=sprintf("%s.pdf",x@name), type = c(1,2), ...){
+.plot_flow <- function(x, detailed = TRUE, pdf = FALSE, pdffile=sprintf("%s.pdf",x@name), type = c('1','2'), ...){
 	type = match.arg(type)
   dat <- .create_jobs_mat(x)
   switch(type,

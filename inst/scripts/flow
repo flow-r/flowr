@@ -1,0 +1,50 @@
+#!/usr/bin/env Rscript
+## A class that contains bam file information
+## Copyright 2014, Sahil Seth, all rights reserved
+## sahil.seth@me.com
+## A few functions to supplement those already in this package.
+#### -----------------------
+
+
+verbose=FALSE
+
+##cat(".")
+### in myModul.R
+### numeric: _N
+### character: _C
+### logical: _L
+get_params <- function(paramPairs){
+    args <- formals(as.character(paramPairs[1]))
+    paramPairs <- paramPairs[grep("=", paramPairs)] ## get those with =
+    if(verbose_L) cat("We have",length(paramPairs),"parameters\n")
+    for(param in paramPairs){
+        temp <- unlist(strsplit(param, "="));
+	nm = temp[1]
+	value=temp[2]
+ 	value <- strsplit(value,",")[[1]] #handling those with , in value.. for multiple R values
+	if(class(args[[nm]]) == "numeric" ){
+            args[[nm]] = as.numeric(value)
+	}else if(class(args[[nm]]) %in% c("character", "name" )){
+            args[[nm]] = as.character(value)
+	}else if(class(args[[nm]]) %in% c("logical")){
+            args[[nm]] = as.logical(value)
+        }else if(class(args[[nm]]) %in% c("list")){
+            args[[nm]] = as.list(value)
+        }
+    }
+    return(args)
+}
+
+
+library(flow, quietly=!verbose, warn.conflicts=verbose)
+
+args <- commandArgs(trailingOnly = TRUE)
+params <- get_params(args)
+
+if(verbose_L){
+    cat("Starting",args[1],"with params\n", paste(names(params),unlist(params),sep=": ",
+                                                  collapse="\n"),"\n")
+    print(args)
+}
+
+out <- do.call(as.character(args[1]), args = params)
