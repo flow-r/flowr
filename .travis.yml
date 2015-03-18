@@ -4,5 +4,3 @@ language: r
 warnings_are_errors: false
 
 # System dependencies for HTTP calling
-apt_packages:
- - uuid
