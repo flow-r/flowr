@@ -1,7 +1,7 @@
 Package: flowr
 Type: Package
 Title: R pacakge which manages workflows and queues jobs in HPCC cluster
-Version: 0.9.5
+Version: 0.9.6
 Depends:
     methods,
     stats,
