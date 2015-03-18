@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/sahilseth/flow.png)](https://travis-ci.org/sahilseth/flow)
-
+https://zenodo.org/badge/11075/sahilseth/flowr.svg
 flow
 ======
 
