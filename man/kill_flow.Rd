@@ -4,7 +4,7 @@
 \alias{kill_flow}
 \title{kill_flow}
 \usage{
-kill_flow(wd, fobj, kill_cmd = "bkill")
+kill_flow(wd, fobj, kill_cmd = "bkill", jobid_col = "job_sub_id")
 }
 \description{
 kill_flow

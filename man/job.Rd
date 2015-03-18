@@ -26,9 +26,9 @@ job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 
 \item{submission_type}{submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.}
 
-\item{status}{status}
+\item{status}{status [ignore]. this is used internally to update status of the job.}
 
-\item{dependency_type}{depedency type}
+\item{dependency_type}{depedency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
 }

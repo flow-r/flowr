@@ -177,13 +177,13 @@ dump_flow_details <- function(fobj){
 #' flowr kill_flow wd=path_to_flow_directory
 #' }
 #' @export
-kill_flow <- function(wd, fobj, kill_cmd = "bkill"){
+kill_flow <- function(wd, fobj, kill_cmd = "bkill", jobid_col = "job_sub_id"){
   if(missing(wd)){
     wd = dump_flow_details(fobj)
   }
   det_file = tail(list.files(wd, pattern = "flow_details", full.names = TRUE), 1)
   flow_details = read.table(det_file, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
-  cmds <- sprintf("%s %s", kill_cmd, flow_details$jobid)
+  cmds <- sprintf("%s %s", kill_cmd, flow_details[,jobid_col])
   tmp <- sapply(cmds, function(x){
     cat(x, "\n")
     system(x, intern = TRUE)
