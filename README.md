@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sahilseth/flow.png)](https://travis-ci.org/sahilseth/flow)
+[![Build Status](https://travis-ci.org/sahilseth/flowr.png)](https://travis-ci.org/sahilseth/flowr)
 [![DOI](https://zenodo.org/badge/11075/sahilseth/flowr.svg)](http://dx.doi.org/10.5281/zenodo.16170)
 
 flow
