@@ -4,9 +4,15 @@
 \alias{kill_flow}
 \title{kill_flow}
 \usage{
-kill_flow(fobj, wd, kill_cmd = "bkill")
+kill_flow(wd, fobj, kill_cmd = "bkill")
 }
 \description{
 kill_flow
+}
+\examples{
+\dontrun{
+## example for terminal
+flowr kill_flow wd=path_to_flow_directory
+}
 }
 

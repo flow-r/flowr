@@ -19,7 +19,7 @@ rerun_flow(wd, fobj, execute = TRUE, kill = TRUE)
 rerun_flow
 }
 \examples{
-\\donotrun{
+\dontrun{
 rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
 }
 }

@@ -22,6 +22,9 @@ get_flow_status
 }
 \examples{
 \dontrun{
-get_flow_status(x = x, cores = 6)}
+get_flow_status(x = x, cores = 6)
+## an example for running from terminal
+flowr status x=path_to_flow_directory cores=6
+}
 }
 

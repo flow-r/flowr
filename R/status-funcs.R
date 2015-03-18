@@ -13,7 +13,10 @@
 #' @importFrom parallel mclapply
 #' @examples
 #' \dontrun{
-#' get_flow_status(x = x, cores = 6)}
+#' get_flow_status(x = x, cores = 6)
+#' ## an example for running from terminal
+#' flowr status x=path_to_flow_directory cores=6
+#' }
 get_flow_status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
   ## get the total jobs
   require(parallel)
@@ -168,8 +171,13 @@ dump_flow_details <- function(fobj){
 }
 
 #' kill_flow
+#' @examples 
+#' \dontrun{
+#' ## example for terminal
+#' flowr kill_flow wd=path_to_flow_directory
+#' }
 #' @export
-kill_flow <- function(fobj, wd, kill_cmd = "bkill"){
+kill_flow <- function(wd, fobj, kill_cmd = "bkill"){
   if(missing(wd)){
     wd = dump_flow_details(fobj)
   }

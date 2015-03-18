@@ -14,7 +14,7 @@ if(FALSE){
 #' @param execute
 #' @param kill logical indicating whether to kill the jobs from old flow
 #' @export
-#' @examples \donotrun{
+#' @examples \dontrun{
 #' rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
 #' }
 #'  @export
