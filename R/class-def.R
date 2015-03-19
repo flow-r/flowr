@@ -196,7 +196,7 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
   }
   submission_type <- match.arg(submission_type)
   dependency_type <- match.arg(dependency_type)
-  if(previous_job != '' & dependency_type == 'none')
+  if(previous_job[1] != '' & dependency_type == 'none') ## add [1] since at times we specify two jobs
     stop("Previous job specified, but you have not specified dependency_type")
   object <- new("job", cmds = cmds, object, name = name, submission_type = submission_type,
                 previous_job = previous_job,
