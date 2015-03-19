@@ -4,3 +4,6 @@ language: r
 warnings_are_errors: false
 
 # System dependencies for HTTP calling
+
+# R 
+r_check_args: ''
