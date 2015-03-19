@@ -85,7 +85,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 #' @param j_obj object of class \link{job}
 #' @param file This is the path to the file to run
 #' @param index among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1.
-#' @param ...
+#' @param ... Not used
 #' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 #' }
@@ -128,7 +128,7 @@ create_queue_cmd <- function(j_obj, file, index, ...){
   l <- c(l, dependency=dependency) ## add dependency to the list
   names(l) = toupper(names(l)) ## get list of slots
   l <- c(l, "CMD"=file)
-  .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH
+  .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH if we dont use interal they change temporarily
   ##cmd <- system(sprintf("eval echo %s ",j_obj@format),intern=TRUE)
   cmd <- system(sprintf("echo %s ",j_obj@format),intern=TRUE)
   return(cmd=cmd)

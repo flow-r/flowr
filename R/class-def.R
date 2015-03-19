@@ -85,9 +85,9 @@ setClass("flow", representation(jobs = "list",
 #' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'.
 #' This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
 #' dependencies. More on them here:
-#' @param memory
 #' @param verbose
-#' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node.
+#' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
+#' @inheritParams job
 #' @keywords queue
 #' @export
 #' @examples
@@ -169,9 +169,8 @@ queue <- function(object, submit_exe, queue="long",
 #' @param cpu no of cpu's reserved
 #' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.
 #' @param status status [ignore]. this is used internally to update status of the job.
-#' @param memory
-#' @param walltime
-#' @param script
+#' @param memory The amount of memory reserved. Units depend on the platform used to process jobs
+#' @param walltime The amount of time reserved for this job. Format is unique to a platform. Typically it looks like 12:00 (12 hours reserved, say in LSF), in Torque etc. we often see measuring in seconds: 12:00:00
 #' @param ... other passed onto object creation. Example: memory, walltime, cpu
 #' @export
 #' @examples
@@ -179,7 +178,7 @@ queue <- function(object, submit_exe, queue="long",
 #' j_obj <- job(q_obj=q_obj, cmd = "sleep 2", cpu=1)
 job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
                 q_obj = new("queue"), previous_job = '', cpu = 1, memory, walltime,
-                submission_type=c("scatter", "serial"), status="", script = "",
+                submission_type=c("scatter", "serial"), status="",
                 dependency_type = c("none", "gather", "serial", "burst"), ...){
   ## convert to numeric if possible
   cpu <- as.numeric(cpu)

@@ -50,14 +50,16 @@ cmds_to_flow <- function(cmd.list,
     cat(".")
     cmds = cmd.list[[i]]; jobnm = names(cmd.list)[i]
     #cmds = unique(cmds);
-    prev_job = unlist(subset(infomat, jobname == jobnm, select = 'previous_job'))
-    prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
-    cpu = as.numeric(unlist(subset(infomat, jobname == jobnm, select = 'cpu_reserved')))
-    walltime = as.character(unlist(subset(infomat, jobname == jobnm, select = 'walltime')))
-    memory = as.character(unlist(subset(infomat, jobname == jobnm, select = 'memory_reserved')))
-    queue = as.character(unlist(subset(infomat, jobname == jobnm, select = 'queue')))    
-    dep_type = as.character(unlist(subset(infomat, jobname == jobnm, select = 'dep_type')))
-    sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
+    with(infomat, {
+      prev_job = unlist(subset(infomat, jobname == jobnm, select = 'previous_job'))
+      prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
+      cpu = as.numeric(unlist(subset(infomat, jobname == jobnm, select = 'cpu_reserved')))
+      walltime = as.character(unlist(subset(infomat, jobname == jobnm, select = 'walltime')))
+      memory = as.character(unlist(subset(infomat, jobname == jobnm, select = 'memory_reserved')))
+      queue = as.character(unlist(subset(infomat, jobname == jobnm, select = 'queue')))    
+      dep_type = as.character(unlist(subset(infomat, jobname == jobnm, select = 'dep_type')))
+      sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
+    })
     ## guess dep_type
     if(length(prev_job) > 1){
     	dep_type = "gather"

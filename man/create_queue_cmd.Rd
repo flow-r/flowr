@@ -13,7 +13,7 @@ create_queue_cmd(j_obj, file, index, ...)
 
 \item{index}{among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1.}
 
-\item{...}{}
+\item{...}{Not used}
 }
 \description{
 .create_queue_cmd

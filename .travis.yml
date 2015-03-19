@@ -7,4 +7,4 @@ warnings_are_errors: false
 # http://docs.travis-ci.com/user/languages/r/
 
 # R 
-r_check_args: --no-tests
+r_check_args: --timings --as-cran

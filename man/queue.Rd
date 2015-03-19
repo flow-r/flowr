@@ -30,7 +30,7 @@ queue(object, submit_exe, queue = "long", nodes = 1, cpu = 1,
 
 \item{cwd}{[Used by class job]}
 
-\item{memory}{}
+\item{memory}{The amount of memory reserved. Units depend on the platform used to process jobs}
 
 \item{stderr}{[Used by class job]}
 
@@ -48,7 +48,7 @@ dependencies. More on them here:}
 
 \item{verbose}{}
 
-\item{server}{This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node.}
+\item{server}{This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted}
 }
 \description{
 This function defines the queue used to submit jobs to the cluster. In essence details about the

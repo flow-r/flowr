@@ -183,17 +183,18 @@ dump_flow_details <- function(fobj){
 }
 
 #' kill_flow
-#' @param wd
-#' @param fobj
-#' @param kill_cmd
-#' @param jobid_col
+#' @param x either path to flow [character] or fobj object of class \link{flow}
+#' @param wd path to a specific which needs to be killed
+#' @param fobj a object of class \link{flow}
+#' @param kill_cmd The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.
+#' @param jobid_col Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill
 #' @examples 
 #' \dontrun{
 #' ## example for terminal
 #' flowr kill_flow wd=path_to_flow_directory
 #' }
 #' @export
-kill_flow <- function(wd, fobj, kill_cmd = "bkill", jobid_col = "job_sub_id"){
+kill_flow <- function(x, wd, fobj, kill_cmd = "bkill", jobid_col = "job_sub_id"){
   if(missing(wd)){
     wd = dump_flow_details(fobj)
   }
