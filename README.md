@@ -16,7 +16,7 @@ Just get me started...
 
 ```
 install.packages('devtools')
-devtools:::install_github("sahilseth/flow")
+devtools::install_github("sahilseth/flow")
 require(flow)
 qobj <- queue(type="lsf", queue="normal")
 jobj1 <- job(q_obj=qobj)

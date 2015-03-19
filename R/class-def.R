@@ -85,6 +85,8 @@ setClass("flow", representation(jobs = "list",
 #' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'.
 #' This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
 #' dependencies. More on them here:
+#' @param memory
+#' @param verbose
 #' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node.
 #' @keywords queue
 #' @export
@@ -167,6 +169,9 @@ queue <- function(object, submit_exe, queue="long",
 #' @param cpu no of cpu's reserved
 #' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.
 #' @param status status [ignore]. this is used internally to update status of the job.
+#' @param memory
+#' @param walltime
+#' @param script
 #' @param ... other passed onto object creation. Example: memory, walltime, cpu
 #' @export
 #' @examples

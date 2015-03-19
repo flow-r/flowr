@@ -19,9 +19,10 @@ if(FALSE){
 #' }
 #'  @export
 rerun_flow <- function(wd, fobj, execute = TRUE, kill = TRUE){
-  if(!missing(wd))
+  if(!missing(wd)){
     load(file.path(wd, "flow_details.rda"))
-  fobj = f_obj
+    fobj = f_obj
+  }
   #debug(get_flow_status)
   get_flow_status(x = wd)
   ## subset those which need to be rerun
@@ -45,6 +46,6 @@ rerun_flow <- function(wd, fobj, execute = TRUE, kill = TRUE){
   }
   ## subset and get jobs which failed
   rerun = cbind(module = mods, rerun = unlist(lapply(mods, function(m) length(fobj2@jobs[[m]]@cmds))))
-  knitr:::kable(rerun)
+  knitr::kable(rerun)
   fobj2 <- submit_flow(fobj2, execute = execute)
 }

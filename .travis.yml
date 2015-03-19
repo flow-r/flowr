@@ -4,3 +4,4 @@ language: r
 warnings_are_errors: false
 
 # System dependencies for HTTP calling
+# http://docs.travis-ci.com/user/languages/r/

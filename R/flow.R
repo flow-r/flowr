@@ -2,13 +2,13 @@
 
 #' @title cmds_to_flow
 #' @description cmds_to_flow
-#' @param cmd.list
-#' @param samplename
-#' @param infomat
-#' @param q_obj
-#' @param flowname
-#' @param execute
-#' @param flow_base_path
+#' @param cmd.list list of commands
+#' @param samplename name of the sample
+#' @param infomat a table with resource requirements and mapping of the jobs in this flow
+#' @param q_obj a object of class \link{queue}
+#' @param flowname name of the flow
+#' @param execute whether to submit the flow to the cluster after creation
+#' @param flow_base_path base path for log file etc. Basically the main operating folder for this flow.
 #' @export
 cmds_to_flow <- function(cmd.list,
                          samplename = "",
@@ -97,7 +97,3 @@ cmds_to_flow <- function(cmd.list,
 }
 
 
-### some infomat funcs
-get_resources <- function(cmd_name, flow_def){
-  
-}

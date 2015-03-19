@@ -10,7 +10,8 @@ Depends:
 Imports:
     knitr,
     ggplot2,
-    RSQLite
+    RSQLite,
+    reshape2
 Date: 2014-05-01
 Author: Sahil Seth
 Maintainer: S. Seth <sseth@mdanderson.org>

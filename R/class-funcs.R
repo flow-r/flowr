@@ -82,11 +82,10 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 #' @title create_queue_cmd
 #' @description .create_queue_cmd
 #' @aliases create_queue_cmd
-#' @param j_obj
+#' @param j_obj object of class \link{job}
 #' @param file This is the path to the file to run
-#' @param index
+#' @param index among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1.
 #' @param ...
-#' @export
 #' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 #' }
@@ -282,7 +281,7 @@ setMethod("submit_job", signature(j_obj = "job"),
             ## if(verbose) cat(j_obj@base_path, j_obj@name, "\n")
             if(missing(wd)){
               wd <- file.path(j_obj@base_path,paste(j_obj@name,
-                                                    uuid::UUIDgenerate(),sep="_"))
+                                                    UUIDgenerate(),sep="_"))
             }
             dir.create(wd, recursive=TRUE, showWarnings = FALSE)
             script <- c(j_obj@cmd, sprintf("echo $? > %s/trigger_%s.txt", wd,j_obj@name))

@@ -1,6 +1,6 @@
 #' @title create_jobs_mat
 #' @description create_jobs_mat
-#' @param x
+#' @param x a \link{flow} object.
 #' @export
 #' @examples \dontrun{
 #' .create_jobs_mat(x = x)}

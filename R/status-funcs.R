@@ -1,5 +1,5 @@
 ## will be extended to flowid later
-## x="/scratch/iacs/ngs_runs/hpcc_140925_SN1440_0200_AC5K27ACXX/log/stage1*"
+## x="/scratch/iacs/ngs_runs/*"
 
 #' @title get_flow_status
 #' @description get_flow_status
@@ -19,7 +19,6 @@
 #' }
 get_flow_status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
   ## get the total jobs
-  require(parallel)
   #wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
   wds = get_wds(x)  
   for(wd in wds){
@@ -63,7 +62,8 @@ get_flow_status <- function(x, cores = 6, out_format = "markdown", get_mem_usage
 
 get_wds <- function(x){
   wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
-  rownames(subset(file.info(wds), isdir == TRUE))
+  y = file.info(wds)
+  rownames(with(y, {subset(y, isdir == TRUE)}))
 }
 
 ## read and update flow_details status
@@ -104,8 +104,10 @@ parse_lsf_out <- function(x, scale_time = 1/3600, n = 100){
 
 #' @title get_resources
 #' @description get_resources currenty this only works on LSF
-#' @param x
-#' @param odir
+#' @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
+#' @param odir Output directory to save the results
+#' @param \dots other arguments sent to \link{get_resources_lsf}
+#' @details If \code{x} is a parent level folder, then resources are summarized for all its child folders.
 #' @export
 #' @examples \dontrun{
 #' get_resources(x = x, odir = ~/tmp)
@@ -119,12 +121,22 @@ get_resources <- function(x, odir, ...){
     }# for loop
 }# function
 
+#' @title get_resources_lsf
+#' @description get_resources_lsf
+#' @inheritParams get_resources
+#' @param wd Path to a flow working directory
+#' @param cores Number of cores to use. [Numeric]
+#' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
+#' @import reshape2 tools
+#' @examples \dontrun{
+#' get_resources_lsf(wd = wd, cores = 4, pattern = out$)
+#' }
 get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
   flow_mat = read.table(file.path(wd, "flow_details.txt"), sep = "\t", header = TRUE)
   rownames(flow_mat) = flow_mat$jobid
   #files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
   files_out <- list.files(wd, pattern = pattern, full.names = TRUE, recursive = TRUE)
-  jobid = tools:::file_path_sans_ext(basename(files_out))
+  jobid = tools::file_path_sans_ext(basename(files_out))
   names(files_out) = jobid
   #     mat_cmd <- data.frame(do.call(rbind,
   #                                   strsplit(gsub(".*/(.*)/.*/(.*)\\.([0-9]*)\\.([0-9]*)\\.output",
@@ -142,8 +154,8 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
   mat_res$max_swap = as.numeric(mat_res$max_swap)
   mat_res$cpu = as.numeric(mat_res$cpu)
   mytheme <- theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
-  dat = reshape2:::melt(mat_res, measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu"))
-  p <- ggplot(dat, aes(x = jobname, y = value)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme
+  dat = reshape2::melt(mat_res, measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu"))
+  p <- with(dat, {ggplot(dat, aes(x = jobname, y = value)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme})
   p <- p + facet_wrap(~variable, scales = "free_y")
   ggsave(sprintf("%s/resources_utilized.pdf", wd), p)
 }
@@ -171,6 +183,10 @@ dump_flow_details <- function(fobj){
 }
 
 #' kill_flow
+#' @param wd
+#' @param fobj
+#' @param kill_cmd
+#' @param jobid_col
 #' @examples 
 #' \dontrun{
 #' ## example for terminal

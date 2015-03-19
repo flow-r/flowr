@@ -20,10 +20,9 @@ replace_slots <- function(object, ...){
 
 #' @title get_unique_id
 #' @description get_unique_id
-#' @param base
-#' @param random_length
-#' @param prefix ="id"
-#' @param suffix
+#' @param random_length Integer, defaults to 8. In our opinion 8 serves well, providing 'uniqueness' and not being much of a eyesore.
+#' @param prefix Default \code{id}. Character string to be added in the front.
+#' @param suffix Default ''. Character string to be added in the end.
 #' @export
 #' @examples \dontrun{
 #' get_unique_id(base = id, random_length = 8)}
