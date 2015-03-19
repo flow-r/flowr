@@ -4,19 +4,20 @@
 \alias{rerun_flow}
 \title{rerun_flow}
 \usage{
-rerun_flow(wd, fobj, execute = TRUE, kill = TRUE)
+rerun_flow(x, execute = TRUE, kill = TRUE)
 }
 \arguments{
-\item{wd}{}
+\item{x}{Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.}
 
-\item{fobj}{}
-
-\item{execute}{}
+\item{execute}{[logical] whether to execute or not}
 
 \item{kill}{logical indicating whether to kill the jobs from old flow}
 }
 \description{
 rerun_flow
+}
+\details{
+We need path to the flow folder (\code{wd}). The \link{flow} object needs to have upate 'base_path' slow with wd (the path to the flow folder). Also its important to know that we need details regarding the previous submission from flow_details.txt file. Which should typically be in \code{wd}
 }
 \examples{
 \dontrun{

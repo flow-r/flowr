@@ -3,4 +3,5 @@
 .travis.yml
 mkdocs.yml
 docs
+^\.git
 #.*

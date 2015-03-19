@@ -4,9 +4,11 @@
 \alias{kill_flow}
 \title{kill_flow}
 \usage{
-kill_flow(wd, fobj, kill_cmd = "bkill", jobid_col = "job_sub_id")
+kill_flow(x, wd, fobj, kill_cmd = "bkill", jobid_col = "job_sub_id")
 }
 \arguments{
+\item{x}{either path to flow [character] or fobj object of class \link{flow}}
+
 \item{wd}{path to a specific which needs to be killed}
 
 \item{fobj}{a object of class \link{flow}}

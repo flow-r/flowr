@@ -11,9 +11,9 @@ setGeneric("create_queue_cmd", function (j_obj, file, ...){
 #' @rdname submit_job-methods
 #' @title submit_job
 #' @description submit_job
-#' @param j_obj job object
-#' @param f_obj flow object
-#' @param execute execute: logical
+#' @param j_obj Object of calls \link{job}
+#' @param f_obj Object of calls \link{flow}
+#' @param execute A \code{logical} vector suggesting whether to submit this job
 #' @param verbose logical
 #' @param wd working direcotry
 #' @param job_id job id
@@ -80,11 +80,11 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 #debug(test_queue)
 
 #' @title create_queue_cmd
-#' @description .create_queue_cmd
+#' @description .create_queue_cmd This is a flow interal functions used to create a command used to submit jobs to the cluster.
 #' @aliases create_queue_cmd
 #' @param j_obj object of class \link{job}
 #' @param file This is the path to the file to run
-#' @param index among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1.
+#' @param index among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1. This is to fetch dependency from previous job.
 #' @param ... Not used
 #' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
@@ -124,13 +124,18 @@ create_queue_cmd <- function(j_obj, file, index, ...){
     dependency <- ""    
   }
   l <- slots_as_list(j_obj, names=slotNames("queue"))
+  ## dependency initially is a list which can have multiple values
   l <- l[! names(l) %in% c("format","type", "dependency")] ### ignore a few of the slots
+  ## dependency here is a string according to the policies of the cluster platform
   l <- c(l, dependency=dependency) ## add dependency to the list
   names(l) = toupper(names(l)) ## get list of slots
   l <- c(l, "CMD"=file)
-  .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH if we dont use interal they change temporarily
+  if(FALSE){ ##finding an alternative to interal call
+    .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH if we dont use internal they change temporarily
+  }
+  do.call(Sys.setenv, l)  
   ##cmd <- system(sprintf("eval echo %s ",j_obj@format),intern=TRUE)
-  cmd <- system(sprintf("echo %s ",j_obj@format),intern=TRUE)
+  cmd <- system(sprintf("echo %s ", j_obj@format),intern=TRUE)
   return(cmd=cmd)
 }
 .create_queue_cmd=create_queue_cmd
@@ -277,26 +282,28 @@ setMethod("submit_flow", signature(f_obj = "flow"), definition = .submit_flow)
 
 
 #### ----------------------- submit loner job
-setMethod("submit_job", signature(j_obj = "job"),
-          function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
-            ## if(verbose) cat(j_obj@base_path, j_obj@name, "\n")
-            if(missing(wd)){
-              wd <- file.path(j_obj@base_path,paste(j_obj@name,
-                                                    UUIDgenerate(),sep="_"))
-            }
-            dir.create(wd, recursive=TRUE, showWarnings = FALSE)
-            script <- c(j_obj@cmd, sprintf("echo $? > %s/trigger_%s.txt", wd,j_obj@name))
-            file <- sprintf("%s/%s.sh", wd, j_obj@name)
-            write(script, file)
-            j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- wd
-            cmd <- sprintf("%s %s",create_queue_cmd(j_obj), file)
-            if (verbose) print(cmd)
-            if(execute){
-              jobid <- system(cmd, intern = TRUE)
-              j_obj@id <- jobid
-            }
-            return(j_obj)
-          })
+if(FALSE){
+  setMethod("submit_job", signature(j_obj = "job"),
+            function (j_obj, execute = FALSE,verbose = TRUE, wd, ...){
+              ## if(verbose) cat(j_obj@base_path, j_obj@name, "\n")
+              if(missing(wd)){
+                wd <- file.path(j_obj@base_path,paste(j_obj@name,
+                                                      UUIDgenerate(),sep="_"))
+              }
+              dir.create(wd, recursive=TRUE, showWarnings = FALSE)
+              script <- c(j_obj@cmd, sprintf("echo $? > %s/trigger_%s.txt", wd,j_obj@name))
+              file <- sprintf("%s/%s.sh", wd, j_obj@name)
+              write(script, file)
+              j_obj@stderr <- wd;j_obj@stdout <- wd;j_obj@cwd <- wd
+              cmd <- sprintf("%s %s",create_queue_cmd(j_obj), file)
+              if (verbose) print(cmd)
+              if(execute){
+                jobid <- system(cmd, intern = TRUE)
+                j_obj@id <- jobid
+              }
+              return(j_obj)
+            })
+}
 
 ## trace("create_queue_cmd", browser, exit=browser, signature = c("queue","character"));
 ## cmd <- create_queue_cmd(j_obj, file=files[i])

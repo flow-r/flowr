@@ -9,9 +9,13 @@ slots_as_list <- function(x, names=slotNames(x)){
 
 #setMethod("as.list", signature=c(x="queue"), definition=f)
 
+#' replace slots in a S4 object
+#' @param object a S4 object
+#' @param ... set of slot names to be replaced. This needs to be a named vector
+#' @import methods
 replace_slots <- function(object, ...){
     args <- as.list(match.call(expand.dots=TRUE))
-    args <- args[names(args) %in% slotNames(class(object))]
+    args <- args[names(args) %in% methods::slotNames(class(object))]
     for(s in names(args)){
         slot(object,s) <- args[[s]]
     }

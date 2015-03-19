@@ -85,7 +85,7 @@ setClass("flow", representation(jobs = "list",
 #' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'.
 #' This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
 #' dependencies. More on them here:
-#' @param verbose
+#' @param verbose [logical] TRUE/FALSE
 #' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
 #' @inheritParams job
 #' @keywords queue
@@ -98,7 +98,7 @@ queue <- function(object, submit_exe, queue="long",
                   stderr = "~/flows/tmp", stdout = "~/flows",
                   email = Sys.getenv("USER"),
                   type = "torque", format = "", extra_opts = "", verbose = TRUE,
-                  server = "localhost"){
+                  server = "localhost", ...){
   if(!missing(object)){
     object = replace_slots(object = object, ...)
     return(object)

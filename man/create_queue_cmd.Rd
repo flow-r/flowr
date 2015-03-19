@@ -11,12 +11,12 @@ create_queue_cmd(j_obj, file, index, ...)
 
 \item{file}{This is the path to the file to run}
 
-\item{index}{among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1.}
+\item{index}{among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1. This is to fetch dependency from previous job.}
 
 \item{...}{Not used}
 }
 \description{
-.create_queue_cmd
+.create_queue_cmd This is a flow interal functions used to create a command used to submit jobs to the cluster.
 }
 \examples{
 \dontrun{

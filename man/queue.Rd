@@ -8,7 +8,7 @@ queue(object, submit_exe, queue = "long", nodes = 1, cpu = 1,
   dependency = list(), jobname = "name", walltime, cwd = "~/flows",
   memory, stderr = "~/flows/tmp", stdout = "~/flows",
   email = Sys.getenv("USER"), type = "torque", format = "",
-  extra_opts = "", verbose = TRUE, server = "localhost")
+  extra_opts = "", verbose = TRUE, server = "localhost", ...)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}
@@ -46,9 +46,11 @@ dependencies. More on them here:}
 
 \item{extra_opts}{[Used by class job]}
 
-\item{verbose}{}
+\item{verbose}{[logical] TRUE/FALSE}
 
 \item{server}{This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted}
+
+\item{...}{other passed onto object creation. Example: memory, walltime, cpu}
 }
 \description{
 This function defines the queue used to submit jobs to the cluster. In essence details about the

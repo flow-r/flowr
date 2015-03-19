@@ -13,13 +13,13 @@ submit_job(j_obj, f_obj, ...)
   verbose = FALSE, wd, job_id, ...)
 }
 \arguments{
-\item{j_obj}{job object}
+\item{j_obj}{Object of calls \link{job}}
 
-\item{f_obj}{flow object}
+\item{f_obj}{Object of calls \link{flow}}
 
 \item{...}{not used}
 
-\item{execute}{execute: logical}
+\item{execute}{A \code{logical} vector suggesting whether to submit this job}
 
 \item{verbose}{logical}
 
