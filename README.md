@@ -16,7 +16,7 @@ Just get me started...
 
 ```
 install.packages('devtools')
-devtools::install_github("sahilseth/flow")
+devtools::install_github("sahilseth/flowr")
 require(flow)
 qobj <- queue(type="lsf", queue="normal")
 jobj1 <- job(q_obj=qobj)
@@ -33,7 +33,7 @@ As of now we have tested this on the following clusters:
 |Torque|qsub|Yes|torque
 |SGE|qsub|Not implemented|
 
-*queue short-name used in [flow](https://github.com/sahilseth/flow)
+*queue short-name used in [flow](https://github.com/sahilseth/flowr)
 
 There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? Send a [message](mailto:sahil.seth@me.com)
 
