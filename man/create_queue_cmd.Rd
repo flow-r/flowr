@@ -16,11 +16,12 @@ create_queue_cmd(j_obj, file, index, ...)
 \item{...}{Not used}
 }
 \description{
-.create_queue_cmd This is a flow interal functions used to create a command used to submit jobs to the cluster.
+This is a flow interal functions used to create a command used to submit jobs to the cluster.
 }
 \examples{
 \dontrun{
 .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 }
 }
+\keyword{internal}
 

@@ -33,8 +33,6 @@ setClass("lsf", contains = "queue")
 setClass("sge", contains = "queue")
 
 #### ----------------------- represents a single job
-#' job defines the class
-#' @exportClass job
 setClass("job", representation(cmds = "character",
                                name = "character",## for creating stdout etc
                                base_path = "character",
@@ -91,7 +89,7 @@ setClass("flow", representation(jobs = "list",
 #' @keywords queue
 #' @export
 #' @examples
-#' queue(type='lsf')
+#' qobj <- queue(type='lsf')
 queue <- function(object, submit_exe, queue="long", 
                   nodes=1, cpu=1, dependency = list(), 
                   jobname = "name",walltime, cwd="~/flows", memory,

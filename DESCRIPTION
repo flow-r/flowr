@@ -11,8 +11,8 @@ Imports:
     ggplot2,
     RSQLite,
     reshape2
+VignetteBuilder: knitr
 Date: 2015-03-19
-Author: Sahil Seth
-Maintainer: S. Seth <sseth@mdanderson.org>
+Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "sseth@mdanderson.org"))
 Description: Submitting R objects to the queue
 License: MIT + file LICENSE

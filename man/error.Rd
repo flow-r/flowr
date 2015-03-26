@@ -2,8 +2,7 @@
 % Please edit documentation in R/proc.errors.R
 \name{error}
 \alias{error}
-\title{function to handle all error descriptions
-function to handle all error descriptions}
+\title{Error Handler}
 \usage{
 error(x)
 }
@@ -12,6 +11,6 @@ error(x)
 }
 \description{
 function to handle all error descriptions
-function to handle all error descriptions
 }
+\keyword{internal}
 

@@ -4,6 +4,7 @@
 \name{plot_flow,flow-method}
 \alias{plot_flow}
 \alias{plot_flow,flow-method}
+\alias{plot_flow-method}
 \title{plot_flow}
 \usage{
 \S4method{plot_flow}{flow}(x, detailed = TRUE, pdf = FALSE,

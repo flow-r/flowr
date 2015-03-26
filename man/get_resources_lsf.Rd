@@ -18,7 +18,8 @@ get_resources_lsf
 }
 \examples{
 \dontrun{
-get_resources_lsf(wd = wd, cores = 4, pattern = out$)
+get_resources_lsf(wd = wd, cores = 4, pattern = out\\$)
 }
 }
+\keyword{internal}
 

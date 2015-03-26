@@ -20,4 +20,5 @@ get_unique_id
 \dontrun{
 get_unique_id(base = id, random_length = 8)}
 }
+\keyword{internal}
 

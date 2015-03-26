@@ -1,0 +1,37 @@
+---
+output:
+html_document:
+self_contained: no
+---
+Usage
+========================================================
+
+
+```{r}
+#require(flow)
+qobj <- queue(type = "lsf", queue = "normal")
+job1 <- job(name = "myjob1", q_obj = qobj)
+job2 <- job(name = "myjob2", q_obj = qobj, previous_job = "myjob1")
+job3 <- job(name = "myjob2", q_obj = qobj, previous_job = "myjob2")
+fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
+#source('/DRIVES/Dropbox2/Dropbox/public/github_flow/R/plot-funcs.R')
+dat <- .create_jobs_mat(fobj)
+.plot_flow_dat(dat)
+
+
+```
+
+
+```{r}
+mypack:::reload('rtd')
+pkg = as.sd_package(pkg = "~/Dropbox/public/github_flow",
+                    site_path = "~/Dropbox/public/github_flow_pages/source/rd",
+                    templates_path = "~/Dropbox/public/rtd/inst/templates")
+topics = topics = c("queue", "job", "flow", "plot_flow", "submit_flow", "submit_job",
+                    "get_flow_status", "kill_flow", "rerun_flow")
+#debug(build_topics)
+tmp <- build_topics(pkg = pkg, topics)
+tmp <- build_vignettes(pkg = pkg)
+```
+
+

@@ -1,5 +1,6 @@
-#' function to handle all error descriptions
-#' function to handle all error descriptions
+#' @title Error Handler
+#' @description function to handle all error descriptions
+#' @keywords internal
 #' @param x this is a string(s) with short error summary
 error <- function(x){
   if("no.flow.det.file" %in% x){

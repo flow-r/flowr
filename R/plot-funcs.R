@@ -1,7 +1,7 @@
 #' @title create_jobs_mat
 #' @description create_jobs_mat
 #' @param x a \link{flow} object.
-#' @export
+#' @keywords internal
 #' @examples \dontrun{
 #' .create_jobs_mat(x = x)}
 create_jobs_mat <- function(x){
@@ -52,7 +52,7 @@ setGeneric("plot_flow", function (x, ...){
 
 #' @title plot_flow
 #' @description plot the flow object
-#' @aliases plot_flow
+#' @aliases plot_flow plot_flow-method
 #' @aliases plot
 #' @param x Object of class \code{flow}
 #' @param detailed include some details

@@ -1,10 +1,3 @@
-setGeneric("create_queue_cmd", function (q_obj, file, ...){
-  standardGeneric("create_queue_cmd")
-})
-
-setGeneric("create_queue_cmd", function (j_obj, file, ...){
-  standardGeneric("create_queue_cmd")
-})
 
 #' @export
 #' @docType methods
@@ -19,7 +12,7 @@ setGeneric("create_queue_cmd", function (j_obj, file, ...){
 #' @param job_id job id
 #' @param ... not used
 #' @examples \dontrun{
-#' submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE, 
+#' submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE,
 #' verbose = TRUE, wd = wd, job_id = job_id)
 #' }
 setGeneric("submit_job", function (j_obj, f_obj, ...){
@@ -79,13 +72,15 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 }
 #debug(test_queue)
 
+
 #' @title create_queue_cmd
-#' @description .create_queue_cmd This is a flow interal functions used to create a command used to submit jobs to the cluster.
+#' @description This is a flow interal functions used to create a command used to submit jobs to the cluster.
 #' @aliases create_queue_cmd
 #' @param j_obj object of class \link{job}
 #' @param file This is the path to the file to run
 #' @param index among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1. This is to fetch dependency from previous job.
 #' @param ... Not used
+#' @keywords internal
 #' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 #' }
@@ -121,7 +116,7 @@ create_queue_cmd <- function(j_obj, file, index, ...){
   }
   ## this might be the case if re-run, when only a subset of jobs are to be rerun
   if(length(j_obj@dependency) == 0){
-    dependency <- ""    
+    dependency <- ""
   }
   l <- slots_as_list(j_obj, names=slotNames("queue"))
   ## dependency initially is a list which can have multiple values
@@ -133,11 +128,12 @@ create_queue_cmd <- function(j_obj, file, index, ...){
   if(FALSE){ ##finding an alternative to interal call
     .Internal(Sys.setenv(names(l), as.character(unlist(l)))) ## set slots in BASH if we dont use internal they change temporarily
   }
-  do.call(Sys.setenv, l)  
+  do.call(Sys.setenv, l)
   ##cmd <- system(sprintf("eval echo %s ",j_obj@format),intern=TRUE)
   cmd <- system(sprintf("echo %s ", j_obj@format),intern=TRUE)
   return(cmd=cmd)
 }
+
 .create_queue_cmd=create_queue_cmd
 setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), definition=.create_queue_cmd)
 
@@ -233,7 +229,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
       }else if(length(dep_type) > 0 & !dep_type %in% c("none") & previous_job %in% c("", "NA", ".")){
       	## if prev job is null, but depedency is mentioned
       	stop(paste("Previous job name missing for job: ", f_obj@jobs[[i]]@name))
-      }  	
+      }
     }
       ## ------ submit the job
     f_obj@jobs[[i]] <- .submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, verbose = verbose, ...)
@@ -247,7 +243,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
   f_obj@status <- "processed"
   if(execute){
     f_obj@status <- "submitted"
-    cat(sprintf("\nFlow has been submitted. Track it from terminal using:\nRscript -e 'flow:::status(\"%s\")'\nOR\nflowr status x=%s", 
+    cat(sprintf("\nFlow has been submitted. Track it from terminal using:\nRscript -e 'flow:::status(\"%s\")'\nOR\nflowr status x=%s\n\n",
                 f_obj@flow_path, f_obj@flow_path))
     ## dumpt the flow details
   }
@@ -263,12 +259,13 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
   }
   return(f_obj)
 }
+
 #' @title submit_flow
 #' @description submit_flow
 #' @aliases submit_flow
 #' @param f_obj \code{object} of class \code{flow}.
 #' @param uuid \code{character} A character string pointing to the folder (unique) where all the logs and other files are processed. This is optional and defaults to:
-#'  \code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}. 
+#'  \code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}.
 #'  Refer to \code{desc} and \code{name} paramters of \link{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
 #' @param make_flow_plot \code{logical} whether to make a flow plot (saves it in the flow working directory)

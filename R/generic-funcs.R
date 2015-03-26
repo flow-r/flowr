@@ -12,6 +12,7 @@ slots_as_list <- function(x, names=slotNames(x)){
 #' replace slots in a S4 object
 #' @param object a S4 object
 #' @param ... set of slot names to be replaced. This needs to be a named vector
+#' @keywords internal
 #' @import methods
 replace_slots <- function(object, ...){
     args <- as.list(match.call(expand.dots=TRUE))
@@ -28,6 +29,7 @@ replace_slots <- function(object, ...){
 #' @param prefix Default \code{id}. Character string to be added in the front.
 #' @param suffix Default ''. Character string to be added in the end.
 #' @export
+#' @keywords internal
 #' @examples \dontrun{
 #' get_unique_id(base = id, random_length = 8)}
 get_unique_id <- function(prefix="id", suffix = "", random_length = 8){

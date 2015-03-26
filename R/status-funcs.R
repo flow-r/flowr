@@ -128,8 +128,9 @@ get_resources <- function(x, odir, ...){
 #' @param cores Number of cores to use. [Numeric]
 #' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
 #' @import reshape2 tools
+#' @keywords internal
 #' @examples \dontrun{
-#' get_resources_lsf(wd = wd, cores = 4, pattern = out$)
+#' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }
 get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
   flow_mat = read.table(file.path(wd, "flow_details.txt"), sep = "\t", header = TRUE)

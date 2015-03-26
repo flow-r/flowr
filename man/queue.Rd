@@ -57,7 +57,7 @@ This function defines the queue used to submit jobs to the cluster. In essence d
 computing cluster in use.
 }
 \examples{
-queue(type='lsf')
+qobj <- queue(type='lsf')
 }
 \keyword{queue}
 

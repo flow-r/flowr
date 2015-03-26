@@ -16,4 +16,5 @@ create_jobs_mat
 \dontrun{
 .create_jobs_mat(x = x)}
 }
+\keyword{internal}
 
