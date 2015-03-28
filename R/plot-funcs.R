@@ -62,11 +62,29 @@ setGeneric("plot_flow", function (x, ...){
 #' @param ... experimental
 #' @exportMethod plot_flow
 #' @import diagram
-#' @examples \dontrun{
-#' plot_flow(x = x, pdf = TRUE)}
+#' @examples 
+#' qobj = queue(type="lsf")
+#' cmds = rep("sleep 5", 10)
+#' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+#'              dependency_type = "serial", previous_job = "job1")
+#' fobj <- flow(jobs = list(jobj1, jobj2))
+#' plot_flow(fobj)
+#' 
+#' ### Gather: many to one relationship
+#' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+#'              dependency_type = "gather", previous_job = "job1")
+#' fobj <- flow(jobs = list(jobj1, jobj2))
+#' plot_flow(fobj)
+#' ### Burst: one to many relationship
+#' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
+#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+#'              dependency_type = "burst", previous_job = "job1")
+#' fobj <- flow(jobs = list(jobj1, jobj2))
+#' plot_flow(fobj)
 setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)
 setMethod("plot", signature(x = "flow"), definition=plot_flow)
-
 
 .plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
                            width, height, ...){
@@ -97,7 +115,9 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
         textsize=1.1;textcol="gray30"
         detail.cex=0.8; detail.offset=c(0,0.04)
     }
-    detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
+    #detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
+    detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
+    detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
     ## --------------- start plotting
     par(mar = c(1, 1, 1, 1))
     if(pdf) pdf(file=pdffile, width = width, height = height)
@@ -123,7 +143,9 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
             textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
                      shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
         if(detailed){
-            textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs[i],
+          textplain(elpos[i,] + detail.offset, boxht, lab = detailed.labs.dep[i],
+                    cex=detail.cex, col=textcol)
+          textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs.sub[i],
                       cex=detail.cex, col=textcol)
         }
     }

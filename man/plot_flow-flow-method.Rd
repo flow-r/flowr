@@ -27,7 +27,25 @@
 plot the flow object
 }
 \examples{
-\dontrun{
-plot_flow(x = x, pdf = TRUE)}
+qobj = queue(type="lsf")
+cmds = rep("sleep 5", 10)
+jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
+             dependency_type = "serial", previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj)
+
+### Gather: many to one relationship
+jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
+             dependency_type = "gather", previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj)
+### Burst: one to many relationship
+jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
+jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
+             dependency_type = "burst", previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj)
 }
 

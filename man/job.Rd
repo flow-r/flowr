@@ -40,7 +40,32 @@ job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 job class
 }
 \examples{
-q_obj <- queue(type="torque")
-j_obj <- job(q_obj=q_obj, cmd = "sleep 2", cpu=1)
+qobj <- queue(type="torque")
+
+## torque job with 1 CPU running command 'sleep 2'
+j_obj <- job(q_obj=qobj, cmd = "sleep 2", cpu=1)
+
+## multiple commands
+cmds = rep("sleep 5", 10)
+
+## run the 10 commands in parallel
+jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+
+## run the 10 commands sequentially, but WAIT for the previous job to complete
+jobj2 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial",
+   dependency_type = "gather", previous_job = "job1")
+
+fobj <- flow(jobs = list(jobj1, jobj2))
+
+## plot the flow
+plot_flow(fobj)
+\dontrun{
+## dry run, only create the structure without submitting jobs
+submit_flow(fobj)
+
+## execute the jobs: ONLY works on computing cluster, would fail otherwise
+submit_flow(fobj, execute = TRUE)
+
+}
 }
 

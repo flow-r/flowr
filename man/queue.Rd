@@ -7,8 +7,9 @@
 queue(object, submit_exe, queue = "long", nodes = 1, cpu = 1,
   dependency = list(), jobname = "name", walltime, cwd = "~/flows",
   memory, stderr = "~/flows/tmp", stdout = "~/flows",
-  email = Sys.getenv("USER"), type = "torque", format = "",
-  extra_opts = "", verbose = TRUE, server = "localhost", ...)
+  email = Sys.getenv("USER"), type = c("lsf", "torque", "sge"),
+  format = "", extra_opts = "", verbose = TRUE, server = "localhost",
+  ...)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}

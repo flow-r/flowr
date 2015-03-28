@@ -1,7 +1,8 @@
 Package: flowr
 Type: Package
-Title: R pacakge which manages workflows and queues jobs in HPCC cluster
-Version: 0.9.6
+Title: Streamlining Design and Deployment of Complex Workflows
+Description: An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.
+Version: 0.9.6.5
 Depends:
     methods,
     stats,
@@ -11,8 +12,9 @@ Imports:
     ggplot2,
     RSQLite,
     reshape2
+Date: 2015-03-27
 VignetteBuilder: knitr
-Date: 2015-03-19
-Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "sseth@mdanderson.org"))
-Description: Submitting R objects to the queue
+URL: https://github.com/sahilseth/flowr
+BugReports: https://github.com/sahilseth/flowr/issues
+Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
 License: MIT + file LICENSE

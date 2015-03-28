@@ -1,15 +1,19 @@
-flowr: 0.96.1
+flowr 0.96.5
 ----------------------------------------------
+- Added more examples
+- Update Vignette with more examples
+- squash issues in DESCRIPTION
 
+flowr 0.96.1
+----------------------------------------------
+- Added some vignettes for a simple and comples example
+- satiate CRAN checks
 
-
-
-flowr: 0.95.1
+flowr 0.95.1
 ----------------------------------------------
 
 - Added several new functions kill_flow(), which kills the flow.
 - Added experimental rerun_flow which still needs some work
-- Added some vignettes for a simple and comples example
 - updated documentation to satiate R CMD check
 - now job() checks for a dependency_type is previous job is provided
 - Added some slides inst
@@ -19,9 +23,9 @@ flow_status.txt
 - status() updates: flow_details.txt and flow_status.txt
 - save flow.rda files with all details on the flow
 - update flow details with job exit status, to be used in rerun
-- Now flow_status, reports started, completed, exited.
 
-### TODO:
+### TODO
+
 - add more examples
 - update and cleanup documentation
 - integrate with sqlite with status
@@ -30,10 +34,11 @@ flow_status.txt
 - Work on test_queue()
 - Add recipies
 
-flow: 0.85
+flow 0.85
 ----------------------------------------------
 
-## todo:
+### todo
+
   - get\_flow_details():
     Attach a job_number
   Attach a flow level unique ID

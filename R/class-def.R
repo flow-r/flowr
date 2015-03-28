@@ -95,8 +95,9 @@ queue <- function(object, submit_exe, queue="long",
                   jobname = "name",walltime, cwd="~/flows", memory,
                   stderr = "~/flows/tmp", stdout = "~/flows",
                   email = Sys.getenv("USER"),
-                  type = "torque", format = "", extra_opts = "", verbose = TRUE,
+                  type = c('lsf', 'torque', 'sge'), format = "", extra_opts = "", verbose = TRUE,
                   server = "localhost", ...){
+  type = match.arg(type)
   if(!missing(object)){
     object = replace_slots(object = object, ...)
     return(object)
@@ -156,6 +157,7 @@ queue <- function(object, submit_exe, queue="long",
 
 ## submission_type: this decides that the cmds to be submittion in which manner
 ## flow_type: if multi dependencies, wait for all or according to order
+
 #' job class
 #' @param cmds the commands to run
 #' @param base_path base path
@@ -172,8 +174,33 @@ queue <- function(object, submit_exe, queue="long",
 #' @param ... other passed onto object creation. Example: memory, walltime, cpu
 #' @export
 #' @examples
-#' q_obj <- queue(type="torque")
-#' j_obj <- job(q_obj=q_obj, cmd = "sleep 2", cpu=1)
+#' qobj <- queue(type="torque")
+#' 
+#' ## torque job with 1 CPU running command 'sleep 2'
+#' j_obj <- job(q_obj=qobj, cmd = "sleep 2", cpu=1)
+#' 
+#' ## multiple commands
+#' cmds = rep("sleep 5", 10)
+#' 
+#' ## run the 10 commands in parallel
+#' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+#' 
+#' ## run the 10 commands sequentially, but WAIT for the previous job to complete
+#' jobj2 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", 
+#'    dependency_type = "gather", previous_job = "job1")
+#' 
+#' fobj <- flow(jobs = list(jobj1, jobj2))
+#' 
+#' ## plot the flow
+#' plot_flow(fobj)
+#' \dontrun{
+#' ## dry run, only create the structure without submitting jobs
+#' submit_flow(fobj)
+#' 
+#' ## execute the jobs: ONLY works on computing cluster, would fail otherwise
+#' submit_flow(fobj, execute = TRUE)
+#' 
+#' }
 job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
                 q_obj = new("queue"), previous_job = '', cpu = 1, memory, walltime,
                 submission_type=c("scatter", "serial"), status="",
@@ -218,6 +245,33 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 #' @param flow_path \code{character}
 #' @param status \code{character} Not used at this time
 #' @export
+#' @examples
+#' cmds = rep("sleep 5", 10)
+#' qobj <- queue(type='torque')
+#' ## run the 10 commands in parallel
+#' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+#' 
+#' ## run the 10 commands sequentially, but WAIT for the previous job to complete
+#' ## Many-To-One
+#' jobj2 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", 
+#'  dependency_type = "gather", previous_job = "job1", name = "job2")
+#' 
+#' ## As soon as first job on 'job1' is complete
+#' ## One-To-One
+#' jobj3 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", 
+#'  dependency_type = "serial", previous_job = "job1", name = "job3")
+#' 
+#' fobj <- flow(jobs = list(jobj1, jobj2, jobj3))
+#' 
+#' ## plot the flow
+#' plot_flow(fobj)
+#' \dontrun{
+#' ## dry run, only create the structure without submitting jobs
+#' submit_flow(fobj)
+#' 
+#' ## execute the jobs: ONLY works on computing cluster, would fail otherwise
+#' submit_flow(fobj, execute = TRUE)
+#' }
 flow <- function(jobs=list(new("job")), name="newflow", desc = "my_super_flow",
                  mode=c("scheduler","trigger","R"), flow_base_path="~/flows",
                  trigger_path="", flow_path="", status=""){
