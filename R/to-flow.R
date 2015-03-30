@@ -2,17 +2,27 @@ setGeneric("to_flow", function (x, ...){
   standardGeneric("to_flow")
 })
 
-
-
-
-.to_flow.list <- function(x){
-  
+is.flow_def <- function(x){
+  class(x) == "flow_def"
 }
 
+as.flow_def <- function(x){
+  if(is.flow_def(x))
+    return(x)
+  ## ---- assuming x is a table
+  y <- read_sample_sheet(x, id_column = "jobname")
+}
 
-setMethod("to_flow", signature(x = "list", def = 'flow_def'), definition = .to_flow.list)
+.to_flow.list <- function(x, def = 'flow_def'){
+  def <- as.flow_def(def)
+}
 
-setMethod("to_flow", signature(x = "data.frame", def = 'flow_def'), definition = .to_flow.data.frame)
+.to_flow.data.frame <- function(x, def = 'flow_def'){
+}
+
+setMethod("to_flow", signature(x = "list"), definition = .to_flow.list)
+
+setMethod("to_flow", signature(x = "data.frame"), definition = .to_flow.data.frame)
 
 
 #' @title to_flow

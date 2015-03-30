@@ -2,28 +2,28 @@
 % Please edit documentation in R/to-flow.R
 \name{cmds_to_flow}
 \alias{cmds_to_flow}
-\title{cmds_to_flow}
+\title{to_flow}
 \usage{
 cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
   versbose = FALSE), flowname = "stage2", execute = FALSE,
   flow_base_path = "/scratch/iacs/flow_pipe/tmp")
 }
 \arguments{
-\item{cmd.list}{list of commands}
-
 \item{samplename}{name of the sample}
-
-\item{infomat}{a table with resource requirements and mapping of the jobs in this flow}
-
-\item{q_obj}{a object of class \link{queue}}
 
 \item{flowname}{name of the flow}
 
 \item{execute}{whether to submit the flow to the cluster after creation}
 
 \item{flow_base_path}{base path for log file etc. Basically the main operating folder for this flow.}
+
+\item{x}{\link{list} of commands}
+
+\item{def}{A flow definition table \link{flow_def}. Basically a table with resource requirements and mapping of the jobs in this flow}
+
+\item{q}{a object of class \link{queue}, defining how to submit the jobs. This can be created from parameters specified in system wide config file (~/flowr/}
 }
 \description{
-cmds_to_flow
+Create a \link{flow} object from a list of commands
 }
 
