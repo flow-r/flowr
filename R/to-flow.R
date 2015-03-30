@@ -1,14 +1,26 @@
-setGeneric("to_flow", function (j_obj, f_obj, ...){
+setGeneric("to_flow", function (x, ...){
   standardGeneric("to_flow")
 })
 
 
-#' @title cmds_to_flow
-#' @description cmds_to_flow
-#' @param cmd.list list of commands
+
+
+.to_flow.list <- function(x){
+  
+}
+
+
+setMethod("to_flow", signature(x = "list", def = 'flow_def'), definition = .to_flow.list)
+
+setMethod("to_flow", signature(x = "data.frame", def = 'flow_def'), definition = .to_flow.data.frame)
+
+
+#' @title to_flow
+#' @description Create a \link{flow} object from a list of commands
+#' @param x \link{list} of commands
+#' @param def A flow definition table \link{flow_def}. Basically a table with resource requirements and mapping of the jobs in this flow
+#' @param q a object of class \link{queue}, defining how to submit the jobs. This can be created from parameters specified in system wide config file (~/flowr/ 
 #' @param samplename name of the sample
-#' @param infomat a table with resource requirements and mapping of the jobs in this flow
-#' @param q_obj a object of class \link{queue}
 #' @param flowname name of the flow
 #' @param execute whether to submit the flow to the cluster after creation
 #' @param flow_base_path base path for log file etc. Basically the main operating folder for this flow.

@@ -8,7 +8,6 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-
 ```{r, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
@@ -18,12 +17,13 @@ knitr::opts_chunk$set(
 library(flowr)
 ```
 
-### Assuming we are working on a LSF platform, we define it using type. Currently we support LSF and Torque (SGE). 
+Currently we support LSF and Torque (SGE). 
+
 ```{r getqobj}
-qobj <- queue(type = "lsf", queue = "normal")
+qobj <- queue(type = "lsf", queue = "normal", verbose = FALSE)
 ```
 
-### creating a pipeline definition: Style1
+### Simple flow
 - Each module here has a single job
 - job2 and job3 would start after 1 is complete
 ```{r plot_simpleflow}
@@ -40,7 +40,6 @@ dat <- flowr:::.create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 
-## An example of Multiple jobs
 
 ### Submission types
 - scatter: submit all commands as parallel independent jobs
@@ -52,7 +51,7 @@ knitr:::kable(dat)
 - gather: *many to one* wait for **all** commands in previous job to finish then start current
 
 
-### Serial: one to one relationship
+##### Serial: one to one relationship
 - All commads in 'job1' are submitted, and those is 'jobs2' *wait* for those in 'job1' to complete.
 - Commands in 'job2' are serially dependent on 'job1'
 - Both jobs are submitted as parallel (*scatter*), i.e. there is not **intra** dependency.
@@ -66,7 +65,7 @@ fobj <- flow(jobs = list(jobj1, jobj2))
 plot_flow(fobj)
 ```
 
-### Gather: many to one relationship
+##### Gather: many to one relationship
 - makes sense when previous job had many commands running in parallel and current job would wait for all
 - so previous job submission: `scatter`, and current job's dependency type `gather`
 ```{r}
@@ -77,7 +76,7 @@ fobj <- flow(jobs = list(jobj1, jobj2))
 plot_flow(fobj)
 ```
 
-### Burst: one to many relationship
+##### Burst: one to many relationship
 - makes sense when previous job had one command current job would split and submit several jobs in parallel
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 ```{r}
