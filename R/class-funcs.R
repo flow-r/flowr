@@ -52,17 +52,17 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
   j_obj2 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job2',
                 previous_job = 'job1', dependency_type = "serial")
   #cat("Submitted second job with script:", j_obj2@script, "\n")
-  if(verbose) cat("Creating a 'flow' of two jobs. Check 'flows' folder in your home for a",
+  if(verbose) message("Creating a 'flow' of two jobs. Check 'flows' folder in your home for a",
                   "new directory called test_....\n",
                   "You may also do bjobs/qstat or a respective command for your",
                   "scheduler to look at these jobs.\n\n\n")
   f_obj <- flow(jobs = list(j_obj1, j_obj2), desc = "test", flow_base_path = "~/flows")
   tmp <- submit_flow(f_obj, execute = TRUE, make_flow_plot = FALSE, verbose = TRUE)
-  cat("Flow path:\t", tmp@flow_path, "\n")
-  cat("First job ID: \t", tmp@jobs[[1]]@id, "\n")
-  cat("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
-  cat("Path to logs (1):\t", tmp@jobs[[1]]@stdout, "\n")
-  cat("Path to logs (2):\t", tmp@jobs[[2]]@stdout, "\n")
+  message("Flow path:\t", tmp@flow_path, "\n")
+  message("First job ID: \t", tmp@jobs[[1]]@id, "\n")
+  message("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
+  message("Path to logs (1):\t", tmp@jobs[[1]]@stdout, "\n")
+  message("Path to logs (2):\t", tmp@jobs[[2]]@stdout, "\n")
   ## cmd.0 <- .create_queue_cmd(j_obj)
   ## if(verbose) cat("An example command string looks like:\n", cmd.0)
   ## cmd <- sprintf("echo 'sleep 1' | %s", cmd.0)
@@ -170,7 +170,7 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
                              f_obj@flow_path, j_obj@jobname,i),
                      "echo 'END at' `date`")
     script <- c(beforescript,j_obj@cmds[i], afterscript)
-    if(verbose) cat("Submitting using script:\n", cmd, "\n")
+    if(verbose) message("Submitting using script:\n", cmd, "\n")
     write(script, files[i])
     if(execute){
       jobid <- system(cmd, intern = TRUE)
@@ -244,7 +244,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
   if(execute){
     f_obj@status <- "submitted"
     ## Rscript -e 'flow:::status(\"%s\")
-    cat(sprintf("\nFlow has been submitted. Track it from terminal using:\nOR\nflowr status x=%s\n\n",
+    message(sprintf("\nFlow has been submitted. Track it from terminal using:\nOR\nflowr status x=%s\n\n",
                 f_obj@flow_path, f_obj@flow_path))
     ## dumpt the flow details
   }
@@ -256,7 +256,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
                    pdffile = sprintf("%s/%s-flow_design.pdf",f_obj@flow_path, f_obj@name))
       )
   }else{
-    if(verbose) cat("Skipping plots...\n")
+    if(verbose) message("Skipping plots...\n")
   }
   return(f_obj)
 }

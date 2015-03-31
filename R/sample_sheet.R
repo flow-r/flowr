@@ -12,7 +12,7 @@ read_sample_sheet <- function(x, id_column = "sample_id"){
     mat <- xlsx:::read.xlsx2(file = x, sheetName = "sample_sheet", startRow = 2, stringsAsFactors = FALSE)
   }
   else{
-    cat("Sorry we do not recognize this file format", ext, "please use tsv, csv or xlsx2 (sheetname: sample_sheet)")
+    stop("Sorry we do not recognize this file format", ext, "please use tsv, csv or xlsx2 (sheetname: sample_sheet)")
   }
   ### ------ remove blank rows and columns
   mat <- mat[!mat[, id_column] %in% c("", NA), !grepl("^X", colnames(mat))]

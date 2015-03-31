@@ -6,18 +6,40 @@ is.flow_def <- function(x){
   class(x) == "flow_def"
 }
 
+
+flow_def.check <- function(x){
+    ## check all previous jobs defined in names
+    ## code previous jobs as NA
+    ## allowable types:
+    ## previous job
+    ##      scatter --(serial)--> scatter
+    ##      scatter --(gather)--> scatter
+    ##      scatter --(gather)--> serial
+    ##      serial  --(serial)--> scatter
+    ##      serial  --(burst)--> scatter
+    ## In case of:
+    ##      scatter --(serial)--> scatter
+    ## length of prev == length of curr
+
+    ## not allowed:
+    ##      any --(none)--> any
+}
+
 as.flow_def <- function(x){
   if(is.flow_def(x))
     return(x)
   ## ---- assuming x is a table
   y <- read_sample_sheet(x, id_column = "jobname")
+  y <- flow_def.check(y)
 }
+
 
 .to_flow.list <- function(x, def = 'flow_def'){
   def <- as.flow_def(def)
 }
 
 .to_flow.data.frame <- function(x, def = 'flow_def'){
+  
 }
 
 setMethod("to_flow", signature(x = "list"), definition = .to_flow.list)
@@ -29,7 +51,7 @@ setMethod("to_flow", signature(x = "data.frame"), definition = .to_flow.data.fra
 #' @description Create a \link{flow} object from a list of commands
 #' @param x \link{list} of commands
 #' @param def A flow definition table \link{flow_def}. Basically a table with resource requirements and mapping of the jobs in this flow
-#' @param q a object of class \link{queue}, defining how to submit the jobs. This can be created from parameters specified in system wide config file (~/flowr/ 
+#' @param q a object of class \link{queue}, defining how to submit the jobs. This can be created from parameters specified in system wide config file (~/flowr/
 #' @param samplename name of the sample
 #' @param flowname name of the flow
 #' @param execute whether to submit the flow to the cluster after creation
@@ -39,7 +61,7 @@ cmds_to_flow <- function(cmd.list,
                          samplename = "",
                          infomat,
                          q_obj = queue(type = "lsf", versbose=FALSE),
-                         flowname = "stage2", 
+                         flowname = "stage2",
                          execute = FALSE,
                          flow_base_path = "/scratch/iacs/flow_pipe/tmp"){
   ## trim down the list
@@ -50,9 +72,9 @@ cmds_to_flow <- function(cmd.list,
   ## Error handling: missing in info
   missing.info = names(cmd.list)[!names(cmd.list) %in% infomat$jobname]
   if(length(missing.info) > 0){
-    warning("\n\nMessage:\nOops issue with infomat.\n",         
-            "It seems these job names are missing from the infomat:\n", 
-            paste(missing.info, collapse="\n"), 
+    warning("\n\nMessage:\nOops issue with infomat.\n",
+            "It seems these job names are missing from the infomat:\n",
+            paste(missing.info, collapse="\n"),
             ".\nWill remove them from cmd.list and proceed\n")
     ## removing from commands if missing in infomat
     cmd.list = cmd.list[names(cmd.list) %in% infomat$jobname]
@@ -68,23 +90,25 @@ cmds_to_flow <- function(cmd.list,
   if( mean(table(infomat$jobname)) != 1 || mean(table(names(cmd.list))) != 1 )
     stop("\n\nMessage:\nOops issue with infomat/cmd.list.\n",
          "Seem either jobnames in infomat are or that in cmd.list are duplicated\n")
-  
+
   jobs = list()
   for( i in 1:length(cmd.list)){
     #jobs = lapply(1:length(cmd.list), function(i){
-    cat(".")
+    message(".")
     cmds = cmd.list[[i]]; jobnm = names(cmd.list)[i]
     #cmds = unique(cmds);
-    with(infomat, {
-      prev_job = unlist(subset(infomat, jobname == jobnm, select = 'previous_job'))
-      prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
-      cpu = as.numeric(unlist(subset(infomat, jobname == jobnm, select = 'cpu_reserved')))
-      walltime = as.character(unlist(subset(infomat, jobname == jobnm, select = 'walltime')))
-      memory = as.character(unlist(subset(infomat, jobname == jobnm, select = 'memory_reserved')))
-      queue = as.character(unlist(subset(infomat, jobname == jobnm, select = 'queue')))    
-      dep_type = as.character(unlist(subset(infomat, jobname == jobnm, select = 'dep_type')))
+    infomat2 = subset(infomat, infomat$jobname == jobnm)
+    #print(knitr:::kable(infomat2))
+    prev_job = unlist(infomat2$previous_job)
+    prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
+    cpu = unlist(infomat2$cpu_reserved)
+    walltime = unlist(infomat2$walltime)
+    memory = as.character(unlist(infomat2$memory_reserved))
+    queue = unlist(infomat2$queue)
+    dep_type = unlist(infomat2$dep_type)
+    sub_type = unlist(infomat2$sub_type)
+    if(length(sub_type) == 0)
       sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
-    })
     ## guess dep_type
     if(length(prev_job) > 1){
       dep_type = "gather"
@@ -103,7 +127,7 @@ cmds_to_flow <- function(cmd.list,
     cpu = ifelse(cmds[1] == ".", 1, cpu)
     cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1]) ## if starts from . echo
     j = job(q_obj = q_obj, name = jobnm, previous_job = prev_job, cmds = cmds,
-            dependency_type = dep_type, submission_type = sub_type, 
+            dependency_type = dep_type, submission_type = sub_type,
             cpu = cpu, queue = queue,
             walltime = walltime, memory = memory)
     jobs = c(jobs, j)
