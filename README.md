@@ -8,7 +8,7 @@ R pacakge to design (and submit) complex workflows, such that optimization/paral
 
 Please visit [docs.flowr.space](http://docs.flowr.space) for more information.
 
-Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your `shiny` flow.
+Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your flow.
 [`guest; guestpass`]
 
 
@@ -32,6 +32,6 @@ As of now we have tested this on the following clusters:
 |LSF 9.1|bsub|Yes|lsf
 |Torque|qsub|Yes|torque
 |SGE|qsub|should work|sge
-|LSF HPC 7|bsub|Not tested|lsf
+|LSF HPC 7|bsub|should work|lsf
 
 *label: This serves as the type argument for [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function.
