@@ -2,6 +2,7 @@ flowr 0.96.7
 ----------------------------------------------
 - add read_sample_sheet
 - clean package dependencies
+- flow(): conver jobs to list()
 
 flowr 0.96.6
 ----------------------------------------------

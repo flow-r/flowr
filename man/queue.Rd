@@ -4,58 +4,67 @@
 \alias{queue}
 \title{Create a \code{queue} object which containg details about how a job is submitted.}
 \usage{
-queue(object, submit_exe, queue = "long", nodes = 1, cpu = 1,
-  dependency = list(), jobname = "name", walltime, cwd = "~/flows",
-  memory, stderr = "~/flows/tmp", stdout = "~/flows",
-  email = Sys.getenv("USER"), type = c("lsf", "torque", "sge"),
-  format = "", extra_opts = "", verbose = TRUE, server = "localhost",
-  ...)
+queue(object, queue = "long", type = c("lsf", "torque", "sge"), walltime,
+  memory, cpu = 1, extra_opts = "", submit_exe, format = "",
+  cwd = "~/flows", nodes = 1, jobname = "name",
+  email = Sys.getenv("USER"), dependency = list(), server = "localhost",
+  verbose = TRUE, stderr = "~/flowr/tmp", stdout = "~/flowr", ...)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}
 
-\item{submit_exe}{the exact command used to submit jobs to the cluster example \code{qsub}
-\code{bsub} etc.}
-
-\item{queue}{the type of queue your group usually uses}
-
-\item{nodes}{number of nodes you would like to request. \emph{optional} [Used by class job]}
-
-\item{cpu}{number of cpus you would like to reserve [Used by class job]}
-
-\item{dependency}{a list of jobs to complete before starting this one [Used by class job]}
-
-\item{jobname}{name of this job in the computing cluster [Used by class job]}
-
-\item{walltime}{max walltime of a job. [Used by class job]}
-
-\item{cwd}{[Used by class job]}
-
-\item{memory}{The amount of memory reserved. Units depend on the platform used to process jobs}
-
-\item{stderr}{[Used by class job]}
-
-\item{stdout}{[Used by class job]}
-
-\item{email}{[Used by class job]}
+\item{queue}{the type of queue your group usually uses
+'bsub' etc.}
 
 \item{type}{Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]}
 
-\item{format}{We have a default format for the final command line string generated for 'lsf' and 'torque'.
-This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
-dependencies. More on them here:}
+\item{walltime}{max walltime of a job.}
 
-\item{extra_opts}{[Used by class job]}
+\item{memory}{The amount of memory reserved. Units depend on the platform used to process jobs}
+
+\item{cpu}{number of cpus you would like to reserve [Used by class job]}
+
+\item{extra_opts}{[advanced use] Extra options to be supplied while create the job submission string.}
+
+\item{submit_exe}{[advanced use] Already defined by 'type'. The exact command used to submit jobs to the cluster example 'qsub'}
+
+\item{format}{[advanced use] We have a default format for the final command line string generated for 'lsf' and 'torque'.}
+
+\item{cwd}{[debug use] Ignore}
+
+\item{nodes}{[advanced use] number of nodes you would like to request. \emph{optional} [Used by class job]}
+
+\item{jobname}{[debug use] name of this job in the computing cluster}
+
+\item{email}{[advanced use] Defaults to system user, you may put you own email though may get tons of them.}
+
+\item{dependency}{[debug use] a list of jobs to complete before starting this one}
+
+\item{server}{[not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted}
 
 \item{verbose}{[logical] TRUE/FALSE}
 
-\item{server}{This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted}
+\item{stderr}{[debug use] Ignore}
+
+\item{stdout}{[debug use] Ignore}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
 }
 \description{
 This function defines the queue used to submit jobs to the cluster. In essence details about the
 computing cluster in use.
+}
+\details{
+## Resources:
+Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
+job level they overwrite the one supplied in \link{queue}
+
+Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
+## Server:
+This a hook which may be implemented in future.
+
+## Submission script:
+The 'type' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
 }
 \examples{
 qobj <- queue(type='lsf')

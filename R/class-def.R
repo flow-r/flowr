@@ -66,37 +66,56 @@ setClass("flow", representation(jobs = "list",
 #' computing cluster in use.
 #'
 #' @param object this is not used currenlty, ignore.
-#' @param submit_exe the exact command used to submit jobs to the cluster example \code{qsub}
-#' \code{bsub} etc.
-#' @param queue the type of queue your group usually uses
-#' @param nodes number of nodes you would like to request. \emph{optional} [Used by class job]
-#' @param cpu number of cpus you would like to reserve [Used by class job]
-#' @param dependency a list of jobs to complete before starting this one [Used by class job]
-#' @param jobname name of this job in the computing cluster [Used by class job]
-#' @param walltime max walltime of a job. [Used by class job]
-#' @param cwd [Used by class job]
-#' @param stderr [Used by class job]
-#' @param stdout [Used by class job]
-#' @param email [Used by class job]
-#' @param extra_opts [Used by class job]
 #' @param type Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]
-#' @param format We have a default format for the final command line string generated for 'lsf' and 'torque'.
-#' This defined the exact (\code{bsub}/\code{qsub}) used to submit the job. One of the most important features required is:
-#' dependencies. More on them here:
+#' @param queue the type of queue your group usually uses
+#' 'bsub' etc.
+#' @param nodes [advanced use] number of nodes you would like to request. \emph{optional} [Used by class job]
+#' @param cpu number of cpus you would like to reserve [Used by class job]
+#' @param dependency [debug use] a list of jobs to complete before starting this one
+#' @param walltime max walltime of a job.
+#' @param email [advanced use] Defaults to system user, you may put you own email though may get tons of them.
+#' @param extra_opts [advanced use] Extra options to be supplied while create the job submission string.
+#' @param submit_exe [advanced use] Already defined by 'type'. The exact command used to submit jobs to the cluster example 'qsub'
+#' @param format [advanced use] We have a default format for the final command line string generated for 'lsf' and 'torque'.
 #' @param verbose [logical] TRUE/FALSE
-#' @param server This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
+#' @param cwd [debug use] Ignore
+#' @param jobname [debug use] name of this job in the computing cluster
+#' @param stderr [debug use] Ignore
+#' @param stdout [debug use] Ignore
+#' @param server [not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
+#' @details 
+#' ## Resources:
+#' Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
+#' job level they overwrite the one supplied in \link{queue} 
+#' 
+#' Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
+#' ## Server:
+#' This a hook which may be implemented in future.
+#' 
+#' ## Submission script:
+#' The 'type' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
 #' @inheritParams job
 #' @keywords queue
 #' @export
 #' @examples
 #' qobj <- queue(type='lsf')
-queue <- function(object, submit_exe, queue="long",
-                  nodes=1, cpu=1, dependency = list(),
-                  jobname = "name",walltime, cwd="~/flows", memory,
-                  stderr = "~/flows/tmp", stdout = "~/flows",
+queue <- function(object, 
+                  queue="long",
+                  type = c('lsf', 'torque', 'sge'), 
+                  ## Resources
+                  walltime, 
+                  memory,
+                  cpu=1, 
+                  ## format
+                  extra_opts = "", 
+                  submit_exe, format = "", cwd="~/flows", nodes=1, 
+                  ## debug use
+                  jobname = "name", 
                   email = Sys.getenv("USER"),
-                  type = c('lsf', 'torque', 'sge'), format = "", extra_opts = "", verbose = TRUE,
-                  server = "localhost", ...){
+                  dependency = list(),
+                  server = "localhost",  verbose = TRUE,
+                  stderr = "~/flowr/tmp", stdout = "~/flowr",
+                  ...){
   type = match.arg(type)
   if(!missing(object)){
     object = replace_slots(object = object, ...)
@@ -140,7 +159,8 @@ queue <- function(object, submit_exe, queue="long",
                   nodes=nodes, cpu=cpu, jobname=jobname,
                   dependency=dependency, walltime=walltime,
                   memory=memory,
-                  cwd=cwd, stderr=stderr, stdout=stdout, email=email,type=type,
+                  cwd=cwd, stderr=stderr, 
+                  stdout=stdout, email=email,type=type,
                   format=format, extra_opts = extra_opts,
                   server=server)
   }else if(type=="local"){
@@ -160,8 +180,6 @@ queue <- function(object, submit_exe, queue="long",
 
 #' job class
 #' @param cmds the commands to run
-#' @param base_path base path
-#' @param parent_flow parent flow
 #' @param name name of the job
 #' @param q_obj queue object
 #' @param submission_type submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.
@@ -201,10 +219,12 @@ queue <- function(object, submit_exe, queue="long",
 #' submit_flow(fobj, execute = TRUE)
 #'
 #' }
-job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
+job <- function(cmds = "", 
+                name = "myjob",
                 q_obj = new("queue"), previous_job = '', cpu = 1, memory, walltime,
-                submission_type = c("scatter", "serial"), status="",
-                dependency_type = c("none", "gather", "serial", "burst"), ...){
+                submission_type = c("scatter", "serial"),
+                dependency_type = c("none", "gather", "serial", "burst"),
+                ...){
     #message(name)
     ## convert to numeric if possible
     cpu <- as.numeric(cpu)
@@ -228,7 +248,7 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
         stop("Previous job specified, but you have not specified dependency_type")
     object <- new("job", cmds = cmds, object, name = name, submission_type = submission_type,
                   previous_job = previous_job,
-                  dependency_type = dependency_type,status=status,...)
+                  dependency_type = dependency_type,...)
     return(object)
 }
 
@@ -277,9 +297,11 @@ job <- function(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 #' submit_flow(fobj, execute = TRUE)
 #' }
 flow <- function(jobs=list(new("job")), name="newflow", desc = "my_super_flow",
-                 mode=c("scheduler","trigger","R"), flow_base_path="~/flows",
+                 mode=c("scheduler","trigger","R"), flow_base_path="~/flowr",
                  trigger_path="", flow_path="", status=""){
   mode <- match.arg(mode)
+  ## create a list of jobs if nore already
+  if(class(jobs) == "job") jobs = list(jobs)
   jobnames <-  sapply(jobs, slot, "name")
   names(jobs) = jobnames
   object <- new("flow", jobs=jobs, mode = mode, name = name, flow_base_path=flow_base_path,

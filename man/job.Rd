@@ -4,17 +4,12 @@
 \alias{job}
 \title{job class}
 \usage{
-job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
-  q_obj = new("queue"), previous_job = "", cpu = 1, memory, walltime,
-  submission_type = c("scatter", "serial"), status = "",
+job(cmds = "", name = "myjob", q_obj = new("queue"), previous_job = "",
+  cpu = 1, memory, walltime, submission_type = c("scatter", "serial"),
   dependency_type = c("none", "gather", "serial", "burst"), ...)
 }
 \arguments{
 \item{cmds}{the commands to run}
-
-\item{base_path}{base path}
-
-\item{parent_flow}{parent flow}
 
 \item{name}{name of the job}
 
@@ -30,11 +25,11 @@ job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 
 \item{submission_type}{submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.}
 
-\item{status}{status [ignore]. this is used internally to update status of the job.}
-
 \item{dependency_type}{depedency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
+
+\item{status}{status [ignore]. this is used internally to update status of the job.}
 }
 \description{
 job class
