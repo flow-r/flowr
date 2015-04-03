@@ -1,3 +1,8 @@
+flowr 0.96.7
+----------------------------------------------
+- add read_sample_sheet
+- clean package dependencies
+
 flowr 0.96.6
 ----------------------------------------------
 - switch cat to messages

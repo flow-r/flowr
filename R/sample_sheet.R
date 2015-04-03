@@ -16,7 +16,7 @@ read_sample_sheet <- function(x, id_column, start_row = 1, sheet = "sample_sheet
   }
   else if(ext=="xlsx"){
     library(xlsx)
-    mat <- openxlsx::read.xlsx(x, sheet = sheet, startRow = start_row, ...)
+    mat <- read.xlsx(x, sheet = sheet, startRow = start_row, ...)
   }
   else{
     cat("Sorry we do not recognize this file format", ext, "please use tsv, csv or xlsx2 (sheetname: sample_sheet)")
