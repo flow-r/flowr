@@ -1,19 +1,17 @@
 #!/usr/bin/env Rscript
 ## A class that contains bam file information
-## Copyright 2014, Sahil Seth, all rights reserved
+## Copyright 2014, Sahil Seth
+## licence: MIT
 ## sahil.seth@me.com
 ## A few functions to supplement those already in this package.
-## 
+## URL: github.com/sahilseth/rfun
+## URL: docs.flowr.space
 #### -----------------------
 
 ## -------- incase of issues switch on verbose to see what is going on !
 verbose=FALSE
+nm = "flowr"
 
-##cat(".")
-### in myModul.R
-### numeric: _N
-### character: _C
-### logical: _L
 get_params <- function(paramPairs){
   func <- as.character(paramPairs[1])
   if(length(func) == 0) return(help())
@@ -47,23 +45,39 @@ get_params <- function(paramPairs){
 
 
 flow_help <- function(){
-  cmds <- matrix(c(
-    'status',   'Detailed status of a flow',
-    'kill_flow',     'Kill the flow, upon providing working directory'
-  ), byrow=T, ncol=2)
-  cat(sprintf("Usage: flowr function [arguments]\n\n"))
-  cat("This interface allows shell access to all functions in package flowr (and beyond).",
-      "\nFunctions where the arguments are simple objects like numeric/character/logical can be called.",
-      "\nSome example functions (all R functions are applicable):\n")
-  cat(sprintf("  %-15s %s\n", cmds[,1], cmds[,2]), sep="")
-  cat(sprintf("\nPlease use 'flowr function -h' to obtain further information about the usage of the 'function'.\n"))
+    cmds <- matrix(c(
+        'status',   'Detailed status of a flow',
+        'kill_flow',     'Kill the flow, upon providing working directory'
+    ), byrow=T, ncol=2)
+    cat("\nThis interface allows shell access to all functions in package flowr (and beyond).")
+    cat(sprintf("\n  %-15s %s\n", cmds[,1], cmds[,2]), sep="")
 }
+
+generic_help <- function(){
+    cat(sprintf("\nUsage: %s function [arguments]\n", nm))
+    cat("\nFunctions where the arguments are simple objects like numeric/character/logical can be called.",
+        "\nLists become a little more complicated. say x=a,b is converted to a list with elements a,b\n",
+        "\nSome examples:")
+    if(nm == "flowr"){
+        flow_help()
+    }else{
+        cat("\n##sample some numbers:\nrnorm x=100",
+            "\n##fetch files from pacakges:",
+            "\nrmd=$(rfun system.file package=knitr ...=examples/knitr-minimal.Rmd)",
+            "\necho $rmd",
+            "\n## knit this awesome example !",
+            "\nrfun knitr::knit input=$rmd\n")
+    }
+    cat(sprintf("\nPlease use '%s function -h' to obtain further information about the usage.\n", nm))
+}
+
 
 
 args <- commandArgs(trailingOnly = TRUE)
 
 ##-------- if default function is not in the space, load flowr library
-library(flowr, quietly=!verbose, warn.conflicts=verbose)
+if(nm == "flowr")
+    require(flowr, quietly=!verbose, warn.conflicts=verbose)
 
 ## -------------- Load the required package
 if(grepl("::", args[1])){
@@ -74,7 +88,7 @@ if(grepl("::", args[1])){
 }
 
 if(is.na(args[1])) {
-  flow_help()
+    generic_help()
 }else if(args[1] == "-h"){
   flow_help()
 }else if(is.na(args[2])){
@@ -92,6 +106,4 @@ if(is.na(args[1])) {
   }
   cat(out <- do.call(as.character(args[1]), args = params))
 }
-
-
 
