@@ -19,9 +19,6 @@ setGeneric("submit_job", function (j_obj, f_obj, ...){
   standardGeneric("submit_job")
 })
 
-setGeneric("submit_flow", function (f_obj, ...){
-  standardGeneric("submit_flow")
-})
 
 if (!isGeneric("plot"))
   setGeneric("plot", function(x, y, ...) standardGeneric("plot"))
@@ -247,6 +244,9 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
     message(sprintf("\nFlow has been submitted. Track it from terminal using:\nOR\nflowr status x=%s\n\n",
                 f_obj@flow_path, f_obj@flow_path))
     ## dumpt the flow details
+  }else{
+    message(sprintf("Test Successful!\nYou may check this folder for consistency. Also you may re-run submit with execute=TRUE\n %s",
+                    f_obj@flow_path))
   }
   try(dump_flow_details(fobj = f_obj))
   try(save(f_obj, file = sprintf("%s/flow_details.rda", f_obj@flow_path)))
@@ -258,8 +258,13 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
   }else{
     if(verbose) message("Skipping plots...\n")
   }
-  return(f_obj)
+  invisible(f_obj)
 }
+
+
+setGeneric("submit_flow", function (f_obj, ...){
+  standardGeneric("submit_flow")
+})
 
 #' @title submit_flow
 #' @description submit_flow

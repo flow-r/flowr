@@ -247,7 +247,7 @@ job <- function(cmds = "",
     if(!previous_job[1] == "" & dependency_type == 'none') ## add [1] since at times we specify two jobs
         stop("Previous job specified, but you have not specified dependency_type")
     object <- new("job", cmds = cmds, object, name = name, submission_type = submission_type,
-                  previous_job = previous_job,
+                  previous_job = previous_job, status = "",
                   dependency_type = dependency_type,...)
     return(object)
 }
