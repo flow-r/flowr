@@ -3,9 +3,10 @@
 ## Copyright 2014, Sahil Seth, all rights reserved
 ## sahil.seth@me.com
 ## A few functions to supplement those already in this package.
+## 
 #### -----------------------
 
-
+## -------- incase of issues switch on verbose to see what is going on !
 verbose=FALSE
 
 ##cat(".")
@@ -18,16 +19,17 @@ get_params <- function(paramPairs){
   if(length(func) == 0) return(help())
   args <- formals(func)
   paramPairs <- paramPairs[grep("=", paramPairs)] ## get those with =
-  if(verbose) cat("We have",length(paramPairs),"parameters\n")
+  if(verbose) message("We have ",length(paramPairs)," parameters\n")
   for(param in paramPairs){
     temp <- unlist(strsplit(param, "="));
     nm = temp[1]
     value=temp[2]
     value <- strsplit(value,",")[[1]] #handling those with , in value.. for multiple R values
-    ## if function supports ... need to pass ALL arguments
-    if(sum(names(args) %in% "...")){
+    ## ---------- if function supports ... need to pass ALL arguments
+    if(sum(names(args) %in% "...") & !nm %in% names(args)){
       message("Adding ", nm, ":", value)
-      args <- c(args, list(nm = value))
+	  l = list(nm = value);names(l) = nm
+      args <- c(args, l)
     }
     if(class(args[[nm]]) == "numeric" ){
       args[[nm]] = as.numeric(value)
@@ -38,8 +40,8 @@ get_params <- function(paramPairs){
     }else if(class(args[[nm]]) %in% c("list")){
       args[[nm]] = as.list(value)
     }
-    ## if(verbose) cat("Working on", param)
   }
+  if(verbose) print(args)#print(do.call(rbind, as.list(args)))
   return(as.list(args))
 }
 
@@ -58,10 +60,10 @@ flow_help <- function(){
 }
 
 
-library(flowr, quietly=!verbose, warn.conflicts=verbose)
-
-
 args <- commandArgs(trailingOnly = TRUE)
+
+##-------- if default function is not in the space, load flowr library
+library(flowr, quietly=!verbose, warn.conflicts=verbose)
 
 ## -------------- Load the required package
 if(grepl("::", args[1])){
@@ -83,12 +85,12 @@ if(is.na(args[1])) {
   params <- get_params(args)
   if(verbose){
     cat("\nStarting",args[1],"with params\n",
-        paste(names(params),unlist(params),sep=": ",
+        paste(names(params), unlist(params),sep=": ",
               collapse="\n"),"\n")
     #print(args)
-    print(class(params))
+    if(verbose) print(str(params))
   }
-  out <- do.call(as.character(args[1]), args = params)
+  cat(out <- do.call(as.character(args[1]), args = params))
 }
 
 

@@ -59,3 +59,4 @@ rerun_flow <- function(x, execute = TRUE, kill = TRUE){
   knitr::kable(rerun)
   fobj2 <- submit_flow(fobj2, execute = execute)
 }
+

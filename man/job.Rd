@@ -20,7 +20,7 @@ job(cmds = "", base_path = "", parent_flow = "", name = "myjob",
 
 \item{q_obj}{queue object}
 
-\item{previous_job}{character vector of previous job. If this is the first job, one can leave this empty, NA, NULL or ''. In future this could specify multiple previous jobs.}
+\item{previous_job}{character vector of previous job. If this is the first job, one can leave this empty, NA, NULL, '.', or ''. In future this could specify multiple previous jobs.}
 
 \item{cpu}{no of cpu's reserved}
 

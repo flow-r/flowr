@@ -4,7 +4,7 @@
 flow
 ======
 
-R pacakge to design (and submit) complex workflows, such that optimization/parallelization is easy.
+R pacakge to design (and deploy) complex workflows, in a effective and efficient manner on High Perfomance computing clusters.
 
 Please visit [docs.flowr.space](http://docs.flowr.space) for more information.
 
@@ -13,6 +13,7 @@ Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) fo
 
 
 ```
+## From the official R repository (may be a few version behind)
 install.packages('flowr')
 ## for a latest and greatest
 install.packages('devtools')
