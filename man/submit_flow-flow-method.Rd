@@ -6,8 +6,8 @@
 \alias{submit_flow,flow-method}
 \title{submit_flow}
 \usage{
-\S4method{submit_flow}{flow}(f_obj, uuid, execute = FALSE,
-  make_flow_plot = TRUE, verbose = FALSE, ...)
+\S4method{submit_flow}{flow}(f_obj, uuid, execute = FALSE, plot = TRUE,
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{f_obj}{\code{object} of class \code{flow}.}
@@ -18,7 +18,7 @@ Refer to \code{desc} and \code{name} paramters of \link{flow}.}
 
 \item{execute}{\code{logical} whether or not to submit the jobs}
 
-\item{make_flow_plot}{\code{logical} whether to make a flow plot (saves it in the flow working directory)}
+\item{plot}{\code{logical} whether to make a flow plot (saves it in the flow working directory)}
 
 \item{verbose}{logical.}
 

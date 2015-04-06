@@ -134,7 +134,8 @@ get_resources <- function(x, odir, ...){
 #' @param wd Path to a flow working directory
 #' @param cores Number of cores to use. [Numeric]
 #' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
-#' @import reshape2 tools
+#' @importFrom reshape2 melt
+#' @importFrom tools file_path_sans_ext
 #' @keywords internal
 #' @examples \dontrun{
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
@@ -144,7 +145,7 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
   rownames(flow_mat) = flow_mat$jobid
   #files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
   files_out <- list.files(wd, pattern = pattern, full.names = TRUE, recursive = TRUE)
-  jobid = tools::file_path_sans_ext(basename(files_out))
+  jobid = file_path_sans_ext(basename(files_out))
   names(files_out) = jobid
   #     mat_cmd <- data.frame(do.call(rbind,
   #                                   strsplit(gsub(".*/(.*)/.*/(.*)\\.([0-9]*)\\.([0-9]*)\\.output",
@@ -162,7 +163,7 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
   mat_res$max_swap = as.numeric(mat_res$max_swap)
   mat_res$cpu = as.numeric(mat_res$cpu)
   mytheme <- theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
-  dat = reshape2::melt(mat_res, measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu"))
+  dat = melt(mat_res, measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu"))
   p <- with(dat, {ggplot(dat, aes(x = jobname, y = value)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme})
   p <- p + facet_wrap(~variable, scales = "free_y")
   ggsave(sprintf("%s/resources_utilized.pdf", wd), p)

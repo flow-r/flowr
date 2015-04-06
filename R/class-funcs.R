@@ -169,19 +169,27 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
     script <- c(beforescript,j_obj@cmds[i], afterscript)
     if(verbose) message("Submitting using script:\n", cmd, "\n")
     write(script, files[i])
-    if(execute){
-      jobid <- system(cmd, intern = TRUE)
-      return(jobid)
-    } ## execute
-    return("") ## if no execute return the cmd
-  }) ## for loop
-  if(j_obj@type=="lsf" & execute)
-    j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
-  else ## for all other the output is considered to be the jobid
-    j_obj@id <- jobids
-  ## }## submissiontype
-  j_obj@status <- "processed"
-  if(execute) j_obj@status <- "submitted"
+    ## use try catch to make sure you get all the IDs
+    tryCatch({
+      if(execute){
+        jobid <- system(cmd, intern = TRUE)
+        return(jobid)
+      } ## execute
+      return("") ## if no execute return the cmd
+    }) ## for loop
+    }, finally = {
+      cat("ALERT !! stopping jobs submission. Please don't press Ctrl+C...\n");
+      if(j_obj@type=="lsf" & execute)
+        j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
+      else ## for all other the output is considered to be the jobid
+        j_obj@id <- jobids
+      ## }## submissiontype
+      j_obj@status <- "processed"
+      if(execute) j_obj@status <- "submitted"
+      #Sys.sleep(5);
+      #cat("...and this line will not be evaluated.\n");
+    })
+    
   return(j_obj)
 }
 
@@ -194,7 +202,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
 ## TESTS
 ## number of commands in a serial job should match that of dependency
 .submit_flow <- function(f_obj, uuid, execute = FALSE,
-                         make_flow_plot = TRUE, verbose = FALSE, ...){
+                         plot = TRUE, verbose = FALSE, ...){
   ## the case of resubmission
   if(missing(uuid)){
     uuid = get_unique_id(f_obj@desc)
@@ -214,22 +222,26 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
     ## ------ check if there are any dependencies
     previous_job <- f_obj@jobs[[i]]@previous_job
     dep_type = f_obj@jobs[[i]]@dependency_type
-    if(length(previous_job)!=0){ ## prev job should not be of length 0. need ., NA, "" for missing
+    if(length(previous_job)!=0){ 
+      ## prev job should not be of length 0. need ., NA, "" for missing
       ## should not be NA OR NULL
-      if(!is.na(previous_job[1]) & !is.null(previous_job[1]) & !previous_job[1] %in% c("", "NA", ".")){
+      if(!is.na(previous_job[1]) & !is.null(previous_job[1]) & 
+           !previous_job[1] %in% c("", "NA", ".")){
         ## f_obj@jobs[[i]]@dependency <- f_obj@jobs[[previous_job]]@id
         ## -------- can have multiple dependencies
         x <- do.call(cbind, lapply(previous_job, function(y)
           f_obj@jobs[[y]]@id))
         f_obj@jobs[[i]]@dependency <- split(x, row(x))
         ## prev_jobs should have length more than 1. And should not be null
-      }else if(length(dep_type) > 0 & !dep_type %in% c("none") & previous_job %in% c("", "NA", ".")){
+      }else if(length(dep_type) > 0 & !dep_type %in% c("none") & 
+                 previous_job %in% c("", "NA", ".")){
       	## if prev job is null, but depedency is mentioned
       	stop(paste("Previous job name missing for job: ", f_obj@jobs[[i]]@name))
       }
     }
       ## ------ submit the job
-    f_obj@jobs[[i]] <- .submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, verbose = verbose, ...)
+    f_obj@jobs[[i]] <- .submit_job(f_obj@jobs[[i]], f_obj, execute=execute, job_id=i, 
+                                   verbose = verbose, ...)
     ## ------ check if this is NOT last job in the flow
     ## if(i < length(f_obj@jobs)){
     ##     next_job <- f_obj@jobs[[i]]@next_job
@@ -250,7 +262,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
   }
   try(dump_flow_details(fobj = f_obj))
   try(save(f_obj, file = sprintf("%s/flow_details.rda", f_obj@flow_path)))
-  if(make_flow_plot & length(f_obj@jobs) > 2){
+  if(plot & length(f_obj@jobs) > 2){
     try(
       .plot_flow(f_obj, detailed = FALSE, pdf = TRUE, type = '1',
                    pdffile = sprintf("%s/%s-flow_design.pdf",f_obj@flow_path, f_obj@name))
@@ -274,7 +286,7 @@ setGeneric("submit_flow", function (f_obj, ...){
 #'  \code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}.
 #'  Refer to \code{desc} and \code{name} paramters of \link{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
-#' @param make_flow_plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
+#' @param plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
 #' @param verbose logical.
 #' @param ... Any additional parameter are passed on to \link{submit_job} function
 #' @export

@@ -14,10 +14,10 @@ read_sheet <- function(x, id_column, start_row = 1, sheet = "sample_sheet", ...)
   ext <- file_ext(x)
   if(ext %in% c("tsv", "txt")){
     mat <- read.table(x, as.is=TRUE, sep="\t", header=TRUE, stringsAsFactors = FALSE,
-                      comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, quote = "", ...)
+                      comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, ...)
   }else if(ext=="csv"){
     mat <- read.csv2(x, as.is=TRUE, sep=",", header=TRUE, stringsAsFactors = FALSE,
-                     comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, quote = "", ...)
+                     comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, ...)
   }
   else if(ext=="xlsx"){
     mat <- read.xlsx(x, sheet = sheet, startRow = start_row, ...)

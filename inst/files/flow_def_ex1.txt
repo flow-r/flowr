@@ -1,0 +1,1 @@
+jobname	prev_jobs	dep_type	sub_typemyjob1	NA	serial	scattermyjob2	NA	serial	scattermyjob3	"myjob1,myjob2"	serial	scattermyjob4	myjob3	serial	scattermyjob5	myjob4	serial	scattermyjob6	myjob4	serial	scatter

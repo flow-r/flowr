@@ -2,35 +2,59 @@ setGeneric("to_flow", function (x, ...){
   standardGeneric("to_flow")
 })
 
+#' @export
+check <- function(x, ...) {
+  UseMethod("check")
+}
+
 is.flow_def <- function(x){
   class(x) == "flow_def"
 }
 
 
-flow_def.check <- function(x){
+check.flow_def <- function(x){
+  prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
+  miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
+  if(length(miss_jobs) > 0) 
+    stop("Some jobs do not exist: ", miss_jobs)
+    #print(x)
     ## check all previous jobs defined in names
     ## code previous jobs as NA
     ## allowable types:
     ## previous job
-    ##      scatter --(serial)--> scatter
-    ##      scatter --(gather)--> scatter
-    ##      scatter --(gather)--> serial
-    ##      serial  --(serial)--> scatter
-    ##      serial  --(burst)--> scatter
-    ## In case of:
+  for(i in 1:nrow(x)){
+    ## check when prev_jobs exists
+    if(x$dep_type != "serial"){
     ##      scatter --(serial)--> scatter
     ## length of prev == length of curr
+      a = x$dep_type[i-1] == "scatter" & x$dep_type[i] == "scatter"
+      b = x$dep_type[i-1] == "scatter" & x$dep_type[i] == "scatter"
+      a = x$dep_type[i-1] == "scatter" & x$dep_type[i] == "scatter"
+    ##      any --(none)--> any
+      
+    }
+  }
+      ##      scatter --(serial)--> scatter
+      ##      scatter --(gather)--> scatter
+      ##      scatter --(gather)--> serial
+      ##      serial  --(serial)--> scatter
+      ##      serial  --(burst)--> scatter
 
     ## not allowed:
-    ##      any --(none)--> any
+  
+  
 }
+
+#
+# x = system.file(package = "flowr", "files/flow_def_ex1.txt")
 
 as.flow_def <- function(x){
   if(is.flow_def(x))
     return(x)
   ## ---- assuming x is a table
-  y <- read_sample_sheet(x, id_column = "jobname")
-  y <- flow_def.check(y)
+  y <- read_sheet(x, id_column = "jobname")
+  class(y) = "flow_def"
+  check(y)
 }
 
 
