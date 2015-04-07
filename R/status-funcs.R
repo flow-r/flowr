@@ -27,7 +27,6 @@ status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
   for(wd in wds){
     get_flow_status(wd, out_format = out_format)
   }
-  invisible(flow_mat)
   #return(sum)
 }
 
@@ -35,7 +34,7 @@ status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
 
 #' @export
 get_flow_status <- function(x, cores = 6, out_format = "markdown"){
-  files_cmd <- list.files(wd, pattern = "cmd", full.names = TRUE, recursive = TRUE)
+  files_cmd <- list.files(x, pattern = "cmd", full.names = TRUE, recursive = TRUE)
   ## dirname, JOBNAME_cmd_JOBINDEX
   mat_cmd <- data.frame(do.call(rbind,
                                 strsplit(gsub(".*/(.*)/(.*)_cmd_([0-9]*).sh",
@@ -57,16 +56,17 @@ get_flow_status <- function(x, cores = 6, out_format = "markdown"){
   }))
   ## STATUS -1 MEANS started
   mat_cmd = data.frame(mat_cmd, started = !is.na(status), status = status)
-  flow_mat = try(update_flow_mat(wd = wd, mat_cmd = mat_cmd))
+  flow_mat = try(update_flow_mat(wd = x, mat_cmd = mat_cmd))
   jobs_total <- tapply(mat_cmd$job_id, INDEX = mat_cmd$job_id, length)
   jobs_compl <- tapply(mat_cmd$status, INDEX = mat_cmd$job_id, function(z) sum(z > -1, na.rm = TRUE)) ## counts no. more than -1
   jobs_status <- tapply(mat_cmd$status, INDEX = mat_cmd$job_id, function(z) sum(ifelse(z>0, 1, 0), na.rm = TRUE))
   jobs_started <- tapply(mat_cmd$started, INDEX = mat_cmd$job_id, function(z) sum(z))
   sum <- data.frame(total = jobs_total, started = jobs_started, completed = jobs_compl, exit_status = jobs_status)
-  message(paste0("Showing status of: ", wd))
-  write.table(sum, file.path(wd, "flow_status.txt"), quote = FALSE, sep = "\t")
+  message(paste0("Showing status of: ", x))
+  write.table(sum, file.path(x, "flow_status.txt"), quote = FALSE, sep = "\t")
   tmp <- knitr::kable(sum, out_format, output = FALSE)
   print(tmp)
+  invisible(flow_mat)
 }
 
 
