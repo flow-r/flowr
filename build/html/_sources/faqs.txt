@@ -5,10 +5,14 @@ Some helpful tips and questions
 
 :Q: What platforms are supported
 
-\|Platform\|submission commnd\|Works?\|label\*\|
-\|:---\|:---:\|:---:\|:---:\| \|LSF 9.1\|bsub\|Yes\|lsf
-\|Torque\|qsub\|Yes\|torque \|SGE\|qsub\|should work\|sge \|LSF HPC
-7\|bsub\|should work\|lsf
+========   ===============  ============    =======
+|Platform|submission commnd|Works?       |queue type *|
+========   ===============  ============    =======
+LSF HPC 7|bsub             |Not tested   |lsf |
+LSF 9.1  |bsub             |Yes          |lsf |
+Torque   |qsub             |Yes          |torque |
+SGE      |qsub             |Not implemented|
+==================================================
 
 
 :Q:  Am getting a error in `devtools:::install_github("sahilseth/flowr")`

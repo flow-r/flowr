@@ -32,8 +32,8 @@
   
     <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="Help on available functions" href="../../topics.html"/>
-        <link rel="next" title="submit_job" href="submit_job.html"/>
-        <link rel="prev" title="rerun_flow" href="rerun_flow.html"/> 
+        <link rel="next" title="Some helpful tips and questions" href="../../faqs.html"/>
+        <link rel="prev" title="queue" href="queue.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -78,29 +78,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#dependency-types">Dependency types</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="flow.html">flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_flow_status.html">get_flow_status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="job.html">job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kill_flow.html">kill_flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_flow.html">plot_flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="queue.html">queue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rerun_flow.html">rerun_flow</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">submit_flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="submit_job.html">submit_job</a></li>
 </ul>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../faqs.html#what-platforms-does-this-support">What platforms does this support?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../faqs.html#issues-with-installation-and-running-pipes">Issues with installation and running pipes</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a></li>
 </ul>
 
           
@@ -144,7 +132,7 @@
 <p>submit_flow</p>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;submit_flow&quot;</span><span class="p">(</span><span class="n">f_obj</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">execute</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span> <span class="n">make_flow_plot</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;submit_flow&quot;</span><span class="p">(</span><span class="n">f_obj</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">execute</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Arguments</p>
@@ -160,14 +148,14 @@ execute</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">logical</span></code> whether or not to submit the jobs</div></blockquote>
 <dl class="docutils">
-<dt>make_flow_plot</dt>
+<dt>plot</dt>
 <dd><code class="docutils literal"><span class="pre">logical</span></code> whether to make a flow plot (saves it in the flow working directory)</dd>
 <dt>verbose</dt>
 <dd>logical.</dd>
 </dl>
 <dl class="docutils">
 <dt>...</dt>
-<dd>Any additional parameter are passed on to <a class="reference external" href="submit_job.html">submit_job</a> function</dd>
+<dd>Any additional parameter are passed on to <a class="reference external" href="http://www.inside-r.org/packages/cran/flow/docs/submit_job-methods">submit_job</a> function</dd>
 </dl>
 </div>
 <div class="section" id="description">
@@ -194,10 +182,10 @@ Author:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="submit_job.html" class="btn btn-neutral float-right" title="submit_job">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../faqs.html" class="btn btn-neutral float-right" title="Some helpful tips and questions">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rerun_flow.html" class="btn btn-neutral" title="rerun_flow"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="queue.html" class="btn btn-neutral" title="queue"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

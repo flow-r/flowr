@@ -32,7 +32,7 @@
   
     <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="Help on available functions" href="../../topics.html"/>
-        <link rel="next" title="get_flow_status" href="get_flow_status.html"/>
+        <link rel="next" title="job" href="job.html"/>
         <link rel="prev" title="Help on available functions" href="../../topics.html"/> 
 
   
@@ -78,20 +78,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#dependency-types">Dependency types</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="">flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_flow_status.html">get_flow_status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="job.html">job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kill_flow.html">kill_flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_flow.html">plot_flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="queue.html">queue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rerun_flow.html">rerun_flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="submit_flow.html">submit_flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="submit_job.html">submit_job</a></li>
 </ul>
 </li>
 </ul>
@@ -140,7 +132,7 @@
 <p>Flow constructor</p>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">flow</span><span class="p">(</span><span class="n">jobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;job&quot;</span><span class="p">)),</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;newflow&quot;</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="s">&quot;my_super_flow&quot;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s">&quot;scheduler&quot;</span><span class="p">,</span> <span class="s">&quot;trigger&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span> <span class="n">flow_base_path</span> <span class="o">=</span> <span class="s">&quot;~/flows&quot;</span><span class="p">,</span> <span class="n">trigger_path</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">flow_path</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">flow</span><span class="p">(</span><span class="n">jobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">new</span><span class="p">(</span><span class="s">&quot;job&quot;</span><span class="p">)),</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;newflow&quot;</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="s">&quot;my_super_flow&quot;</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s">&quot;scheduler&quot;</span><span class="p">,</span> <span class="s">&quot;trigger&quot;</span><span class="p">,</span> <span class="s">&quot;R&quot;</span><span class="p">),</span> <span class="n">flow_base_path</span> <span class="o">=</span> <span class="s">&quot;~/flowr&quot;</span><span class="p">,</span> <span class="n">trigger_path</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">flow_path</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Arguments</p>
@@ -185,10 +177,10 @@ flow_path</p>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre>cmds = rep(&quot;sleep 5&quot;, 10)
-qobj &lt;- queue(type=&#39;torque&#39;)
-Setting default time to:  72:00:00 . If this is more than queue max (/improper format), job will fail. You may change this in job()
-Setting default memory to:  10g . If this is more than queue max (/improper format), job will fail.
-## run the 10 commands in parallel
+.. image flow-2.pngqobj &lt;- queue(type=&#39;torque&#39;)
+**Setting default time to: 72:00:00. If this is more than queue max (/improper format), job will fail. You may change this in job()
+****Setting default memory to: 10g. If this is more than queue max (/improper format), job will fail.
+**## run the 10 commands in parallel
 jobj1 &lt;- job(q_obj=qobj, cmd = cmds, submission_type = &quot;scatter&quot;, name = &quot;job1&quot;)
 
 ## run the 10 commands sequentially, but WAIT for the previous job to complete
@@ -205,7 +197,7 @@ fobj &lt;- flow(jobs = list(jobj1, jobj2, jobj3))
 
 ## plot the flow
 plot_flow(fobj)
-.. image flow-4.png## **Not run**:
+.. image flow-7.png## **Not run**:
 # ## dry run, only create the structure without submitting jobs
 # submit_flow(fobj)
 #
@@ -227,7 +219,7 @@ Author:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="get_flow_status.html" class="btn btn-neutral float-right" title="get_flow_status">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="job.html" class="btn btn-neutral float-right" title="job">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../../topics.html" class="btn btn-neutral" title="Help on available functions"><span class="fa fa-arrow-circle-left"></span> Previous</a>

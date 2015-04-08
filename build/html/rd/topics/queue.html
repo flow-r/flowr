@@ -32,8 +32,8 @@
   
     <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="Help on available functions" href="../../topics.html"/>
-        <link rel="next" title="rerun_flow" href="rerun_flow.html"/>
-        <link rel="prev" title="plot_flow" href="plot_flow.html"/> 
+        <link rel="next" title="submit_flow" href="submit_flow.html"/>
+        <link rel="prev" title="job" href="job.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -78,20 +78,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#dependency-types">Dependency types</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="flow.html">flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="get_flow_status.html">get_flow_status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="job.html">job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kill_flow.html">kill_flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_flow.html">plot_flow</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">queue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rerun_flow.html">rerun_flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="submit_flow.html">submit_flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="submit_job.html">submit_job</a></li>
 </ul>
 </li>
 </ul>
@@ -140,52 +132,51 @@
 <p>Create a <code class="docutils literal"><span class="pre">queue</span></code> object which containg details about how a job is submitted.</p>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">queue</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">submit_exe</span><span class="p">,</span> <span class="n">queue</span> <span class="o">=</span> <span class="s">&quot;long&quot;</span><span class="p">,</span> <span class="n">nodes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cpu</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dependency</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="n">jobname</span> <span class="o">=</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">walltime</span><span class="p">,</span> <span class="n">cwd</span> <span class="o">=</span> <span class="s">&quot;~/flows&quot;</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="s">&quot;~/flows/tmp&quot;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="s">&quot;~/flows&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="n">Sys</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;USER&quot;</span><span class="p">),</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s">&quot;lsf&quot;</span><span class="p">,</span> <span class="s">&quot;torque&quot;</span><span class="p">,</span> <span class="s">&quot;sge&quot;</span><span class="p">),</span> <span class="n">format</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">extra_opts</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">server</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">queue</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">queue</span> <span class="o">=</span> <span class="s">&quot;long&quot;</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s">&quot;lsf&quot;</span><span class="p">,</span> <span class="s">&quot;torque&quot;</span><span class="p">,</span> <span class="s">&quot;sge&quot;</span><span class="p">),</span> <span class="n">walltime</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">cpu</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">extra_opts</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">submit_exe</span><span class="p">,</span> <span class="n">format</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">cwd</span> <span class="o">=</span> <span class="s">&quot;~/flows&quot;</span><span class="p">,</span> <span class="n">nodes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">jobname</span> <span class="o">=</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">email</span> <span class="o">=</span> <span class="n">Sys</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;USER&quot;</span><span class="p">),</span> <span class="n">dependency</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="n">server</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="s">&quot;~/flowr/tmp&quot;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="s">&quot;~/flowr&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Arguments</p>
 <dl class="docutils">
 <dt>object</dt>
 <dd>this is not used currenlty, ignore.</dd>
-<dt>submit_exe</dt>
-<dd>the exact command used to submit jobs to the cluster example <code class="docutils literal"><span class="pre">qsub</span></code> <code class="docutils literal"><span class="pre">bsub</span></code> etc.</dd>
 <dt>queue</dt>
 <dd>the type of queue your group usually uses</dd>
-<dt>nodes</dt>
-<dd>number of nodes you would like to request. <em>optional</em> [Used by class job]</dd>
-<dt>cpu</dt>
-<dd>number of cpus you would like to reserve [Used by class job]</dd>
-<dt>dependency</dt>
-<dd>a list of jobs to complete before starting this one [Used by class job]</dd>
-<dt>jobname</dt>
-<dd>name of this job in the computing cluster [Used by class job]</dd>
+</dl>
+<p>&#8216;bsub&#8217; etc.
+type</p>
+<blockquote>
+<div>Required and important. Currently supported values are &#8216;lsf&#8217; and &#8216;torque&#8217;. [Used by class job]</div></blockquote>
+<dl class="docutils">
 <dt>walltime</dt>
-<dd>max walltime of a job. [Used by class job]</dd>
-<dt>cwd</dt>
-<dd>[Used by class job]</dd>
+<dd>max walltime of a job.</dd>
 <dt>memory</dt>
 <dd>The amount of memory reserved. Units depend on the platform used to process jobs</dd>
-<dt>stderr</dt>
-<dd>[Used by class job]</dd>
-<dt>stdout</dt>
-<dd>[Used by class job]</dd>
-<dt>email</dt>
-<dd>[Used by class job]</dd>
-<dt>type</dt>
-<dd>Required and important. Currently supported values are &#8216;lsf&#8217; and &#8216;torque&#8217;. [Used by class job]</dd>
+<dt>cpu</dt>
+<dd>number of cpus you would like to reserve [Used by class job]</dd>
+<dt>extra_opts</dt>
+<dd>[advanced use] Extra options to be supplied while create the job submission string.</dd>
+<dt>submit_exe</dt>
+<dd>[advanced use] Already defined by &#8216;type&#8217;. The exact command used to submit jobs to the cluster example &#8216;qsub&#8217;</dd>
 <dt>format</dt>
-<dd>We have a default format for the final command line string generated for &#8216;lsf&#8217; and &#8216;torque&#8217;.</dd>
-</dl>
-<p>This defined the exact (<code class="docutils literal"><span class="pre">bsub</span></code>/<code class="docutils literal"><span class="pre">qsub</span></code>) used to submit the job. One of the most important features required is:
-dependencies. More on them here:
-extra_opts</p>
-<blockquote>
-<div>[Used by class job]</div></blockquote>
-<dl class="docutils">
+<dd>[advanced use] We have a default format for the final command line string generated for &#8216;lsf&#8217; and &#8216;torque&#8217;.</dd>
+<dt>cwd</dt>
+<dd>[debug use] Ignore</dd>
+<dt>nodes</dt>
+<dd>[advanced use] number of nodes you would like to request. <em>optional</em> [Used by class job]</dd>
+<dt>jobname</dt>
+<dd>[debug use] name of this job in the computing cluster</dd>
+<dt>email</dt>
+<dd>[advanced use] Defaults to system user, you may put you own email though may get tons of them.</dd>
+<dt>dependency</dt>
+<dd>[debug use] a list of jobs to complete before starting this one</dd>
+<dt>server</dt>
+<dd>[not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted</dd>
 <dt>verbose</dt>
 <dd>[logical] TRUE/FALSE</dd>
-<dt>server</dt>
-<dd>This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted</dd>
+<dt>stderr</dt>
+<dd>[debug use] Ignore</dd>
+<dt>stdout</dt>
+<dd>[debug use] Ignore</dd>
 </dl>
 <dl class="docutils">
 <dt>...</dt>
@@ -195,13 +186,24 @@ extra_opts</p>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>This function defines the queue used to submit jobs to the cluster. In essence details about the
-computing cluster in use.</p>
+computing cluster in use.
+Details
+&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;</p>
+<p>## Resources:
+Can be defined <strong>once</strong> using a <a class="reference external" href="queue.html">queue</a> object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
+job level they overwrite the one supplied in <a class="reference external" href="queue.html">queue</a>
+Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
+## Server:
+This a hook which may be implemented in future.
+## Submission script:
+The &#8216;type&#8217; variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre>qobj &lt;- queue(type=&#39;lsf&#39;)
-Setting default time to:  72:00 . If this is more than queue max (/improper format), job will fail. You may change this in job()
-Setting default memory to:  10000 . If this is more than queue max (/improper format), job will fail.
+**Setting default time to: 72:00. If this is more than queue max (/improper format), job will fail. You may change this in job()
+****Setting default memory to: 10000. If this is more than queue max (/improper format), job will fail.
+**
 </pre></div>
 </div>
 <p>Aliases:
@@ -218,10 +220,10 @@ Author:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="rerun_flow.html" class="btn btn-neutral float-right" title="rerun_flow">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="submit_flow.html" class="btn btn-neutral float-right" title="submit_flow">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_flow.html" class="btn btn-neutral" title="plot_flow"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="job.html" class="btn btn-neutral" title="job"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
