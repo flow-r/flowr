@@ -30,7 +30,8 @@
   
 
   
-    <link rel="top" title="flowr 0.1 documentation" href="index.html"/> 
+    <link rel="top" title="flowr 0.1 documentation" href="index.html"/>
+        <link rel="prev" title="submit_job" href="rd/topics/submit_job.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -92,6 +93,9 @@
 </ul>
 </li>
 </ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Some helpful tips and questions</a></li>
+</ul>
 
           
         
@@ -128,15 +132,55 @@
             
   <div class="section" id="some-helpful-tips-and-questions">
 <h1>Some helpful tips and questions<a class="headerlink" href="#some-helpful-tips-and-questions" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="what-platforms-does-this-support">
-<h2>What platforms does this support?<a class="headerlink" href="#what-platforms-does-this-support" title="Permalink to this headline">¶</a></h2>
-<p>Building pipelines</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Q:</th><td class="field-body">What platforms are supported</td>
+</tr>
+</tbody>
+</table>
+<p>|Platform|submission commnd|Works?|label*|
+|:&#8212;|:&#8212;:|:&#8212;:|:&#8212;:| |LSF 9.1|bsub|Yes|lsf
+|Torque|qsub|Yes|torque |SGE|qsub|should work|sge |LSF HPC
+7|bsub|should work|lsf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Q:</th><td class="field-body">Am getting a error in <cite>devtools:::install_github(&#8220;sahilseth/flowr&#8221;)</cite>
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed</td>
+</tr>
+<tr class="field-even field"><th class="field-name">A:</th><td class="field-body">This is basically a issue with httr
+(<a class="reference external" href="http://stackoverflow.com/questions/24793863/devtoolsinstall-github-ignore-ssl-cert-verification-failure">link</a>)
+Try this:</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre>install.packages(&quot;RCurl&quot;)
+devtools:::install_github(&quot;sahilseth/flowr&quot;)
+
+If not then try this:
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>install.packages(&quot;httr&quot;);
+library(httr);
+set_config( config( ssl.verifypeer = 0L ) )
+devtools:::install_github(&quot;sahilseth/flowr&quot;)
+</pre></div>
 </div>
 </div>
 
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="rd/topics/submit_job.html" class="btn btn-neutral" title="submit_job"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

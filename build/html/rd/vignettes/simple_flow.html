@@ -95,6 +95,13 @@
 </ul>
 </li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../faqs.html#what-platforms-does-this-support">What platforms does this support?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faqs.html#issues-with-installation-and-running-pipes">Issues with installation and running pipes</a></li>
+</ul>
+</li>
+</ul>
 
           
         
@@ -145,7 +152,6 @@
 <span class="n">job2</span> <span class="o">&lt;-</span> <span class="n">job</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;myjob2&quot;</span><span class="p">,</span> <span class="n">cmds</span> <span class="o">=</span> <span class="s">&quot;sleep2&quot;</span><span class="p">,</span> <span class="n">q_obj</span> <span class="o">=</span> <span class="n">qobj</span><span class="p">,</span> <span class="n">previous_job</span> <span class="o">=</span> <span class="s">&quot;myjob1&quot;</span><span class="p">,</span> <span class="n">dependency_type</span> <span class="o">=</span> <span class="s">&quot;serial&quot;</span><span class="p">)</span>
 <span class="n">job3</span> <span class="o">&lt;-</span> <span class="n">job</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;myjob3&quot;</span><span class="p">,</span> <span class="n">cmds</span> <span class="o">=</span> <span class="s">&quot;sleep3&quot;</span><span class="p">,</span> <span class="n">q_obj</span> <span class="o">=</span> <span class="n">qobj</span><span class="p">,</span> <span class="n">previous_job</span> <span class="o">=</span> <span class="s">&quot;myjob1&quot;</span><span class="p">,</span> <span class="n">dependency_type</span> <span class="o">=</span> <span class="s">&quot;serial&quot;</span><span class="p">)</span>
 <span class="n">fobj</span> <span class="o">&lt;-</span> <span class="n">flow</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;myflow&quot;</span><span class="p">,</span> <span class="n">jobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">job1</span><span class="p">,</span> <span class="n">job2</span><span class="p">,</span> <span class="n">job3</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s">&quot;description&quot;</span><span class="p">)</span>
-<span class="c">#source(&#39;/DRIVES/Dropbox2/Dropbox/public/github_flow/R/plot-funcs.R&#39;)</span>
 <span class="n">plot_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
 </pre></div>
 </div>

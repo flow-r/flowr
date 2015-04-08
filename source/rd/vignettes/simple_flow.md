@@ -1,7 +1,7 @@
 ---
 title: "flowr simple examples"
-date: "2015-03-28"
-output: rmarkdown::html_vignette
+date: "2015-04-02"
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{flowr simple example}
   %\VignetteEngine{knitr::rmarkdown}
@@ -26,7 +26,6 @@ job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
 job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
 job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
 fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
-#source('/DRIVES/Dropbox2/Dropbox/public/github_flow/R/plot-funcs.R')
 plot_flow(fobj)
 ```
 

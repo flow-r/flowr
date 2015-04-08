@@ -51,6 +51,9 @@ Contents:
 	pipelines
 	build
 	topics
+	
+.. toctree::
+	faqs
 
 Indices and tables
 ---------------
