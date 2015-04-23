@@ -5,7 +5,7 @@
 \title{to_flow}
 \usage{
 cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
-  versbose = FALSE), flowname = "stage2", execute = FALSE,
+  verbose = FALSE), flowname = "stage2", execute = FALSE,
   flow_base_path = "/scratch/iacs/flow_pipe/tmp")
 }
 \arguments{

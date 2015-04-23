@@ -2,6 +2,9 @@ setGeneric("to_flow", function (x, ...){
   standardGeneric("to_flow")
 })
 
+setClass("flow_def", contains = "data.frame") 
+#http://www.carlboettiger.info/2013/09/11/extending-data-frame-class.html
+
 #' @export
 check <- function(x, ...) {
   UseMethod("check")
@@ -11,50 +14,57 @@ is.flow_def <- function(x){
   class(x) == "flow_def"
 }
 
-
-check.flow_def <- function(x){
+#' @export
+#' @importFrom knitr kable
+check.flow_def <- function(x, 
+                           sub_types = c("serial", "scatter", "burst"),
+                           dep_types = c("none", "serial", "gather")){
+  if(sum(!x$dep_type %in% dep_types)) 
+    stop("Dependency type not recognized ", x$dep_type, 
+         "should be from ", paste(dep_types, collapse = " "))
+  if(sum(!x$sub_type %in% sub_types)) 
+    stop("Submission type not recognized ", x$sub_type, 
+         "should be from ", paste(sub_types, collapse = " "))
+  ## check if some jobs are put as dependencies but not properly defined
   prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
   miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
   if(length(miss_jobs) > 0) 
     stop("Some jobs do not exist: ", miss_jobs)
-    #print(x)
-    ## check all previous jobs defined in names
-    ## code previous jobs as NA
-    ## allowable types:
-    ## previous job
-  for(i in 1:nrow(x)){
-    ## check when prev_jobs exists
-    if(x$dep_type != "serial"){
-    ##      scatter --(serial)--> scatter
-    ## length of prev == length of curr
-      a = x$dep_type[i-1] == "scatter" & x$dep_type[i] == "scatter"
-      b = x$dep_type[i-1] == "scatter" & x$dep_type[i] == "scatter"
-      a = x$dep_type[i-1] == "scatter" & x$dep_type[i] == "scatter"
-    ##      any --(none)--> any
-      
-    }
+  ## check if dep is none, but prev jobs defined
+  rows = x$dep_type == "none" & !is.na(x$prev_jobs)
+  if(sum(rows)){
+    print(kable(x[rows,]))
+    stop("\nPrevious jobs defined, but dependency type is none")
   }
-      ##      scatter --(serial)--> scatter
-      ##      scatter --(gather)--> scatter
-      ##      scatter --(gather)--> serial
-      ##      serial  --(serial)--> scatter
-      ##      serial  --(burst)--> scatter
-
-    ## not allowed:
-  
-  
+  rows = x$dep_type != "none" & is.na(x$prev_jobs)
+  if(sum(rows)){
+    print(kable(x[rows,]))
+    stop("Previous jobs NOT defined, but dependency type is NOT none")
+  }
+  #print(x)
+  ## check all previous jobs defined in names
+  ## code previous jobs as NA
+  ## allowable types:
+  ## previous job
+  ##      scatter --(serial)--> scatter
+  ##      scatter --(serial)--> scatter
+  ##      scatter --(gather)--> scatter
+  ##      scatter --(gather)--> serial
+  ##      serial  --(serial)--> scatter
+  ##      serial  --(burst)--> scatter
+  ## not allowed:
+  ##      any --(none)--> any
+  invisible(y)
 }
 
 #
-# x = system.file(package = "flowr", "files/flow_def_ex1.txt")
 
 as.flow_def <- function(x){
   if(is.flow_def(x))
     return(x)
   ## ---- assuming x is a table
-  y <- read_sheet(x, id_column = "jobname")
-  class(y) = "flow_def"
-  check(y)
+  y <- new("flow_def", read_sheet(x, id_column = "jobname"))
+  y = check(y)
 }
 
 
@@ -62,12 +72,68 @@ as.flow_def <- function(x){
   def <- as.flow_def(def)
 }
 
-.to_flow.data.frame <- function(x, def = 'flow_def'){
+# def = system.file(package = "flowr", "files/flow_def_ex1.txt")
+
+.to_flow.data.frame <- function(x, def, 
+                                cpu = 1, walltime = "1:00", memory = "1g"){
+  x = data.frame(x, stringsAsFactors = FALSE)
+  def = as.flow_def(def)
+  ## A check x should be in def 
+  if(mean(!unique(x$jobname) %in% def$jobname)){
+    stop("Some jobs in x are not in flow_definition\n")
+  }
+  ## B AND vice-versa
+  if(mean(!def$jobname %in% unique(x$jobname))){
+    stop("Some jobs in flow_def are not in x\n")
+  }
+  
+  cmd.list = split.data.frame(x, x$jobname)
+  
+  for( i in 1:length(cmd.list)){
+    #jobs = lapply(1:length(cmd.list), function(i){
+    message(".")
+    cmds = cmd.list[[i]]; jobnm = names(cmd.list)[i]
+    #cmds = unique(cmds);
+    def2 = subset(def, def$jobname == jobnm)
+    prev_job = unlist(def2$prev_jobs)
+    if(!is.na(prev_job))
+       prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
+    d_cpu = unlist(def2$cpu_reserved)
+    d_walltime = unlist(infomat2$walltime)
+    d_memory = as.character(unlist(infomat2$memory_reserved))
+    d_queue = unlist(infomat2$queue)
+    d_dep_type = unlist(infomat2$dep_type)
+    d_sub_type = unlist(infomat2$sub_type)
+    if(length(sub_type) == 0)
+      sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
+    ## guess dep_type
+    if(length(prev_job) > 1){
+      dep_type = "gather"
+    }else if(length(cmd.list[[prev_job]]) == 0){
+      dep_type = "none"
+    }else if(length(cmd.list[[prev_job]]) == length(cmds) ){ ## if same length, serial
+      dep_type = "serial"
+    }else if(length(cmd.list[[prev_job]]) > length(cmds) & length(cmds) == 1  ){ ## if same length, serial
+      dep_type = "gather"
+    }else if(length(cmd.list[[prev_job]]) == 1 & length(cmds) > 1){ ## if same length, serial
+      dep_type = "burst"
+    }
+    ##dep_type = unlist(subset(infomat, jobname == jobnm, select = 'sub_type'))
+    ##sub_type = "serial"
+    ## -------- if cmds are missing; change to echo 0 and make cpu = 1
+    cpu = ifelse(cmds[1] == ".", 1, cpu)
+    cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1]) ## if starts from . echo
+    j = job(q_obj = q_obj, name = jobnm, previous_job = prev_job, cmds = cmds,
+            dependency_type = dep_type, submission_type = sub_type,
+            cpu = cpu, queue = queue,
+            walltime = walltime, memory = memory)
+    jobs = c(jobs, j)
+  }
   
 }
 
-setMethod("to_flow", signature(x = "list"), definition = .to_flow.list)
 
+setMethod("to_flow", signature(x = "list"), definition = .to_flow.list)
 setMethod("to_flow", signature(x = "data.frame"), definition = .to_flow.data.frame)
 
 
@@ -84,7 +150,7 @@ setMethod("to_flow", signature(x = "data.frame"), definition = .to_flow.data.fra
 cmds_to_flow <- function(cmd.list,
                          samplename = "",
                          infomat,
-                         q_obj = queue(type = "lsf", versbose=FALSE),
+                         q_obj = queue(type = "lsf", verbose=FALSE),
                          flowname = "stage2",
                          execute = FALSE,
                          flow_base_path = "/scratch/iacs/flow_pipe/tmp"){
@@ -118,7 +184,7 @@ cmds_to_flow <- function(cmd.list,
   jobs = list()
   for( i in 1:length(cmd.list)){
     #jobs = lapply(1:length(cmd.list), function(i){
-    message(".")
+    #message(".")
     cmds = cmd.list[[i]]; jobnm = names(cmd.list)[i]
     #cmds = unique(cmds);
     infomat2 = subset(infomat, infomat$jobname == jobnm)

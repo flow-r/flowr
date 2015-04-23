@@ -86,9 +86,11 @@ setGeneric("plot_flow", function (x, ...){
 setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)
 setMethod("plot", signature(x = "flow"), definition=plot_flow)
 
-.plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
+.plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, 
+																 ## vector of columns to be used in plotting
+																 pdffile=sprintf("flow.pdf"),
                            width, height, ...){
-    if(missing(height))  height = 2.5 * nrow(x)
+	if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
     jobnames=unique(as.c(x$jobnames))

@@ -127,7 +127,7 @@ queue <- function(object,
                       lsf = "72:00",
                       "24:00")
     if(verbose)
-      message("Setting default time to: ", walltime, ". If this is more than queue max (/improper format), job will fail. You may change this in job()\n")
+    	message("Setting default time to: ", walltime, ". If this is more than queue max (/improper format), job will fail. You may change this in job()\n")
   }
   if(missing(memory)){
     memory = switch(type,

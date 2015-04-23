@@ -1,0 +1,10 @@
+\begin{kframe}
+\begin{verbatim}
+qobj <- queue(type="torque", verbose = FALSE)
+jobj1 <- job(q_obj=qobj, cmd="sleep 2", name="job1")
+jobj2 <- job(q_obj=qobj, cmd = "sleep 2", name="job2", 
+             previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj)
+\end{verbatim}
+\end{kframe}

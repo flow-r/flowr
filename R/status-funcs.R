@@ -70,7 +70,7 @@ get_flow_status <- function(x, cores = 6, out_format = "markdown"){
 }
 
 
-
+#' @export
 get_wds <- function(x){
   wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
   y = file.info(wds)

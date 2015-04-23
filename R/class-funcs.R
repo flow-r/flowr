@@ -170,26 +170,22 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
     if(verbose) message("Submitting using script:\n", cmd, "\n")
     write(script, files[i])
     ## use try catch to make sure you get all the IDs
-    tryCatch({
       if(execute){
         jobid <- system(cmd, intern = TRUE)
         return(jobid)
       } ## execute
       return("") ## if no execute return the cmd
     }) ## for loop
-    }, finally = {
-      cat("ALERT !! stopping jobs submission. Please don't press Ctrl+C...\n");
-      if(j_obj@type=="lsf" & execute)
-        j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
-      else ## for all other the output is considered to be the jobid
-        j_obj@id <- jobids
-      ## }## submissiontype
-      j_obj@status <- "processed"
-      if(execute) j_obj@status <- "submitted"
-      #Sys.sleep(5);
-      #cat("...and this line will not be evaluated.\n");
-    })
-    
+  #cat("ALERT !! stopping jobs submission. Please don't press Ctrl+C...\n");
+  if(j_obj@type=="lsf" & execute)
+  	j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
+  else ## for all other the output is considered to be the jobid
+  	j_obj@id <- jobids
+  ## }## submissiontype
+  j_obj@status <- "processed"
+  if(execute) j_obj@status <- "submitted"
+  #Sys.sleep(5);
+  #cat("...and this line will not be evaluated.\n");
   return(j_obj)
 }
 
