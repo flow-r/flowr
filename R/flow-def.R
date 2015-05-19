@@ -82,7 +82,7 @@ sample_flow_def <- function(fl, jobnames, cols){
 	}
 	njobs = length(jobnames)
 	df <- data.frame(jobname = jobnames,
-		prev_jobs = c("none", jobnames[-1]),
+		prev_jobs = c("none", jobnames[-njobs]),
 		dep_type = c("none", rep("serial", njobs - 1)),
 		sub_type = rep('scatter', njobs),
 		queue = rep("medium", njobs),
@@ -90,8 +90,9 @@ sample_flow_def <- function(fl, jobnames, cols){
 		walltime = rep("23:00", njobs),
 		cpu_reserved = rep(1, njobs))
 	message("Creating a skeleton flow_def")
-	write.table(df, file = file.path(dirname(fl), "flow_def_ex.txt"), sep = "\t", row.names = FALSE, quote = FALSE)
-	#invisible(df)
+	if(!missing(fl))
+		write.table(df, file = file.path(dirname(fl), "flow_def_ex.txt"), sep = "\t", row.names = FALSE, quote = FALSE)
+	invisible(df)
 }
 
 

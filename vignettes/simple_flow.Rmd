@@ -1,7 +1,7 @@
 ---
 title: "flowr simple examples"
 date: "`r Sys.Date()`"
-output: rmarkdown::pdf_document
+output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{flowr simple example}
   %\VignetteEngine{knitr::rmarkdown}

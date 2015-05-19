@@ -12,7 +12,7 @@ create_jobs_mat <- function(x){
   sub_type <- sapply(x@jobs, slot, "submission_type")
   cpu <- sapply(x@jobs, slot, "cpu")
   nodes <- sapply(x@jobs, slot, "nodes")
-  dat <- cbind(jobnames, prev_jobs, dep_type, sub_type, cpu, nodes)
+  dat <- cbind(jobname = jobnames, prev_jobs, dep_type, sub_type, cpu_reserved = cpu, nodes)
   dat <- as.data.frame(dat, stringsAsFactors=FALSE)
   ## ----------- handle cases where we have multiple dependencies
   rows <- grep(",",dat$prev_jobs)
@@ -27,10 +27,10 @@ create_jobs_mat <- function(x){
     dat <- rbind(dat[-rows,],dat2)
   }
   for(j in 1:4){
-    jobnames=unique(as.c(dat$jobnames))
+    jobnames=unique(as.c(dat$jobname))
     jobid <- 1:length(jobnames);names(jobid)=jobnames
     prev_jobid <- jobid[as.c(dat$prev_jobs)]
-    dat$jobid <- jobid[as.c(dat$jobnames)];dat$prev_jobid <- prev_jobid
+    dat$jobid <- jobid[as.c(dat$jobname)];dat$prev_jobid <- prev_jobid
     dat <- dat[order(dat$prev_jobid, dat$jobid, na.last=FALSE, decreasing=FALSE),]
   }
   return(dat)
@@ -93,9 +93,9 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
 	if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
-    jobnames=unique(as.c(x$jobnames))
+    jobnames=unique(as.c(x$jobname))
     dat_compl <- x[complete.cases(x),]
-    dat_uniq <- x[sapply(jobnames, function(j) which(x$jobnames==j)[1]),]
+    dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
     ## -------- get positions
     disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
     elpos <- coordinates (disp_mat)
@@ -138,7 +138,7 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
         }
     }
     for (i in 1:nrow(dat_uniq)){
-        lab=dat_uniq$jobnames[i]
+        lab=dat_uniq$jobname[i]
         if(dat_uniq$sub_type[i]=="scatter"){shadow.sizes=shadow.sizes.scatter
                                         }else{shadow.sizes=shadow.sizes.serial}
         for(shadow in shadow.sizes)
@@ -165,9 +165,9 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
 	if(missing(height))  height = 2.5 * nrow(x)
 	if(missing(width)) width = 2 * nrow(x)
 	if(nrow(x) < 2) return(c("need a few more jobs.."))
-	jobnames=unique(as.c(x$jobnames))
+	jobnames=unique(as.c(x$jobname))
 	dat_compl <- x[complete.cases(x),]
-	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobnames==j)[1]),]
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
 	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
 	colnames(m) = rownames(m) = jobnames
 	## -------- get positions
@@ -175,7 +175,7 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
 	dat_compl$dep_type = ifelse(dat_compl$dep_type %in% c(".", "none") |
                                 is.na(dat_compl$dep_type) | is.null(dat_compl$dep_type), 0, dat_compl$dep_type)
   for(i in 1:nrow(dat_compl)){ 
-    m[dat_compl$jobnames[i], dat_compl$prev_jobs[i]] = dat_compl$dep_type[i]
+    m[dat_compl$jobname[i], dat_compl$prev_jobs[i]] = dat_compl$dep_type[i]
   }
   ##### some options
   if(pdf){
@@ -194,14 +194,14 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
 
 ##----- plotmat of diagram
 if(FALSE){
-	jobnames=unique(as.c(x$jobnames))
+	jobnames=unique(as.c(x$jobname))
 	dat_compl <- x[complete.cases(x),]
-	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobnames==j)[1]),]
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
 	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
 	colnames(m) = rownames(m) = jobnames
 	## -------- get positions
 	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-	m[dat_compl$jobnames, dat_compl$prev_jobs] = dat_compl$dep_type
+	m[dat_compl$jobname, dat_compl$prev_jobs] = dat_compl$dep_type
 	p <- plotmat(m, 
 					curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
 					segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,

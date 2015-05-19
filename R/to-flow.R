@@ -28,6 +28,25 @@ to_flow.data.frame <- function(x, def, qobj,
 		if(is.null(x$cmd))
 			stop("x does not have a column cmd")
 		
+		## defaults
+		if(missing(platform)){
+			platform = "lsf"
+			message("Using platform default: ", platform);
+		}
+		if(missing(flowname)){
+			flowname = "flowname"
+			message("Using flowname default: ", flowname);
+		}
+		if(missing(desc)){
+			desc = "type1"
+			message("Using description default: ", desc);
+		}
+		if(missing(flow_base_path)){
+			flow_base_path = "~/flowr"
+			message("Using flow_base_path default: ", flow_base_path);
+		}
+		
+		
 		x = data.frame(x, stringsAsFactors = FALSE)
 		def = as.flow_def(def)
 		## A check x should be in def 
@@ -43,10 +62,11 @@ to_flow.data.frame <- function(x, def, qobj,
 			qobj <- queue(type = platform, verbose = FALSE)
 		cmd.list = split.data.frame(x, x$jobname)
 		
-		jobs <- lapply(1:length(cmd.list), function(i){
+		jobs <- lapply(1:nrow(def), function(i){
 			#jobs = lapply(1:length(cmd.list), function(i){
 			message(".", appendLF = FALSE)
-			cmds = cmd.list[[i]]$cmd; jobnm = names(cmd.list)[i]
+			jobnm = def[i, "jobname"]
+			cmds = cmd.list[[jobnm]]$cmd; 
 			#cmds = unique(cmds);
 			def2 = subset(def, def$jobname == jobnm)
 			prev_job = unlist(def2$prev_jobs)

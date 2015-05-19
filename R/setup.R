@@ -9,6 +9,7 @@ setup <- function(bin = "~/bin", pkg = "flowr"){
 		file.symlink(system.file(package = pkg, "scripts/flowr"), bin)
 	}
 	tmp <- c("Consider adding ~/bin to your PATH variable in .bashrc.",
-		"\nexport PATH=$PATH:$HOME/bin")
+		"\nexport PATH=$PATH:$HOME/bin",
+		"\nYou may now use all R functions using 'flowr' from shell.")
 	message(tmp)
 }
