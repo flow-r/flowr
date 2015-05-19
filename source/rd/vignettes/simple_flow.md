@@ -1,7 +1,7 @@
 ---
 title: "flowr simple examples"
 date: "2015-05-19"
-output: rmarkdown::pdf_document
+output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{flowr simple example}
   %\VignetteEngine{knitr::rmarkdown}
@@ -39,11 +39,11 @@ knitr:::kable(dat)
 
 
 
-|       |jobnames |prev_jobs |dep_type |sub_type |cpu |nodes | jobid| prev_jobid|
-|:------|:--------|:---------|:--------|:--------|:---|:-----|-----:|----------:|
-|myjob1 |myjob1   |          |none     |scatter  |1   |1     |     1|         NA|
-|myjob2 |myjob2   |myjob1    |serial   |scatter  |1   |1     |     2|          1|
-|myjob3 |myjob3   |myjob1    |serial   |scatter  |1   |1     |     3|          1|
+|       |jobname |prev_jobs |dep_type |sub_type |cpu_reserved |nodes | jobid| prev_jobid|
+|:------|:-------|:---------|:--------|:--------|:------------|:-----|-----:|----------:|
+|myjob1 |myjob1  |          |none     |scatter  |1            |1     |     1|         NA|
+|myjob2 |myjob2  |myjob1    |serial   |scatter  |1            |1     |     2|          1|
+|myjob3 |myjob3  |myjob1    |serial   |scatter  |1            |1     |     3|          1|
 
 
 
