@@ -1,9 +1,3 @@
-setGeneric("to_flow", function (x, ...){
-	standardGeneric("to_flow")
-})
-
-
-
 #' @export
 to_flow <- function(x, ...) {
 	UseMethod("to_flow")
