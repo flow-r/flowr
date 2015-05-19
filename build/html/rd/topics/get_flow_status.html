@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>get_flow_status &mdash; flowr 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Help on available functions" href="../../topics.html"/>
+        <link rel="next" title="job" href="job.html"/>
+        <link rel="prev" title="flow" href="flow.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../../index.html" class="icon icon-home"> flowr
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Get me started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../run.html">Run my pipes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../run.html#hpcc-support">HPCC Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html">Simple flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#submission-types">Submission types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#dependency-types">Dependency types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vignettes/simple_flow.html#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vignettes/simple_flow.html#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vignettes/simple_flow.html#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="flow.html">flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">get_flow_status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="job.html">job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="job.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kill_flow.html">kill_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plot_flow.html">plot_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="queue.html">queue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="queue.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="queue.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="queue.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rerun_flow.html">rerun_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="setup.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="submit_flow.html">submit_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="submit_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="submit_job.html">submit_job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="submit_job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_job.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a></li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">flowr</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../topics.html">Help on available functions</a> &raquo;</li>
+      
+    <li>get_flow_status</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/rd/topics/get_flow_status.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="get-flow-status">
+<h1>get_flow_status<a class="headerlink" href="#get-flow-status" title="Permalink to this headline">¶</a></h1>
+<p><code class="xref py py-func docutils literal"><span class="pre">get_flow_status()</span></code></p>
+<p>get_flow_status</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">get_flow_status</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cores</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">out_format</span> <span class="o">=</span> <span class="s">&quot;markdown&quot;</span><span class="p">,</span> <span class="n">get_mem_usage</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Arguments</p>
+<dl class="docutils">
+<dt>x</dt>
+<dd>path to the flow; may be without the uuid</dd>
+<dt>cores</dt>
+<dd>number of cores to use</dd>
+<dt>out_format</dt>
+<dd>passed onto knitr:::kable. supports: markdown, rst, html...</dd>
+<dt>get_mem_usage</dt>
+<dd>under progress, whether to extract mem_usage of jobs</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>get_flow_status</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">## **Not run**:</span>
+<span class="c"># get_flow_status(x = x, cores = 6)</span>
+<span class="c"># ## an example for running from terminal</span>
+<span class="c"># flowr status x=path_to_flow_directory cores=6</span>
+<span class="c"># ## **End(Not run)**</span>
+</pre></div>
+</div>
+<p>Aliases:
+get_flow_status
+status
+Keywords:
+Author:</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="job.html" class="btn btn-neutral float-right" title="job" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="flow.html" class="btn btn-neutral" title="flow" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sahil Seth.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

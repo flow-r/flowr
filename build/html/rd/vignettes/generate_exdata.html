@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Generate 100 commands each for sleep make div &mdash; flowr 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../../index.html" class="icon icon-home"> flowr
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Get me started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../run.html">Run my pipes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../run.html#hpcc-support">HPCC Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simple_flow.html">Simple flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simple_flow.html#submission-types">Submission types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simple_flow.html#dependency-types">Dependency types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simple_flow.html#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_flow.html#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_flow.html#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../topics/flow.html">flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/get_flow_status.html">get_flow_status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/get_flow_status.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/get_flow_status.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/get_flow_status.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/job.html">job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/job.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/kill_flow.html">kill_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/kill_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/kill_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/kill_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/plot_flow.html">plot_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/plot_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/plot_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/plot_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/queue.html">queue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/queue.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/queue.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/queue.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/rerun_flow.html">rerun_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/rerun_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/rerun_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/rerun_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/setup.html">setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/setup.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/setup.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/setup.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/submit_flow.html">submit_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/submit_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/submit_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/submit_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../topics/submit_job.html">submit_job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../topics/submit_job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/submit_job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../topics/submit_job.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a></li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">flowr</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+    <li>Generate 100 commands each for sleep make div</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/rd/vignettes/generate_exdata.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="generate-100-commands-each-for-sleep-make-div">
+<h1>Generate 100 commands each for sleep make div<a class="headerlink" href="#generate-100-commands-each-for-sleep-make-div" title="Permalink to this headline">¶</a></h1>
+<div class="code r highlight-python"><div class="highlight"><pre>## create a vector of sample names
+samp = sprintf(&quot;sample%s&quot;, 1:10)
+
+tmp &lt;- lapply(1:length(samp), function(i){
+    ## sleep for a few seconds (100 times)
+    cmd_sleep = sprintf(&quot;sleep %s&quot;, abs(round(rnorm(10)*10, 0)))
+
+    ## Create 100 temporary files
+    tmp10 = sprintf(&quot;tmp%s_%s&quot;, i, 1:10)
+    cmd_tmp = sprintf(&quot;head -c 100000 /dev/urandom &gt; %s&quot;, tmp10)
+
+    ## Merge them according to samples, 10 each
+    cmd_merge &lt;- sprintf(&quot;cat %s &gt; merge%s&quot;, paste(tmp10, collapse = &quot; &quot;), i)
+
+    ## get the size of merged files
+    cmd_size = sprintf(&quot;du -sh merge%s&quot;, i)
+
+    cmd &lt;- c(cmd_sleep, cmd_tmp, cmd_merge, cmd_size)
+    jobname &lt;- c(rep(&quot;sleep&quot;, length(cmd_sleep)),
+        rep(&quot;tmp&quot;, length(cmd_tmp)),
+        rep(&quot;merge&quot;, length(cmd_merge)),
+        rep(&quot;size&quot;, length(cmd_size)))
+    ## create a DF
+    df = data.frame(samplename = samp[i],
+        jobname = jobname,
+        cmd = cmd)
+})
+
+flow_mat = do.call(rbind, tmp)
+kable(head(flow_mat))
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="30%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">samplename</th>
+<th class="head">jobname</th>
+<th class="head">cmd</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 6</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 0</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 15</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 11</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 6</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 23</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="make-the-flow-definition">
+<h2>Make the flow definition<a class="headerlink" href="#make-the-flow-definition" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="generate-a-skeleton-flow-definition">
+<h1>Generate a skeleton flow definition<a class="headerlink" href="#generate-a-skeleton-flow-definition" title="Permalink to this headline">¶</a></h1>
+<div class="code r highlight-python"><div class="highlight"><pre>def = sample_flow_def(jobnames = unique(flow_mat$jobname))
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#&gt; Creating a skeleton flow_def</span>
+</pre></div>
+</div>
+<div class="code r highlight-python"><div class="highlight"><pre>kable(def)
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="18%" />
+<col width="11%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">jobname</th>
+<th class="head">prev_jobs</th>
+<th class="head">dep_type</th>
+<th class="head">sub_type</th>
+<th class="head">queue</th>
+<th class="head">memory_reserved</th>
+<th class="head">walltime</th>
+<th class="head">cpu_reserved</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sleep</td>
+<td>none</td>
+<td>none</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>tmp</td>
+<td>sleep</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>merge</td>
+<td>tmp</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>merge</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="change-the-dependency-type-for-merge-step-into-gather">
+<h1>Change the dependency type for merge step into gather<a class="headerlink" href="#change-the-dependency-type-for-merge-step-into-gather" title="Permalink to this headline">¶</a></h1>
+<p>It might be easier to do such, by hand</p>
+<div class="code r highlight-python"><div class="highlight"><pre>def[def[, &#39;jobname&#39;] == &quot;merge&quot;,&quot;dep_type&quot;] = &quot;gather&quot;
+def[def[, &#39;jobname&#39;] == &quot;merge&quot;,&quot;sub_type&quot;] = &quot;serial&quot;
+def[def[, &#39;jobname&#39;] == &quot;size&quot;,&quot;sub_type&quot;] = &quot;serial&quot;
+kable(def)
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="18%" />
+<col width="11%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">jobname</th>
+<th class="head">prev_jobs</th>
+<th class="head">dep_type</th>
+<th class="head">sub_type</th>
+<th class="head">queue</th>
+<th class="head">memory_reserved</th>
+<th class="head">walltime</th>
+<th class="head">cpu_reserved</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sleep</td>
+<td>none</td>
+<td>none</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>tmp</td>
+<td>sleep</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>merge</td>
+<td>tmp</td>
+<td>gather</td>
+<td>serial</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>merge</td>
+<td>serial</td>
+<td>serial</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="write-both-into-example-data">
+<h2>Write both into example data<a class="headerlink" href="#write-both-into-example-data" title="Permalink to this headline">¶</a></h2>
+<div class="code r highlight-python"><div class="highlight"><pre>write.table(flow_mat, file = &quot;inst/extdata/example1_flow_mat.txt&quot;, row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
+write.table(def, file = &quot;inst/extdata/example1_flow_def.txt&quot;, row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Sahil Seth.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
