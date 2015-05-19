@@ -1,6 +1,6 @@
 ---
 title: "Generating Example Data"
-date: "`r Sys.Date()`"
+date: "2015-05-19"
 output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{Generating Example Dat}
@@ -8,18 +8,11 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-```{r, echo = FALSE, message = FALSE}
-knitr::opts_chunk$set(
-  comment = "#>",
-  error = FALSE,
-  tidy = FALSE
-)
-library(flowr)
-library(knitr)
-```
+
 
 ## Generate 100 commands each for sleep make div
-```{r}
+
+```r
 ## create a vector of sample names
 samp = sprintf("sample%s", 1:10)
 
@@ -53,17 +46,46 @@ kable(head(flow_mat))
 ```
 
 
+
+|samplename |jobname |cmd      |
+|:----------|:-------|:--------|
+|sample1    |sleep   |sleep 6  |
+|sample1    |sleep   |sleep 0  |
+|sample1    |sleep   |sleep 15 |
+|sample1    |sleep   |sleep 11 |
+|sample1    |sleep   |sleep 6  |
+|sample1    |sleep   |sleep 23 |
+
+
 # Make the flow definition
 ## Generate a skeleton flow definition
-```{r}
+
+```r
 def = sample_flow_def(jobnames = unique(flow_mat$jobname))
+```
+
+```
+#> Creating a skeleton flow_def
+```
+
+```r
 kable(def)
 ```
 
 
+
+|jobname |prev_jobs |dep_type |sub_type |queue  |memory_reserved |walltime | cpu_reserved|
+|:-------|:---------|:--------|:--------|:------|:---------------|:--------|------------:|
+|sleep   |none      |none     |scatter  |medium |163185          |23:00    |            1|
+|tmp     |sleep     |serial   |scatter  |medium |163185          |23:00    |            1|
+|merge   |tmp       |serial   |scatter  |medium |163185          |23:00    |            1|
+|size    |merge     |serial   |scatter  |medium |163185          |23:00    |            1|
+
+
 ## Change the dependency type for merge step into gather
 It might be easier to do such, by hand
-```{r}
+
+```r
 def[def[, 'jobname'] == "merge","dep_type"] = "gather"
 def[def[, 'jobname'] == "merge","sub_type"] = "serial"
 def[def[, 'jobname'] == "size","sub_type"] = "serial"
@@ -71,8 +93,18 @@ kable(def)
 ```
 
 
+
+|jobname |prev_jobs |dep_type |sub_type |queue  |memory_reserved |walltime | cpu_reserved|
+|:-------|:---------|:--------|:--------|:------|:---------------|:--------|------------:|
+|sleep   |none      |none     |scatter  |medium |163185          |23:00    |            1|
+|tmp     |sleep     |serial   |scatter  |medium |163185          |23:00    |            1|
+|merge   |tmp       |gather   |serial   |medium |163185          |23:00    |            1|
+|size    |merge     |serial   |serial   |medium |163185          |23:00    |            1|
+
+
 # Write both into example data
-```{r eval=FALSE}
+
+```r
 write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt", row.names = FALSE, quote = FALSE, sep = "\t")
 write.table(def, file = "inst/extdata/example1_flow_def.txt", row.names = FALSE, quote = FALSE, sep = "\t")
 ```

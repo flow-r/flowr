@@ -1,6 +1,6 @@
 ---
 title: "Quick Start Example"
-date: "`r Sys.Date()`"
+date: "2015-05-19"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Quick Start Example}
@@ -9,7 +9,8 @@ vignette: >
 ---
 
 
-```{r eval=FALSE}
+
+```r
 install.packages('devtools')
 devtools::install_github("sahilseth/flow")
 ```
@@ -17,29 +18,76 @@ devtools::install_github("sahilseth/flow")
 Run a setup function which copies 'flowr' Rscript to subsetquent steps easier.
 More on this [here](https://github.com/sahilseth/rfun).
 
-```{r}
+
+```r
 library(flowr)
 setup()
 ```
 
-
-# Create a flow using example data
-```{r}
-exdata = file.path(system.file(package = "flowr"), "extdata")
-flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
-
-flow_mat = subset(flow_mat, samplename == "sample1")
-
-fobj <- to_flow(x = flow_mat, def = flow_def, 
-	flowname = "example1",
-	platform = "lsf")
-
+```
+## Consider adding ~/bin to your PATH variable in .bashrc.
+## export PATH=$PATH:$HOME/bin
+## You may now use all R functions using 'flowr' from shell.
 ```
 
 
-```{r}
+# Create a flow using example data
+
+```r
+exdata = file.path(system.file(package = "flowr"), "extdata")
+flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
+```
+
+```
+## Warning in file(file, "rt"): cannot open file '/DRIVES/Dropbox2/Dropbox/
+## public/github_flow/extdata/example1_flow_mat.txt': No such file or
+## directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
+flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
+```
+
+```
+## Warning in file(file, "rt"): cannot open file '/DRIVES/Dropbox2/Dropbox/
+## public/github_flow/extdata/example1_flow_def.txt': No such file or
+## directory
+```
+
+```
+## Error in file(file, "rt"): cannot open the connection
+```
+
+```r
+flow_mat = subset(flow_mat, samplename == "sample1")
+```
+
+```
+## Error in subset(flow_mat, samplename == "sample1"): object 'flow_mat' not found
+```
+
+```r
+fobj <- to_flow(x = flow_mat, def = flow_def, 
+	flowname = "example1",
+	platform = "lsf")
+```
+
+```
+## Error in to_flow(x = flow_mat, def = flow_def, flowname = "example1", : object 'flow_mat' not found
+```
+
+
+
+```r
 plot_flow(fobj)
+```
+
+```
+## Error in plot_flow(fobj): error in evaluating the argument 'x' in selecting a method for function 'plot_flow': Error: object 'fobj' not found
 ```
 
 ## For Figure1 the following process would be followed:
@@ -51,7 +99,8 @@ plot_flow(fobj)
 - `merge`: When all `tmp` are complete, merge them
 - `size`: get their size when merge is complete
 
-```{r eval=FALSE}
+
+```r
 submit_flow(fobj)
 submit_flow(fobj, execute = TRUE)
 ```
