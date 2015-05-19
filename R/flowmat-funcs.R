@@ -1,4 +1,6 @@
 
+## some function to supplement the shiny GUI
+
 if(FALSE){
   
   

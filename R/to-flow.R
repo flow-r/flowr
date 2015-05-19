@@ -2,74 +2,6 @@ setGeneric("to_flow", function (x, ...){
 	standardGeneric("to_flow")
 })
 
-setClass("flow_def", contains = "data.frame") 
-#http://www.carlboettiger.info/2013/09/11/extending-data-frame-class.html
-
-#' @export
-check <- function(x, ...) {
-	UseMethod("check")
-}
-
-is.flow_def <- function(x){
-	class(x) == "flow_def"
-}
-
-#' @export
-#' @importFrom knitr kable
-check.flow_def <- function(x, 
-	sub_types = c("serial", "scatter", "burst"),
-	dep_types = c("none", "serial", "gather")){
-		if(sum(!x$dep_type %in% dep_types)) 
-			stop("Dependency type not recognized ", paste(x$dep_type, collapse = " "), 
-				"should be from ", paste(dep_types, collapse = " "))
-		if(sum(!x$sub_type %in% sub_types)) 
-			stop("Submission type not recognized ", paste(x$sub_type, collapse = " "), 
-				"should be from ", paste(sub_types, collapse = " "))
-		## check if some jobs are put as dependencies but not properly defined
-		x$prev_jobs = gsub("\\.|none", NA, x$prev_jobs)
-		prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
-		miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
-		if(length(miss_jobs) > 0) 
-			stop("Some jobs do not exist: ", miss_jobs)
-		## check if dep is none, but prev jobs defined
-		rows = x$dep_type == "none" & !is.na(x$prev_jobs)
-		if(sum(rows)){
-			print(kable(x[rows,]))
-			stop("\nPrevious jobs defined, but dependency type is none")
-		}
-		rows = x$dep_type != "none" & is.na(x$prev_jobs)
-		if(sum(rows)){
-			print(kable(x[rows,]))
-			stop("Previous jobs NOT defined, but dependency type is NOT none")
-		}
-		#print(x)
-		## check all previous jobs defined in names
-		## code previous jobs as NA
-		## allowable types:
-		## previous job
-		##      scatter --(serial)--> scatter
-		##      scatter --(serial)--> scatter
-		##      scatter --(gather)--> scatter
-		##      scatter --(gather)--> serial
-		##      serial  --(serial)--> scatter
-		##      serial  --(burst)--> scatter
-		## not allowed:
-		##      any --(none)--> any
-		invisible(x)
-	}
-
-#
-
-as.flow_def <- function(x){
-	if(is.flow_def(x))
-		return(x)
-	## ---- assuming x is a file
-	if(is.data.frame(x))
-		y <- new("flow_def", x)
-	if(is.character(x))
-		y <- new("flow_def", read_sheet(x, id_column = "jobname"))
-	y = check(y)
-}
 
 
 #' @export
@@ -85,7 +17,10 @@ to_flow.list <- function(x, def = 'flow_def'){
 # def = system.file(package = "flowr", "files/flow_def_ex1.txt")
 
 #' this operates on a single sample basis
-#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample
+#' @param x is a data.frame with jobnames and commands to run. See details for more on the format
+#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
+#' flow_tab: as defined by x is a (minimum) three column matrix with:
+#' samplename, jobname, cmd
 #' @export
 to_flow.data.frame <- function(x, def, qobj, 
 	platform,
