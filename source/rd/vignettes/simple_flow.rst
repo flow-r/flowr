@@ -22,6 +22,7 @@ Simple flow
    :alt: plot of chunk plot\_simpleflow
 
    plot of chunk plot\_simpleflow
+
 .. code:: r
 
     dat <- flowr:::.create_jobs_mat(fobj)
@@ -75,6 +76,7 @@ Serial: one to one relationship
    :alt: plot of chunk unnamed-chunk-3
 
    plot of chunk unnamed-chunk-3
+
 Gather: many to one relationship
 ''''''''''''''''''''''''''''''''
 
@@ -95,6 +97,7 @@ Gather: many to one relationship
    :alt: plot of chunk unnamed-chunk-4
 
    plot of chunk unnamed-chunk-4
+
 Burst: one to many relationship
 '''''''''''''''''''''''''''''''
 
@@ -115,4 +118,5 @@ Burst: one to many relationship
    :alt: plot of chunk unnamed-chunk-5
 
    plot of chunk unnamed-chunk-5
+
 For more details look at `Building flowr recepies <buid_main.html>`__

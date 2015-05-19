@@ -58,7 +58,7 @@ Examples
 ::
 
  cmds = rep("sleep 5", 10)
- .. image flow-2.pngqobj <- queue(type='torque')
+ qobj <- queue(type='torque')
  **Setting default time to: 72:00:00. If this is more than queue max (/improper format), job will fail. You may change this in job()
  ****Setting default memory to: 10g. If this is more than queue max (/improper format), job will fail.
  **## run the 10 commands in parallel
@@ -78,14 +78,14 @@ Examples
  
  ## plot the flow
  plot_flow(fobj)
- .. image flow-7.png## **Not run**: 
+ ## **Not run**: 
  # ## dry run, only create the structure without submitting jobs
  # submit_flow(fobj)
  # 
  # ## execute the jobs: ONLY works on computing cluster, would fail otherwise
  # submit_flow(fobj, execute = TRUE)
  # ## **End(Not run)**
- 
+ .. image flow-5.png
 Aliases:
 flow
 Keywords:

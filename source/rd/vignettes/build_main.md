@@ -1,6 +1,6 @@
 ---
 title: "flowr building a pipeline"
-date: "2015-04-07"
+date: "2015-05-19"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{flowr simple example}
@@ -25,11 +25,11 @@ head(mat)
 
 ```
 #>   jobname       cmd
-#> 1  myjob1 sleep 1.3
-#> 2  myjob1   sleep 0
-#> 3  myjob1 sleep 0.6
-#> 4  myjob1 sleep 1.3
-#> 5  myjob1 sleep 1.3
-#> 6  myjob1   sleep 0
+#> 1  myjob1 sleep 0.7
+#> 2  myjob1 sleep 0.8
+#> 3  myjob1   sleep 0
+#> 4  myjob1 sleep 0.1
+#> 5  myjob1 sleep 1.1
+#> 6  myjob1 sleep 2.2
 ```
 
