@@ -40,6 +40,7 @@ knitr:::kable(dat)
 ```
 
 
+
 ### Submission types
 - scatter: submit all commands as parallel independent jobs
 - serial: run these commands sequentuially one after the other

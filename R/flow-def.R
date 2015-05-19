@@ -72,11 +72,13 @@ as.flow_def <- function(x){
 #' @param fl path to a matrix with commands to run
 #' @details flow_tab: as defined by fl is a (minimum) three column matrix with
 #' samplename, jobname, cmd
+#' @export
 sample_flow_def <- function(fl, jobnames, cols){
-	message("Creating a skeleton flow_def")
 	if(!missing(fl)){
 		mat <- read_sheet(fl)
 		jobnames <- unique(mat$jobname)
+		message("Following jobnames detected: ", 
+			paste(jobnames, collapse = " "))
 	}
 	njobs = length(jobnames)
 	df <- data.frame(jobname = jobnames,
@@ -87,8 +89,9 @@ sample_flow_def <- function(fl, jobnames, cols){
 		memory_reserved = rep("163185", njobs),
 		walltime = rep("23:00", njobs),
 		cpu_reserved = rep(1, njobs))
+	message("Creating a skeleton flow_def")
 	write.table(df, file = file.path(dirname(fl), "flow_def_ex.txt"), sep = "\t", row.names = FALSE, quote = FALSE)
-	invisible(df)
+	#invisible(df)
 }
 
 
