@@ -46,6 +46,8 @@ kable(head(flow_mat))
 ```
 
 # Ingredient 2: Flow Definition (flow_def)
+More on the format of this file [here].
+
 ```{r}
 kable(flow_def)
 ```
