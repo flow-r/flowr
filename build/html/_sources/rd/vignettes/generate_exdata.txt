@@ -37,17 +37,17 @@ Generate 100 commands each for sleep make div
 +--------------+-----------+------------+
 | samplename   | jobname   | cmd        |
 +==============+===========+============+
-| sample1      | sleep     | sleep 12   |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 6    |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 14   |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 5    |
+| sample1      | sleep     | sleep 22   |
 +--------------+-----------+------------+
 | sample1      | sleep     | sleep 2    |
 +--------------+-----------+------------+
-| sample1      | sleep     | sleep 11   |
+| sample1      | sleep     | sleep 2    |
++--------------+-----------+------------+
+| sample1      | sleep     | sleep 10   |
++--------------+-----------+------------+
+| sample1      | sleep     | sleep 3    |
++--------------+-----------+------------+
+| sample1      | sleep     | sleep 9    |
 +--------------+-----------+------------+
 
 Make the flow definition
