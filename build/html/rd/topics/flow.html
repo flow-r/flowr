@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>flow &mdash; flowr 0.1 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -32,11 +32,11 @@
   
     <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="Help on available functions" href="../../topics.html"/>
-        <link rel="next" title="job" href="job.html"/>
+        <link rel="next" title="get_flow_status" href="get_flow_status.html"/>
         <link rel="prev" title="Help on available functions" href="../../topics.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -48,8 +48,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> flowr</a>
+
         
+          <a href="../../index.html" class="icon icon-home"> flowr
+        
+
+        
+        </a>
+
         
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -58,6 +64,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -75,15 +83,79 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html">Simple flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#submission-types">Submission types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#dependency-types">Dependency types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vignettes/simple_flow.html#dependency-types">Dependency types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vignettes/simple_flow.html#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vignettes/simple_flow.html#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vignettes/simple_flow.html#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="job.html">job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="queue.html">queue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="submit_flow.html">submit_flow</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="get_flow_status.html">get_flow_status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="get_flow_status.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="get_flow_status.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="get_flow_status.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="job.html">job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="job.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kill_flow.html">kill_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plot_flow.html">plot_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plot_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="queue.html">queue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="queue.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="queue.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="queue.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rerun_flow.html">rerun_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="setup.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="submit_flow.html">submit_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="submit_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="submit_job.html">submit_job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="submit_job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="submit_job.html#examples">Examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -118,7 +190,9 @@
     <li>flow</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../../_sources/rd/topics/flow.txt" rel="nofollow"> View page source</a>
+          
+            <a href="../../_sources/rd/topics/flow.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
   </ul>
@@ -142,11 +216,11 @@
 <dt>name</dt>
 <dd><code class="docutils literal"><span class="pre">character</span></code> Name of the flow. Defaults to <code class="docutils literal"><span class="pre">'newname'</span></code></dd>
 </dl>
-<p>Used in <a class="reference external" href="submit_flow.html">submit_flow</a> to name the working directories.
+<p>Used in <a class="reference external" href="http://www.inside-r.org/packages/cran/flow/docs/submit_flow-flow-method">submit_flow</a> to name the working directories.
 desc</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">character</span></code> Description of the flow</div></blockquote>
-<p>This is used to name folders (when submitting jobs, see <a class="reference external" href="submit_flow.html">submit_flow</a>).
+<p>This is used to name folders (when submitting jobs, see <a class="reference external" href="http://www.inside-r.org/packages/cran/flow/docs/submit_flow-flow-method">submit_flow</a>).
 It is good practice to avoid spaces and other special characters.
 An underscore &#8216;_&#8217; seems like a good word separator.
 Defaults to &#8216;my_super_flow&#8217;. We usually use this to put sample names of the data.
@@ -177,7 +251,7 @@ flow_path</p>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre>cmds = rep(&quot;sleep 5&quot;, 10)
-.. image flow-2.pngqobj &lt;- queue(type=&#39;torque&#39;)
+qobj &lt;- queue(type=&#39;torque&#39;)
 **Setting default time to: 72:00:00. If this is more than queue max (/improper format), job will fail. You may change this in job()
 ****Setting default memory to: 10g. If this is more than queue max (/improper format), job will fail.
 **## run the 10 commands in parallel
@@ -197,13 +271,14 @@ fobj &lt;- flow(jobs = list(jobj1, jobj2, jobj3))
 
 ## plot the flow
 plot_flow(fobj)
-.. image flow-7.png## **Not run**:
+## **Not run**:
 # ## dry run, only create the structure without submitting jobs
 # submit_flow(fobj)
 #
 # ## execute the jobs: ONLY works on computing cluster, would fail otherwise
 # submit_flow(fobj, execute = TRUE)
 # ## **End(Not run)**
+.. image flow-5.png
 </pre></div>
 </div>
 <p>Aliases:
@@ -219,10 +294,10 @@ Author:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="job.html" class="btn btn-neutral float-right" title="job">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="get_flow_status.html" class="btn btn-neutral float-right" title="get_flow_status" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../../topics.html" class="btn btn-neutral" title="Help on available functions"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../../topics.html" class="btn btn-neutral" title="Help on available functions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -234,10 +309,10 @@ Author:</p>
         &copy; Copyright 2015, Sahil Seth.
     </p>
   </div>
-
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
+
 </footer>
+
         </div>
       </div>
 

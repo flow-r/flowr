@@ -35,7 +35,7 @@ plot
 verbose
     logical.
 ...
-    Any additional parameter are passed on to `submit_job <http://www.inside-r.org/packages/cran/flow/docs/submit_job-methods>`_ function
+    Any additional parameter are passed on to `submit_job <submit_job.html>`_ function
 
 
 Description

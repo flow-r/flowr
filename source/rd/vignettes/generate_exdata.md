@@ -1,6 +1,6 @@
 ---
 title: "Generating Example Data"
-date: "2015-05-19"
+date: "2015-05-20"
 output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{Generating Example Dat}
@@ -49,12 +49,12 @@ kable(head(flow_mat))
 
 |samplename |jobname |cmd      |
 |:----------|:-------|:--------|
-|sample1    |sleep   |sleep 6  |
-|sample1    |sleep   |sleep 0  |
-|sample1    |sleep   |sleep 15 |
-|sample1    |sleep   |sleep 11 |
-|sample1    |sleep   |sleep 6  |
-|sample1    |sleep   |sleep 23 |
+|sample1    |sleep   |sleep 20 |
+|sample1    |sleep   |sleep 1  |
+|sample1    |sleep   |sleep 1  |
+|sample1    |sleep   |sleep 9  |
+|sample1    |sleep   |sleep 17 |
+|sample1    |sleep   |sleep 2  |
 
 
 # Make the flow definition
@@ -105,7 +105,9 @@ kable(def)
 # Write both into example data
 
 ```r
-write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt", row.names = FALSE, quote = FALSE, sep = "\t")
-write.table(def, file = "inst/extdata/example1_flow_def.txt", row.names = FALSE, quote = FALSE, sep = "\t")
+write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt", 
+	row.names = FALSE, quote = FALSE, sep = "\t")
+write.table(def, file = "inst/extdata/example1_flow_def.txt", 
+	row.names = FALSE, quote = FALSE, sep = "\t")
 ```
 

@@ -23,7 +23,7 @@ Usage
 Arguments
 
 x
-    Either path to flow folder or the `flow <flow.html>`_ object which has been 'returned' from `submit_flow <submit_flow.html>`_.
+    Either path to flow folder or the `flow <flow.html>`_ object which has been 'returned' from `submit_flow <http://www.inside-r.org/packages/cran/flow/docs/submit_flow-flow-method>`_.
 execute
     [logical] whether to execute or not
 kill

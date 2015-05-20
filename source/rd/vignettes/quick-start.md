@@ -1,12 +1,17 @@
 ---
 title: "Quick Start Example"
-date: "2015-05-19"
+date: "2015-05-20"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Quick Start Example}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
+
+Get me started
+-------------
+
+Just get me started…
 
 
 
@@ -90,7 +95,7 @@ plot_flow(fobj)
 ## Error in plot_flow(fobj): error in evaluating the argument 'x' in selecting a method for function 'plot_flow': Error: object 'fobj' not found
 ```
 
-## For Figure1 the following process would be followed:
+**For Figure1 the following process would be followed**:
 
 - `sleep`: Run all 10 sleep jobs for given sample
 - `tmp`: Create 10 temporary files, after sleep jobs are complete

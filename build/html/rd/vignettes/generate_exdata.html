@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Building pipelines &mdash; flowr 0.1 documentation</title>
+  <title>Generate 100 commands each for sleep make div &mdash; flowr 0.1 documentation</title>
   
 
   
@@ -182,11 +182,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../../index.html">Docs</a> &raquo;</li>
       
-    <li>Building pipelines</li>
+    <li>Generate 100 commands each for sleep make div</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../_sources/rd/vignettes/build_main.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/rd/vignettes/generate_exdata.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -195,24 +195,232 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="building-pipelines">
-<h1>Building pipelines<a class="headerlink" href="#building-pipelines" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="a-working-example">
-<h2>A working example<a class="headerlink" href="#a-working-example" title="Permalink to this headline">¶</a></h2>
-<div class="code r highlight-python"><div class="highlight"><pre>## 6 jobs with 10 each
-cmds = sprintf(&quot;sleep %s&quot;, round(rchisq(6*10, df = 1), 1))
-nms = sprintf(&quot;myjob%s&quot;, rep(1:6, each = 10))
-mat = data.frame(cbind(jobname = nms, cmd = cmds), stringsAsFactors = FALSE)
-head(mat)
+  <div class="section" id="generate-100-commands-each-for-sleep-make-div">
+<h1>Generate 100 commands each for sleep make div<a class="headerlink" href="#generate-100-commands-each-for-sleep-make-div" title="Permalink to this headline">¶</a></h1>
+<div class="code r highlight-python"><div class="highlight"><pre>## create a vector of sample names
+samp = sprintf(&quot;sample%s&quot;, 1:10)
+
+tmp &lt;- lapply(1:length(samp), function(i){
+    ## sleep for a few seconds (100 times)
+    cmd_sleep = sprintf(&quot;sleep %s&quot;, abs(round(rnorm(10)*10, 0)))
+
+    ## Create 100 temporary files
+    tmp10 = sprintf(&quot;tmp%s_%s&quot;, i, 1:10)
+    cmd_tmp = sprintf(&quot;head -c 100000 /dev/urandom &gt; %s&quot;, tmp10)
+
+    ## Merge them according to samples, 10 each
+    cmd_merge &lt;- sprintf(&quot;cat %s &gt; merge%s&quot;, paste(tmp10, collapse = &quot; &quot;), i)
+
+    ## get the size of merged files
+    cmd_size = sprintf(&quot;du -sh merge%s&quot;, i)
+
+    cmd &lt;- c(cmd_sleep, cmd_tmp, cmd_merge, cmd_size)
+    jobname &lt;- c(rep(&quot;sleep&quot;, length(cmd_sleep)),
+        rep(&quot;tmp&quot;, length(cmd_tmp)),
+        rep(&quot;merge&quot;, length(cmd_merge)),
+        rep(&quot;size&quot;, length(cmd_size)))
+    ## create a DF
+    df = data.frame(samplename = samp[i],
+        jobname = jobname,
+        cmd = cmd)
+})
+
+flow_mat = do.call(rbind, tmp)
+kable(head(flow_mat))
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#&gt;   jobname       cmd</span>
-<span class="c">#&gt; 1  myjob1   sleep 0</span>
-<span class="c">#&gt; 2  myjob1 sleep 1.4</span>
-<span class="c">#&gt; 3  myjob1   sleep 0</span>
-<span class="c">#&gt; 4  myjob1   sleep 1</span>
-<span class="c">#&gt; 5  myjob1 sleep 2.9</span>
-<span class="c">#&gt; 6  myjob1 sleep 0.3</span>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="30%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">samplename</th>
+<th class="head">jobname</th>
+<th class="head">cmd</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 20</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 1</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 1</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 9</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 17</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 2</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="make-the-flow-definition">
+<h2>Make the flow definition<a class="headerlink" href="#make-the-flow-definition" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="generate-a-skeleton-flow-definition">
+<h1>Generate a skeleton flow definition<a class="headerlink" href="#generate-a-skeleton-flow-definition" title="Permalink to this headline">¶</a></h1>
+<div class="code r highlight-python"><div class="highlight"><pre>def = sample_flow_def(jobnames = unique(flow_mat$jobname))
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#&gt; Creating a skeleton flow_def</span>
+</pre></div>
+</div>
+<div class="code r highlight-python"><div class="highlight"><pre>kable(def)
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="18%" />
+<col width="11%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">jobname</th>
+<th class="head">prev_jobs</th>
+<th class="head">dep_type</th>
+<th class="head">sub_type</th>
+<th class="head">queue</th>
+<th class="head">memory_reserved</th>
+<th class="head">walltime</th>
+<th class="head">cpu_reserved</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sleep</td>
+<td>none</td>
+<td>none</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>tmp</td>
+<td>sleep</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>merge</td>
+<td>tmp</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>merge</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="change-the-dependency-type-for-merge-step-into-gather">
+<h1>Change the dependency type for merge step into gather<a class="headerlink" href="#change-the-dependency-type-for-merge-step-into-gather" title="Permalink to this headline">¶</a></h1>
+<p>It might be easier to do such, by hand</p>
+<div class="code r highlight-python"><div class="highlight"><pre>def[def[, &#39;jobname&#39;] == &quot;merge&quot;,&quot;dep_type&quot;] = &quot;gather&quot;
+def[def[, &#39;jobname&#39;] == &quot;merge&quot;,&quot;sub_type&quot;] = &quot;serial&quot;
+def[def[, &#39;jobname&#39;] == &quot;size&quot;,&quot;sub_type&quot;] = &quot;serial&quot;
+kable(def)
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="18%" />
+<col width="11%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">jobname</th>
+<th class="head">prev_jobs</th>
+<th class="head">dep_type</th>
+<th class="head">sub_type</th>
+<th class="head">queue</th>
+<th class="head">memory_reserved</th>
+<th class="head">walltime</th>
+<th class="head">cpu_reserved</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sleep</td>
+<td>none</td>
+<td>none</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>tmp</td>
+<td>sleep</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>merge</td>
+<td>tmp</td>
+<td>gather</td>
+<td>serial</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>merge</td>
+<td>serial</td>
+<td>serial</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="write-both-into-example-data">
+<h2>Write both into example data<a class="headerlink" href="#write-both-into-example-data" title="Permalink to this headline">¶</a></h2>
+<div class="code r highlight-python"><div class="highlight"><pre>write.table(flow_mat, file = &quot;inst/extdata/example1_flow_mat.txt&quot;,
+    row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
+write.table(def, file = &quot;inst/extdata/example1_flow_def.txt&quot;,
+    row.names = FALSE, quote = FALSE, sep = &quot;\t&quot;)
 </pre></div>
 </div>
 </div>

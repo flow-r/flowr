@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>kill_flow &mdash; flowr 0.1 documentation</title>
+  <title>setup &mdash; flowr 0.1 documentation</title>
   
 
   
@@ -32,8 +32,8 @@
   
     <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
         <link rel="up" title="Help on available functions" href="../../topics.html"/>
-        <link rel="next" title="plot_flow" href="plot_flow.html"/>
-        <link rel="prev" title="job" href="job.html"/> 
+        <link rel="next" title="submit_flow" href="submit_flow.html"/>
+        <link rel="prev" title="rerun_flow" href="rerun_flow.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -114,10 +114,10 @@
 <li class="toctree-l3"><a class="reference internal" href="job.html#examples">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">kill_flow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kill_flow.html">kill_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kill_flow.html#examples">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="plot_flow.html">plot_flow</a><ul>
@@ -138,10 +138,10 @@
 <li class="toctree-l3"><a class="reference internal" href="rerun_flow.html#examples">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="setup.html">setup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="setup.html#usage">Usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup.html#description">Description</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup.html#examples">Examples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="submit_flow.html">submit_flow</a><ul>
@@ -187,11 +187,11 @@
       
           <li><a href="../../topics.html">Help on available functions</a> &raquo;</li>
       
-    <li>kill_flow</li>
+    <li>setup</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../_sources/rd/topics/kill_flow.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/rd/topics/setup.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -200,43 +200,27 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="kill-flow">
-<h1>kill_flow<a class="headerlink" href="#kill-flow" title="Permalink to this headline">¶</a></h1>
-<p><code class="xref py py-func docutils literal"><span class="pre">kill_flow()</span></code></p>
-<p>kill_flow</p>
+  <div class="section" id="setup">
+<h1>setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<p><code class="xref py py-func docutils literal"><span class="pre">setup()</span></code></p>
+<p>Setup and initialize some scripts.</p>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">kill_flow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">wd</span><span class="p">,</span> <span class="n">fobj</span><span class="p">,</span> <span class="n">kill_cmd</span> <span class="o">=</span> <span class="s">&quot;bkill&quot;</span><span class="p">,</span> <span class="n">jobid_col</span> <span class="o">=</span> <span class="s">&quot;job_sub_id&quot;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">setup</span><span class="p">(</span><span class="nb">bin</span> <span class="o">=</span> <span class="s">&quot;~/bin&quot;</span><span class="p">,</span> <span class="n">pkg</span> <span class="o">=</span> <span class="s">&quot;flowr&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Arguments</p>
-<dl class="docutils">
-<dt>x</dt>
-<dd>either path to flow [character] or fobj object of class <a class="reference external" href="flow.html">flow</a></dd>
-<dt>wd</dt>
-<dd>path to a specific which needs to be killed</dd>
-<dt>fobj</dt>
-<dd>a object of class <a class="reference external" href="flow.html">flow</a></dd>
-<dt>kill_cmd</dt>
-<dd>The command used to kill. Default is &#8216;bkill&#8217; (LSF). One can used qdel for &#8216;torque&#8217;, &#8216;sge&#8217; etc.</dd>
-<dt>jobid_col</dt>
-<dd>Advanced use. The column name in &#8216;flow_details.txt&#8217; file used to fetch jobids to kill</dd>
-</dl>
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>kill_flow</p>
+<p>Setup and initialize some scripts.
+Details
+&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;&#8220;&#8221;</p>
+<p>Will add more to this to identify cluster and aid in other things</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## **Not run**:</span>
-<span class="c"># ## example for terminal</span>
-<span class="c"># flowr kill_flow wd=path_to_flow_directory</span>
-<span class="c"># ## **End(Not run)**</span>
-</pre></div>
-</div>
 <p>Aliases:
-kill_flow
+setup
 Keywords:
 Author:</p>
 </div>
@@ -248,10 +232,10 @@ Author:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_flow.html" class="btn btn-neutral float-right" title="plot_flow" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="submit_flow.html" class="btn btn-neutral float-right" title="submit_flow" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="job.html" class="btn btn-neutral" title="job" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="rerun_flow.html" class="btn btn-neutral" title="rerun_flow" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

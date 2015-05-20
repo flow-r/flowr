@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Some helpful tips and questions &mdash; flowr 0.1 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -31,10 +31,10 @@
 
   
     <link rel="top" title="flowr 0.1 documentation" href="index.html"/>
-        <link rel="prev" title="submit_flow" href="rd/topics/submit_flow.html"/> 
+        <link rel="prev" title="submit_job" href="rd/topics/submit_job.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -46,8 +46,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="index.html" class="fa fa-home"> flowr</a>
+
         
+          <a href="index.html" class="icon icon-home"> flowr
+        
+
+        
+        </a>
+
         
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,6 +62,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -73,15 +81,79 @@
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="rd/vignettes/simple_flow.html">Simple flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rd/vignettes/simple_flow.html#submission-types">Submission types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rd/vignettes/simple_flow.html#dependency-types">Dependency types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rd/vignettes/simple_flow.html#dependency-types">Dependency types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/vignettes/simple_flow.html#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/vignettes/simple_flow.html#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/vignettes/simple_flow.html#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipelines.html">Available pipelines</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build.html">Building Pipelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="topics.html">Help on available functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rd/topics/flow.html">flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rd/topics/job.html">job</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rd/topics/queue.html">queue</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rd/topics/submit_flow.html">submit_flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/flow.html">flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/get_flow_status.html">get_flow_status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/get_flow_status.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/get_flow_status.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/get_flow_status.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/job.html">job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/job.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/kill_flow.html">kill_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/kill_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/kill_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/kill_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/plot_flow.html">plot_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/plot_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/plot_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/plot_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/queue.html">queue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/queue.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/queue.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/queue.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/rerun_flow.html">rerun_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/rerun_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/rerun_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/rerun_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/setup.html">setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/setup.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/setup.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/setup.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/submit_flow.html">submit_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/submit_flow.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/submit_flow.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/submit_flow.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rd/topics/submit_job.html">submit_job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/submit_job.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/submit_job.html#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rd/topics/submit_job.html#examples">Examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -114,7 +186,9 @@
     <li>Some helpful tips and questions</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/faqs.txt" rel="nofollow"> View page source</a>
+          
+            <a href="_sources/faqs.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
   </ul>
@@ -166,7 +240,7 @@ devtools:::install_github(&quot;sahilseth/flowr&quot;)
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="rd/topics/submit_flow.html" class="btn btn-neutral" title="submit_flow"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="rd/topics/submit_job.html" class="btn btn-neutral" title="submit_job" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -178,10 +252,10 @@ devtools:::install_github(&quot;sahilseth/flowr&quot;)
         &copy; Copyright 2015, Sahil Seth.
     </p>
   </div>
-
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
+
 </footer>
+
         </div>
       </div>
 

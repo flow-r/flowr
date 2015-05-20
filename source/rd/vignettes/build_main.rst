@@ -16,8 +16,8 @@ A working example
 
     #>   jobname       cmd
     #> 1  myjob1   sleep 0
-    #> 2  myjob1 sleep 2.5
-    #> 3  myjob1 sleep 2.6
-    #> 4  myjob1 sleep 0.6
-    #> 5  myjob1 sleep 0.9
-    #> 6  myjob1   sleep 0
+    #> 2  myjob1 sleep 1.4
+    #> 3  myjob1   sleep 0
+    #> 4  myjob1   sleep 1
+    #> 5  myjob1 sleep 2.9
+    #> 6  myjob1 sleep 0.3
