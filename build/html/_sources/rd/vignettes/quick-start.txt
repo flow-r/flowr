@@ -80,6 +80,8 @@ Ingredient 1: Commands to run (flow\_mat)
 Ingredient 2: Flow Definition (flow\_def)
 =========================================
 
+More on the format of this file [here].
+
 .. code:: r
 
     kable(flow_def)

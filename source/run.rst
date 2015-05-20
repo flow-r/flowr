@@ -1,10 +1,6 @@
-Run my pipes
+HPCC Support
 =============================================
 
-*Using some recipies...*
-
-HPCC Support
----------------------------------------------
 As of now we have tested this on the following clusters:
 
 \|Platform\|submission commnd\|Works?\|queue type \*\|

@@ -85,6 +85,8 @@ kable(head(flow_mat))
 |sample1    |sleep   |sleep 8  |
 
 # Ingredient 2: Flow Definition (flow_def)
+More on the format of this file [here].
+
 
 ```r
 kable(flow_def)

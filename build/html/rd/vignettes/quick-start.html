@@ -88,21 +88,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../run.html#hpcc-support">HPCC Support</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="simple_flow.html">Simple flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simple_flow.html#submission-types">Submission types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simple_flow.html#dependency-types">Dependency types</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="simple_flow.html#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simple_flow.html#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simple_flow.html#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../build.html">Building Pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build-pipes.html">Styles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="build-pipes.html#style-1">Style 1</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="build-pipes.html#ingredient-1-flow-definition-format">Ingredient 1: Flow Definition format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="build-pipes.html#ingredient-2-flow-mat-a-table-with-all-the-commands-to-run">Ingredient 2: flow_mat: A table with all the commands to run:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="build-pipes.html#style-2">Style 2</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build-pipes.html#submission-types">Submission types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-pipes.html#dependency-types">Dependency types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-pipes.html#relationships">Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="build-pipes.html#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build-pipes.html#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build-pipes.html#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build-pipes.html#hpcc-submission-formats">HPCC submission formats</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../topics.html">Help on available functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../topics/flow.html">flow</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../topics/flow.html#usage">Usage</a></li>
@@ -298,6 +308,7 @@ fobj &lt;- to_flow(x = flow_mat, def = flow_def,
 </div>
 <div class="section" id="ingredient-2-flow-definition-flow-def">
 <h2>Ingredient 2: Flow Definition (flow_def)<a class="headerlink" href="#ingredient-2-flow-definition-flow-def" title="Permalink to this headline">¶</a></h2>
+<p>More on the format of this file [here].</p>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">kable</span><span class="p">(</span><span class="n">flow_def</span><span class="p">)</span>
 </pre></div>
 </div>

@@ -47,7 +47,6 @@ Contents:
 	:maxdepth: 2
 	
 	run
-	examples
 	pipelines
 	build
 	topics
