@@ -6,7 +6,8 @@ Version: 0.9.6.7
 Date: 2015-04-02
 Depends: 
     diagram, 
-    methods
+    methods,
+    rmarkdown
 Imports:
     knitr,
     ggplot2,
