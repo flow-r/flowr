@@ -1,3 +1,4 @@
+# a good example: https://github.com/OuhscBbmc/REDCapR/blob/master/.travis.yml
 language: r
 
 # Be strict when checking our package
@@ -9,3 +10,7 @@ warnings_are_errors: false
 # R 
 r_check_args: --timings --as-cran
 #r_check_args: --no-install
+
+## Following to take care of stringi error from travis (temporary)
+r_github_packages:
+  - Rexamine/stringi
