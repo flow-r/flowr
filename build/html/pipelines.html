@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; flowr 0.1 documentation</title>
+  <title>Available pipelines &mdash; flowr 0.1 documentation</title>
   
 
   
@@ -30,7 +30,9 @@
   
 
   
-    <link rel="top" title="flowr 0.1 documentation" href="index.html"/> 
+    <link rel="top" title="flowr 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Building Pipelines" href="build.html"/>
+        <link rel="prev" title="Simple flow" href="rd/vignettes/simple_flow.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -75,7 +77,7 @@
 </ul>
 </li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="run.html">Run my pipes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="run.html#hpcc-support">HPCC Support</a></li>
 </ul>
@@ -91,7 +93,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pipelines.html">Available pipelines</a><ul class="simple">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Available pipelines</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build.html">Building Pipelines</a></li>
@@ -185,11 +187,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Installation</li>
+    <li>Available pipelines</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/installation.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/pipelines.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -198,24 +200,26 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Just get me started…</p>
-<p><code class="docutils literal"><span class="pre">`</span>
-<span class="pre">install.packages('devtools')</span>
-<span class="pre">devtools::install_github(&quot;sahilseth/flow&quot;)</span>
-<span class="pre">require(flow)</span>
-<span class="pre">qobj</span> <span class="pre">&lt;-</span> <span class="pre">queue(type=&quot;lsf&quot;,</span> <span class="pre">queue=&quot;normal&quot;)</span>
-<span class="pre">jobj1</span> <span class="pre">&lt;-</span> <span class="pre">job(q_obj=qobj)</span>
-<span class="pre">jobj2</span> <span class="pre">&lt;-</span> <span class="pre">job(q_obj=qobj)</span>
-<span class="pre">fobj</span> <span class="pre">&lt;-</span> <span class="pre">flow(jobs</span> <span class="pre">=</span> <span class="pre">list(jobj1,</span> <span class="pre">jobj2))</span>
-<span class="pre">As</span> <span class="pre">of</span> <span class="pre">now</span> <span class="pre">we</span> <span class="pre">have</span> <span class="pre">tested</span> <span class="pre">this</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">following</span> <span class="pre">clusters:</span>
-<span class="pre">`</span></code></p>
+  <div class="section" id="available-pipelines">
+<h1>Available pipelines<a class="headerlink" href="#available-pipelines" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
 </div>
 
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="build.html" class="btn btn-neutral float-right" title="Building Pipelines" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rd/vignettes/simple_flow.html" class="btn btn-neutral" title="Simple flow" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

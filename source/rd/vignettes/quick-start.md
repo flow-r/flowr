@@ -11,8 +11,6 @@ vignette: >
 Get me started
 -------------
 
-Just get me started…
-
 
 
 ```r
@@ -44,13 +42,7 @@ flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
 ```
 
 ```
-## Warning in file(file, "rt"): cannot open file '/DRIVES/Dropbox2/Dropbox/
-## public/github_flow/extdata/example1_flow_mat.txt': No such file or
-## directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
+## Using 'samplename'' as id_column
 ```
 
 ```r
@@ -58,44 +50,56 @@ flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
 ```
 
 ```
-## Warning in file(file, "rt"): cannot open file '/DRIVES/Dropbox2/Dropbox/
-## public/github_flow/extdata/example1_flow_def.txt': No such file or
-## directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
+## Using 'jobname'' as id_column
 ```
 
 ```r
 flow_mat = subset(flow_mat, samplename == "sample1")
-```
 
-```
-## Error in subset(flow_mat, samplename == "sample1"): object 'flow_mat' not found
-```
-
-```r
 fobj <- to_flow(x = flow_mat, def = flow_def, 
 	flowname = "example1",
 	platform = "lsf")
 ```
 
 ```
-## Error in to_flow(x = flow_mat, def = flow_def, flowname = "example1", : object 'flow_mat' not found
+## Using description default: type1
+## Using flow_base_path default: ~/flowr
+## ....
 ```
 
-
+# Ingredient 1: Commands to run (flow_mat)
 
 ```r
-plot_flow(fobj)
+kable(head(flow_mat))
 ```
 
-```
-## Error in plot_flow(fobj): error in evaluating the argument 'x' in selecting a method for function 'plot_flow': Error: object 'fobj' not found
+
+
+|samplename |jobname |cmd      |
+|:----------|:-------|:--------|
+|sample1    |sleep   |sleep 17 |
+|sample1    |sleep   |sleep 7  |
+|sample1    |sleep   |sleep 21 |
+|sample1    |sleep   |sleep 1  |
+|sample1    |sleep   |sleep 4  |
+|sample1    |sleep   |sleep 8  |
+
+# Ingredient 2: Flow Definition (flow_def)
+
+```r
+kable(flow_def)
 ```
 
-**For Figure1 the following process would be followed**:
+
+
+|jobname |prev_jobs |dep_type |sub_type |queue  | memory_reserved|walltime | cpu_reserved|
+|:-------|:---------|:--------|:--------|:------|---------------:|:--------|------------:|
+|sleep   |none      |none     |scatter  |medium |          163185|23:00    |            1|
+|tmp     |sleep     |serial   |scatter  |medium |          163185|23:00    |            1|
+|merge   |tmp       |gather   |serial   |medium |          163185|23:00    |            1|
+|size    |merge     |serial   |serial   |medium |          163185|23:00    |            1|
+
+**The above table basically translates to**:
 
 - `sleep`: Run all 10 sleep jobs for given sample
 - `tmp`: Create 10 temporary files, after sleep jobs are complete
@@ -104,9 +108,57 @@ plot_flow(fobj)
 - `merge`: When all `tmp` are complete, merge them
 - `size`: get their size when merge is complete
 
+# Plot describing the definition
+
+```r
+plot_flow(fobj)
+```
+
+![Flow chart describing process for example 1](figure/plot_example1-1.pdf) 
+
+
+# Dry run (submit)
 
 ```r
 submit_flow(fobj)
+```
+
+```
+Test Successful!
+You may check this folder for consistency. Also you may re-run submit with execute=TRUE
+ ~/flowr/type1-20150520-15-18-27-5mSd32G0
+```
+
+# Submit to the cluster
+
+```r
 submit_flow(fobj, execute = TRUE)
 ```
 
+```
+Flow has been submitted. Track it from terminal using:
+flowr::status(x="~/flowr/type1-20150520-15-18-46-sySOzZnE")
+OR
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+```
+
+
+# Check the status
+
+```
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+```
+
+```
+Loading required package: shape
+Flowr: streamlining workflows
+Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
+
+
+|          | total| started| completed| exit_status|
+|:---------|-----:|-------:|---------:|-----------:|
+|001.sleep |    10|      10|        10|           0|
+|002.tmp   |    10|      10|        10|           0|
+|003.merge |     1|       1|         1|           0|
+|004.size  |     1|       1|         1|           0|
+```

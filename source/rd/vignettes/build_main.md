@@ -25,11 +25,11 @@ head(mat)
 
 ```
 #>   jobname       cmd
-#> 1  myjob1   sleep 0
-#> 2  myjob1 sleep 1.4
+#> 1  myjob1 sleep 0.3
+#> 2  myjob1 sleep 0.5
 #> 3  myjob1   sleep 0
-#> 4  myjob1   sleep 1
-#> 5  myjob1 sleep 2.9
-#> 6  myjob1 sleep 0.3
+#> 4  myjob1 sleep 2.3
+#> 5  myjob1 sleep 0.1
+#> 6  myjob1 sleep 0.6
 ```
 

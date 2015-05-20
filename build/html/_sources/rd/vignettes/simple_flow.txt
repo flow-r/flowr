@@ -18,7 +18,7 @@ Simple flow
     fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
     plot_flow(fobj)
 
-.. figure:: figure/plot_simpleflow-1.png
+.. figure:: figure/plot_simpleflow-1.pdf
    :alt: plot of chunk plot\_simpleflow
 
    plot of chunk plot\_simpleflow
@@ -72,7 +72,7 @@ Serial: one to one relationship
     fobj <- flow(jobs = list(jobj1, jobj2))
     plot_flow(fobj)
 
-.. figure:: figure/unnamed-chunk-3-1.png
+.. figure:: figure/unnamed-chunk-3-1.pdf
    :alt: plot of chunk unnamed-chunk-3
 
    plot of chunk unnamed-chunk-3
@@ -93,7 +93,7 @@ Gather: many to one relationship
     fobj <- flow(jobs = list(jobj1, jobj2))
     plot_flow(fobj)
 
-.. figure:: figure/unnamed-chunk-4-1.png
+.. figure:: figure/unnamed-chunk-4-1.pdf
    :alt: plot of chunk unnamed-chunk-4
 
    plot of chunk unnamed-chunk-4
@@ -114,7 +114,7 @@ Burst: one to many relationship
     fobj <- flow(jobs = list(jobj1, jobj2))
     plot_flow(fobj)
 
-.. figure:: figure/unnamed-chunk-5-1.png
+.. figure:: figure/unnamed-chunk-5-1.pdf
    :alt: plot of chunk unnamed-chunk-5
 
    plot of chunk unnamed-chunk-5

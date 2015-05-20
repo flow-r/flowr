@@ -29,7 +29,7 @@ fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
 plot_flow(fobj)
 ```
 
-![plot of chunk plot_simpleflow](figure/plot_simpleflow-1.png) 
+![plot of chunk plot_simpleflow](figure/plot_simpleflow-1.pdf) 
 
 
 ```r
@@ -72,7 +72,7 @@ fobj <- flow(jobs = list(jobj1, jobj2))
 plot_flow(fobj)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.pdf) 
 
 ##### Gather: many to one relationship
 - makes sense when previous job had many commands running in parallel and current job would wait for all
@@ -86,7 +86,7 @@ fobj <- flow(jobs = list(jobj1, jobj2))
 plot_flow(fobj)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.pdf) 
 
 ##### Burst: one to many relationship
 - makes sense when previous job had one command current job would split and submit several jobs in parallel
@@ -100,7 +100,7 @@ fobj <- flow(jobs = list(jobj1, jobj2))
 plot_flow(fobj)
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.pdf) 
 
 
 For more details look at [Building flowr recepies](buid_main.html)

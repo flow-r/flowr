@@ -30,7 +30,9 @@
   
 
   
-    <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/> 
+    <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
+        <link rel="next" title="Run my pipes" href="../../run.html"/>
+        <link rel="prev" title="flowr: Streamline your workflows" href="../../index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -69,8 +71,17 @@
         
           
           
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../install.html">Get me started</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Get me started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-flow-using-example-data">Create a flow using example data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingredient-1-commands-to-run-flow-mat">Ingredient 1: Commands to run (flow_mat)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingredient-2-flow-definition-flow-def">Ingredient 2: Flow Definition (flow_def)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-describing-the-definition">Plot describing the definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dry-run-submit">Dry run (submit)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submit-to-the-cluster">Submit to the cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#check-the-status">Check the status</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../run.html">Run my pipes</a><ul>
@@ -197,7 +208,6 @@
             
   <div class="section" id="get-me-started">
 <h1>Get me started<a class="headerlink" href="#get-me-started" title="Permalink to this headline">¶</a></h1>
-<p>Just get me started…</p>
 <div class="code r highlight-python"><div class="highlight"><pre>install.packages(&#39;devtools&#39;)
 devtools::install_github(&quot;sahilseth/flow&quot;)
 </pre></div>
@@ -219,46 +229,140 @@ easier. More on this <a class="reference external" href="https://github.com/sahi
 <span class="n">flow_mat</span> <span class="o">=</span> <span class="n">read_sheet</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">exdata</span><span class="p">,</span> <span class="s">&quot;example1_flow_mat.txt&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Warning in file(file, &quot;rt&quot;): cannot open file &#39;/DRIVES/Dropbox2/Dropbox/</span>
-<span class="c">## public/github_flow/extdata/example1_flow_mat.txt&#39;: No such file or</span>
-<span class="c">## directory</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Error in file(file, &quot;rt&quot;): cannot open the connection</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">## Using &#39;samplename&#39;&#39; as id_column</span>
 </pre></div>
 </div>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">flow_def</span> <span class="o">=</span> <span class="n">read_sheet</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">exdata</span><span class="p">,</span> <span class="s">&quot;example1_flow_def.txt&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Warning in file(file, &quot;rt&quot;): cannot open file &#39;/DRIVES/Dropbox2/Dropbox/</span>
-<span class="c">## public/github_flow/extdata/example1_flow_def.txt&#39;: No such file or</span>
-<span class="c">## directory</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">## Using &#39;jobname&#39;&#39; as id_column</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Error in file(file, &quot;rt&quot;): cannot open the connection</span>
-</pre></div>
-</div>
-<div class="code r highlight-python"><div class="highlight"><pre><span class="n">flow_mat</span> <span class="o">=</span> <span class="n">subset</span><span class="p">(</span><span class="n">flow_mat</span><span class="p">,</span> <span class="n">samplename</span> <span class="o">==</span> <span class="s">&quot;sample1&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Error in subset(flow_mat, samplename == &quot;sample1&quot;): object &#39;flow_mat&#39; not found</span>
-</pre></div>
-</div>
-<div class="code r highlight-python"><div class="highlight"><pre>fobj &lt;- to_flow(x = flow_mat, def = flow_def,
+<div class="code r highlight-python"><div class="highlight"><pre>flow_mat = subset(flow_mat, samplename == &quot;sample1&quot;)
+
+fobj &lt;- to_flow(x = flow_mat, def = flow_def,
     flowname = &quot;example1&quot;,
     platform = &quot;lsf&quot;)
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Error in to_flow(x = flow_mat, def = flow_def, flowname = &quot;example1&quot;, : object &#39;flow_mat&#39; not found</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">## Using description default: type1</span>
+<span class="c">## Using flow_base_path default: ~/flowr</span>
+<span class="c">## ....</span>
 </pre></div>
 </div>
-<div class="code r highlight-python"><div class="highlight"><pre><span class="n">plot_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
+</div>
+<div class="section" id="ingredient-1-commands-to-run-flow-mat">
+<h2>Ingredient 1: Commands to run (flow_mat)<a class="headerlink" href="#ingredient-1-commands-to-run-flow-mat" title="Permalink to this headline">¶</a></h2>
+<div class="code r highlight-python"><div class="highlight"><pre><span class="n">kable</span><span class="p">(</span><span class="n">head</span><span class="p">(</span><span class="n">flow_mat</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Error in plot_flow(fobj): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot_flow&#39;: Error: object &#39;fobj&#39; not found</span>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="30%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">samplename</th>
+<th class="head">jobname</th>
+<th class="head">cmd</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 17</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 7</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 21</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 1</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 4</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>sleep</td>
+<td>sleep 8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ingredient-2-flow-definition-flow-def">
+<h2>Ingredient 2: Flow Definition (flow_def)<a class="headerlink" href="#ingredient-2-flow-definition-flow-def" title="Permalink to this headline">¶</a></h2>
+<div class="code r highlight-python"><div class="highlight"><pre><span class="n">kable</span><span class="p">(</span><span class="n">flow_def</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>For Figure1 the following process would be followed</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="13%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="18%" />
+<col width="11%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">jobname</th>
+<th class="head">prev_jobs</th>
+<th class="head">dep_type</th>
+<th class="head">sub_type</th>
+<th class="head">queue</th>
+<th class="head">memory_reserved</th>
+<th class="head">walltime</th>
+<th class="head">cpu_reserved</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>sleep</td>
+<td>none</td>
+<td>none</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>tmp</td>
+<td>sleep</td>
+<td>serial</td>
+<td>scatter</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>merge</td>
+<td>tmp</td>
+<td>gather</td>
+<td>serial</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>merge</td>
+<td>serial</td>
+<td>serial</td>
+<td>medium</td>
+<td>163185</td>
+<td>23:00</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The above table basically translates to</strong>:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">sleep</span></code>: Run all 10 sleep jobs for given sample</li>
 <li><code class="docutils literal"><span class="pre">tmp</span></code>: Create 10 temporary files, after sleep jobs are complete<ul>
@@ -270,8 +374,56 @@ complete.</li>
 <li><code class="docutils literal"><span class="pre">merge</span></code>: When all <code class="docutils literal"><span class="pre">tmp</span></code> are complete, merge them</li>
 <li><code class="docutils literal"><span class="pre">size</span></code>: get their size when merge is complete</li>
 </ul>
+</div>
+<div class="section" id="plot-describing-the-definition">
+<h2>Plot describing the definition<a class="headerlink" href="#plot-describing-the-definition" title="Permalink to this headline">¶</a></h2>
+<div class="code r highlight-python"><div class="highlight"><pre><span class="n">plot_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure" id="id1">
+<img alt="Flow chart describing process for example 1" src="../../_images/plot_example1-1.pdf" />
+<p class="caption"><span class="caption-text">Flow chart describing process for example 1</span></p>
+</div>
+</div>
+<div class="section" id="dry-run-submit">
+<h2>Dry run (submit)<a class="headerlink" href="#dry-run-submit" title="Permalink to this headline">¶</a></h2>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">submit_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
-<span class="n">submit_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">,</span> <span class="n">execute</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Test Successful!
+You may check this folder for consistency. Also you may re-run submit with execute=TRUE
+ ~/flowr/type1-20150520-15-18-27-5mSd32G0
+</pre></div>
+</div>
+</div>
+<div class="section" id="submit-to-the-cluster">
+<h2>Submit to the cluster<a class="headerlink" href="#submit-to-the-cluster" title="Permalink to this headline">¶</a></h2>
+<div class="code r highlight-python"><div class="highlight"><pre><span class="n">submit_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">,</span> <span class="n">execute</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Flow has been submitted. Track it from terminal using:
+flowr::status(x=&quot;~/flowr/type1-20150520-15-18-46-sySOzZnE&quot;)
+OR
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-the-status">
+<h2>Check the status<a class="headerlink" href="#check-the-status" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>Loading required package: shape
+Flowr: streamlining workflows
+Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
+
+
+|          | total| started| completed| exit_status|
+|:---------|-----:|-------:|---------:|-----------:|
+|001.sleep |    10|      10|        10|           0|
+|002.tmp   |    10|      10|        10|           0|
+|003.merge |     1|       1|         1|           0|
+|004.size  |     1|       1|         1|           0|
 </pre></div>
 </div>
 </div>
@@ -280,6 +432,15 @@ complete.</li>
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../run.html" class="btn btn-neutral float-right" title="Run my pipes" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../index.html" class="btn btn-neutral" title="flowr: Streamline your workflows" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
