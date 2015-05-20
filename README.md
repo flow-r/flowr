@@ -4,6 +4,8 @@
 flow
 ======
 
+> This packages should install OK. Build failure is likely incorrect, more on this [here](https://github.com/hadley/stringr/issues/68)
+
 R pacakge to design (and deploy) complex workflows, in a effective and efficient manner on High Perfomance computing clusters.
 
 Please visit [docs.flowr.space](http://docs.flowr.space) for more information.

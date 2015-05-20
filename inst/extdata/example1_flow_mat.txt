@@ -1,14 +1,14 @@
 samplename	jobname	cmd
-sample1	sleep	sleep 12
-sample1	sleep	sleep 3
-sample1	sleep	sleep 9
-sample1	sleep	sleep 9
-sample1	sleep	sleep 19
-sample1	sleep	sleep 3
-sample1	sleep	sleep 10
-sample1	sleep	sleep 15
+sample1	sleep	sleep 17
+sample1	sleep	sleep 7
+sample1	sleep	sleep 21
 sample1	sleep	sleep 1
-sample1	sleep	sleep 3
+sample1	sleep	sleep 4
+sample1	sleep	sleep 8
+sample1	sleep	sleep 6
+sample1	sleep	sleep 11
+sample1	sleep	sleep 12
+sample1	sleep	sleep 1
 sample1	tmp	head -c 100000 /dev/urandom > tmp1_1
 sample1	tmp	head -c 100000 /dev/urandom > tmp1_2
 sample1	tmp	head -c 100000 /dev/urandom > tmp1_3
@@ -21,16 +21,16 @@ sample1	tmp	head -c 100000 /dev/urandom > tmp1_9
 sample1	tmp	head -c 100000 /dev/urandom > tmp1_10
 sample1	merge	cat tmp1_1 tmp1_2 tmp1_3 tmp1_4 tmp1_5 tmp1_6 tmp1_7 tmp1_8 tmp1_9 tmp1_10 > merge1
 sample1	size	du -sh merge1
-sample2	sleep	sleep 20
-sample2	sleep	sleep 6
-sample2	sleep	sleep 0
+sample2	sleep	sleep 1
+sample2	sleep	sleep 7
+sample2	sleep	sleep 19
+sample2	sleep	sleep 1
+sample2	sleep	sleep 3
+sample2	sleep	sleep 1
 sample2	sleep	sleep 2
-sample2	sleep	sleep 0
-sample2	sleep	sleep 14
-sample2	sleep	sleep 2
-sample2	sleep	sleep 0
-sample2	sleep	sleep 10
-sample2	sleep	sleep 4
+sample2	sleep	sleep 7
+sample2	sleep	sleep 8
+sample2	sleep	sleep 11
 sample2	tmp	head -c 100000 /dev/urandom > tmp2_1
 sample2	tmp	head -c 100000 /dev/urandom > tmp2_2
 sample2	tmp	head -c 100000 /dev/urandom > tmp2_3
@@ -43,16 +43,16 @@ sample2	tmp	head -c 100000 /dev/urandom > tmp2_9
 sample2	tmp	head -c 100000 /dev/urandom > tmp2_10
 sample2	merge	cat tmp2_1 tmp2_2 tmp2_3 tmp2_4 tmp2_5 tmp2_6 tmp2_7 tmp2_8 tmp2_9 tmp2_10 > merge2
 sample2	size	du -sh merge2
-sample3	sleep	sleep 11
+sample3	sleep	sleep 10
+sample3	sleep	sleep 15
 sample3	sleep	sleep 18
-sample3	sleep	sleep 2
-sample3	sleep	sleep 1
-sample3	sleep	sleep 4
-sample3	sleep	sleep 8
-sample3	sleep	sleep 16
 sample3	sleep	sleep 11
-sample3	sleep	sleep 9
+sample3	sleep	sleep 5
 sample3	sleep	sleep 1
+sample3	sleep	sleep 7
+sample3	sleep	sleep 11
+sample3	sleep	sleep 14
+sample3	sleep	sleep 13
 sample3	tmp	head -c 100000 /dev/urandom > tmp3_1
 sample3	tmp	head -c 100000 /dev/urandom > tmp3_2
 sample3	tmp	head -c 100000 /dev/urandom > tmp3_3
@@ -66,15 +66,15 @@ sample3	tmp	head -c 100000 /dev/urandom > tmp3_10
 sample3	merge	cat tmp3_1 tmp3_2 tmp3_3 tmp3_4 tmp3_5 tmp3_6 tmp3_7 tmp3_8 tmp3_9 tmp3_10 > merge3
 sample3	size	du -sh merge3
 sample4	sleep	sleep 8
-sample4	sleep	sleep 9
-sample4	sleep	sleep 11
 sample4	sleep	sleep 10
-sample4	sleep	sleep 5
-sample4	sleep	sleep 18
+sample4	sleep	sleep 2
+sample4	sleep	sleep 2
 sample4	sleep	sleep 4
-sample4	sleep	sleep 1
-sample4	sleep	sleep 1
-sample4	sleep	sleep 7
+sample4	sleep	sleep 8
+sample4	sleep	sleep 10
+sample4	sleep	sleep 2
+sample4	sleep	sleep 6
+sample4	sleep	sleep 17
 sample4	tmp	head -c 100000 /dev/urandom > tmp4_1
 sample4	tmp	head -c 100000 /dev/urandom > tmp4_2
 sample4	tmp	head -c 100000 /dev/urandom > tmp4_3
@@ -87,16 +87,16 @@ sample4	tmp	head -c 100000 /dev/urandom > tmp4_9
 sample4	tmp	head -c 100000 /dev/urandom > tmp4_10
 sample4	merge	cat tmp4_1 tmp4_2 tmp4_3 tmp4_4 tmp4_5 tmp4_6 tmp4_7 tmp4_8 tmp4_9 tmp4_10 > merge4
 sample4	size	du -sh merge4
-sample5	sleep	sleep 12
 sample5	sleep	sleep 8
-sample5	sleep	sleep 25
-sample5	sleep	sleep 8
-sample5	sleep	sleep 0
+sample5	sleep	sleep 11
+sample5	sleep	sleep 11
+sample5	sleep	sleep 1
 sample5	sleep	sleep 5
-sample5	sleep	sleep 7
-sample5	sleep	sleep 23
-sample5	sleep	sleep 10
-sample5	sleep	sleep 24
+sample5	sleep	sleep 19
+sample5	sleep	sleep 6
+sample5	sleep	sleep 4
+sample5	sleep	sleep 1
+sample5	sleep	sleep 4
 sample5	tmp	head -c 100000 /dev/urandom > tmp5_1
 sample5	tmp	head -c 100000 /dev/urandom > tmp5_2
 sample5	tmp	head -c 100000 /dev/urandom > tmp5_3
@@ -109,16 +109,16 @@ sample5	tmp	head -c 100000 /dev/urandom > tmp5_9
 sample5	tmp	head -c 100000 /dev/urandom > tmp5_10
 sample5	merge	cat tmp5_1 tmp5_2 tmp5_3 tmp5_4 tmp5_5 tmp5_6 tmp5_7 tmp5_8 tmp5_9 tmp5_10 > merge5
 sample5	size	du -sh merge5
-sample6	sleep	sleep 5
-sample6	sleep	sleep 1
 sample6	sleep	sleep 2
-sample6	sleep	sleep 8
-sample6	sleep	sleep 5
 sample6	sleep	sleep 3
-sample6	sleep	sleep 4
-sample6	sleep	sleep 7
 sample6	sleep	sleep 1
-sample6	sleep	sleep 6
+sample6	sleep	sleep 1
+sample6	sleep	sleep 18
+sample6	sleep	sleep 9
+sample6	sleep	sleep 21
+sample6	sleep	sleep 7
+sample6	sleep	sleep 8
+sample6	sleep	sleep 2
 sample6	tmp	head -c 100000 /dev/urandom > tmp6_1
 sample6	tmp	head -c 100000 /dev/urandom > tmp6_2
 sample6	tmp	head -c 100000 /dev/urandom > tmp6_3
@@ -132,15 +132,15 @@ sample6	tmp	head -c 100000 /dev/urandom > tmp6_10
 sample6	merge	cat tmp6_1 tmp6_2 tmp6_3 tmp6_4 tmp6_5 tmp6_6 tmp6_7 tmp6_8 tmp6_9 tmp6_10 > merge6
 sample6	size	du -sh merge6
 sample7	sleep	sleep 15
-sample7	sleep	sleep 16
-sample7	sleep	sleep 12
-sample7	sleep	sleep 14
-sample7	sleep	sleep 1
+sample7	sleep	sleep 6
+sample7	sleep	sleep 17
+sample7	sleep	sleep 10
 sample7	sleep	sleep 4
-sample7	sleep	sleep 1
-sample7	sleep	sleep 0
-sample7	sleep	sleep 12
-sample7	sleep	sleep 7
+sample7	sleep	sleep 9
+sample7	sleep	sleep 6
+sample7	sleep	sleep 19
+sample7	sleep	sleep 13
+sample7	sleep	sleep 13
 sample7	tmp	head -c 100000 /dev/urandom > tmp7_1
 sample7	tmp	head -c 100000 /dev/urandom > tmp7_2
 sample7	tmp	head -c 100000 /dev/urandom > tmp7_3
@@ -154,15 +154,15 @@ sample7	tmp	head -c 100000 /dev/urandom > tmp7_10
 sample7	merge	cat tmp7_1 tmp7_2 tmp7_3 tmp7_4 tmp7_5 tmp7_6 tmp7_7 tmp7_8 tmp7_9 tmp7_10 > merge7
 sample7	size	du -sh merge7
 sample8	sleep	sleep 9
-sample8	sleep	sleep 7
-sample8	sleep	sleep 2
-sample8	sleep	sleep 16
-sample8	sleep	sleep 1
-sample8	sleep	sleep 12
-sample8	sleep	sleep 1
-sample8	sleep	sleep 1
-sample8	sleep	sleep 10
-sample8	sleep	sleep 10
+sample8	sleep	sleep 19
+sample8	sleep	sleep 8
+sample8	sleep	sleep 11
+sample8	sleep	sleep 14
+sample8	sleep	sleep 8
+sample8	sleep	sleep 8
+sample8	sleep	sleep 11
+sample8	sleep	sleep 8
+sample8	sleep	sleep 3
 sample8	tmp	head -c 100000 /dev/urandom > tmp8_1
 sample8	tmp	head -c 100000 /dev/urandom > tmp8_2
 sample8	tmp	head -c 100000 /dev/urandom > tmp8_3
@@ -175,16 +175,16 @@ sample8	tmp	head -c 100000 /dev/urandom > tmp8_9
 sample8	tmp	head -c 100000 /dev/urandom > tmp8_10
 sample8	merge	cat tmp8_1 tmp8_2 tmp8_3 tmp8_4 tmp8_5 tmp8_6 tmp8_7 tmp8_8 tmp8_9 tmp8_10 > merge8
 sample8	size	du -sh merge8
-sample9	sleep	sleep 1
-sample9	sleep	sleep 8
-sample9	sleep	sleep 8
-sample9	sleep	sleep 7
-sample9	sleep	sleep 8
-sample9	sleep	sleep 8
-sample9	sleep	sleep 14
-sample9	sleep	sleep 0
 sample9	sleep	sleep 2
-sample9	sleep	sleep 4
+sample9	sleep	sleep 5
+sample9	sleep	sleep 5
+sample9	sleep	sleep 3
+sample9	sleep	sleep 2
+sample9	sleep	sleep 17
+sample9	sleep	sleep 12
+sample9	sleep	sleep 5
+sample9	sleep	sleep 7
+sample9	sleep	sleep 11
 sample9	tmp	head -c 100000 /dev/urandom > tmp9_1
 sample9	tmp	head -c 100000 /dev/urandom > tmp9_2
 sample9	tmp	head -c 100000 /dev/urandom > tmp9_3
@@ -197,16 +197,16 @@ sample9	tmp	head -c 100000 /dev/urandom > tmp9_9
 sample9	tmp	head -c 100000 /dev/urandom > tmp9_10
 sample9	merge	cat tmp9_1 tmp9_2 tmp9_3 tmp9_4 tmp9_5 tmp9_6 tmp9_7 tmp9_8 tmp9_9 tmp9_10 > merge9
 sample9	size	du -sh merge9
-sample10	sleep	sleep 7
-sample10	sleep	sleep 3
-sample10	sleep	sleep 0
-sample10	sleep	sleep 8
-sample10	sleep	sleep 13
-sample10	sleep	sleep 1
-sample10	sleep	sleep 8
+sample10	sleep	sleep 11
+sample10	sleep	sleep 20
+sample10	sleep	sleep 4
 sample10	sleep	sleep 9
-sample10	sleep	sleep 5
-sample10	sleep	sleep 0
+sample10	sleep	sleep 2
+sample10	sleep	sleep 11
+sample10	sleep	sleep 17
+sample10	sleep	sleep 1
+sample10	sleep	sleep 4
+sample10	sleep	sleep 11
 sample10	tmp	head -c 100000 /dev/urandom > tmp10_1
 sample10	tmp	head -c 100000 /dev/urandom > tmp10_2
 sample10	tmp	head -c 100000 /dev/urandom > tmp10_3
