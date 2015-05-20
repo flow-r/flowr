@@ -91,7 +91,8 @@ sample_flow_def <- function(fl, jobnames, cols){
 		cpu_reserved = rep(1, njobs))
 	message("Creating a skeleton flow_def")
 	if(!missing(fl))
-		write.table(df, file = file.path(dirname(fl), "flow_def_ex.txt"), sep = "\t", row.names = FALSE, quote = FALSE)
+		write.table(df, file = file.path(dirname(fl), "flow_def_ex.txt"), 
+			sep = "\t", row.names = FALSE, quote = FALSE)
 	invisible(df)
 }
 

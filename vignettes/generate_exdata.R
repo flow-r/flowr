@@ -1,14 +1,4 @@
----
-title: "Generating Example Data"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_document
-vignette: >
-  %\VignetteIndexEntry{Generating Example Dat}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
----
-
-```{r, echo = FALSE, message = FALSE}
+## ---- echo = FALSE, message = FALSE--------------------------------------
 knitr::opts_chunk$set(
   comment = "#>",
   error = FALSE,
@@ -16,10 +6,8 @@ knitr::opts_chunk$set(
 )
 library(flowr)
 library(knitr)
-```
 
-## Generate 100 commands each for sleep make div
-```{r}
+## ------------------------------------------------------------------------
 ## create a vector of sample names
 samp = sprintf("sample%s", 1:10)
 
@@ -50,32 +38,20 @@ tmp <- lapply(1:length(samp), function(i){
 
 flow_mat = do.call(rbind, tmp)
 kable(head(flow_mat))
-```
 
-
-# Make the flow definition
-## Generate a skeleton flow definition
-```{r}
+## ------------------------------------------------------------------------
 def = sample_flow_def(jobnames = unique(flow_mat$jobname))
 kable(def)
-```
 
-
-## Change the dependency type for merge step into gather
-It might be easier to do such, by hand
-```{r}
+## ------------------------------------------------------------------------
 def[def[, 'jobname'] == "merge","dep_type"] = "gather"
 def[def[, 'jobname'] == "merge","sub_type"] = "serial"
 def[def[, 'jobname'] == "size","sub_type"] = "serial"
 kable(def)
-```
 
-
-# Write both into example data
-```{r eval=FALSE}
-write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt", 
-	row.names = FALSE, quote = FALSE, sep = "\t")
-write.table(def, file = "inst/extdata/example1_flow_def.txt", 
-	row.names = FALSE, quote = FALSE, sep = "\t")
-```
+## ----eval=FALSE----------------------------------------------------------
+#  write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt",
+#  	row.names = FALSE, quote = FALSE, sep = "\t")
+#  write.table(def, file = "inst/extdata/example1_flow_def.txt",
+#  	row.names = FALSE, quote = FALSE, sep = "\t")
 

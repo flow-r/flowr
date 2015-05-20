@@ -1,0 +1,5 @@
+jobname	prev_jobs	dep_type	sub_type	queue	memory_reserved	walltime	cpu_reserved
+sleep	none	none	scatter	medium	163185	23:00	1
+tmp	sleep	serial	scatter	medium	163185	23:00	1
+merge	tmp	gather	serial	medium	163185	23:00	1
+size	merge	serial	serial	medium	163185	23:00	1
