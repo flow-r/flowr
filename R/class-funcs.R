@@ -249,7 +249,7 @@ setMethod("submit_job", signature(j_obj = "job", f_obj = "flow"), definition = .
   if(execute){
     f_obj@status <- "submitted"
     ## Rscript -e 'flow:::status(\"%s\")
-    message(sprintf("\nFlow has been submitted. Track it from terminal using:\nOR\nflowr status x=%s\n\n",
+    message(sprintf("\nFlow has been submitted. Track it from terminal using:\nstatus(x='%s')\nOR\nflowr status x=%s\n\n",
                 f_obj@flow_path, f_obj@flow_path))
     ## dumpt the flow details
   }else{

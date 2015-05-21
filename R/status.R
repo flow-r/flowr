@@ -176,7 +176,7 @@ dump_flow_details <- function(fobj){
 		deps = fobj@jobs[[i]]@dependency
 		deps = sapply(deps, paste, collapse = ";")
 		prev = fobj@jobs[[i]]@previous_job ## works for single type jobs
-		prev = sapply(prev, paste, collapse = ";")
+		prev = paste(prev, collapse = ";")
 		#ifelse(prev != "") prev = paste(prev, 1:length(fobj@jobs[[prev]]@id), sep = "_")
 		job_no = 1:length(ids)
 		job_id = paste(fobj@jobs[[i]]@jobname, job_no, sep = "_")
