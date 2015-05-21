@@ -10,7 +10,8 @@ vignette: >
 
 
 
-
+# HPCC Platforms
+	
 As of now we have tested this on the following clusters:
 
 
@@ -21,18 +22,18 @@ As of now we have tested this on the following clusters:
 |Torque   |qsub    |Yes        |torque     |
 |SGE      |qsub    |Beta       |sge        |
 
-\*queue short-name used in [flow](https://github.com/sahilseth/flow>)
+\*queue short-name used in [flow](https://github.com/sahilseth/flow)
 
 There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems
 available and we try to support the major players. Adding support is
 quite easy if we have access to them. Your favourite not in the list?
 Send a [message](mailto:sahil.seth@me.com)
 
-- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System>)
+- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System)
 - Torque: [wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
 	- MD Anderson
 	- [University of Houston](http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html)
-- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF>):
+- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF):
 	- Harvard Medicla School uses: [LSF HPC 7](https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF)
 	- Also Used at [Broad](https://www.broadinstitute.org/gatk/guide/article?id=1311)
 - SGE [wiki](http://en.wikipedia.org/wiki/Sun_Grid_Engine)

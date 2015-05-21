@@ -12,7 +12,7 @@ This framework allows you to design and implement complex pipelines, and deploy 
 
 Why bother?
 -------------
-- Do you have a series of steps which **can** spawn across the whole computing cluster, but curentnly are not effectively utilizing those resources?
+- Do you have a series of steps which **can** spawn across the whole computing cluster, but currently are not effectively utilizing those resources?
 - Example: 
 	- Think of a sample with multiple files (`alignment <http://en.wikipedia.org/wiki/Sequence_alignment>`_, with tens of `fastq <http://en.wikipedia.org/wiki/FASTQ_format>`_ files)
 	- Each file processed using multiple cores
@@ -26,8 +26,7 @@ Why bother?
 
 .. There are a few built-in pipelines which start from fastq files and do alignment and variant calling.
 
-Here is a shiny app, `flow_creator`_ which builds your `shiny` flow.
-[`guest: guestpass`]
+Here is a shiny app, `flow_creator`_ which builds your flow.
 
 
 .. The process of submitting jobs uses the `dependency` feature of submitting jobs to a computing cluster.
@@ -40,13 +39,13 @@ Contents:
 .. toctree::
 	:maxdepth: 1
 	
-	rd/vignettes/quick-start.rst
+	rd/vignettes/quick-start
+	rd/vignettes/hpcc-support
 	
 .. toctree::
 	:glob:
 	:maxdepth: 2
 	
-	run
 	pipelines
 	build
 	topics

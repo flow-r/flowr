@@ -81,30 +81,16 @@ kable(subset(flow_mat, samplename == "sample1"))
 
 
 
-|samplename |jobname |cmd                                                                                 |
-|:----------|:-------|:-----------------------------------------------------------------------------------|
-|sample1    |sleep   |sleep 17                                                                            |
-|sample1    |sleep   |sleep 7                                                                             |
-|sample1    |sleep   |sleep 21                                                                            |
-|sample1    |sleep   |sleep 1                                                                             |
-|sample1    |sleep   |sleep 4                                                                             |
-|sample1    |sleep   |sleep 8                                                                             |
-|sample1    |sleep   |sleep 6                                                                             |
-|sample1    |sleep   |sleep 11                                                                            |
-|sample1    |sleep   |sleep 12                                                                            |
-|sample1    |sleep   |sleep 1                                                                             |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_1                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_2                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_3                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_4                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_5                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_6                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_7                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_8                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_9                                                |
-|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_10                                               |
-|sample1    |merge   |cat tmp1_1 tmp1_2 tmp1_3 tmp1_4 tmp1_5 tmp1_6 tmp1_7 tmp1_8 tmp1_9 tmp1_10 > merge1 |
-|sample1    |size    |du -sh merge1                                                                       |
+|samplename |jobname |cmd                                  |
+|:----------|:-------|:------------------------------------|
+|sample1    |sleep   |sleep 6                              |
+|sample1    |sleep   |sleep 16                             |
+|sample1    |sleep   |sleep 8                              |
+|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_1 |
+|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_2 |
+|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_3 |
+|sample1    |merge   |cat tmp1_1 tmp1_2 tmp1_3 > merge1    |
+|sample1    |size    |du -sh merge1                        |
 
 
 

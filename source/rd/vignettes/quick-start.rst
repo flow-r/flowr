@@ -16,66 +16,69 @@ easier. More on this `here <https://github.com/sahilseth/rfun>`__.
 
 ::
 
-    ## Consider adding ~/bin to your PATH variable in .bashrc.
-    ## export PATH=$PATH:$HOME/bin
-    ## You may now use all R functions using 'flowr' from shell.
+    #> Consider adding ~/bin to your PATH variable in .bashrc.
+    #> export PATH=$PATH:$HOME/bin
+    #> You may now use all R functions using 'flowr' from shell.
 
 Create a flow using example data
 ================================
 
+**Let us say we want to do**:
+
+-  Have a few jobs which will just wait (sleep) for a few seconds
+   (``sleep``)
+-  Then... (``tmp``)
+
+   -  Create a few temporary files. But hey, as soon as a sleep
+      completes start the corresponding ``tmp`` job.
+   -  If you are so inclined more on this
+      `here <docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship>`__.
+   -  Don't wait for all to complete
+
+-  When all ``tmp`` jobs are complete, ``merge`` them
+-  Then get the ``size`` of the resulting file
+
+Now to do this we need two basic ingedients. A table with the commands,
+and a another which specifies the flow. We call them ``flow_mat`` and
+``flow_def``.
+
+We already have examples so lets load them from the package and see how
+they look.
+
 .. code:: r
 
     exdata = file.path(system.file(package = "flowr"), "extdata")
-    flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-
-::
-
-    ## Using 'samplename'' as id_column
-
-.. code:: r
-
-    flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
-
-::
-
-    ## Using 'jobname'' as id_column
-
-.. code:: r
-
+    flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"), id_column = "samplename")
+    ## this has a bunch of samples, so let us subset one of them
     flow_mat = subset(flow_mat, samplename == "sample1")
-
-    fobj <- to_flow(x = flow_mat, def = flow_def, 
-        flowname = "example1",
-        platform = "lsf")
-
-::
-
-    ## Using description default: type1
-    ## Using flow_base_path default: ~/flowr
-    ## ....
+    flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"), id_column = "jobname")
 
 Ingredient 1: Commands to run (flow\_mat)
 =========================================
 
 .. code:: r
 
-    kable(head(flow_mat))
+    kable(subset(flow_mat, samplename == 'sample1'))
 
-+--------------+-----------+------------+
-| samplename   | jobname   | cmd        |
-+==============+===========+============+
-| sample1      | sleep     | sleep 17   |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 7    |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 21   |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 1    |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 4    |
-+--------------+-----------+------------+
-| sample1      | sleep     | sleep 8    |
-+--------------+-----------+------------+
++--------------+-----------+-----------------------------------------+
+| samplename   | jobname   | cmd                                     |
++==============+===========+=========================================+
+| sample1      | sleep     | sleep 6                                 |
++--------------+-----------+-----------------------------------------+
+| sample1      | sleep     | sleep 16                                |
++--------------+-----------+-----------------------------------------+
+| sample1      | sleep     | sleep 8                                 |
++--------------+-----------+-----------------------------------------+
+| sample1      | tmp       | head -c 100000 /dev/urandom > tmp1\_1   |
++--------------+-----------+-----------------------------------------+
+| sample1      | tmp       | head -c 100000 /dev/urandom > tmp1\_2   |
++--------------+-----------+-----------------------------------------+
+| sample1      | tmp       | head -c 100000 /dev/urandom > tmp1\_3   |
++--------------+-----------+-----------------------------------------+
+| sample1      | merge     | cat tmp1\_1 tmp1\_2 tmp1\_3 > merge1    |
++--------------+-----------+-----------------------------------------+
+| sample1      | size      | du -sh merge1                           |
++--------------+-----------+-----------------------------------------+
 
 Ingredient 2: Flow Definition (flow\_def)
 =========================================
@@ -98,20 +101,24 @@ More on the format of this file [here].
 | size      | merge        | serial      | serial      | medium   | 163185             | 23:00      | 1               |
 +-----------+--------------+-------------+-------------+----------+--------------------+------------+-----------------+
 
-**The above table basically translates to**:
+Stich it
+========
 
--  ``sleep``: Run all 10 sleep jobs for given sample
--  ``tmp``: Create 10 temporary files, after sleep jobs are complete
+    into a flow
 
-   -  dependency is serial, tmp jobs does not wait for all sleep jobs to
-      complete.
-   -  This is a one-to-one relationship
+.. code:: r
 
--  ``merge``: When all ``tmp`` are complete, merge them
--  ``size``: get their size when merge is complete
+    fobj <- to_flow(x = flow_mat, def = flow_def, 
+        flowname = "example1", platform = "lsf")
 
-Plot describing the definition
-==============================
+::
+
+    #> Using description default: type1
+    #> Using flow_base_path default: ~/flowr
+    #> ....
+
+Plot it
+=======
 
 .. code:: r
 
@@ -122,8 +129,10 @@ Plot describing the definition
 
    Flow chart describing process for example 1
 
-Dry run (submit)
-================
+Test it
+=======
+
+    Dry run (submit)
 
 .. code:: r
 
@@ -135,8 +144,10 @@ Dry run (submit)
     You may check this folder for consistency. Also you may re-run submit with execute=TRUE
      ~/flowr/type1-20150520-15-18-27-5mSd32G0
 
-Submit to the cluster
-=====================
+Submit it !
+===========
+
+    Submit to the cluster
 
 .. code:: r
 

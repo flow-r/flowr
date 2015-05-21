@@ -77,15 +77,16 @@
 <li class="toctree-l2"><a class="reference internal" href="quick-start.html#create-a-flow-using-example-data">Create a flow using example data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quick-start.html#ingredient-1-commands-to-run-flow-mat">Ingredient 1: Commands to run (flow_mat)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quick-start.html#ingredient-2-flow-definition-flow-def">Ingredient 2: Flow Definition (flow_def)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quick-start.html#plot-describing-the-definition">Plot describing the definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quick-start.html#dry-run-submit">Dry run (submit)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quick-start.html#submit-to-the-cluster">Submit to the cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#stich-it">Stich it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#plot-it">Plot it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#test-it">Test it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick-start.html#submit-it">Submit it !</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quick-start.html#check-the-status">Check the status</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="hpcc-support.html">HPCC Platforms</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../run.html">HPCC Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
 </ul>
 </li>
@@ -175,7 +176,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">FAQs</a></li>
 </ul>
 
           
@@ -340,9 +341,9 @@ perfectly with the jobname column in flow_def</li>
 </div>
 <table border="1" class="docutils">
 <colgroup>
-<col width="11%" />
-<col width="9%" />
-<col width="80%" />
+<col width="21%" />
+<col width="17%" />
+<col width="62%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">samplename</th>
@@ -353,87 +354,31 @@ perfectly with the jobname column in flow_def</li>
 <tbody valign="top">
 <tr class="row-even"><td>sample1</td>
 <td>sleep</td>
-<td>sleep 17</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 7</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 21</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 1</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 4</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 8</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>sleep</td>
 <td>sleep 6</td>
 </tr>
 <tr class="row-odd"><td>sample1</td>
 <td>sleep</td>
-<td>sleep 11</td>
+<td>sleep 16</td>
 </tr>
 <tr class="row-even"><td>sample1</td>
 <td>sleep</td>
-<td>sleep 12</td>
+<td>sleep 8</td>
 </tr>
 <tr class="row-odd"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 1</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
 <td>tmp</td>
 <td>head -c 100000 /dev/urandom &gt; tmp1_1</td>
 </tr>
-<tr class="row-odd"><td>sample1</td>
+<tr class="row-even"><td>sample1</td>
 <td>tmp</td>
 <td>head -c 100000 /dev/urandom &gt; tmp1_2</td>
 </tr>
-<tr class="row-even"><td>sample1</td>
+<tr class="row-odd"><td>sample1</td>
 <td>tmp</td>
 <td>head -c 100000 /dev/urandom &gt; tmp1_3</td>
 </tr>
-<tr class="row-odd"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_4</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_5</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_6</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_7</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_8</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_9</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>tmp</td>
-<td>head -c 100000 /dev/urandom &gt; tmp1_10</td>
-</tr>
 <tr class="row-even"><td>sample1</td>
 <td>merge</td>
-<td>cat tmp1_1 tmp1_2 tmp1_3 tmp1_4 tmp1_5 tmp1_6 tmp1_7 tmp1_8 tmp1_9 tmp1_10 &gt; merge1</td>
+<td>cat tmp1_1 tmp1_2 tmp1_3 &gt; merge1</td>
 </tr>
 <tr class="row-odd"><td>sample1</td>
 <td>size</td>

@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="flowr 0.1 documentation" href="../../index.html"/>
-        <link rel="next" title="HPCC Support" href="../../run.html"/>
+        <link rel="next" title="HPCC Platforms" href="hpcc-support.html"/>
         <link rel="prev" title="flowr: Streamline your workflows" href="../../index.html"/> 
 
   
@@ -76,15 +76,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#create-a-flow-using-example-data">Create a flow using example data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingredient-1-commands-to-run-flow-mat">Ingredient 1: Commands to run (flow_mat)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ingredient-2-flow-definition-flow-def">Ingredient 2: Flow Definition (flow_def)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#plot-describing-the-definition">Plot describing the definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dry-run-submit">Dry run (submit)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#submit-to-the-cluster">Submit to the cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stich-it">Stich it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-it">Plot it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-it">Test it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submit-it">Submit it !</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#check-the-status">Check the status</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="hpcc-support.html">HPCC Platforms</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../run.html">HPCC Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Available pipelines</a><ul class="simple">
 </ul>
 </li>
@@ -174,7 +175,7 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">Some helpful tips and questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faqs.html">FAQs</a></li>
 </ul>
 
           
@@ -224,49 +225,51 @@ easier. More on this <a class="reference external" href="https://github.com/sahi
 <span class="n">setup</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Consider adding ~/bin to your PATH variable in .bashrc.</span>
-<span class="c">## export PATH=$PATH:$HOME/bin</span>
-<span class="c">## You may now use all R functions using &#39;flowr&#39; from shell.</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#&gt; Consider adding ~/bin to your PATH variable in .bashrc.</span>
+<span class="c">#&gt; export PATH=$PATH:$HOME/bin</span>
+<span class="c">#&gt; You may now use all R functions using &#39;flowr&#39; from shell.</span>
 </pre></div>
 </div>
 <div class="section" id="create-a-flow-using-example-data">
 <h2>Create a flow using example data<a class="headerlink" href="#create-a-flow-using-example-data" title="Permalink to this headline">¶</a></h2>
+<p><strong>Let us say we want to do</strong>:</p>
+<ul class="simple">
+<li>Have a few jobs which will just wait (sleep) for a few seconds
+(<code class="docutils literal"><span class="pre">sleep</span></code>)</li>
+<li>Then... (<code class="docutils literal"><span class="pre">tmp</span></code>)<ul>
+<li>Create a few temporary files. But hey, as soon as a sleep
+completes start the corresponding <code class="docutils literal"><span class="pre">tmp</span></code> job.</li>
+<li>If you are so inclined more on this
+<a class="reference external" href="docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship">here</a>.</li>
+<li>Don&#8217;t wait for all to complete</li>
+</ul>
+</li>
+<li>When all <code class="docutils literal"><span class="pre">tmp</span></code> jobs are complete, <code class="docutils literal"><span class="pre">merge</span></code> them</li>
+<li>Then get the <code class="docutils literal"><span class="pre">size</span></code> of the resulting file</li>
+</ul>
+<p>Now to do this we need two basic ingedients. A table with the commands,
+and a another which specifies the flow. We call them <code class="docutils literal"><span class="pre">flow_mat</span></code> and
+<code class="docutils literal"><span class="pre">flow_def</span></code>.</p>
+<p>We already have examples so lets load them from the package and see how
+they look.</p>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">exdata</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">file</span><span class="p">(</span><span class="n">package</span> <span class="o">=</span> <span class="s">&quot;flowr&quot;</span><span class="p">),</span> <span class="s">&quot;extdata&quot;</span><span class="p">)</span>
-<span class="n">flow_mat</span> <span class="o">=</span> <span class="n">read_sheet</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">exdata</span><span class="p">,</span> <span class="s">&quot;example1_flow_mat.txt&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Using &#39;samplename&#39;&#39; as id_column</span>
-</pre></div>
-</div>
-<div class="code r highlight-python"><div class="highlight"><pre><span class="n">flow_def</span> <span class="o">=</span> <span class="n">read_sheet</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">exdata</span><span class="p">,</span> <span class="s">&quot;example1_flow_def.txt&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Using &#39;jobname&#39;&#39; as id_column</span>
-</pre></div>
-</div>
-<div class="code r highlight-python"><div class="highlight"><pre>flow_mat = subset(flow_mat, samplename == &quot;sample1&quot;)
-
-fobj &lt;- to_flow(x = flow_mat, def = flow_def,
-    flowname = &quot;example1&quot;,
-    platform = &quot;lsf&quot;)
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">## Using description default: type1</span>
-<span class="c">## Using flow_base_path default: ~/flowr</span>
-<span class="c">## ....</span>
+<span class="n">flow_mat</span> <span class="o">=</span> <span class="n">read_sheet</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">exdata</span><span class="p">,</span> <span class="s">&quot;example1_flow_mat.txt&quot;</span><span class="p">),</span> <span class="n">id_column</span> <span class="o">=</span> <span class="s">&quot;samplename&quot;</span><span class="p">)</span>
+<span class="c">## this has a bunch of samples, so let us subset one of them</span>
+<span class="n">flow_mat</span> <span class="o">=</span> <span class="n">subset</span><span class="p">(</span><span class="n">flow_mat</span><span class="p">,</span> <span class="n">samplename</span> <span class="o">==</span> <span class="s">&quot;sample1&quot;</span><span class="p">)</span>
+<span class="n">flow_def</span> <span class="o">=</span> <span class="n">read_sheet</span><span class="p">(</span><span class="nb">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">exdata</span><span class="p">,</span> <span class="s">&quot;example1_flow_def.txt&quot;</span><span class="p">),</span> <span class="n">id_column</span> <span class="o">=</span> <span class="s">&quot;jobname&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="ingredient-1-commands-to-run-flow-mat">
 <h2>Ingredient 1: Commands to run (flow_mat)<a class="headerlink" href="#ingredient-1-commands-to-run-flow-mat" title="Permalink to this headline">¶</a></h2>
-<div class="code r highlight-python"><div class="highlight"><pre><span class="n">kable</span><span class="p">(</span><span class="n">head</span><span class="p">(</span><span class="n">flow_mat</span><span class="p">))</span>
+<div class="code r highlight-python"><div class="highlight"><pre><span class="n">kable</span><span class="p">(</span><span class="n">subset</span><span class="p">(</span><span class="n">flow_mat</span><span class="p">,</span> <span class="n">samplename</span> <span class="o">==</span> <span class="s">&#39;sample1&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <table border="1" class="docutils">
 <colgroup>
-<col width="38%" />
-<col width="30%" />
-<col width="32%" />
+<col width="21%" />
+<col width="17%" />
+<col width="62%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">samplename</th>
@@ -277,27 +280,35 @@ fobj &lt;- to_flow(x = flow_mat, def = flow_def,
 <tbody valign="top">
 <tr class="row-even"><td>sample1</td>
 <td>sleep</td>
-<td>sleep 17</td>
+<td>sleep 6</td>
 </tr>
 <tr class="row-odd"><td>sample1</td>
 <td>sleep</td>
-<td>sleep 7</td>
+<td>sleep 16</td>
 </tr>
 <tr class="row-even"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 21</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 1</td>
-</tr>
-<tr class="row-even"><td>sample1</td>
-<td>sleep</td>
-<td>sleep 4</td>
-</tr>
-<tr class="row-odd"><td>sample1</td>
 <td>sleep</td>
 <td>sleep 8</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>tmp</td>
+<td>head -c 100000 /dev/urandom &gt; tmp1_1</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>tmp</td>
+<td>head -c 100000 /dev/urandom &gt; tmp1_2</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>tmp</td>
+<td>head -c 100000 /dev/urandom &gt; tmp1_3</td>
+</tr>
+<tr class="row-even"><td>sample1</td>
+<td>merge</td>
+<td>cat tmp1_1 tmp1_2 tmp1_3 &gt; merge1</td>
+</tr>
+<tr class="row-odd"><td>sample1</td>
+<td>size</td>
+<td>du -sh merge1</td>
 </tr>
 </tbody>
 </table>
@@ -369,21 +380,23 @@ fobj &lt;- to_flow(x = flow_mat, def = flow_def,
 </tr>
 </tbody>
 </table>
-<p><strong>The above table basically translates to</strong>:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">sleep</span></code>: Run all 10 sleep jobs for given sample</li>
-<li><code class="docutils literal"><span class="pre">tmp</span></code>: Create 10 temporary files, after sleep jobs are complete<ul>
-<li>dependency is serial, tmp jobs does not wait for all sleep jobs to
-complete.</li>
-<li>This is a one-to-one relationship</li>
-</ul>
-</li>
-<li><code class="docutils literal"><span class="pre">merge</span></code>: When all <code class="docutils literal"><span class="pre">tmp</span></code> are complete, merge them</li>
-<li><code class="docutils literal"><span class="pre">size</span></code>: get their size when merge is complete</li>
-</ul>
 </div>
-<div class="section" id="plot-describing-the-definition">
-<h2>Plot describing the definition<a class="headerlink" href="#plot-describing-the-definition" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="stich-it">
+<h2>Stich it<a class="headerlink" href="#stich-it" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>into a flow</div></blockquote>
+<div class="code r highlight-python"><div class="highlight"><pre>fobj &lt;- to_flow(x = flow_mat, def = flow_def,
+    flowname = &quot;example1&quot;, platform = &quot;lsf&quot;)
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#&gt; Using description default: type1</span>
+<span class="c">#&gt; Using flow_base_path default: ~/flowr</span>
+<span class="c">#&gt; ....</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-it">
+<h2>Plot it<a class="headerlink" href="#plot-it" title="Permalink to this headline">¶</a></h2>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">plot_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -392,8 +405,10 @@ complete.</li>
 <p class="caption"><span class="caption-text">Flow chart describing process for example 1</span></p>
 </div>
 </div>
-<div class="section" id="dry-run-submit">
-<h2>Dry run (submit)<a class="headerlink" href="#dry-run-submit" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="test-it">
+<h2>Test it<a class="headerlink" href="#test-it" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Dry run (submit)</div></blockquote>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">submit_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -403,8 +418,10 @@ You may check this folder for consistency. Also you may re-run submit with execu
 </pre></div>
 </div>
 </div>
-<div class="section" id="submit-to-the-cluster">
-<h2>Submit to the cluster<a class="headerlink" href="#submit-to-the-cluster" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="submit-it">
+<h2>Submit it !<a class="headerlink" href="#submit-it" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Submit to the cluster</div></blockquote>
 <div class="code r highlight-python"><div class="highlight"><pre><span class="n">submit_flow</span><span class="p">(</span><span class="n">fobj</span><span class="p">,</span> <span class="n">execute</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -442,7 +459,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../run.html" class="btn btn-neutral float-right" title="HPCC Support" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="hpcc-support.html" class="btn btn-neutral float-right" title="HPCC Platforms" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../../index.html" class="btn btn-neutral" title="flowr: Streamline your workflows" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

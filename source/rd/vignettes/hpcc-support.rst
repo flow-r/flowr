@@ -1,3 +1,6 @@
+HPCC Platforms
+==============
+
 As of now we have tested this on the following clusters:
 
 +------------+-----------+--------------+--------------+
@@ -12,7 +15,7 @@ As of now we have tested this on the following clusters:
 | SGE        | qsub      | Beta         | sge          |
 +------------+-----------+--------------+--------------+
 
-\*queue short-name used in `flow <https://github.com/sahilseth/flow>>`__
+\*queue short-name used in `flow <https://github.com/sahilseth/flow>`__
 
 There are several `job
 scheduling <http://en.wikipedia.org/wiki/Job_scheduler>`__ systems
@@ -20,7 +23,7 @@ available and we try to support the major players. Adding support is
 quite easy if we have access to them. Your favourite not in the list?
 Send a `message <mailto:sahil.seth@me.com>`__
 
--  PBS: `wiki <http://en.wikipedia.org/wiki/Portable_Batch_System>>`__
+-  PBS: `wiki <http://en.wikipedia.org/wiki/Portable_Batch_System>`__
 -  Torque:
    `wiki <http://en.wikipedia.org/wiki/TORQUE_Resource_Manager>`__
 
@@ -28,7 +31,7 @@ Send a `message <mailto:sahil.seth@me.com>`__
    -  `University of
       Houston <http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html>`__
 
--  LSF `wiki <http://en.wikipedia.org/wiki/Platform_LSF>>`__:
+-  LSF `wiki <http://en.wikipedia.org/wiki/Platform_LSF>`__:
 
    -  Harvard Medicla School uses: `LSF HPC
       7 <https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF>`__

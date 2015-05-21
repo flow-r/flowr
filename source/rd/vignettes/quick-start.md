@@ -8,6 +8,8 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+
+
 Get me started
 -------------
 
@@ -28,61 +30,56 @@ setup()
 ```
 
 ```
-## Consider adding ~/bin to your PATH variable in .bashrc.
-## export PATH=$PATH:$HOME/bin
-## You may now use all R functions using 'flowr' from shell.
+#> Consider adding ~/bin to your PATH variable in .bashrc.
+#> export PATH=$PATH:$HOME/bin
+#> You may now use all R functions using 'flowr' from shell.
 ```
 
 
 # Create a flow using example data
 
+**Let us say we want to do**:
+
+- Have a few jobs which will just wait (sleep) for a few seconds (`sleep`)
+- Then... (`tmp`) 
+	- Create a few temporary files. But hey, as soon as a sleep completes start the corresponding `tmp` job.
+	- If you are so inclined more on this [here](docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship).
+	- Don't wait for all to complete
+- When all `tmp` jobs are complete, `merge` them
+- Then get the `size` of the resulting file
+
+Now to do this we need two basic ingedients. A table with the commands, and a another which specifies the flow. We call them `flow_mat` and `flow_def`.
+
+We already have examples so lets load them from the package and see how they look.
+
+
+
 ```r
 exdata = file.path(system.file(package = "flowr"), "extdata")
-flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-```
-
-```
-## Using 'samplename'' as id_column
-```
-
-```r
-flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
-```
-
-```
-## Using 'jobname'' as id_column
-```
-
-```r
+flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"), id_column = "samplename")
+## this has a bunch of samples, so let us subset one of them
 flow_mat = subset(flow_mat, samplename == "sample1")
-
-fobj <- to_flow(x = flow_mat, def = flow_def, 
-	flowname = "example1",
-	platform = "lsf")
-```
-
-```
-## Using description default: type1
-## Using flow_base_path default: ~/flowr
-## ....
+flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"), id_column = "jobname")
 ```
 
 # Ingredient 1: Commands to run (flow_mat)
 
 ```r
-kable(head(flow_mat))
+kable(subset(flow_mat, samplename == 'sample1'))
 ```
 
 
 
-|samplename |jobname |cmd      |
-|:----------|:-------|:--------|
-|sample1    |sleep   |sleep 17 |
-|sample1    |sleep   |sleep 7  |
-|sample1    |sleep   |sleep 21 |
-|sample1    |sleep   |sleep 1  |
-|sample1    |sleep   |sleep 4  |
-|sample1    |sleep   |sleep 8  |
+|samplename |jobname |cmd                                  |
+|:----------|:-------|:------------------------------------|
+|sample1    |sleep   |sleep 6                              |
+|sample1    |sleep   |sleep 16                             |
+|sample1    |sleep   |sleep 8                              |
+|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_1 |
+|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_2 |
+|sample1    |tmp     |head -c 100000 /dev/urandom > tmp1_3 |
+|sample1    |merge   |cat tmp1_1 tmp1_2 tmp1_3 > merge1    |
+|sample1    |size    |du -sh merge1                        |
 
 # Ingredient 2: Flow Definition (flow_def)
 More on the format of this file [here].
@@ -101,16 +98,22 @@ kable(flow_def)
 |merge   |tmp       |gather   |serial   |medium |          163185|23:00    |            1|
 |size    |merge     |serial   |serial   |medium |          163185|23:00    |            1|
 
-**The above table basically translates to**:
+# Stich it
+> into a flow
 
-- `sleep`: Run all 10 sleep jobs for given sample
-- `tmp`: Create 10 temporary files, after sleep jobs are complete
-	- dependency is serial, tmp jobs does not wait for all sleep jobs to complete. 
-	- This is a one-to-one relationship
-- `merge`: When all `tmp` are complete, merge them
-- `size`: get their size when merge is complete
 
-# Plot describing the definition
+```r
+fobj <- to_flow(x = flow_mat, def = flow_def, 
+	flowname = "example1", platform = "lsf")
+```
+
+```
+#> Using description default: type1
+#> Using flow_base_path default: ~/flowr
+#> ....
+```
+
+# Plot it
 
 ```r
 plot_flow(fobj)
@@ -119,7 +122,9 @@ plot_flow(fobj)
 ![Flow chart describing process for example 1](figure/plot_example1-1.pdf) 
 
 
-# Dry run (submit)
+# Test it
+> Dry run (submit)
+
 
 ```r
 submit_flow(fobj)
@@ -131,7 +136,10 @@ You may check this folder for consistency. Also you may re-run submit with execu
  ~/flowr/type1-20150520-15-18-27-5mSd32G0
 ```
 
-# Submit to the cluster
+# Submit it !
+
+> Submit to the cluster
+
 
 ```r
 submit_flow(fobj, execute = TRUE)

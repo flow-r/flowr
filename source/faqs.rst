@@ -1,21 +1,17 @@
-Some helpful tips and questions
+FAQs
 ============================================
 
 .. eventually in running the pipeline
 
 :Q: What platforms are supported
 
-========   ===============  ============    =======
-|Platform|submission commnd|Works?       |queue type *|
-========   ===============  ============    =======
-LSF HPC 7|bsub             |Not tested   |lsf |
-LSF 9.1  |bsub             |Yes          |lsf |
-Torque   |qsub             |Yes          |torque |
-SGE      |qsub             |Not implemented|
-==================================================
+:A: LSF, torque, SGE, ... more here.
 
 
 :Q:  Am getting a error in `devtools:::install_github("sahilseth/flowr")`
+	
+::
+
 	error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
 
 :A:	This is basically a issue with httr 
