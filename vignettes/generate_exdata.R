@@ -9,14 +9,17 @@ library(knitr)
 
 ## ------------------------------------------------------------------------
 ## create a vector of sample names
-samp = sprintf("sample%s", 1:10)
+
+n = 3
+
+samp = sprintf("sample%s", 1:n)
 
 tmp <- lapply(1:length(samp), function(i){
 	## sleep for a few seconds (100 times)
-	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(10)*10, 0)))
+	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(n)*10, 0)))
 	
 	## Create 100 temporary files
-	tmp10 = sprintf("tmp%s_%s", i, 1:10)
+	tmp10 = sprintf("tmp%s_%s", i, 1:n)
 	cmd_tmp = sprintf("head -c 100000 /dev/urandom > %s", tmp10)
 	
 	## Merge them according to samples, 10 each
