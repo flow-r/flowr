@@ -69,10 +69,6 @@ Indices and tables
    :target: http://dx.doi.org/10.5281/zenodo.16170
 
 
-{#########################}
-{# for disqus commenting #}
-{#########################}
-
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
