@@ -3,6 +3,7 @@
 S3method(check,flow_def)
 S3method(to_flow,data.frame)
 S3method(to_flow,list)
+export(as.flow_def)
 export(check)
 export(cmds_to_flow)
 export(flow)

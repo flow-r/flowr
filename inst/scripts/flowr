@@ -104,6 +104,6 @@ if(is.na(args[1])) {
     #print(args)
     if(verbose) print(str(params))
   }
-  cat(out <- do.call(as.character(args[1]), args = params))
+  print(out <- do.call(as.character(args[1]), args = params))
 }
 

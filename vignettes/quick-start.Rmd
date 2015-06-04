@@ -43,7 +43,7 @@ setup()
 - Have a few jobs which will just wait (sleep) for a few seconds (`sleep`)
 - Then... (`tmp`) 
 	- Create a few temporary files. But hey, as soon as a sleep completes start the corresponding `tmp` job.
-	- If you are so inclined more on this [here](docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship).
+	- If you are so inclined more on this [here](http://docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship).
 	- Don't wait for all to complete
 - When all `tmp` jobs are complete, `merge` them
 - Then get the `size` of the resulting file

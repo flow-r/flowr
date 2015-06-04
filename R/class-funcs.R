@@ -163,9 +163,10 @@ setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), defini
                       sprintf("touch %s/trigger/trigger_%s_%s.txt",
                               f_obj@flow_path, j_obj@jobname,i),
                       "echo 'BGN at' `date`")
-    afterscript <- c(sprintf("echo $? > %s/trigger/trigger_%s_%s.txt",
+    afterscript <- c(sprintf("exitstat=$?;echo $exitstat > %s/trigger/trigger_%s_%s.txt",
                              f_obj@flow_path, j_obj@jobname,i),
-                     "echo 'END at' `date`")
+                     "echo 'END at' `date`",
+    								 "exit $exitstat") ## returning the exit code
     script <- c(beforescript,j_obj@cmds[i], afterscript)
     if(verbose) message("Submitting using script:\n", cmd, "\n")
     write(script, files[i])

@@ -20,9 +20,10 @@ create_jobs_mat <- function(x){
     dat2 <- data.frame()
     for(row in rows){
       prev_jobs=strsplit(as.c(dat[row,]$prev_jobs),",")[[1]]
-      dat2 <- rbind(dat2,cbind(jobnames=dat[row,"jobnames"], prev_jobs=prev_jobs,
+      dat2 <- rbind(dat2,cbind(jobname=dat[row,"jobname"], prev_jobs=prev_jobs,
                                dep_type=dat[row,"dep_type"],sub_type=dat[row,"sub_type"],
-                               cpu=dat[row,"cpu"],nodes=dat[row,"nodes"]))
+                               cpu_reserved=dat[row, "cpu_reserved"],
+      												 nodes=dat[row,"nodes"]))
     }
     dat <- rbind(dat[-rows,],dat2)
   }

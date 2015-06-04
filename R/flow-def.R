@@ -56,6 +56,7 @@ check.flow_def <- function(x,
 
 #
 
+#' @export
 as.flow_def <- function(x){
 	if(is.flow_def(x))
 		return(x)
@@ -88,7 +89,7 @@ sample_flow_def <- function(fl, jobnames, cols){
 		queue = rep("medium", njobs),
 		memory_reserved = rep("163185", njobs),
 		walltime = rep("23:00", njobs),
-		cpu_reserved = rep(1, njobs))
+		cpu_reserved = rep(1, njobs), stringsAsFactors = FALSE)
 	message("Creating a skeleton flow_def")
 	if(!missing(fl))
 		write.table(df, file = file.path(dirname(fl), "flow_def_ex.txt"), 

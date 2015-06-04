@@ -1,4 +1,4 @@
-## ---- echo = FALSE, message = FALSE--------------------------------------
+## ----, echo = FALSE, message = FALSE-------------------------------------
 knitr::opts_chunk$set(
   comment = "#>",
   error = FALSE,
@@ -7,14 +7,11 @@ knitr::opts_chunk$set(
 library(flowr)
 library(knitr)
 
-## ------------------------------------------------------------------------
+## ----example1------------------------------------------------------------
 ## create a vector of sample names
 
-n = 3
 
-samp = sprintf("sample%s", 1:n)
-
-tmp <- lapply(1:length(samp), function(i){
+example1 <- function(samp, n, i){
 	## sleep for a few seconds (100 times)
 	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(n)*10, 0)))
 	
@@ -37,9 +34,17 @@ tmp <- lapply(1:length(samp), function(i){
 	df = data.frame(samplename = samp[i],
 		jobname = jobname, 
 		cmd = cmd)
+}
+
+i=1;n=3;samps = sprintf("sample%s", 1:n)
+## we want to do this for 3 samples
+## call the above function for each
+lst <- lapply(samps, function(samp){
+	flow_mat = example1(samp, 3, 1)
 })
 
-flow_mat = do.call(rbind, tmp)
+## combing each element of the list, by row bind
+flow_mat = do.call(rbind, lst)
 kable(head(flow_mat))
 
 ## ------------------------------------------------------------------------
@@ -51,6 +56,10 @@ def[def[, 'jobname'] == "merge","dep_type"] = "gather"
 def[def[, 'jobname'] == "merge","sub_type"] = "serial"
 def[def[, 'jobname'] == "size","sub_type"] = "serial"
 kable(def)
+
+## ----make_flow_plot------------------------------------------------------
+fobj <- to_flow(x = flow_mat, def = def)
+plot_flow(fobj)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt",

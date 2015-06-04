@@ -18,15 +18,14 @@ library(flowr)
 library(knitr)
 ```
 
-## Generate 100 commands each for sleep make div
-```{r}
+# Example1
+
+Generate 100 commands each for sleep make div
+```{r example1}
 ## create a vector of sample names
 
-n = 3
 
-samp = sprintf("sample%s", 1:n)
-
-tmp <- lapply(1:length(samp), function(i){
+example1 <- function(samp, n, i){
 	## sleep for a few seconds (100 times)
 	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(n)*10, 0)))
 	
@@ -49,22 +48,30 @@ tmp <- lapply(1:length(samp), function(i){
 	df = data.frame(samplename = samp[i],
 		jobname = jobname, 
 		cmd = cmd)
+}
+
+i=1;n=3;samps = sprintf("sample%s", 1:n)
+## we want to do this for 3 samples
+## call the above function for each
+lst <- lapply(samps, function(samp){
+	flow_mat = example1(samp, 3, 1)
 })
 
-flow_mat = do.call(rbind, tmp)
+## combing each element of the list, by row bind
+flow_mat = do.call(rbind, lst)
 kable(head(flow_mat))
 ```
 
 
-# Make the flow definition
-## Generate a skeleton flow definition
+## Make the flow definition
+### Generate a skeleton flow definition
 ```{r}
 def = sample_flow_def(jobnames = unique(flow_mat$jobname))
 kable(def)
 ```
 
 
-## Change the dependency type for merge step into gather
+### Change the dependency type for merge step into gather
 It might be easier to do such, by hand
 ```{r}
 def[def[, 'jobname'] == "merge","dep_type"] = "gather"
@@ -73,12 +80,75 @@ def[def[, 'jobname'] == "size","sub_type"] = "serial"
 kable(def)
 ```
 
+### Plot flow
+```{r make_flow_plot}
+fobj <- to_flow(x = flow_mat, def = def)
+plot_flow(fobj)
+```
 
-# Write both into example data
+### Write both into example data
 ```{r eval=FALSE}
 write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt", 
 	row.names = FALSE, quote = FALSE, sep = "\t")
 write.table(def, file = "inst/extdata/example1_flow_def.txt", 
+	row.names = FALSE, quote = FALSE, sep = "\t")
+```
+
+
+## Example2
+```{r}
+
+example2 <- function(n, i){
+	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(1)*10, 0)))
+	
+	## Create 100 temporary files
+	tmpn = sprintf("tmp%s_%s", i, 1:n)
+	cmd_tmp = sprintf("head -c 100000 /dev/urandom > %s", tmpn)
+	
+	## Merge them according to samples, 10 each
+	cmd_merge <- sprintf("cat %s > merge%s", paste(tmpn, collapse = " "), i)
+	
+	## get the size of merged files
+	cmd_size = sprintf("du -sh merge%s", i)
+	
+	cmd <- c(cmd_sleep, cmd_tmp, cmd_merge, cmd_size)
+	jobname <- c(rep("sleep", length(cmd_sleep)),
+							 sprintf("tmp%s", 1:length(cmd_tmp)),
+							 rep("merge", length(cmd_merge)),
+							 rep("size", length(cmd_size)))
+	## create a DF
+	df = data.frame(samplename = samp[i],
+									jobname = jobname, 
+									cmd = cmd)
+	return(df)
+}
+
+i=1;n=3
+flow_mat = example2(3, 1)
+
+## Make sample skeleton
+def = sample_flow_def(jobnames = unique(flow_mat$jobname))
+plot_flow(to_flow(flow_mat, def))
+
+## change a few things
+def$sub_type = "serial"
+plot_flow(to_flow(flow_mat, def))
+
+## change a few more
+def[def[, 'jobname'] == "tmp2","prev_jobs"] = "sleep"
+def[def[, 'jobname'] == "tmp3","prev_jobs"] = "sleep"
+plot_flow(to_flow(flow_mat, def))
+
+## we would like all three to complete
+def[def[, 'jobname'] == "merge","prev_jobs"] = "tmp1,tmp2,tmp3"
+plot_flow(to_flow(flow_mat, def))
+```
+
+### Write both into example data
+```{r eval=FALSE}
+write.table(flow_mat, file = "inst/extdata/example2_flow_mat.txt", 
+	row.names = FALSE, quote = FALSE, sep = "\t")
+write.table(def, file = "inst/extdata/example2_flow_def.txt", 
 	row.names = FALSE, quote = FALSE, sep = "\t")
 ```
 
