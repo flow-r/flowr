@@ -12,5 +12,5 @@ r_check_args: --timings --as-cran
 #r_check_args: --no-install
 
 ## Following to take care of stringi error from travis (temporary)
-r_github_packages:
-  - Rexamine/stringi
+#r_github_packages:
+#  - Rexamine/stringi
