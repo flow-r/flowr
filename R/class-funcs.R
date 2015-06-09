@@ -61,7 +61,7 @@
 		## ---   make a long job name to capture the run
 		obj <- j_obj;
 		obj@jobname <- sprintf("%s_%s-%s", j_obj@jobname,basename(f_obj@flow_path),i)
-		cmd <- .create_queue_cmd(obj, file=files[i], index=i)
+		cmd <- .create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
 		
 		## ------- make the script; add support for other shells, zsh etc OR detect shell
 		beforescript <- c("#!/bin/env bash",
@@ -79,7 +79,7 @@
 		if(verbose) message("Submitting using script:\n", cmd, "\n")
 		write(script, files[i])
 		
-		## --- use try catch to make sure you get all the IDs
+		## --- return CMD if local, else jobid
 		if(execute){
 			if(j_obj@platform == "local")
 				return(cmd)
@@ -89,16 +89,14 @@
 		return('0') ## if no execute return the 0, as JOBID!
 	}) ## for loop
 	
+	## --- run local and get 0 as jobids
 	if(j_obj@platform == "local")
 		jobids <- run_local(jobids, j_obj = j_obj)
 	#cat("ALERT !! stopping jobs submission. Please don't press Ctrl+C...\n");
 	
-	## --- fetch job IDs, and parse them
-	if(j_obj@platform=="lsf" & execute)
-	## --- the string looks like: Job <4809> is submitted to queue <transfer>.
-		j_obj@id <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
-	else ## for all other the output is considered to be the jobid
-		j_obj@id <- jobids
+	## --- Parse jobids
+	if(execute)
+		j_obj@id <- parse_jobids(jobids, platform = j_obj@platform)
 	
 	## --- change the status of this job(s) for logs
 	j_obj@status <- "processed"

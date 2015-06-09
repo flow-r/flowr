@@ -9,7 +9,7 @@
 #' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 #' }
-.create_queue_cmd <- function(j_obj, file, index, ...){
+.create_queue_cmd <- function(j_obj, file, index, fobj, ...){
 	
 	if(j_obj@platform == "local"){
 		cmd <- sprintf("cd %s;%s %s > %s 2>&1;echo 0",
@@ -17,52 +17,24 @@
 		return(cmd)
 	}
 	
+	## --- get platform of previous job
+	prev_plat = fobj@jobs[[j_obj@previous_job]]@platform
+	
 	## --- this job depends on multiple jobs. 
 	## --- create a string with multiple job ids
 	## --- introduce possibility that the jobid is empty, 
 	## --- or missing especially for reruns
 	
-	## --- GATHER
-	if(j_obj@dependency_type=="gather"){
-		## dependency may be a list with few elements: multi jobs
-		## multiple lists with length 1 each
-		## easiest to unlist, and WAIT for ALL of them
-		if(j_obj@platform=="torque")
-			dependency <- sprintf("-W depend=afterok:%s", 
-														paste(unlist(j_obj@dependency), collapse = ":"))
-		else if(j_obj@platform=="lsf")
-			#dependency <- sprintf("-w '%s'", paste(j_obj@dependency, collapse=" && "))
-			dependency <- sprintf("-w '%s'", 
-														paste(unlist(j_obj@dependency), collapse = " && "))
-		
-		## --- SERIAL
-	}else if (j_obj@dependency_type=="serial"){
-		## if submission is scatter and dependency is serial, do burst
-		## basically recycle the dependency for all the subsequent jobs
-		if(length(j_obj@dependency)==1) index=1 ## recycle the first into the rest
-		if(j_obj@platform=="torque")
-			dependency <- sprintf("-W %s",paste(" depend=afterok:",
-																					j_obj@dependency[[index]], 
-																					sep="", collapse=":"))
-		else if(j_obj@platform=="lsf")
-			dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]], 
-																						 collapse=" && "))
-		
-		## --- BURST
-	}else if (j_obj@dependency_type=="burst"){
-		## if submission is scatter and dependency is serial, do burst
-		index=1
-		if(j_obj@platform=="torque")
-			dependency <- sprintf("-W %s",paste(" depend=afterok:", 
-																					j_obj@dependency[[index]], sep="",
-																					collapse=":"))
-		else if(j_obj@platform=="lsf")
-			dependency <- sprintf("-w '%s'", paste(j_obj@dependency[[index]],
-																						 collapse=" && "))
-	}else{
+	## --- prev LOCAL	
+	if(prev_plat == "local"){
 		dependency <- ""
+	}else{
+		## --- GATHER
+		jobj = j_obj
+		class(jobj) = jobj@platform
+		dependency <- parse_dependency(jobj, index = index)
 	}
-	
+
 	## this might be the case if re-run, when only a subset of jobs are to be rerun
 	if(length(j_obj@dependency) == 0){
 		dependency <- ""
@@ -88,3 +60,5 @@
 	cmd <- system(sprintf("echo %s ", j_obj@format),intern=TRUE)
 	return(cmd=cmd)
 }
+
+

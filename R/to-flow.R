@@ -69,8 +69,19 @@ to_flow.data.frame <- function(x, def, qobj,
 			stop("Some jobs in flow_def are not in x\n")
 		}
 		
+		## --- fetch samplename from the flowr_mat
+		nm = x$samplename[1]
+		
+		## -- user can supply qobj
 		if(missing(qobj))
 			qobj <- queue(platform = platform, verbose = FALSE)
+	
+		mixed_plat = FALSE
+		if("platform" %in% colnames(def)){
+			message("Using mixed platform settings...")
+			mixed_plat = TRUE
+		}
+				
 		cmd.list = split.data.frame(x, x$jobname)
 		
 		jobs <- lapply(1:nrow(def), function(i){
@@ -89,6 +100,9 @@ to_flow.data.frame <- function(x, def, qobj,
 			d_queue = unlist(def2$queue)
 			d_dep_type = unlist(def2$dep_type)
 			d_sub_type = unlist(def2$sub_type)
+			if(mixed_plat)
+				qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
+
 			if(length(d_sub_type) == 0)
 				sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
 			## guess dep_type
@@ -115,7 +129,7 @@ to_flow.data.frame <- function(x, def, qobj,
 			return(j)
 		})
 		fobj <- flow(jobs = jobs,
-			desc = desc, name = flowname,
+			desc = nm, name = flowname,
 			mode = "scheduler", 
 			flow_base_path = flow_base_path)
 		return(fobj)
