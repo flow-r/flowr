@@ -7,11 +7,12 @@
 #' samplename, jobname, cmd
 #' @export
 to_flow <- function(x, ...) {
+	message("input x is ", class(x))
 	UseMethod("to_flow")
 }
 
 #' @export
-to_flow.character <- function(x, def = 'flow_def', ...){
+to_flow.vector <- function(x, def = 'flow_def', ...){
 	def <- as.flow_def(def)
 	x = read_sheet(x)
 	to_flow(x, def, ...)

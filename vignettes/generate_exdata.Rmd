@@ -98,7 +98,7 @@ write.table(def, file = "inst/extdata/example1_flow_def.txt",
 ## Example2
 ```{r}
 
-example2 <- function(n, i){
+example2 <- function(n, i, samp){
 	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(1)*10, 0)))
 	
 	## Create 100 temporary files
@@ -117,14 +117,14 @@ example2 <- function(n, i){
 							 rep("merge", length(cmd_merge)),
 							 rep("size", length(cmd_size)))
 	## create a DF
-	df = data.frame(samplename = samp[i],
+	df = data.frame(samplename = samp,
 									jobname = jobname, 
 									cmd = cmd)
 	return(df)
 }
 
 i=1;n=3
-flow_mat = example2(3, 1)
+flow_mat = example2(3, 1, "samp1")
 
 ## Make sample skeleton
 def = sample_flow_def(jobnames = unique(flow_mat$jobname))
