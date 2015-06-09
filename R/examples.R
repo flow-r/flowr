@@ -1,0 +1,28 @@
+
+
+.run_sleep <- function(platform){
+	message("\n\nLets work on a simple example")
+	exdata = file.path(system.file(package = "flowr"), "extdata")
+	flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"), id_column = "samplename")
+	## this has a bunch of samples, so let us subset one of them
+	flow_mat = subset(flow_mat, samplename == "sample1")
+	flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"), id_column = "jobname")
+	fobj <- to_flow(x = flow_mat, def = flow_def, desc = "example_sleep",
+									flowname = "example1", platform = platform)
+	return(fobj)
+}
+
+
+#' @export
+run <- function(x="sleep", type = "example", platform = "lsf", execute = FALSE){
+	library(flowr)
+	message("")
+	message("\n\nPerforming initial setup....")
+	setup()
+	if(is.character(x))
+		if(x == "sleep")
+			fobj <- .run_sleep(platform = platform)
+	tmp <- submit_flow(fobj, execute = execute)
+	return("Done !")
+}
+

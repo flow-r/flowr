@@ -83,7 +83,7 @@ Here instead of seperating cmds and definitions one defines them step by step in
 Currently we support LSF, Torque and SGE. Let us use LSF for this example.
 
 ```{r getqobj}
-qobj <- queue(type = "lsf", queue = "normal", verbose = FALSE)
+qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 ```
 
 Let us stitch a simple flow with three jobs, which are submitted one after the other.

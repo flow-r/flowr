@@ -1,40 +1,20 @@
 ## will be extended to flowid later
 ## x="/scratch/iacs/ngs_runs/*"
 
-#' @title status
-#' @description status
-#' @aliases status
-#' @param x path to the flow; may be without the uuid.
-#' @param cores number of cores to use
-#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
-#' @param get_mem_usage under progress, whether to extract mem_usage of jobs
-#' @details If x is a path with a single flow, it outputs the status of just that.
-#' If the path has more than one flow then this could give a summary of **all** of them.
-#' Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
 #' @export
-#' @importFrom knitr kable
-#' @importFrom parallel mclapply
-#' @examples
-#' \dontrun{
-#' status(x = x, cores = 6)
-#' ## an example for running from terminal
-#' flowr status x=path_to_flow_directory cores=6
-#' }
-status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
-	## get the total jobs
-	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
-	wds = get_wds(x)  
-	for(wd in wds){
-		get_flow_status(wd, out_format = out_format)
-	}
-	#return(sum)
+get_wds <- function(x){
+	wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
+	#wds = list.dirs(x, full.names = TRUE, recursive = FALSE)
+	y = file.info(wds)
+	rownames(with(y, {subset(y, isdir == TRUE)}))
 }
-
-### provides status of a single flow
 
 #' @export
 get_flow_status <- function(x, cores = 6, out_format = "markdown"){
+	
+	## --- get all the cmd files
 	files_cmd <- list.files(x, pattern = "cmd", full.names = TRUE, recursive = TRUE)
+	files_cmd = grep("sh", files_cmd, value = TRUE)
 	## dirname, JOBNAME_cmd_JOBINDEX
 	mat_cmd <- data.frame(do.call(rbind,
 																strsplit(gsub(".*/(.*)/(.*)_cmd_([0-9]*).sh",
@@ -70,12 +50,37 @@ get_flow_status <- function(x, cores = 6, out_format = "markdown"){
 }
 
 
+#' @title status
+#' @description status
+#' @aliases status
+#' @param x path to the flow; may be without the uuid.
+#' @param cores number of cores to use
+#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
+#' @param get_mem_usage under progress, whether to extract mem_usage of jobs
+#' @details If x is a path with a single flow, it outputs the status of just that.
+#' If the path has more than one flow then this could give a summary of **all** of them.
+#' Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
 #' @export
-get_wds <- function(x){
-	wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
-	y = file.info(wds)
-	rownames(with(y, {subset(y, isdir == TRUE)}))
+#' @importFrom knitr kable
+#' @importFrom parallel mclapply
+#' @examples
+#' \dontrun{
+#' status(x = x, cores = 6)
+#' ## an example for running from terminal
+#' flowr status x=path_to_flow_directory cores=6
+#' }
+status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
+	## get the total jobs
+	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+	wds = get_wds(x)  
+	for(wd in wds){
+		get_flow_status(wd, out_format = out_format)
+	}
+	#return(sum)
 }
+
+### provides status of a single flow
+
 
 ## read and update flow_details status
 # wd = "/scratch/iacs/iacs_dep/sseth/flows/JZ/telseq/my_super_flow-2015-02-15-20-11-21-UZOwi8Q2"

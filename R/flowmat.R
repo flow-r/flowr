@@ -4,7 +4,7 @@
 if(FALSE){
   
   
-  qobj <- queue(type = "lsf", queue = "normal")
+  qobj <- queue(platform = "lsf", queue = "normal")
   job1 <- job(name = "myjob1", q_obj = qobj)
   job2 <- job(name = "myjob2", q_obj = qobj)
   job3 <- job(name = "myjob3", q_obj = qobj, previous_job = c("myjob2", "myjob1"))

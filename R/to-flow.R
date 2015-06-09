@@ -1,7 +1,22 @@
+
+
+#' this operates on a single sample basis
+#' @param x is a data.frame with jobnames and commands to run. See details for more on the format
+#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
+#' flow_tab: as defined by x is a (minimum) three column matrix with:
+#' samplename, jobname, cmd
 #' @export
 to_flow <- function(x, ...) {
 	UseMethod("to_flow")
 }
+
+#' @export
+to_flow.character <- function(x, def = 'flow_def', ...){
+	def <- as.flow_def(def)
+	x = read_sheet(x)
+	to_flow(x, def, ...)
+}
+
 
 #' @export
 to_flow.list <- function(x, def = 'flow_def'){
@@ -10,11 +25,6 @@ to_flow.list <- function(x, def = 'flow_def'){
 
 # def = system.file(package = "flowr", "files/flow_def_ex1.txt")
 
-#' this operates on a single sample basis
-#' @param x is a data.frame with jobnames and commands to run. See details for more on the format
-#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
-#' flow_tab: as defined by x is a (minimum) three column matrix with:
-#' samplename, jobname, cmd
 #' @export
 to_flow.data.frame <- function(x, def, qobj, 
 	platform,
@@ -59,7 +69,7 @@ to_flow.data.frame <- function(x, def, qobj,
 		}
 		
 		if(missing(qobj))
-			qobj <- queue(type = platform, verbose = FALSE)
+			qobj <- queue(platform = platform, verbose = FALSE)
 		cmd.list = split.data.frame(x, x$jobname)
 		
 		jobs <- lapply(1:nrow(def), function(i){

@@ -1,3 +1,4 @@
+
 setClass("flow_def", contains = "data.frame") 
 #http://www.carlboettiger.info/2013/09/11/extending-data-frame-class.html
 
@@ -64,6 +65,7 @@ as.flow_def <- function(x){
 	if(is.data.frame(x))
 		y <- new("flow_def", x)
 	if(is.character(x))
+		message("def seems to be a file, reading it...")
 		y <- new("flow_def", read_sheet(x, id_column = "jobname"))
 	y = check(y)
 }
