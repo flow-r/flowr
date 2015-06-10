@@ -19,6 +19,8 @@ to_flow.vector <- function(x, def = 'flow_def', ...){
 }
 
 
+
+
 #' @export
 to_flow.list <- function(x, def = 'flow_def'){
 	def <- as.flow_def(def)
