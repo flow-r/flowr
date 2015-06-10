@@ -18,7 +18,8 @@ create_queue_cmd <- function(j_obj, file, index, fobj, ...){
 	}
 	
 	## --- get platform of previous job
-	prev_plat = fobj@jobs[[j_obj@previous_job]]@platform
+	prev_plat = try(fobj@jobs[[j_obj@previous_job]]@platform, silent = TRUE)
+	prev_plat = ifelse(class(prev_plat) == "try-error", "", prev_plat)
 	
 	## --- this job depends on multiple jobs. 
 	## --- create a string with multiple job ids

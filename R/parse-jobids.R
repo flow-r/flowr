@@ -24,7 +24,7 @@ parse_jobids <- function(jobids, platform){
 
 #' @export
 parse_dependency <- function(x, ...) {
-	message("input x is ", class(x))
+# 	message("input x is ", class(x))
 	UseMethod("parse_dependency")
 }
 
@@ -48,16 +48,17 @@ parse_dependency.torque <- function(x, index, ...){
 }
 
 parse_dependency.lsf <- function(x, index, ...){
+	#message(index)
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
-		dependency <- sprintf("-w '%s'", 
+		dep <- sprintf("-w '%s'", 
 													paste(unlist(x@dependency), collapse = " && "))
 	}else if(dep_type == "serial"){
-		dependency <- sprintf("-w '%s'", paste(x@dependency[[index]], 
+		dep <- sprintf("-w '%s'", paste(x@dependency[[index]], 
 																					 collapse=" && "))
 	}else if(dep_type == "burst"){
 		index=1
-		dependency <- sprintf("-w '%s'", paste(x@dependency[[index]],
+		dep <- sprintf("-w '%s'", paste(x@dependency[[index]],
 																					 collapse=" && "))
 	}else{dep = ""}
 	return(dep)

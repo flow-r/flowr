@@ -4,9 +4,6 @@
 
 
 
-#.create_queue_cmd=create_queue_cmd
-# setMethod("create_queue_cmd", signature(j_obj = "job", file="character"), 
-# 					definition=.create_queue_cmd)
 
 ## --- submit job as part of a flow, this would be called from function flow
 #' @rdname submit_job
