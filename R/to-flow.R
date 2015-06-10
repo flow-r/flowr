@@ -58,7 +58,9 @@ to_flow.data.frame <- function(x, def, qobj,
 		}
 		
 		
-		x = data.frame(x, stringsAsFactors = FALSE)
+		#x = data.frame(x, stringsAsFactors = FALSE)
+		x[] <- lapply(x, as.character)
+		
 		def = as.flow_def(def)
 		## A check x should be in def 
 		if(mean(!unique(x$jobname) %in% na.omit(def$jobname))){
