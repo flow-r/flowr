@@ -33,7 +33,9 @@ to_flow.data.frame <- function(x, def, qobj,
 	platform,
 	cpu = 1, walltime = "1:00", memory = "1g",
 	flowname, desc, flow_base_path, 
-	grp_col = "uuid",  jobname_col="jobname",cmd_col="cmd"
+	grp_col = "samplename", 
+	jobname_col="jobname",
+	cmd_col="cmd"
 	){
 
 		## need a few columns
