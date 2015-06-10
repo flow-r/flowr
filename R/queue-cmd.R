@@ -9,7 +9,7 @@
 #' @examples \dontrun{
 #' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 #' }
-.create_queue_cmd <- function(j_obj, file, index, fobj, ...){
+create_queue_cmd <- function(j_obj, file, index, fobj, ...){
 	
 	if(j_obj@platform == "local"){
 		cmd <- sprintf("cd %s;%s %s > %s 2>&1;echo 0",

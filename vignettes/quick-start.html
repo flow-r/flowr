@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-05-20" />
+<meta name="date" content="2015-06-10" />
 
 <title>Quick Start Example</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Quick Start Example</h1>
-<h4 class="date"><em>2015-05-20</em></h4>
+<h4 class="date"><em>2015-06-10</em></h4>
 </div>
 
 
@@ -75,7 +75,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;sahilset
 <li>Then… (<code>tmp</code>)
 <ul>
 <li>Create a few temporary files. But hey, as soon as a sleep completes start the corresponding <code>tmp</code> job.</li>
-<li>If you are so inclined more on this <a href="docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship">here</a>.</li>
+<li>If you are so inclined more on this <a href="http://docs.flowr.space/build/html/rd/vignettes/build-pipes.html#serial-one-to-one-relationship">here</a>.</li>
 <li>Don’t wait for all to complete</li>
 </ul></li>
 <li>When all <code>tmp</code> jobs are complete, <code>merge</code> them</li>
@@ -212,7 +212,8 @@ flow_def =<span class="st"> </span><span class="kw">read_sheet</span>(<span clas
 </blockquote>
 <pre class="sourceCode r"><code class="sourceCode r">fobj &lt;-<span class="st"> </span><span class="kw">to_flow</span>(<span class="dt">x =</span> flow_mat, <span class="dt">def =</span> flow_def, 
     <span class="dt">flowname =</span> <span class="st">&quot;example1&quot;</span>, <span class="dt">platform =</span> <span class="st">&quot;lsf&quot;</span>)</code></pre>
-<pre><code>#&gt; Using description default: type1
+<pre><code>#&gt; input x is data.frame
+#&gt; Using description default: type1
 #&gt; Using flow_base_path default: ~/flowr
 #&gt; ....</code></pre>
 </div>

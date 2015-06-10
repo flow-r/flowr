@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-06-01" />
+<meta name="date" content="2015-06-10" />
 
 <title>flowr simple examples</title>
 
@@ -62,7 +62,7 @@ img {
 
 <div id="header">
 <h1 class="title">flowr simple examples</h1>
-<h4 class="date"><em>2015-06-01</em></h4>
+<h4 class="date"><em>2015-06-10</em></h4>
 </div>
 
 
@@ -222,7 +222,7 @@ flow_mat = read_sheet(file.path(exdata, &quot;example1_flow_mat.txt&quot;))</cod
 <li>Use: flow() to stich the jobs into a flow.</li>
 </ul>
 <p>Currently we support LSF, Torque and SGE. Let us use LSF for this example.</p>
-<pre class="r"><code>qobj &lt;- queue(type = &quot;lsf&quot;, queue = &quot;normal&quot;, verbose = FALSE)</code></pre>
+<pre class="r"><code>qobj &lt;- queue(platform = &quot;lsf&quot;, queue = &quot;normal&quot;, verbose = FALSE)</code></pre>
 <p>Let us stitch a simple flow with three jobs, which are submitted one after the other.</p>
 <pre class="r"><code>job1 &lt;- job(name = &quot;myjob1&quot;, cmds = &quot;sleep1&quot;, q_obj = qobj)
 job2 &lt;- job(name = &quot;myjob2&quot;, cmds = &quot;sleep2&quot;, q_obj = qobj, previous_job = &quot;myjob1&quot;, dependency_type = &quot;serial&quot;)
@@ -356,10 +356,10 @@ plot_flow(fobj)</code></pre>
 <pre><code>#&gt; [1] &quot;${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '&lt;' ${CMD} &quot;</code></pre>
 <p><strong>torque</strong></p>
 <pre class="r"><code>queue(type = &quot;torque&quot;)@format</code></pre>
-<pre><code>#&gt; Setting default time to: 72:00:00. If this is more than queue max (/improper format), job will fail. You may change this in job()
+<pre><code>#&gt; Setting default time to: 72:00. If this is more than queue max (/improper format), job will fail. You may change this in job()
 #&gt; 
-#&gt; Setting default memory to: 10g. If this is more than queue max (/improper format), job will fail.</code></pre>
-<pre><code>#&gt; [1] &quot;${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}&quot;</code></pre>
+#&gt; Setting default memory to: 10000. If this is more than queue max (/improper format), job will fail.</code></pre>
+<pre><code>#&gt; [1] &quot;${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '&lt;' ${CMD} &quot;</code></pre>
 <p>My HPCC is not supported, how to make it work? send a message to: sahil.seth [at] me.com</p>
 </div>
 

@@ -27,7 +27,7 @@ check.flow_def <- function(x,
 	prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
 	miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
 	if(length(miss_jobs) > 0) 
-		stop("Some jobs do not exist: ", miss_jobs)
+		stop("Some jobs do not exist: ", miss_jobs, "\n", kable(x))
 	## check if dep is none, but prev jobs defined
 	rows = x$dep_type == "none" & !is.na(x$prev_jobs)
 	if(sum(rows)){

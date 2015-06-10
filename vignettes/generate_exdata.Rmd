@@ -47,7 +47,7 @@ example1 <- function(samp, n, i){
 	## create a DF
 	df = data.frame(samplename = samp[i],
 		jobname = jobname, 
-		cmd = cmd)
+		cmd = cmd, stringsAsFactors = FALSE)
 }
 
 i=1;n=3;samps = sprintf("sample%s", 1:n)
@@ -119,7 +119,7 @@ example2 <- function(n, i, samp){
 	## create a DF
 	df = data.frame(samplename = samp,
 									jobname = jobname, 
-									cmd = cmd)
+									cmd = cmd, stringsAsFactors = FALSE)
 	return(df)
 }
 

@@ -1,4 +1,4 @@
-## ----, echo = FALSE, message = FALSE-------------------------------------
+## ---- echo = FALSE, message = FALSE--------------------------------------
 library(knitr)
 knitr::opts_chunk$set(
   comment = "#>",
@@ -22,7 +22,7 @@ kable(head(flow_def))
 kable(subset(flow_mat, samplename == "sample1"))
 
 ## ----getqobj-------------------------------------------------------------
-qobj <- queue(type = "lsf", queue = "normal", verbose = FALSE)
+qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 
 ## ----plot_simpleflow-----------------------------------------------------
 job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
