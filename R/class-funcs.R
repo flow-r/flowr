@@ -61,7 +61,7 @@
 		## ---   make a long job name to capture the run
 		obj <- j_obj;
 		obj@jobname <- sprintf("%s_%s-%s", j_obj@jobname,basename(f_obj@flow_path),i)
-		cmd <- .create_queue_cmd(obj, file=files[i], index=i, fobj = f_obj)
+		cmd <- create_queue_cmd(obj, file=files[i], index=i, fobj = f_obj)
 		
 		## ------- make the script; add support for other shells, zsh etc OR detect shell
 		beforescript <- c("#!/bin/env bash",

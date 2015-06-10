@@ -20,7 +20,7 @@ This is a flow interal functions used to create a command used to submit jobs to
 }
 \examples{
 \dontrun{
-.create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
+create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 }
 }
 \keyword{internal}

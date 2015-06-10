@@ -7,7 +7,7 @@
 #' @param ... Not used
 #' @keywords internal
 #' @examples \dontrun{
-#' .create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
+#' create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
 #' }
 create_queue_cmd <- function(j_obj, file, index, fobj, ...){
 	

@@ -36,7 +36,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 	message("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
 	message("Path to logs (1):\t", tmp@jobs[[1]]@stdout, "\n")
 	message("Path to logs (2):\t", tmp@jobs[[2]]@stdout, "\n")
-	## cmd.0 <- .create_queue_cmd(j_obj)
+	## cmd.0 <- create_queue_cmd(j_obj)
 	## if(verbose) cat("An example command string looks like:\n", cmd.0)
 	## cmd <- sprintf("echo 'sleep 1' | %s", cmd.0)
 	## if( verbose ) print (cmd)

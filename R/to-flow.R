@@ -30,9 +30,14 @@ to_flow.list <- function(x, def = 'flow_def'){
 to_flow.data.frame <- function(x, def, qobj, 
 	platform,
 	cpu = 1, walltime = "1:00", memory = "1g",
-	flowname, desc, flow_base_path
+	flowname, desc, flow_base_path, 
+	grp_col = "uuid",  jobname_col="jobname",cmd_col="cmd"
 	){
+
 		## need a few columns
+		x[, "samplename"] = x[, grp_col]
+		x[, "jobname"] = x[, jobname_col]
+		x[, "cmd"] = x[, cmd_col]
 		
 		if(is.null(x$jobname))
 			stop("x does not have a column jobname")
