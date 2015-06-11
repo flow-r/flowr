@@ -157,7 +157,7 @@ queue <- function(object,
 											## -W: walltime
 											## -M: max mem
 											## -R rusage[mem=16385]: min mem (reserved mem)
-											format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
+											format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R rusage[mem=${MEMORY}] -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
 											object <- new("lsf", submit_exe="bsub",queue=queue,
 																		nodes=nodes, cpu=cpu, jobname=jobname,
 																		dependency=dependency, walltime=walltime,
