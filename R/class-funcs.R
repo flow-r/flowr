@@ -49,7 +49,8 @@
 	
 	## --- shell scripts and their respective STDOUT/ERR
 	files <- sprintf("%s/%s_cmd_%s.sh", wd, j_obj@name, 1:length(j_obj@cmds))
-	j_obj@stderr = j_obj@stdout = gsub(".sh", ".out", files)
+	## gsub .sh from end of file
+	j_obj@stderr = j_obj@stdout = gsub(".sh$", ".out", files)
 	#j_obj@stderr <- file.path(wd, j_obj@jobname)
 	#j_obj@stdout <- file.path(wd, j_obj@jobname)
 	
