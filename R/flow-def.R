@@ -21,7 +21,7 @@ check.flow_def <- function(x,
 				 "should be from ", paste(dep_types, collapse = " "))
 	if(sum(!x$sub_type %in% sub_types)) 
 		stop("Submission type not recognized ", paste(x$sub_type, collapse = " "), 
-				 "should be from ", paste(sub_types, collapse = " "))
+				 " should be from ", paste(sub_types, collapse = " "))
 	## check if some jobs are put as dependencies but not properly defined
 	x$prev_jobs = gsub("\\.|none", NA, x$prev_jobs)
 	prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
@@ -40,6 +40,9 @@ check.flow_def <- function(x,
 		print(kable(x[rows,]))
 		stop("Previous jobs NOT defined, but dependency type is NOT none")
 	}
+	
+	## -- convert to numeric
+	x$cpu_reserved = as.numeric(x$cpu_reserved)
 	#print(x)
 	## check all previous jobs defined in names
 	## code previous jobs as NA
@@ -70,6 +73,7 @@ as.flow_def <- function(x){
 		y <- new("flow_def", read_sheet(x, id_column = "jobname"))
 	}
 	y = check(y)
+	return(y)
 }
 
 #' Create a skeleton flow definition

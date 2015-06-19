@@ -26,7 +26,7 @@ rerun_flow <- function(x, mat, def, start_from, execute = TRUE, kill = TRUE){
   }else if(class(x) == "character" & file.exists(x)){
   	message("x looks like a path")
   	load(file.path(x, "flow_details.rda"))
-    #fobj = f_obj
+    fobj = f_obj
   }else{
     stop("x does not seems to be a flow object or a correct path to the flow submission")
   }
@@ -50,9 +50,10 @@ rerun_flow <- function(x, mat, def, start_from, execute = TRUE, kill = TRUE){
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from)
 	def = subset_fdef(fobj = fobj, def = def, start_from = start_from)
 
-	fobj2 <- to_flow(x = mat, def=def)
+	fobj2 <- to_flow(x = mat, def=def, desc = fobj@desc)
   #knitr::kable(rerun)
-  fobj2 <- submit_flow(fobj2, execute = execute)
+  fobj2 <- submit_flow(fobj2, uuid = fobj@flow_path, execute = execute)
+  return("Done !")
 }
 rerun=rerun_flow
 
@@ -107,8 +108,8 @@ subset_fdef <- function(fobj, def, start_from){
 	mods = mods[which(grepl(start_from, mods)):length(mods)]
 	## get mat
 	def = subset(def, jobname %in% mods)
-	def$prev_jobs = ifelse(def$prev_jobs %in% mods, def$prev_jobs, "")
-	def$dep_type = ifelse(def$prev_jobs %in% mods, def$dep_type, "")
+	def$prev_jobs = ifelse(def$prev_jobs %in% mods, def$prev_jobs, "none")
+	def$dep_type = ifelse(def$prev_jobs %in% mods, def$dep_type, "none")
 	return(def)
 }
 
@@ -132,7 +133,8 @@ get_flow_def <- function(fobj){
 	})
 	def = data.frame(do.call(rbind, tmp), stringsAsFactors = FALSE)
 	colnames(def) = names(slts)
-	as.flow_def(def)
+	print(kable(def))
+	def = as.flow_def(def)
 	return(def)
 }
 
