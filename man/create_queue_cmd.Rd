@@ -4,14 +4,14 @@
 \alias{create_queue_cmd}
 \title{create_queue_cmd}
 \usage{
-create_queue_cmd(j_obj, file, index, fobj, ...)
+create_queue_cmd(jobj, file, index, fobj, ...)
 }
 \arguments{
-\item{j_obj}{object of class \link{job}}
+\item{jobj}{object of class \link{job}}
 
 \item{file}{This is the path to the file to run}
 
-\item{index}{among cmds defined in \code{j_obj}, which index does this \code{file} belong to. A numeric vector of length 1. This is to fetch dependency from previous job.}
+\item{index}{among cmds defined in \code{jobj}, which index does this \code{file} belong to. A numeric vector of length 1. This is to fetch dependency from previous job.}
 
 \item{...}{Not used}
 }
@@ -20,7 +20,7 @@ This is a flow interal functions used to create a command used to submit jobs to
 }
 \examples{
 \dontrun{
-create_queue_cmd(j_obj = j_obj, file = file, index = index, ... = ...)
+create_queue_cmd(jobj = jobj, file = file, index = index, ... = ...)
 }
 }
 \keyword{internal}

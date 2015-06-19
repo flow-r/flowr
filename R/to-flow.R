@@ -35,7 +35,7 @@ to_flow.data.frame <- function(x, def, qobj,
 	flowname, desc, flow_base_path, 
 	grp_col = "samplename", 
 	jobname_col="jobname",
-	cmd_col="cmd"
+	cmd_col="cmd", ...
 	){
 
 		## need a few columns

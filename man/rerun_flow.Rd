@@ -4,7 +4,7 @@
 \alias{rerun_flow}
 \title{rerun_flow}
 \usage{
-rerun_flow(x, execute = TRUE, kill = TRUE)
+rerun_flow(x, mat, def, start_from, execute = TRUE, kill = TRUE)
 }
 \arguments{
 \item{x}{Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.}

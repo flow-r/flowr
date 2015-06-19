@@ -128,6 +128,8 @@
 #' submit_flow(f_obj = f_obj, ... = ...)}
 submit_flow <- function(f_obj, uuid, execute = FALSE,
 												 plot = TRUE, verbose = FALSE, ...){
+	## -- store, for use later
+	f_obj@execute=execute
 	## the case of resubmission
 	if(missing(uuid)){
 		uuid = get_unique_id(f_obj@desc)

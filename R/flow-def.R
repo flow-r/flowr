@@ -29,6 +29,7 @@ check.flow_def <- function(x,
 	if(length(miss_jobs) > 0) 
 		stop("Some jobs do not exist: ", miss_jobs, "\n", kable(x))
 	## check if dep is none, but prev jobs defined
+	x$prev_jobs = ifelse(x$prev_jobs=="", NA, x$prev_jobs)
 	rows = x$dep_type == "none" & !is.na(x$prev_jobs)
 	if(sum(rows)){
 		print(kable(x[rows,]))

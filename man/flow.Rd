@@ -6,7 +6,7 @@
 \usage{
 flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
   mode = c("scheduler", "trigger", "R"), flow_base_path = "~/flowr",
-  trigger_path = "", flow_path = "", status = "")
+  trigger_path = "", flow_path = "", status = "", execute = "")
 }
 \arguments{
 \item{jobs}{\code{list} A list of jobs to be included in this flow}
