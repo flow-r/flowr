@@ -67,10 +67,10 @@ parse_dependency.lsf <- function(x, index, ...){
 parse_dependency.moab <- function(x, index, ...){
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
-		dep = sprintf("-W depend=afterok:%s", 
+		dep = sprintf("-l depend=afterok:%s", 
 									paste(unlist(x@dependency), collapse = ":"))
 	}else if(dep_type == "serial"){
-		dep <- sprintf("-W %s", paste(" depend=afterok:",
+		dep <- sprintf("-l %s", paste(" depend=afterok:",
 																	x@dependency[[index]], 
 																	sep="", collapse=":"))
 	}else if(dep_type == "burst"){
