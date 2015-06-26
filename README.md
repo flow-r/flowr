@@ -4,11 +4,9 @@
 flow
 ======
 
-> This packages should install OK. Build failure is likely incorrect, more on this [here](https://github.com/hadley/stringr/issues/68)
-
 R pacakge to design (and deploy) complex workflows, in a effective and efficient manner on High Perfomance computing clusters.
 
-Please visit [docs.flowr.space](http://docs.flowr.space) for more information.
+Please visit [docs.flowr.space](http://docs.flowr.space) for more information and here is a slide deck providing a quick overview: [sahilseth.github.io/slides/flowrintro](http://sahilseth.github.io/slides/flowrintro)
 
 Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your flow.
 [`guest; guestpass`]
@@ -38,3 +36,11 @@ As of now we have tested this on the following clusters:
 |LSF HPC 7|bsub|should work|lsf
 
 *label: This serves as the type argument for [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function.
+
+### Aknowledgements:
+Jianhua Zhang
+Samir Amin
+Kadir Akdemir
+Ethan Mao
+Henry Song
+An excellent resource for writing your own R packages: r-pkgs.had.co.nz
