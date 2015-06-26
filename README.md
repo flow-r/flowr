@@ -38,9 +38,9 @@ As of now we have tested this on the following clusters:
 *label: This serves as the type argument for [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function.
 
 ### Aknowledgements:
-Jianhua Zhang
-Samir Amin
-Kadir Akdemir
-Ethan Mao
-Henry Song
-An excellent resource for writing your own R packages: r-pkgs.had.co.nz
+- Jianhua Zhang
+- Samir Amin
+- Kadir Akdemir
+- Ethan Mao
+- Henry Song
+- An excellent resource for writing your own R packages: r-pkgs.had.co.nz
