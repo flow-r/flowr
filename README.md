@@ -35,7 +35,7 @@ As of now we have tested this on the following clusters:
 |SGE|qsub|should work|sge
 |LSF HPC 7|bsub|should work|lsf
 
-*label: This serves as the type argument for [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function.
+*label: This serves as the type argument for [queue](http://docs.flowr.space/en/latest/rd/topics/queue.html) function.
 
 ### Aknowledgements:
 - Jianhua Zhang
