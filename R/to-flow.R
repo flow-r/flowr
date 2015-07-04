@@ -39,7 +39,7 @@ to_flow.data.frame <- function(x, def, qobj,
 ){
 	
 	split = FALSE;smp=FALSE
-	## need a few columns
+	## --- need a few columns
 	if(grp_col %in% colnames(x)){
 		x[, "samplename"] = x[, grp_col]
 		split = TRUE;smp=TRUE

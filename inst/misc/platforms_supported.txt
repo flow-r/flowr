@@ -1,5 +1,0 @@
-Platform	command	status	queue type
-LSF 7	bsub	Not tested	lsf
-LSF 9.1	bsub	Yes	lsf
-Torque	qsub	Yes	torque
-SGE	qsub	Beta	sge

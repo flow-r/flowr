@@ -14,8 +14,8 @@ is.flow_def <- function(x){
 #' @export
 #' @importFrom knitr kable
 check.flow_def <- function(x, 
-													 sub_types = c("serial", "scatter", "burst"),
-													 dep_types = c("none", "serial", "gather")){
+													 sub_types = c("serial", "scatter"),
+													 dep_types = c("none", "serial", "gather", "burst")){
 	if(sum(!x$dep_type %in% dep_types)) 
 		stop("Dependency type not recognized ", paste(x$dep_type, collapse = " "), 
 				 "should be from ", paste(dep_types, collapse = " "))

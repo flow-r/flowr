@@ -141,7 +141,7 @@ submit_flow <- function(f_obj, uuid, execute = FALSE,
 	##names(f_obj@jobs) <- jobnames
 	### ---------- Error handling
 	if(execute)
-		message(sprintf("\nFlow is been processed. Track it from terminal using:\nstatus(x='%s')\nOR\nflowr status x=%s\n\n",
+		message(sprintf("\nFlow is being processed. Track it from R/Terminal using:\nstatus(x='%s')\nOR\nflowr status x=%s\n\n",
 									f_obj@flow_path, f_obj@flow_path))
 	if(length(f_obj@jobs[[1]]@dependency_type) > 0 & f_obj@jobs[[1]]@dependency_type !="none")
 		stop("Seems like the first job has a dependency, please check")
