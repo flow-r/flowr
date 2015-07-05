@@ -219,6 +219,10 @@ to_flow.data.frame <- function(x, def,
 		fobj <- submit_flow(fobj, execute = execute)
 		return(fobj)
 	})
+	
+	## --- if there is only one sample, fobj is returned
+	if(length(fobjs) == 1)
+		fobjs = fobjs[[1]]
 
 	return(fobjs)
 

@@ -59,7 +59,7 @@ kable(def)
 
 ## ----make_flow_plot------------------------------------------------------
 fobj <- to_flow(x = flow_mat, def = def)
-plot_flow(fobj)
+plot_flow(fobj[[1]])
 
 ## ----eval=FALSE----------------------------------------------------------
 #  write.table(flow_mat, file = "inst/extdata/example1_flow_mat.txt",
@@ -99,6 +99,8 @@ flow_mat = example2(3, 1, "samp1")
 
 ## Make sample skeleton
 def = sample_flow_def(jobnames = unique(flow_mat$jobname))
+fobj=to_flow(flow_mat, def)
+
 plot_flow(to_flow(flow_mat, def))
 
 ## change a few things
