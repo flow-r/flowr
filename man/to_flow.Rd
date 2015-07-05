@@ -8,6 +8,14 @@ to_flow(x, ...)
 }
 \arguments{
 \item{x}{is a data.frame with jobnames and commands to run. See details for more on the format}
+
+\item{grp_col}{column name used to split x (flow_mat). Default is *samplename*}
+
+\item{jobname_col}{}
+
+\item{cmd_col}{}
+
+\item{qobj}{queue object, as returned by queue(). Overrides one specified by platform}
 }
 \description{
 this operates on a single sample basis

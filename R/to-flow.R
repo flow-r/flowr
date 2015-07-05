@@ -2,6 +2,10 @@
 
 #' this operates on a single sample basis
 #' @param x is a data.frame with jobnames and commands to run. See details for more on the format
+#' @param grp_col column name used to split x (flow_mat). Default is *samplename*
+#' @param jobname_col
+#' @param cmd_col
+#' @param qobj queue object, as returned by queue(). Overrides one specified by platform
 #' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
 #' flow_tab: as defined by x is a (minimum) three column matrix with:
 #' samplename, jobname, cmd
@@ -18,93 +22,43 @@ to_flow.vector <- function(x, def = 'flow_def', ...){
 	to_flow(x, def, ...)
 }
 
-
-
-
-#' @export
-to_flow.list <- function(x, def = 'flow_def'){
-	def <- as.flow_def(def)
+guess_sub_type <- function(cmds){
+	sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
+	return(sub_type)
 }
 
-# def = system.file(package = "flowr", "files/flow_def_ex1.txt")
+guess_dep_type <- function(cmds, prev_job){
+	if(length(prev_job) > 1){
+		dep_type = "gather"
+	}else if(length(x[[prev_job]]) == 0){
+		dep_type = "none"
+	}else if(length(x[[prev_job]]) == length(cmds)){
+		## if same length, serial
+		dep_type = "serial"
+	}else if(length(x[[prev_job]]) > length(cmds) & length(cmds) == 1  ){
+		## --- if prevous job were more than current
+		dep_type = "gather"
+	}else if(length(x[[prev_job]]) == 1 & length(cmds) > 1){ 
+		## previous was only one, and current are a few
+		dep_type = "burst"
+	}
+	return(dep_type)
+	
+}
+
 
 #' @export
-to_flow.data.frame <- function(x, def, qobj, 
-															 platform,
-															 cpu = 1, walltime = "1:00", memory = "1g",
-															 flowname, desc, flow_base_path, 
-															 grp_col = "samplename", 
-															 jobname_col="jobname",
-															 cmd_col="cmd", ...
-){
+to_flow.list <- function(x, def, 
+												 qobj, flowname, flow_base_path, desc,...){
+	## --- qobj, missing only works for arguments
+	## x is a list of flow_mat, split by jobname
 	
-	split = FALSE;smp=FALSE
-	## --- need a few columns
-	if(grp_col %in% colnames(x)){
-		x[, "samplename"] = x[, grp_col]
-		split = TRUE;smp=TRUE
-	}
-	x[, "jobname"] = x[, jobname_col]
-	x[, "cmd"] = x[, cmd_col]
-	
-	if(is.null(x$jobname))
-		stop("x does not have a column jobname")
-	if(is.null(x$cmd))
-		stop("x does not have a column cmd")
-	
-	## defaults
-	if(missing(platform)){
-		platform = "lsf"
-		message("Using platform default: ", platform);
-	}
-	if(missing(flowname)){
-		flowname = "flowname"
-		message("Using flowname default: ", flowname);
-	}
-	if(missing(desc)){
-		desc = "type1"
-		message("Using description default: ", desc);
-	}
-	if(missing(flow_base_path)){
-		flow_base_path = "~/flowr"
-		message("Using flow_base_path default: ", flow_base_path);
-	}
-	
-	
-	#x = data.frame(x, stringsAsFactors = FALSE)
-	x[] <- lapply(x, as.character)
-	
-	def = as.flow_def(def)
-	## A check x should be in def 
-	if(mean(!unique(x$jobname) %in% na.omit(def$jobname))){
-		stop("Some jobs in x are not in flow_definition\n")
-	}
-	## B AND vice-versa
-	if(mean(!na.omit(def$jobname) %in% unique(x$jobname))){
-		stop("Some jobs in flow_def are not in x\n")
-	}
-	
-	## --- fetch samplename from the flowr_mat
-	desc = ifelse(smp, x$samplename[1], "example1")
-	
-	## -- user can supply qobj
-	if(missing(qobj))
-		qobj <- queue(platform = platform, verbose = FALSE)
-	
-	mixed_plat = FALSE
-	if("platform" %in% colnames(def)){
-		message("Using mixed platform settings...")
-		mixed_plat = TRUE
-	}
-	
-	cmd.list = split.data.frame(x, x$jobname)
-	
-	jobs <- lapply(1:nrow(def), function(i){
-		#jobs = lapply(1:length(cmd.list), function(i){
+	jobs <- lapply(1:nrow(def), function(i, qobj){
 		message(".", appendLF = FALSE)
 		jobnm = def[i, "jobname"]
-		cmds = cmd.list[[jobnm]]$cmd; 
-		#cmds = unique(cmds);
+		cmds = x[[jobnm]]$cmd; 
+
+		## --- submit def, to get resources for this particular job
 		def2 = subset(def, def$jobname == jobnm)
 		prev_job = unlist(def2$prev_jobs)
 		if(!is.na(prev_job))
@@ -115,39 +69,159 @@ to_flow.data.frame <- function(x, def, qobj,
 		d_queue = unlist(def2$queue)
 		d_dep_type = unlist(def2$dep_type)
 		d_sub_type = unlist(def2$sub_type)
-		if(mixed_plat)
+		if(missing(qobj))
 			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
-		
-		if(length(d_sub_type) == 0)
-			sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
-		## guess dep_type
-		if(length(prev_job) > 1){
-			dep_type = "gather"
-		}else if(length(cmd.list[[prev_job]]) == 0){
-			dep_type = "none"
-		}else if(length(cmd.list[[prev_job]]) == length(cmds) ){ ## if same length, serial
-			dep_type = "serial"
-		}else if(length(cmd.list[[prev_job]]) > length(cmds) & length(cmds) == 1  ){ ## if same length, serial
-			dep_type = "gather"
-		}else if(length(cmd.list[[prev_job]]) == 1 & length(cmds) > 1){ ## if same length, serial
-			dep_type = "burst"
+
+		## --- getting defaults of submission and depedency types		
+		if(length(d_sub_type) == 0){
+			d_sub_type = guess_sub_type(cmds = cmds)
 		}
-		##dep_type = unlist(subset(infomat, jobname == jobnm, select = 'sub_type'))
-		##sub_type = "serial"
+		## guess dep_type
+		if(length(d_dep_type) == 0){
+			d_dep_type <- guess_dep_type(prev_job = prev_job, cmds = cmds)
+		}
+
 		## -------- if cmds are missing; change to echo 0 and make cpu = 1
-		cpu = ifelse(cmds[1] == ".", 1, cpu)
-		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1]) ## if starts from . echo
-		j = job(q_obj = qobj, name = jobnm, previous_job = prev_job, cmds = cmds,
-						dependency_type = d_dep_type, submission_type = d_sub_type,
+		cpu = ifelse(cmds[1] == ".", 1, d_cpu)
+		## if starts from . echo
+		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
+		
+		jobj = job(q_obj = qobj, name = jobnm, 
+						previous_job = prev_job,
+						cmds = cmds,
+						dependency_type = d_dep_type, 
+						submission_type = d_sub_type,
 						cpu = d_cpu, queue = d_queue,
-						walltime = d_walltime, memory = d_memory)
-		return(j)
+						walltime = d_walltime, 
+						memory = d_memory)
+		return(jobj)
 	})
+	
+	
 	fobj <- flow(jobs = jobs,
 							 desc = desc, name = flowname,
 							 mode = "scheduler", 
 							 flow_base_path = flow_base_path)
+
+	## --- check if submission or depedency types were guessed
+	if(is.null(def$sub_type) | is.null(def$dep_type)){
+		message("Submission/definition types were guessed.",
+						"\nThis is really a experimental feature.",
+						"\nPlease check the following table.",
+						"\nIncase of issues please re-submit specifying them explicitly.")
+		mydef = create_jobs_mat(fobj)
+		cols = c("jobname",  'prev_jobs',  'dep_type', 'sub_type')
+		print(knitr::kable(mydef[, cols], col.names=FALSE))
+	}
+
 	return(fobj)
+}
+
+# def = system.file(package = "flowr", "files/flow_def_ex1.txt")
+
+#' @export
+to_flow.data.frame <- function(x, def, 
+															 platform, qobj,
+															 #cpu = 1, walltime = "1:00", memory = "1g",
+															 flowname, flow_base_path, 
+															 grp_col = "samplename", 
+															 jobname_col = "jobname",
+															 cmd_col = "cmd", 
+															 execute = FALSE, ...
+){
+	
+	message("\n\n##--- Getting default values for missing parameters...")
+	## --- get defaults sample, job and cmd columns
+	if(missing(grp_col)){
+		grp_col = "samplename"
+		if(grp_col %in% colnames(x))
+			message("Using `", grp_col, "` as the grouping column")
+		else
+			stop("grouping column not specified, and the default 'samplename' is absent in the input x.")
+	}
+	if(missing(jobname_col)){
+		jobname_col = "jobname"
+		if(jobname_col %in% colnames(x))
+			message("Using `", jobname_col, "` as the jobname column")
+		else
+			stop("jobname column not specified, and the default 'jobname' is absent in the input x.")
+	}
+	if(missing(cmd_col)){
+		cmd_col = "cmd"
+		if(cmd_col %in% colnames(x))
+			message("Using `", cmd_col, "` as the cmd column")
+		else
+			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
+	}
+	
+	## ---- renaming columns to make it easier for subsequent.
+	x[, "jobname"] = x[, jobname_col]
+	x[, "cmd"] = x[, cmd_col]
+	x[, "samplename"] = x[, grp_col]
+	
+	
+	## --- defaults
+	if(missing(flowname)){
+		flowname = "flowname"
+		message("Using flowname default: ", flowname);
+	}
+	if(missing(flow_base_path)){
+		flow_base_path = "~/flowr"
+		message("Using flow_base_path default: ", flow_base_path);
+	}
+	
+	## --- change all the input columns into character
+	x[] <- lapply(x, as.character)
+	def[] <- lapply(def, as.character)
+	
+	message("\n\n##--- Checking flow definition and flow matrix for consistency...")
+	def = as.flow_def(def)
+	## --- A check x should be in def 
+	if(mean(!unique(x$jobname) %in% na.omit(def$jobname))){
+		stop("Some jobs in x are not in flow_definition\n")
+	}
+	## B AND vice-versa
+	if(mean(!na.omit(def$jobname) %in% unique(x$jobname))){
+		stop("Some jobs in flow_def are not in x\n")
+	}
+	
+	
+	## --- Overrides
+	message("\n\n##--- Detecting platform...")
+	if("platform" %in% colnames(def)){
+		message("Will use platform from flow_definition")
+	}
+	if(!missing(platform)){
+		message("Platform supplied, this will override defaults from flow_definition...")
+		def$platform = platform
+	}
+	if(!missing(qobj))
+		message("qobj supplied, this will override defaults from flow_definion OR platform variable")
+	
+	message("\n\n##--- flowr submission...")
+	samps = unique(x$samplename)
+	if(length(samps) > 1){
+		message("\n\nDetected ", length(samps), " samples/groups in flow_mat.",
+						"\nflow_mat would be split and each would be submitted seperately...")
+	}
+	
+	fobjs <- lapply(samps, function(samp){
+		x2 = subset(x, samplename == samp)
+		message("\n\nWorking on... ", samp)
+		## --- fetch samplename from the flowr_mat
+		cmd.list = split.data.frame(x2, x2$jobname)
+		desc = paste(flowname, samp, sep = "-")
+		fobj = to_flow(x = cmd.list, def = def, 
+									 desc = desc,
+									 flowname = flowname,
+									 flow_base_path, 
+									 qobj = qobj, ...)
+		fobj <- submit_flow(fobj, execute = execute)
+		return(fobj)
+	})
+
+	return(fobjs)
+
 }
 
 #setMethod("to_flow", signature(x = "list"), definition = .to_flow.list)

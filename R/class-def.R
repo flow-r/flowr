@@ -102,15 +102,15 @@ setClass("flow", representation(jobs = "list",
 #' @examples
 #' qobj <- queue(platform='lsf')
 queue <- function(object, 
-									queue="long",
 									platform = c('lsf', 'torque', 'sge', 'moab', 'local'), 
-									## Resources
-									walltime, 
-									memory,
-									cpu=1, 
+									## --- format is a advanced option, use with caution
+									format = "",
+									## --- Following are replaced by job()
+									queue = "long",
+									walltime, memory, cpu = 1, 
 									## format
 									extra_opts = "", 
-									submit_exe, format = "", cwd="~/flows", nodes=1, 
+									submit_exe,  cwd="~/flows", nodes=1, 
 									## debug use
 									jobname = "name", 
 									email = Sys.getenv("USER"),

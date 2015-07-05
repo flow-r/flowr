@@ -1,0 +1,20 @@
+---
+title: "Workflow with Multple Samples"
+author: "Sahil Seth"
+date: "July 5, 2015"
+output: html_document
+---
+
+## Let us load some example data
+```{r}
+exdata = file.path(system.file(package = "flowr"), "extdata")
+flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
+flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
+```
+
+```{r}
+source('/DRIVES/Dropbox2/Dropbox/public/github_flow/R/to-flow.R')
+#debug(to_flow.list)
+fobj <- to_flow(x = flow_mat, def = flow_def)
+```
+

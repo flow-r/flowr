@@ -4,19 +4,22 @@
 \alias{queue}
 \title{Create a \code{queue} object which containg details about how a job is submitted.}
 \usage{
-queue(object, queue = "long", platform = c("lsf", "torque", "sge", "moab",
-  "local"), walltime, memory, cpu = 1, extra_opts = "", submit_exe,
-  format = "", cwd = "~/flows", nodes = 1, jobname = "name",
-  email = Sys.getenv("USER"), dependency = list(), server = "localhost",
-  verbose = TRUE, stderr = "~/flowr/tmp", stdout = "~/flowr", ...)
+queue(object, platform = c("lsf", "torque", "sge", "moab", "local"),
+  format = "", queue = "long", walltime, memory, cpu = 1,
+  extra_opts = "", submit_exe, cwd = "~/flows", nodes = 1,
+  jobname = "name", email = Sys.getenv("USER"), dependency = list(),
+  server = "localhost", verbose = TRUE, stderr = "~/flowr/tmp",
+  stdout = "~/flowr", ...)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}
 
+\item{platform}{Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]}
+
+\item{format}{[advanced use] We have a default format for the final command line string generated for 'lsf' and 'torque'.}
+
 \item{queue}{the type of queue your group usually uses
 'bsub' etc.}
-
-\item{platform}{Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]}
 
 \item{walltime}{max walltime of a job.}
 
@@ -27,8 +30,6 @@ queue(object, queue = "long", platform = c("lsf", "torque", "sge", "moab",
 \item{extra_opts}{[advanced use] Extra options to be supplied while create the job submission string.}
 
 \item{submit_exe}{[advanced use] Already defined by 'platform'. The exact command used to submit jobs to the cluster example 'qsub'}
-
-\item{format}{[advanced use] We have a default format for the final command line string generated for 'lsf' and 'torque'.}
 
 \item{cwd}{[debug use] Ignore}
 

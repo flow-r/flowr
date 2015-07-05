@@ -212,11 +212,16 @@ dump_flow_details <- function(fobj){
 #' @export
 kill_flow <- function(x, wd, fobj, kill_cmd, 
 											jobid_col = "job_sub_id"){
+	if(!missing(wd)){
+		load(file.path(wd, "flow_details.rda"))
+		fobj=f_obj
+	}
 	if(missing(wd)){
 		wd = dump_flow_details(fobj)
 	}
-	if(missing(kill_cmd))
+	if(missing(kill_cmd)){
 		kill_cmd = detect_kill_cmd(fobj)
+	}
 	det_file = tail(list.files(wd, pattern = "flow_details", full.names = TRUE), 1)
 	flow_details = read.table(det_file, sep = "\t", stringsAsFactors = FALSE, header = TRUE)
 	cmds <- sprintf("%s %s", kill_cmd, flow_details[,jobid_col])

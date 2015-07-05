@@ -17,11 +17,12 @@ check.flow_def <- function(x,
 													 sub_types = c("serial", "scatter"),
 													 dep_types = c("none", "serial", "gather", "burst")){
 	if(sum(!x$dep_type %in% dep_types)) 
-		stop("Dependency type not recognized ", paste(x$dep_type, collapse = " "), 
-				 "should be from ", paste(dep_types, collapse = " "))
+		stop("Dependency type not recognized.\n Inputs are: ",
+				 paste(x$dep_type, collapse = " "), 
+				 ".\nAnd they can be one of ", paste(dep_types, collapse = " "))
 	if(sum(!x$sub_type %in% sub_types)) 
-		stop("Submission type not recognized ", paste(x$sub_type, collapse = " "), 
-				 " should be from ", paste(sub_types, collapse = " "))
+		stop("Submission type not recognized. Inputs are: ", paste(x$sub_type, collapse = " "), 
+				 ".\nAnd they can be one of  ", paste(sub_types, collapse = " "))
 	## check if some jobs are put as dependencies but not properly defined
 	x$prev_jobs = gsub("\\.|none", NA, x$prev_jobs)
 	prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
@@ -31,9 +32,12 @@ check.flow_def <- function(x,
 	## check if dep is none, but prev jobs defined
 	x$prev_jobs = ifelse(x$prev_jobs=="", NA, x$prev_jobs)
 	rows = x$dep_type == "none" & !is.na(x$prev_jobs)
-	if(sum(rows)){
+	if(sum(rows) > 0){
 		print(kable(x[rows,]))
-		stop("\nPrevious jobs defined, but dependency type is none")
+		stop("\nA Jobname has been specified as a previous job,",
+				 "but dependency type is not clearly specified.", 
+				 "Either change the dependency type into: serial, gather, burst.\n",
+				 "Or remove this dependency.")
 	}
 	rows = x$dep_type != "none" & is.na(x$prev_jobs)
 	if(sum(rows)){
