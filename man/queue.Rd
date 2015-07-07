@@ -59,11 +59,9 @@ computing cluster in use.
 ## Resources:
 Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
 job level they overwrite the one supplied in \link{queue}
-
 Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
 ## Server:
 This a hook which may be implemented in future.
-
 ## Submission script:
 The 'platform' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
 }

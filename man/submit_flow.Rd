@@ -4,11 +4,12 @@
 \alias{submit_flow}
 \title{submit_flow}
 \usage{
-submit_flow(f_obj, uuid, execute = FALSE, plot = TRUE, verbose = FALSE,
-  ...)
+submit_flow(x, ...)
 }
 \arguments{
-\item{f_obj}{\code{object} of class \code{flow}.}
+\item{...}{Any additional parameter are passed on to \link{submit_job} function}
+
+\item{fobj}{\code{object} of class \code{flow}.}
 
 \item{uuid}{\code{character} A character string pointing to the folder (unique) where all the logs and other files are processed. This is optional and defaults to:
 \code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}.
@@ -19,14 +20,12 @@ Refer to \code{desc} and \code{name} paramters of \link{flow}.}
 \item{plot}{\code{logical} whether to make a flow plot (saves it in the flow working directory)}
 
 \item{verbose}{logical.}
-
-\item{...}{Any additional parameter are passed on to \link{submit_job} function}
 }
 \description{
 submit_flow
 }
 \examples{
 \dontrun{
-submit_flow(f_obj = f_obj, ... = ...)}
+submit_flow(fobj = fobj, ... = ...)}
 }
 

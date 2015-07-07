@@ -20,6 +20,7 @@ library(flowr)
 
 ```
 
+An easy quick way to build a workflow is create two seperate files. The first is a table with commands to run the other has details regarding how the modules are stitched together.
 
 
 ## Styles
@@ -28,7 +29,6 @@ library(flowr)
 exdata = file.path(system.file(package = "flowr"), "extdata")
 flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
 flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
-
 ```
 
 ### Style 1
@@ -99,7 +99,7 @@ plot_flow(fobj)
 The above translates to a flow definition which looks like this:
 
 ```{r}
-dat <- flowr:::.create_jobs_mat(fobj)
+dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 

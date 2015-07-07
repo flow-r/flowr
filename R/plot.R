@@ -1,55 +1,5 @@
-#' @title create_jobs_mat
-#' @description create_jobs_mat
-#' @param x a \link{flow} object.
-#' @keywords internal
-#' @examples \dontrun{
-#' .create_jobs_mat(x = x)}
-create_jobs_mat <- function(x){
-  jobnames <- sapply(x@jobs, slot, "name")
-  prev_jobs <- sapply(x@jobs, slot, "previous_job")
-  prev_jobs <- sapply(prev_jobs, function(x) ifelse(length(x) > 0, paste(x,collapse=","), NA))
-  dep_type <- sapply(x@jobs, slot, "dependency_type")
-  sub_type <- sapply(x@jobs, slot, "submission_type")
-  cpu <- sapply(x@jobs, slot, "cpu")
-  nodes <- sapply(x@jobs, slot, "nodes")
-  dat <- cbind(jobname = jobnames, prev_jobs, dep_type, sub_type, cpu_reserved = cpu, nodes)
-  dat <- as.data.frame(dat, stringsAsFactors=FALSE)
-  ## ----------- handle cases where we have multiple dependencies
-  rows <- grep(",",dat$prev_jobs)
-  if(length(rows)>0){
-    dat2 <- data.frame()
-    for(row in rows){
-      prev_jobs=strsplit(as.c(dat[row,]$prev_jobs),",")[[1]]
-      dat2 <- rbind(dat2,cbind(jobname=dat[row,"jobname"], prev_jobs=prev_jobs,
-                               dep_type=dat[row,"dep_type"],sub_type=dat[row,"sub_type"],
-                               cpu_reserved=dat[row, "cpu_reserved"],
-      												 nodes=dat[row,"nodes"]))
-    }
-    dat <- rbind(dat[-rows,],dat2)
-  }
-  for(j in 1:4){
-    jobnames=unique(as.c(dat$jobname))
-    jobid <- 1:length(jobnames);names(jobid)=jobnames
-    prev_jobid <- jobid[as.c(dat$prev_jobs)]
-    dat$jobid <- jobid[as.c(dat$jobname)];dat$prev_jobid <- prev_jobid
-    dat <- dat[order(dat$prev_jobid, dat$jobid, na.last=FALSE, decreasing=FALSE),]
-  }
-  return(dat)
-}
-.create_jobs_mat=create_jobs_mat
 
-## ------------- make a flowchart using the object
-.plot_flow <- function(x, detailed = TRUE, pdf = FALSE, pdffile=sprintf("%s.pdf",x@name), type = c('1','2'), ...){
-	type = match.arg(type)
-  dat <- .create_jobs_mat(x)
-  switch(type,
-  			 '1' = .plot_flow_dat_type1(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
-  			 '2' = .plot_flow_dat_type2(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
-}
 
-setGeneric("plot_flow", function (x, ...){
-  standardGeneric("plot_flow")
-})
 
 #' @title plot_flow
 #' @description plot the flow object
@@ -61,7 +11,7 @@ setGeneric("plot_flow", function (x, ...){
 #' @param pdffile output file name for the pdf file
 #' @param type 1 is original, and 2 is a elipse with less details
 #' @param ... experimental
-#' @exportMethod plot_flow
+#' @export plot_flow
 #' @import diagram
 #' @examples 
 #' qobj = queue(type="lsf")
@@ -78,14 +28,39 @@ setGeneric("plot_flow", function (x, ...){
 #'              dependency_type = "gather", previous_job = "job1")
 #' fobj <- flow(jobs = list(jobj1, jobj2))
 #' plot_flow(fobj)
+#' 
 #' ### Burst: one to many relationship
 #' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
 #' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
 #'              dependency_type = "burst", previous_job = "job1")
 #' fobj <- flow(jobs = list(jobj1, jobj2))
 #' plot_flow(fobj)
-setMethod("plot_flow", signature(x = "flow"), definition=.plot_flow)
-setMethod("plot", signature(x = "flow"), definition=plot_flow)
+plot_flow <- function(x, ...) {
+	message("input x is ", class(x))
+	UseMethod("plot_flow")
+}
+
+## ------------- make a flowchart using the object
+#' @export
+plot_flow.flow <- function(x, detailed = TRUE, 
+													 type = c('1','2'),
+													 pdf = FALSE, 
+													 pdffile = sprintf("%s.pdf", x@name),
+													 ...){
+	type = match.arg(type)
+	dat <- create_jobs_mat(x)
+	switch(type,
+				 '1' = .plot_flow_dat_type1(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
+				 '2' = .plot_flow_dat_type2(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
+}
+
+
+## compatible with a list of flows as well !
+#' @export
+plot_flow.list <- function(x, ...){
+	tmp <- lapply(x, plot_flow)
+	invisible(tmp)
+}
 
 .plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, 
 																 ## vector of columns to be used in plotting
@@ -154,7 +129,6 @@ setMethod("plot", signature(x = "flow"), definition=plot_flow)
     }
     if(pdf) dev.off()
 }
-.plot_flow_dat = .plot_flow_dat_type1
 
 .plot_flow_dat_type2 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
 																 width, height, 

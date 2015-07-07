@@ -38,7 +38,7 @@ job class
 qobj <- queue(platform="torque")
 
 ## torque job with 1 CPU running command 'sleep 2'
-j_obj <- job(q_obj=qobj, cmd = "sleep 2", cpu=1)
+jobj <- job(q_obj=qobj, cmd = "sleep 2", cpu=1)
 
 ## multiple commands
 cmds = rep("sleep 5", 10)

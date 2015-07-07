@@ -7,9 +7,9 @@
 	## this has a bunch of samples, so let us subset one of them
 	flow_mat = subset(flow_mat, samplename == "sample1")
 	flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"), id_column = "jobname")
-	fobj <- to_flow(x = flow_mat, def = flow_def, desc = "example_sleep",
-									flowname = "example1", platform = platform, ...)
-	return(fobj)
+	fobj <- to_flow(x = flow_mat, def = flow_def,
+									flowname = "ex_sleep", platform = platform, ...)
+	invisible(fobj)
 }
 
 

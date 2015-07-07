@@ -14,7 +14,6 @@ exdata = file.path(system.file(package = "flowr"), "extdata")
 flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
 flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
 
-
 ## ------------------------------------------------------------------------
 kable(head(flow_def))
 
@@ -32,7 +31,7 @@ fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
 plot_flow(fobj)
 
 ## ------------------------------------------------------------------------
-dat <- flowr:::.create_jobs_mat(fobj)
+dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 
 ## ------------------------------------------------------------------------

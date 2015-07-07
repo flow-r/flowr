@@ -1,27 +1,4 @@
 
-
-#' this operates on a single sample basis
-#' @param x is a data.frame with jobnames and commands to run. See details for more on the format
-#' @param grp_col column name used to split x (flow_mat). Default is *samplename*
-#' @param jobname_col
-#' @param cmd_col
-#' @param qobj queue object, as returned by queue(). Overrides one specified by platform
-#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
-#' flow_tab: as defined by x is a (minimum) three column matrix with:
-#' samplename, jobname, cmd
-#' @export
-to_flow <- function(x, ...) {
-	message("input x is ", class(x))
-	UseMethod("to_flow")
-}
-
-#' @export
-to_flow.vector <- function(x, def = 'flow_def', ...){
-	def <- as.flow_def(def)
-	x = read_sheet(x)
-	to_flow(x, def, ...)
-}
-
 guess_sub_type <- function(cmds){
 	sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
 	return(sub_type)
@@ -45,6 +22,30 @@ guess_dep_type <- function(cmds, prev_job){
 	return(dep_type)
 	
 }
+
+#' this operates on a single sample basis
+#' @param x is a data.frame with jobnames and commands to run. See details for more on the format
+#' @param grp_col column name used to split x (flow_mat). Default is *samplename*
+#' @param jobname_col
+#' @param cmd_col
+#' @param qobj queue object, as returned by queue(). Overrides one specified by platform
+#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
+#' flow_tab: as defined by x is a (minimum) three column matrix with:
+#' samplename, jobname, cmd
+#' @export
+to_flow <- function(x, ...) {
+	message("input x is ", class(x))
+	UseMethod("to_flow")
+}
+
+#' @export
+to_flow.vector <- function(x, def = 'flow_def', ...){
+	def <- as.flow_def(def)
+	x = read_sheet(x)
+	to_flow(x, def, ...)
+}
+
+
 
 
 #' @export
@@ -216,8 +217,11 @@ to_flow.data.frame <- function(x, def,
 									 flowname = flowname,
 									 flow_base_path, 
 									 qobj = qobj, ...)
-		fobj <- submit_flow(fobj, execute = execute)
-		return(fobj)
+		fobjuuid <- submit_flow(fobj, execute = execute)
+		if(execute)
+			return(fobjuuid)
+		else
+			return(fobj)
 	})
 	
 	## --- if there is only one sample, fobj is returned
@@ -317,19 +321,19 @@ cmds_to_flow <- function(cmd.list,
 						walltime = walltime, memory = memory)
 		jobs = c(jobs, j)
 	}
-	f_obj <- flow(jobs = jobs,
+	fobj <- flow(jobs = jobs,
 								desc=sprintf("%s-%s", flowname, samplename), name = flowname,
 								mode="scheduler", flow_base_path = flow_base_path)
 	len = length(jobs)
 	#debug(flow:::.submit_flow)
 	#mypack:::reload('flow')
-	f_obj_uuid <- submit_flow(f_obj, execute = execute, make_flow_plot = TRUE)
-	#   if(sum(flow:::.create_jobs_mat(f_obj)$prev_jobs != ".") > 2){ ## at least 0.1some have dep.
+	fobj_uuid <- submit_flow(fobj, execute = execute, make_flow_plot = TRUE)
+	#   if(sum(flow:::create_jobs_mat(fobj)$prev_jobs != ".") > 2){ ## at least 0.1some have dep.
 	#     cat("Plotting...\n")
-	#     try(flow:::.plot_flow(x = f_obj, type = '1',
-	#                           pdf = TRUE, pdffile = file.path(f_obj_uuid@flow_path, "flow_design.pdf")))
+	#     try(flow:::plot_flow(x = fobj, type = '1',
+	#                           pdf = TRUE, pdffile = file.path(fobj_uuid@flow_path, "flow_design.pdf")))
 	#   }
-	return(f_obj_uuid)
+	return(fobj_uuid)
 }
 
 

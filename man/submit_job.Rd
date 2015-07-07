@@ -4,12 +4,12 @@
 \alias{.submit_job}
 \title{.submit_job}
 \usage{
-.submit_job(j_obj, f_obj, execute = FALSE, verbose = FALSE, wd, job_id, ...)
+.submit_job(jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id, ...)
 }
 \arguments{
-\item{j_obj}{Object of calls \link{job}}
+\item{jobj}{Object of calls \link{job}}
 
-\item{f_obj}{Object of calls \link{flow}}
+\item{fobj}{Object of calls \link{flow}}
 
 \item{execute}{A \code{logical} vector suggesting whether to submit this job}
 
@@ -22,11 +22,11 @@
 \item{...}{not used}
 }
 \description{
-submit_job
+.submit_job
 }
 \examples{
 \dontrun{
-.submit_job(j_obj = j_obj, f_obj = f_obj, execute = FALSE,
+.submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
 verbose = TRUE, wd = wd, job_id = job_id)
 }
 }

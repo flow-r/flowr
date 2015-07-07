@@ -20,23 +20,23 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 		extra <- readline(prompt = "extra options to the queue\n>>>")
 		q_obj <- queue(platform = platform, queue = queue, extra_opts = extra, ...)
 	}
-	j_obj1 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job1')
-	#cat("Submitted first job with script:", j_obj1@script, "\n")
-	j_obj2 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job2',
+	jobj1 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job1')
+	#cat("Submitted first job with script:", jobj1@script, "\n")
+	jobj2 <- job(cmds = 'sleep 60', q_obj = q_obj, name = 'job2',
 								previous_job = 'job1', dependency_type = "serial")
-	#cat("Submitted second job with script:", j_obj2@script, "\n")
+	#cat("Submitted second job with script:", jobj2@script, "\n")
 	if(verbose) message("Creating a 'flow' of two jobs. Check 'flows' folder in your home for a",
 											"new directory called test_....\n",
 											"You may also do bjobs/qstat or a respective command for your",
 											"scheduler to look at these jobs.\n\n\n")
-	f_obj <- flow(jobs = list(j_obj1, j_obj2), desc = "test", flow_base_path = "~/flows")
+	f_obj <- flow(jobs = list(jobj1, jobj2), desc = "test", flow_base_path = "~/flows")
 	tmp <- submit_flow(f_obj, execute = TRUE, make_flow_plot = FALSE, verbose = TRUE)
 	message("Flow path:\t", tmp@flow_path, "\n")
 	message("First job ID: \t", tmp@jobs[[1]]@id, "\n")
 	message("Second (dependent) job ID:\t", tmp@jobs[[2]]@id, "\n")
 	message("Path to logs (1):\t", tmp@jobs[[1]]@stdout, "\n")
 	message("Path to logs (2):\t", tmp@jobs[[2]]@stdout, "\n")
-	## cmd.0 <- create_queue_cmd(j_obj)
+	## cmd.0 <- create_queue_cmd(jobj)
 	## if(verbose) cat("An example command string looks like:\n", cmd.0)
 	## cmd <- sprintf("echo 'sleep 1' | %s", cmd.0)
 	## if( verbose ) print (cmd)

@@ -21,18 +21,17 @@ if(FALSE){
 rerun_flow <- function(x, mat, def, start_from, execute = TRUE, kill = TRUE){
   if(class(x) == "flow"){
   	message("x looks like a flow")
-    f_obj = x
+    fobj = x
     wd = x@flow_path
   }else if(class(x) == "character" & file.exists(x)){
   	message("x looks like a path")
-  	load(file.path(x, "flow_details.rda"))
-    fobj = f_obj
+  	fobj <- read_fobj(x)
   }else{
     stop("x does not seems to be a flow object or a correct path to the flow submission")
   }
 	
 	if(missing(start_from)){
-		stop("Please metion where to start from. Detection currently no supported")
+		stop(error("no.start_from"))
 		#start_from = detect_redo()
 	}
 	if(missing(def)){
@@ -59,12 +58,7 @@ rerun=rerun_flow
 
 detect_redo <- function(fobj, wd){
 	## get detail file
-	det_file = file.path(wd, "flow_details.txt")
-	if(!file.exists(det_file)){
-		msg = error("no.flow.det.file")
-		stop(msg)
-	}
-	#debug(get_flow_status)
+	det_file = read_flow_detail_fl(wd)
 	get_flow_status(x = wd)
 	## subset those which need to be rerun
 	flow_status = read.table(det_file, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
@@ -73,7 +67,7 @@ detect_redo <- function(fobj, wd){
 	#head(flow_status)
 	mods = unique(as.character(flow_status$jobnm))
 	if(kill) capture.output(try(kill_flow(wd = wd)), file = file.path(wd, "kill_jobs.out")) ## kill the flow
-	fobj2 = f_obj
+	fobj2 = fobj
 	fobj2@status = "" ## reset flow status, will be submitted as a independent flow
 	for(m in mods){
 		fobj@jobs[[m]]@exit_code = subset(flow_status, flow_status$jobnm == m)$exit_code

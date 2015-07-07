@@ -89,11 +89,9 @@ setClass("flow", representation(jobs = "list",
 #' ## Resources:
 #' Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
 #' job level they overwrite the one supplied in \link{queue} 
-#' 
 #' Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
 #' ## Server:
 #' This a hook which may be implemented in future.
-#' 
 #' ## Submission script:
 #' The 'platform' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
 #' @inheritParams job
@@ -214,7 +212,7 @@ queue <- function(object,
 #' qobj <- queue(platform="torque")
 #'
 #' ## torque job with 1 CPU running command 'sleep 2'
-#' j_obj <- job(q_obj=qobj, cmd = "sleep 2", cpu=1)
+#' jobj <- job(q_obj=qobj, cmd = "sleep 2", cpu=1)
 #'
 #' ## multiple commands
 #' cmds = rep("sleep 5", 10)
@@ -343,12 +341,12 @@ if(FALSE){
 	debug(job)
 	q_obj <- queue(platform="torque")
 	cpu_aln=1
-	j_obj <- job(q_obj=q_obj,cmd="sleep 2",cpu=cpu_aln)
+	jobj <- job(q_obj=q_obj,cmd="sleep 2",cpu=cpu_aln)
 	
-	j_obj@base_path <- "~/tmp/flows"
+	jobj@base_path <- "~/tmp/flows"
 	#trace(create_queue_cmd, browser, signature="queue")
 	#debug(slots_as_list)
-	j_obj <- submit_job(j_obj, execute = TRUE, verbose = TRUE,
+	jobj <- submit_job(jobj, execute = TRUE, verbose = TRUE,
 											wd="~/tmp/flows/test_2481e475-31a0-41fc-8b01-cf01272abc3a")
 	
 	j.obj <- job(queue=q.obj,cmd="sleep 2")
