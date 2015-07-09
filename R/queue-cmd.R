@@ -65,6 +65,19 @@ create_queue_cmd <- function(jobj, file, index, fobj, ...){
 
 
 create_queue_sh <- function(jobj, file, index, fobj, ...){
+	## find the relevent conf file(s)
+	## use the list to replace
+	beforescript <- c("#!/bin/env bash",
+		sprintf("## %s", cmd),
+		sprintf("touch %s/trigger/trigger_%s_%s.txt",
+			fobj@flow_path, jobj@jobname,index),
+		"echo 'BGN at' `date`")
+	afterscript <- c(sprintf("exitstat=$?;echo $exitstat > %s/trigger/trigger_%s_%s.txt",
+		fobj@flow_path, jobj@jobname,index),
+		"echo 'END at' `date`",
+		"exit $exitstat") ## returning the exit code
+	script <- c(beforescript, jobj@cmds[index], afterscript)
+	
 	
 
 }
