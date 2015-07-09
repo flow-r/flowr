@@ -109,7 +109,7 @@ queue <- function(object,
 	## format
 	extra_opts = "", 
 	submit_exe,  cwd="~/flows", 
-	nodes=1,  ## only used in torque
+	nodes='1',  ## only used in torque
 	## debug use
 	jobname = "name", 
 	email = Sys.getenv("USER"),
@@ -142,7 +142,6 @@ queue <- function(object,
 				message("Setting default memory to: ", memory, 
 					". If this is more than queue max (/improper format), job will fail.\n")
 		}
-		
 		if(platform %in% c("torque", "sge")){
 			format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
 			object <- new("torque", submit_exe="qsub", queue=queue,

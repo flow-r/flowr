@@ -59,8 +59,13 @@ create_queue_cmd <- function(jobj, file, index, fobj, ...){
 	
 	## --- send all the arguments to SHELL
 	do.call(Sys.setenv, l)
-	cmd <- system(sprintf("echo %s ", jobj@format),intern=TRUE)
+	cmd <- system(sprintf("echo %s ", jobj@format), intern=TRUE)
 	return(cmd=cmd)
 }
 
+
+create_queue_sh <- function(jobj, file, index, fobj, ...){
+	
+
+}
 

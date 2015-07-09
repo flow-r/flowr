@@ -6,7 +6,7 @@
 \usage{
 queue(object, platform = c("lsf", "torque", "sge", "moab", "local"),
   format = "", queue = "long", walltime, memory, cpu = 1,
-  extra_opts = "", submit_exe, cwd = "~/flows", nodes = 1,
+  extra_opts = "", submit_exe, cwd = "~/flows", nodes = "1",
   jobname = "name", email = Sys.getenv("USER"), dependency = list(),
   server = "localhost", verbose = FALSE, stderr = "~/flowr/tmp",
   stdout = "~/flowr", ...)

@@ -4,7 +4,7 @@
 \alias{read_sheet}
 \title{read_sheet}
 \usage{
-read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ...)
+read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext, ...)
 }
 \arguments{
 \item{x}{}

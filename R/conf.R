@@ -1,22 +1,32 @@
 
 
-load_conf <- function(){
-	params <- read.table(file,as.is=TRUE,sep="\t",strip.white=TRUE)
-	for(i in 1:dim(params)[1]){
-		l=list(params[i,2])
-		names(l)=params[i,1]
-		if(grepl("file.ngs",names(l))){
-			l <- file.path(path.package(pkgname),"files",paste(params[i,2]))
-			names(l) <- substr(paste(params[i,1]),6,nchar(params[i,1]))
-			l <- as.list(l)
-		}
-		options(l)
-	}
-	if(verbose)
-		print(params)
-	return(params)
+#' load a configuration file into the environment
+load_conf <- function(x){
+	conf <- read_sheet(x)
+	
+	## -- check the ones with file paths
+	chk_conf(conf)
+	
+	lst = as.list(conf$value)
+	names(lst) = conf$name
+	
+	## -- populate these in the global environment
+	options(lst)
+	invisible(lst)
 }
 
+chk_conf <- function(x){
+	path_pattern = c("path$|dir$|exe$")
+	
+	pths = grep(path_pattern, x$name)
+	
+	mis_pths = !file.exists(conf$value[pths])
+	
+	if(sum(mis_pths) > 0){
+		msg = "\n\nSeems like these paths do not exist, this may cause issues later:\n"
+		warning(msg, paste(kable(x[mis_pths, ], row.names = FALSE), collapse = "\n"))
+	}
+}
 
 
 #' Given a name of a configuration file, searches for it in few places
@@ -25,14 +35,17 @@ load_conf <- function(){
 #' @details  
 #' 
 #' sequence: the later overrides former if parameter name matches
-#' MYRLIB/flowr/conf folder
-#' ~/flowr/conf
-search_conf <- function(x="flowr.conf", places){
+#' ~/                                 ## home dir
+#' ~/flowr/conf                       ## flowr default home
+#' MYRLIB/flowr/conf folder           ## flow pipeline folder
+search_conf <- function(x = "flowr.conf", places){
 	if(missing(places)){
 		places = c(system.file(package = "flowr", "conf"),
-			"~/flowr/conf")
-		
+			"~/flowr/conf", "~/")
 	}
 	
+	y = list.files(path = places, pattern = x, full.names = TRUE)
+	
+	return(y)
 }
 

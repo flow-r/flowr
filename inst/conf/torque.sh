@@ -9,8 +9,12 @@
 #MSUB-j oe                                          # merge output from stdout and stderr
 #MSUB-S /bin/bash                                   # use bash shell
 #MSUB-d {CWD}}                                       # the workding dir for each job, this is {{flow_path}}/tmp
+#MSUB-M {EMAIL}                                      # email address of the person
 #MSUB{{DEPENDENCY}}                                  # Don't remove dependency args come here
 #MSUB{{EXTRA_OPTS}}                                  # Any extra arguments passed onto queue(), don't change. Format handled by R
+
+## -- all variables specified by {} are replaced on the fly. Most of them come from flow_definition
+## CMD comes from flow_mat
 
 ## command to run comes here
 {{CMD}}
