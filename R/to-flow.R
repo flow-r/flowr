@@ -36,6 +36,7 @@ guess_dep_type <- function(cmds, prev_job){
 to_flow <- function(x, ...) {
 	message("input x is ", class(x))
 	UseMethod("to_flow")
+	warnings()
 }
 
 #' @export

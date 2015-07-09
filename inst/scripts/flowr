@@ -49,22 +49,22 @@ flow_help <- function(){
 		'status',   'Detailed status of a flow',
 		'kill_flow',     'Kill the flow, upon providing working directory'
 	), byrow=T, ncol=2)
-	cat("\nThis interface allows shell access to all functions in package flowr (and beyond).")
+	#cat("\nThis interface allows shell access to all functions in package flowr (and beyond).")
 	cat(sprintf("\n  %-15s %s\n", cmds[,1], cmds[,2]), sep="")
 }
 
 generic_help <- function(){
 	cat(sprintf("\nUsage: %s function [arguments]\n", nm))
-	cat("\nFunctions where the arguments are simple objects like numeric/character/logical can be called.",
-			"\nLists become a little more complicated. say x=a,b is converted to a list with elements a,b\n",
-			"\nSome examples:")
+	#cat("\nFunctions where the arguments are simple objects like numeric/character/logical can be called.",
+	#		"\nLists become a little more complicated. say x=a,b is converted to a list with elements a,b\n",
+	#		"\nSome examples:")
 	#}else{
-	cat("\n## Fetch some numbers:\nrfun rnorm n=100",
-			"\n## Fetch files from pacakges:",
-			"\nrmd=$(rfun system.file package=knitr ...=examples/knitr-minimal.Rmd)",
-			"\necho $rmd",
-			"\n## knit this awesome example !",
-			"\nrfun knitr::knit input=$rmd\n")
+	#cat("\n## Fetch some numbers:\nrfun rnorm n=100",
+	#			"\n## Fetch files from pacakges:",
+	#		"\nrmd=$(rfun system.file package=knitr ...=examples/knitr-minimal.Rmd)",
+	#		"\necho $rmd",
+	#		"\n## knit this awesome example !",
+	#		"\nrfun knitr::knit input=$rmd\n")
 	#}
 	if(nm == "flowr")
 		flow_help()

@@ -8,7 +8,7 @@ queue(object, platform = c("lsf", "torque", "sge", "moab", "local"),
   format = "", queue = "long", walltime, memory, cpu = 1,
   extra_opts = "", submit_exe, cwd = "~/flows", nodes = 1,
   jobname = "name", email = Sys.getenv("USER"), dependency = list(),
-  server = "localhost", verbose = TRUE, stderr = "~/flowr/tmp",
+  server = "localhost", verbose = FALSE, stderr = "~/flowr/tmp",
   stdout = "~/flowr", ...)
 }
 \arguments{
@@ -33,7 +33,7 @@ queue(object, platform = c("lsf", "torque", "sge", "moab", "local"),
 
 \item{cwd}{[debug use] Ignore}
 
-\item{nodes}{[advanced use] number of nodes you would like to request. \emph{optional} [Used by class job]}
+\item{nodes}{[advanced use] number of nodes you would like to request. Or in case of torque name of the nodes.\emph{optional} [Used by class job]}
 
 \item{jobname}{[debug use] name of this job in the computing cluster}
 

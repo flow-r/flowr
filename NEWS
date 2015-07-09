@@ -1,26 +1,35 @@
-flowr 0.96.7
+flowr 0.9.6.10
+----------------------------------------------
+- add to_flow()
+	- 
+- kill_flow()
+- supports moab
+- burst as dependency type
+- 
+
+flowr 0.9.6.7
 ----------------------------------------------
 - add read_sample_sheet
 - clean package dependencies
 - flow(): conver jobs to list()
 
-flowr 0.96.6
+flowr 0.9.6.6
 ----------------------------------------------
 - switch cat to messages
 - adding to_flow
 
-flowr 0.96.5
+flowr 0.9.6.5
 ----------------------------------------------
 - Added more examples
 - Update Vignette with more examples
 - squash issues in DESCRIPTION
 
-flowr 0.96.1
+flowr 0.9.6.1
 ----------------------------------------------
 - Added some vignettes for a simple and comples example
 - satiate CRAN checks
 
-flowr 0.95.1
+flowr 0.9.5.1
 ----------------------------------------------
 
 - Added several new functions kill_flow(), which kills the flow.

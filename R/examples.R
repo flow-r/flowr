@@ -12,11 +12,10 @@
 	invisible(fobj)
 }
 
-
+#' run pipelines
 #' @export
 run <- function(x="sleep", type = "example", platform = "lsf", execute = FALSE, ...){
 	library(flowr)
-	message("")
 	message("\n\nPerforming initial setup....")
 	setup()
 	if(is.character(x))
@@ -25,4 +24,6 @@ run <- function(x="sleep", type = "example", platform = "lsf", execute = FALSE, 
 	tmp <- submit_flow(fobj, execute = execute)
 	return("Done !")
 }
+#' @export
+run_flow = run
 

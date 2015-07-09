@@ -5,7 +5,7 @@
 \title{Flow constructor}
 \usage{
 flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
-  mode = c("scheduler", "trigger", "R"), flow_base_path = "~/flowr",
+  mode = c("scheduler", "trigger", "R"), flow_base_path = "~/flowr/runs",
   trigger_path = "", flow_path = "", status = "", execute = "")
 }
 \arguments{
