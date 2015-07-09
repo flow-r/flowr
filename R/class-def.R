@@ -143,7 +143,8 @@ queue <- function(object,
 					". If this is more than queue max (/improper format), job will fail.\n")
 		}
 		if(platform %in% c("torque", "sge")){
-			format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+			if(missing(format))
+				format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
 			object <- new("torque", submit_exe="qsub", queue=queue,
 				nodes=nodes,cpu=cpu,jobname=jobname,
 				dependency=dependency,walltime=walltime,
@@ -159,7 +160,8 @@ queue <- function(object,
 			## -W: walltime
 			## -M: max mem
 			## -R rusage[mem=16385]: min mem (reserved mem)
-			format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R rusage[mem=${MEMORY}] -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
+			if(missing(format))
+				format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R rusage[mem=${MEMORY}] -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
 			object <- new("lsf", submit_exe="bsub",queue=queue,
 				nodes=nodes, cpu=cpu, jobname=jobname,
 				dependency=dependency, walltime=walltime,
@@ -175,7 +177,8 @@ queue <- function(object,
 				cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
 				jobname=jobname,format=format,server=server)
 		}else if(platform %in% c("moab")){
-			format="${SUBMIT_EXE} -N ${JOBNAME} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+			if(missing(format))
+				format="${SUBMIT_EXE} -N ${JOBNAME} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
 			object <- new("moab", submit_exe="msub", queue=queue,
 				nodes=nodes,cpu=cpu,jobname=jobname,
 				dependency=dependency,walltime=walltime,

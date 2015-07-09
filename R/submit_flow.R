@@ -210,7 +210,7 @@ submit_flow.flow <- function(x, uuid, execute = FALSE,
 										x@flow_path))
 	}
 	try(dump_flow_details(fobj = x))
-	try(saveRDS(x, file = sprintf("%s/flow_details.rda", x@flow_path)))
+	try(saveRDS(x, file = sprintf("%s/flow_details.rds", x@flow_path)))
 	if(plot & length(x@jobs) > 2){
 		try(
 			plot_flow(x, detailed = FALSE, pdf = TRUE, type = '1',
