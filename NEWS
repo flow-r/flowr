@@ -5,7 +5,8 @@ flowr 0.9.6.10
 - kill_flow()
 - supports moab
 - burst as dependency type
-- 
+- node can be character
+
 
 flowr 0.9.6.7
 ----------------------------------------------

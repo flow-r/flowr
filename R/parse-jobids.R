@@ -1,10 +1,18 @@
 
 #' @export
 parse_jobids <- function(jobids, platform){
-	## --- the string looks like: Job <4809> is submitted to queue <transfer>.
+	
+	## --- LSF
+	## --- Example: 
+	## Job <4809> is submitted to queue <transfer>.
 	if(platform=="lsf")
 		jobids <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
 	
+	
+	## --- moab
+	## --- Example (has empty lines):
+	## 
+	## 97724
 	if(platform == "moab"){
 		## --- output has multiple rows, split them
 		jobids = na.omit(as.vector(jobids))
