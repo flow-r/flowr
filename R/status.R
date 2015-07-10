@@ -1,6 +1,8 @@
 ## will be extended to flowid later
 ## x="/scratch/iacs/ngs_runs/*"
 
+#' Get all the (sub)directories in a folder
+#' @param x path to a folder
 #' @export
 get_wds <- function(x){
 	wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
@@ -9,7 +11,6 @@ get_wds <- function(x){
 	rownames(with(y, {subset(y, isdir == TRUE)}))
 }
 
-#' @export
 get_flow_status <- function(x, cores = 6, out_format = "markdown"){
 	
 	## --- get all the cmd files

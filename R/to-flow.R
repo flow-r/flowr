@@ -23,35 +23,57 @@ guess_dep_type <- function(cmds, prev_job){
 	
 }
 
-#' this operates on a single sample basis
-#' @param x is a data.frame with jobnames and commands to run. See details for more on the format
-#' @param grp_col column name used to split x (flow_mat). Default is *samplename*
-#' @param jobname_col
-#' @param cmd_col
-#' @param qobj queue object, as returned by queue(). Overrides one specified by platform
-#' @details subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
-#' flow_tab: as defined by x is a (minimum) three column matrix with:
-#' samplename, jobname, cmd
+#' @title 
+#' Create flow objects
+#' @description 
+#' Use a set of shell commands and flow definiton to create \link{flow} object.
+#' @param x path (char. vector) to flow_mat, a data.frame or a list.
+#' @param def A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow
+#' @param grp_col column name used to split x (flow_mat). Default: `samplename`
+#' @param jobname_col column name with job names. Default: `jobname`
+#' @param cmd_col column name with commands. Default: `cmd`
+#' @param flowname name of the flow
+#' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.
+#' 
+#' @param submit Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE
+#' @param execute Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()
+#' @param qobj Depreciated. A object of class \link{queue}.
+#' 
+#' 
+#' 
+#' @details The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
+#' This is a minimum three column matrix with:
+#' 
+#' samplename<TAB>jobname<TAB>cmd
+#' 
 #' @export
-to_flow <- function(x, ...) {
+to_flow <- function(x, def, 
+	grp_col,
+	jobname_col,
+	cmd_col,
+	flowname,
+	flow_run_path,
+	submit = FALSE,
+	platform,
+	execute,
+	qobj, ...) {
 	message("input x is ", class(x))
 	UseMethod("to_flow")
 	warnings()
 }
 
+#' @inheritParams to_flow.data.frame
 #' @export
-to_flow.vector <- function(x, def = 'flow_def', ...){
-	def <- as.flow_def(def)
+to_flow.vector <- function(x, ...){
 	x = read_sheet(x)
+	def <- as.flow_def(def)
 	to_flow(x, def, ...)
 }
 
-
-
-
+#' to_flow.list
+#' @param desc final flow name
 #' @export
-to_flow.list <- function(x, def, 
-												 qobj, flowname, flow_run_path, desc,...){
+to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 	## --- qobj, missing only works for arguments
 	## x is a list of flow_mat, split by jobname
 	
@@ -123,14 +145,15 @@ to_flow.list <- function(x, def,
 
 #' @export
 to_flow.data.frame <- function(x, def, 
-															 platform, qobj,
-															 #cpu = 1, walltime = "1:00", memory = "1g",
-															 flowname, flow_run_path, 
-															 grp_col = "samplename", 
-															 jobname_col = "jobname",
-															 cmd_col = "cmd", 
-															 submit = TRUE, execute = FALSE, ...
-){
+	grp_col,
+	jobname_col,
+	cmd_col,
+	flowname,
+	flow_run_path,
+	platform,
+	submit = FALSE,
+	execute = FALSE,
+	qobj, ...){
 	
 	message("\n\n##--- Getting default values for missing parameters...")
 	## --- get defaults sample, job and cmd columns
@@ -197,8 +220,12 @@ to_flow.data.frame <- function(x, def,
 		message("Platform supplied, this will override defaults from flow_definition...")
 		def$platform = platform
 	}
-	if(!missing(qobj))
+	if(!missing(qobj)){
 		message("qobj supplied, this will override defaults from flow_definion OR platform variable")
+		message("Use of qobj is depreciated", 
+			"Use shell scripts provided here as a template: https://github.com/sahilseth/flowr/tree/master/inst/conf", 
+			"You may tweak them and stor in ~/flowr/conf")
+	}
 	
 	message("\n\n##--- flowr submission...")
 	samps = unique(x$samplename)
@@ -219,6 +246,8 @@ to_flow.data.frame <- function(x, def,
 			flow_run_path, 
 									 qobj = qobj, ...)
 		
+		
+		### ----- remove THESE !
 		if(submit)
 			fobjuuid <- submit_flow(fobj, execute = execute)
 		if(execute)
@@ -242,12 +271,6 @@ to_flow.data.frame <- function(x, def,
 #' @title to_flow
 #' @description Create a \link{flow} object from a list of commands
 #' @param x \link{list} of commands
-#' @param def A flow definition table \link{flow_def}. Basically a table with resource requirements and mapping of the jobs in this flow
-#' @param q a object of class \link{queue}, defining how to submit the jobs. This can be created from parameters specified in system wide config file (~/flowr/
-#' @param samplename name of the sample
-#' @param flowname name of the flow
-#' @param execute whether to submit the flow to the cluster after creation
-#' @param flow_run_path base path for log file etc. Basically the main operating folder for this flow.
 #' @export
 cmds_to_flow <- function(cmd.list,
 												 samplename = "",

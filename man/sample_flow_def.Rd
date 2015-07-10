@@ -2,17 +2,19 @@
 % Please edit documentation in R/flow-def.R
 \name{sample_flow_def}
 \alias{sample_flow_def}
-\title{Create a skeleton flow definition}
+\title{Create a skeleton flow definition
+A helper function to create a skeleton flow_definition.}
 \usage{
 sample_flow_def(fl, jobnames, cols)
 }
 \arguments{
 \item{fl}{path to a matrix with commands to run}
 
-\item{jobnames}{}
+\item{jobnames}{names of the jobs in a flow}
 }
 \description{
 Create a skeleton flow definition
+A helper function to create a skeleton flow_definition.
 }
 \details{
 flow_tab: as defined by fl is a (minimum) three column matrix with

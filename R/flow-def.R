@@ -2,6 +2,9 @@
 setClass("flow_def", contains = "data.frame") 
 #http://www.carlboettiger.info/2013/09/11/extending-data-frame-class.html
 
+#' check consistency of objects
+#' Currently only checks for flow_def
+#' @param x a flow_def object
 #' @export
 check <- function(x, ...) {
 	UseMethod("check")
@@ -64,7 +67,8 @@ check.flow_def <- function(x,
 }
 
 #
-
+#' Reeading a flow_definition file and checking it.
+#' @param x can be a data.frame or a path for a flow_definition file
 #' @export
 as.flow_def <- function(x){
 	if(is.flow_def(x))
@@ -81,7 +85,8 @@ as.flow_def <- function(x){
 }
 
 #' Create a skeleton flow definition
-#' @param jobnames
+#' A helper function to create a skeleton flow_definition.
+#' @param jobnames names of the jobs in a flow
 #' @param fl path to a matrix with commands to run
 #' @details flow_tab: as defined by fl is a (minimum) three column matrix with
 #' samplename, jobname, cmd

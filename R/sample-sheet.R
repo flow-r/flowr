@@ -2,7 +2,7 @@
 
 #' read_sheet
 #' @description Auto detect file type, read it and clean it.
-#' @param x
+#' @param x path to a file, to be read
 #' @param id_column all rows which have this column as blank are skipped. See details.
 #' @param ... passed onto \link{read.xlsx}, read.table of read.csv2 depending on the file type.
 #' @details 

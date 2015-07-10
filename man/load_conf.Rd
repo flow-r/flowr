@@ -2,11 +2,13 @@
 % Please edit documentation in R/conf.R
 \name{load_conf}
 \alias{load_conf}
-\title{load a configuration file into the environment}
+\title{load a configuration file into the environment
+x path to a configuration file}
 \usage{
 load_conf(x, chk = TRUE, ...)
 }
 \description{
 load a configuration file into the environment
+x path to a configuration file
 }
 

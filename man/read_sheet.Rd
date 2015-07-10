@@ -7,7 +7,7 @@
 read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext, ...)
 }
 \arguments{
-\item{x}{}
+\item{x}{path to a file, to be read}
 
 \item{id_column}{all rows which have this column as blank are skipped. See details.}
 

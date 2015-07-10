@@ -9,19 +9,7 @@ cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
   flow_run_path = "/scratch/iacs/flow_pipe/tmp")
 }
 \arguments{
-\item{samplename}{name of the sample}
-
-\item{flowname}{name of the flow}
-
-\item{execute}{whether to submit the flow to the cluster after creation}
-
-\item{flow_run_path}{base path for log file etc. Basically the main operating folder for this flow.}
-
 \item{x}{\link{list} of commands}
-
-\item{def}{A flow definition table \link{flow_def}. Basically a table with resource requirements and mapping of the jobs in this flow}
-
-\item{q}{a object of class \link{queue}, defining how to submit the jobs. This can be created from parameters specified in system wide config file (~/flowr/}
 }
 \description{
 Create a \link{flow} object from a list of commands

@@ -2,27 +2,39 @@
 % Please edit documentation in R/to-flow.R
 \name{to_flow}
 \alias{to_flow}
-\title{this operates on a single sample basis}
+\title{Create flow objects}
 \usage{
-to_flow(x, ...)
+to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path,
+  submit = FALSE, platform, execute, qobj, ...)
 }
 \arguments{
-\item{x}{is a data.frame with jobnames and commands to run. See details for more on the format}
+\item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
 
-\item{grp_col}{column name used to split x (flow_mat). Default is *samplename*}
+\item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
 
-\item{jobname_col}{}
+\item{grp_col}{column name used to split x (flow_mat). Default: `samplename`}
 
-\item{cmd_col}{}
+\item{jobname_col}{column name with job names. Default: `jobname`}
 
-\item{qobj}{queue object, as returned by queue(). Overrides one specified by platform}
+\item{cmd_col}{column name with commands. Default: `cmd`}
+
+\item{flowname}{name of the flow}
+
+\item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.}
+
+\item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
+
+\item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
+
+\item{qobj}{Depreciated. A object of class \link{queue}.}
 }
 \description{
-this operates on a single sample basis
+Use a set of shell commands and flow definiton to create \link{flow} object.
 }
 \details{
-subset the data.frame by sample and then supply to this function, if you want seperate flow for each sample.
-flow_tab: as defined by x is a (minimum) three column matrix with:
-samplename, jobname, cmd
+The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
+This is a minimum three column matrix with:
+
+samplename<TAB>jobname<TAB>cmd
 }
 

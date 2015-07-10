@@ -2,11 +2,30 @@
 % Please edit documentation in R/examples.R
 \name{run}
 \alias{run}
-\title{run pipelines}
+\alias{run_flow}
+\title{run pipelines
+Running examples flows
+This wraps a few steps:
+Get all the commands to run (flow_mat)
+Create a `flow` object, using flow_mat and a default flow_def (picked from the same folder).
+Use `submit_flow()` to submit this to the cluster.}
 \usage{
-run(x = "sleep", type = "example", platform, execute = FALSE, ...)
+run(x = "sleep", type = "example", platform, flow_mat, flow_def,
+  execute = FALSE, ...)
+}
+\arguments{
+\item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}
+
+\item{flow_mat}{flow matrix, with commands to run (if we already have this, start here)}
+
+\item{flow_def}{flow definition}
 }
 \description{
 run pipelines
+Running examples flows
+This wraps a few steps:
+Get all the commands to run (flow_mat)
+Create a `flow` object, using flow_mat and a default flow_def (picked from the same folder).
+Use `submit_flow()` to submit this to the cluster.
 }
 

@@ -33,6 +33,8 @@ parse_conf <- function(lst){
 
 
 #' load a configuration file into the environment
+#' x path to a configuration file
+#' @export
 load_conf <- function(x, chk = TRUE, ...){
 	## .load_conf: works on a single file
 	lst <- lapply(x, .load_conf, chk = chk, ...)
@@ -68,8 +70,9 @@ chk_conf <- function(x){
 #' ~/flowr/conf                       ## flowr default home
 #' MYRLIB/flowr/conf folder           ## flow pipeline folder
 #' @examples {
-#' search_conf("torque")
+#' search_conf("torque.sh")
 #' }
+#' @export
 search_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 	if(missing(places)){
 		places = c(system.file(package = "flowr", "conf"),

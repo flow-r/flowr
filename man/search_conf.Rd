@@ -22,7 +22,7 @@ MYRLIB/flowr/conf folder           ## flow pipeline folder
 }
 \examples{
 {
-search_conf("torque")
+search_conf("torque.sh")
 }
 }
 
