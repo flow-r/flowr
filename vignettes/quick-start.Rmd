@@ -39,7 +39,7 @@ setup()
 # Toy example
 
 
-```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5}
+```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
 library(DiagrammeR)
 mermaid("
 graph LR
@@ -48,6 +48,9 @@ B-->C{merge them}
 C-->D[get size]
 ")
 ```
+
+![](imgs/toy.png)
+
 
 ```{r echo=FALSE, message=FALSE}
 exdata = file.path(system.file(package = "flowr"), "extdata")
