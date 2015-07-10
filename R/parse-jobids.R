@@ -4,29 +4,32 @@ parse_jobids <- function(jobids, platform){
 	
 	## --- TORQUE
 	##     Example
-	##  40947.dqsfacpriv01.mdanderson.edu
+	##  40947.dqsfacpriv01.mdanderson.edu 
+	##  parse into: -->>> 40947
 	## if there is a . in the middle, get stuff before it
 	if(platform=="torque")
-		jobids <- gsub(".*\\..*","\\1", jobids)
-	
-	
+		jobids <- gsub("(.?)\\..*","\\1", jobids)
+
 	## --- LSF
 	## --- Example: 
 	## Job <4809> is submitted to queue <transfer>.
+	##  parse into: --->>> 4809
 	if(platform=="lsf")
 		jobids <- gsub(".*(\\<[0-9]*\\>).*","\\1", jobids)
 	
 	
 	## --- moab
 	## --- Example (has empty lines):
-	## 
-	## 97724
+	## parse into: --->>> 97724
 	if(platform == "moab"){
-		## --- output has multiple rows, split them
-		jobids = na.omit(as.vector(jobids))
-		## remove rows with missing data
-		jobids = jobids[!jobids == ""]
+		jobids = jobids
 	}
+
+	## ""      "98337"
+	## --- output has multiple rows, split them
+	jobids = na.omit(as.vector(jobids))
+	## remove rows with missing data
+	jobids = jobids[!jobids == ""]
 	
 	## --- check how jobids looks
 	##     forcing jobids to be numeric !!
