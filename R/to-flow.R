@@ -84,6 +84,8 @@ to_flow.data.frame <- function(x, def,
 	submit = FALSE,
 	execute = FALSE,
 	qobj, ...){
+		if(execute|submit)
+			warning("This feature has been depciated. Please to fobj <- to_flow(...); submit_flow(fobj)")
 		
 		message("\n\n##--- Getting default values for missing parameters...")
 		## --- get defaults sample, job and cmd columns
