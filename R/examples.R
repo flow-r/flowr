@@ -8,16 +8,17 @@
 	flow_mat = subset(flow_mat, samplename == "sample1")
 	flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"), id_column = "jobname")
 	fobj <- to_flow(x = flow_mat, def = flow_def,
-									flowname = "ex_sleep", platform = platform, ...)
+									flowname = "ex_sleep", platform = platform, submit = FALSE, ...)
 	invisible(fobj)
 }
 
 #' run pipelines
 #' @export
-run <- function(x="sleep", type = "example", platform = getOption("flow_platform"), execute = FALSE, ...){
+run <- function(x="sleep", type = "example", platform, execute = FALSE, ...){
 	library(flowr)
 	message("\n\nPerforming initial setup....")
 	setup()
+	message("Running example on platform:\t\t\t", platform)
 	if(is.character(x))
 		if(x == "sleep")
 			fobj <- .run_sleep(platform = platform, ...)

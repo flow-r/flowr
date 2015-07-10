@@ -129,7 +129,7 @@ to_flow.data.frame <- function(x, def,
 															 grp_col = "samplename", 
 															 jobname_col = "jobname",
 															 cmd_col = "cmd", 
-															 execute = FALSE, ...
+															 submit = TRUE, execute = FALSE, ...
 ){
 	
 	message("\n\n##--- Getting default values for missing parameters...")
@@ -218,7 +218,9 @@ to_flow.data.frame <- function(x, def,
 									 flowname = flowname,
 			flow_run_path, 
 									 qobj = qobj, ...)
-		fobjuuid <- submit_flow(fobj, execute = execute)
+		
+		if(submit)
+			fobjuuid <- submit_flow(fobj, execute = execute)
 		if(execute)
 			return(fobjuuid)
 		else

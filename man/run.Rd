@@ -4,8 +4,7 @@
 \alias{run}
 \title{run pipelines}
 \usage{
-run(x = "sleep", type = "example", platform = getOption("flow_platform"),
-  execute = FALSE, ...)
+run(x = "sleep", type = "example", platform, execute = FALSE, ...)
 }
 \description{
 run pipelines

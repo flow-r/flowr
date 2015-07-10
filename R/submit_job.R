@@ -10,6 +10,7 @@
 #' @param wd working direcotry
 #' @param job_id job id
 #' @param ... not used
+#' @importFrom tools file_path_as_absolute
 #' @examples \dontrun{
 #' submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
 #' verbose = TRUE, wd = wd, job_id = job_id)
@@ -40,9 +41,12 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 		jobj@cmds <-  paste("## ------", names(jobj@cmds),
 			"\n", jobj@cmds, "\n\n", collapse="")
 	}
-	
+
+	## -- from here on use full WD path	
+	wd = file_path_as_absolute(wd)
 	## --- shell scripts and their respective STDOUT/ERR
-	jobj@script <- sprintf("%s/%s_cmd_%s.sh", wd, jobj@name, 1:length(jobj@cmds))
+	jobj@script = sprintf("%s/%s_cmd_%s.sh", wd, jobj@name, 1:length(jobj@cmds))
+	
 	## gsub .sh from end of file
 	jobj@stderr = jobj@stdout = gsub(".sh$", ".out", jobj@script)
 	jobj@trigger = sprintf("%s/trigger/trigger_%s_%s.txt", fobj@flow_path, jobj@jobname, 1:length(jobj@cmds))

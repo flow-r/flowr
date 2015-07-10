@@ -115,4 +115,4 @@ if(is.na(args[1])) {
 }
 
 
-warnings()
+if(verbose) warnings()

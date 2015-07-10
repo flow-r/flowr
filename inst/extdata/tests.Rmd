@@ -14,6 +14,7 @@ R CMD INSTALL flowr
 #install.flow
 
 flowr run sleep execute=TRUE platform=torque
+Rscript -e 'flowr:::.run_sleep(platform = "moab", execute=TRUE)'
 ```
 
 
@@ -42,7 +43,6 @@ platform = "moab"
 
 fobj = flowr:::.run_sleep(platform = platform)
 fobj = flowr:::.run_sleep(platform = platform, execute=TRUE)
-
 
 ```
 
