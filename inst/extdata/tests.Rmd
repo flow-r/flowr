@@ -11,13 +11,16 @@ setup()
 
 
 ```{r}
+setwd("~/Dropbox/public/github_flow/")
 devtools::load_all(".")
-```
 
-## tesing a platform
-```{r}
+
 platform = "torque"
+platform = "lsf"
+
+
 fobj = flowr:::.run_sleep(platform = platform)
+fobj = flowr:::.run_sleep(platform = platform, execute=TRUE)
 
 
 ```
