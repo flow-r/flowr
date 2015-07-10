@@ -14,7 +14,7 @@
 
 #' run pipelines
 #' @export
-run <- function(x="sleep", type = "example", platform = "lsf", execute = FALSE, ...){
+run <- function(x="sleep", type = "example", platform = getOption("flow_platform"), execute = FALSE, ...){
 	library(flowr)
 	message("\n\nPerforming initial setup....")
 	setup()

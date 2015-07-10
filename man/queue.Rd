@@ -4,12 +4,13 @@
 \alias{queue}
 \title{Create a \code{queue} object which containg details about how a job is submitted.}
 \usage{
-queue(object, platform = c("lsf", "torque", "sge", "moab", "local"),
+queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
   format = "", queue = "long", walltime, memory, cpu = 1,
-  extra_opts = "", submit_exe, cwd = "~/flows", nodes = "1",
-  jobname = "name", email = Sys.getenv("USER"), dependency = list(),
-  server = "localhost", verbose = FALSE, stderr = "~/flowr/tmp",
-  stdout = "~/flowr", ...)
+  extra_opts = "", submit_exe, cwd = getOption("flow_run_path"),
+  nodes = "1", jobname = "name", email = Sys.getenv("USER"),
+  dependency = list(), server = "localhost", verbose = FALSE,
+  stderr = getOption("flow_run_path"), stdout = getOption("flow_run_path"),
+  ...)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}

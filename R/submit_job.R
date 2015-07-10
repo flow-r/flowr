@@ -1,8 +1,8 @@
 
 ## --- submit job as part of a flow, this would be called from function flow
-#' @rdname submit_job
-#' @title .submit_job
-#' @description .submit_job
+
+#' @title submit_job
+#' @description submit_job
 #' @param jobj Object of calls \link{job}
 #' @param fobj Object of calls \link{flow}
 #' @param execute A \code{logical} vector suggesting whether to submit this job
@@ -11,10 +11,10 @@
 #' @param job_id job id
 #' @param ... not used
 #' @examples \dontrun{
-#' .submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
+#' submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
 #' verbose = TRUE, wd = wd, job_id = job_id)
 #' }
-.submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id,...){
+submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id,...){
 	
 	## --- get the trigger path
 	## --- comes from the flow
@@ -42,9 +42,11 @@
 	}
 	
 	## --- shell scripts and their respective STDOUT/ERR
-	files <- sprintf("%s/%s_cmd_%s.sh", wd, jobj@name, 1:length(jobj@cmds))
+	jobj@script <- sprintf("%s/%s_cmd_%s.sh", wd, jobj@name, 1:length(jobj@cmds))
 	## gsub .sh from end of file
 	jobj@stderr = jobj@stdout = gsub(".sh$", ".out", files)
+	jobj@trigger = sprintf("%s/trigger/trigger_%s_%s.txt", fobj@flow_path, jobj@jobname, 1:length(jobj@cmds))
+	
 	#jobj@stderr <- file.path(wd, jobj@jobname)
 	#jobj@stdout <- file.path(wd, jobj@jobname)
 	
@@ -52,25 +54,12 @@
 	jobids <- sapply(1:length(jobj@cmds), function(i){
 		## ---   make a long job name to capture the run
 		obj <- jobj;
-		obj@jobname <- sprintf("%s_%s-%s", jobj@jobname,basename(fobj@flow_path),i)
-		cmd <- create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
-		
-		## ------- make the script; add support for other shells, zsh etc OR detect shell
-		beforescript <- c("#!/bin/env bash",
-			sprintf("## %s", cmd),
-			sprintf("touch %s/trigger/trigger_%s_%s.txt",
-				fobj@flow_path, jobj@jobname,i),
-			"echo 'BGN at' `date`")
-		afterscript <- c(sprintf("exitstat=$?;echo $exitstat > %s/trigger/trigger_%s_%s.txt",
-			fobj@flow_path, jobj@jobname,i),
-			"echo 'END at' `date`",
-			"exit $exitstat") ## returning the exit code
-		script <- c(beforescript, jobj@cmds[i], afterscript)
-		
+		obj@jobname <- sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
+		cmd <- create_queue_cmd(jobj = obj, fobj = fobj, index=i)
+
 		## --- write script to file
 		if(verbose) message("Submitting using script:\n", cmd, "\n")
-		write(script, files[i])
-		
+
 		## --- return CMD if local, else jobid
 		if(jobj@platform == "local")
 			return(cmd)
@@ -98,18 +87,7 @@
 }
 
 
-#' @title create_queue_cmd
-#' @description This is a flow interal functions used to create a command used to submit jobs to the cluster.
-#' @aliases create_queue_cmd
-#' @param jobj object of class \link{job}
-#' @param file This is the path to the file to run
-#' @param index among cmds defined in \code{jobj}, which index does this \code{file} belong to. A numeric vector of length 1. This is to fetch dependency from previous job.
-#' @param ... Not used
-#' @keywords internal
-#' @examples \dontrun{
-#' create_queue_cmd(jobj = jobj, file = file, index = index, ... = ...)
-#' }
-create_queue_cmd <- function(jobj, file, index, fobj, ...){
+.create_queue_cmd <- function(jobj, file, index, fobj, ...){
 	
 	if(jobj@platform == "local"){
 		cmd <- sprintf("cd %s;%s %s > %s 2>&1;echo 0",
@@ -162,27 +140,25 @@ create_queue_cmd <- function(jobj, file, index, fobj, ...){
 	return(cmd=cmd)
 }
 
-
+#' create_queue_cmd
 #' @param file path to the output file
 #' @import whisker
-create_queue_sh <- function(jobj, index, fobj, ...){
+create_queue_cmd <- function(jobj, file, index, fobj, ...){
 
+
+	
 	## --- get platform of previous job
 	prev_plat = try(fobj@jobs[[jobj@previous_job]]@platform, silent = TRUE)
 	prev_plat = ifelse(class(prev_plat) == "try-error", "", prev_plat)
-	
-	## --- this job depends on multiple jobs. 
-	## --- create a string with multiple job ids
-	## --- introduce possibility that the jobid is empty, 
-	## --- or missing especially for reruns
-	
-	## --- prev LOCAL	OR execute is FALSE
+	##    this job depends on multiple jobs. 
+	##    create a string with multiple job ids
+	##     introduce possibility that the jobid is empty, 
+	##     or missing especially for reruns
+	##     prev LOCAL	OR execute is FALSE
 	if(prev_plat == "local" | !fobj@execute){
-		dependency <- ""
+		dependency <- "" ## no dependency
 	}else{
 		## --- GATHER
-		jobj = jobj
-		class(jobj) = jobj@platform
 		dependency <- parse_dependency(jobj, index = index)
 	}
 	
@@ -199,15 +175,29 @@ create_queue_sh <- function(jobj, index, fobj, ...){
 	## --- dependency here is a string according to the policies of the cluster platform
 	l <- c(l, dependency=dependency) ## add dependency to the list
 	names(l) = toupper(names(l)) ## get list of slots
-	l <- c(l, "CMD" = cmd)
+	l <- c(l, "CMD" = jobj@cmds[index])
 	l$STDERR=l$STDOUT=jobj@stdout[index]
+	l$TRIGGER = jobj@trigger[index]
 	
 	
-		## find the relevent conf file(s)
-	## use the list to replace
-	plat_conf = tail(search_conf(x="moab.sh"), 1)
+	## --- find the relevent conf file(s)
+	##     use the list to replace
+	plat_conf = tail(search_conf(class(jobj)), 1)
 	template <- paste(readLines(plat_conf), collapse = "\n")
 	out = whisker.render(template = template, data = l)
-	write(x = out, file = fl)
+	write(x = out, file = jobj@script[index])
+	
+	if(jobj@platform == "local"){
+		cmd <- sprintf("cd %s;%s %s > %s 2>&1;echo 0", ## exit 0, code of job submission
+			jobj@cwd, jobj@submit_exe, jobj@script[index], jobj@stdout[index])
+		return(cmd)
+	}else{
+		cmd <- sprintf("%s %s", jobj@submit_exe, jobj@script[index])
+		return(cmd)
+	}
+	
 }
+
+#cmd <- .create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
+
 

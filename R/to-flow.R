@@ -51,7 +51,7 @@ to_flow.vector <- function(x, def = 'flow_def', ...){
 
 #' @export
 to_flow.list <- function(x, def, 
-												 qobj, flowname, flow_base_path, desc,...){
+												 qobj, flowname, flow_run_path, desc,...){
 	## --- qobj, missing only works for arguments
 	## x is a list of flow_mat, split by jobname
 	
@@ -103,7 +103,7 @@ to_flow.list <- function(x, def,
 	fobj <- flow(jobs = jobs,
 							 desc = desc, name = flowname,
 							 mode = "scheduler", 
-							 flow_base_path = flow_base_path)
+		flow_run_path = flow_run_path)
 
 	## --- check if submission or depedency types were guessed
 	if(is.null(def$sub_type) | is.null(def$dep_type)){
@@ -125,7 +125,7 @@ to_flow.list <- function(x, def,
 to_flow.data.frame <- function(x, def, 
 															 platform, qobj,
 															 #cpu = 1, walltime = "1:00", memory = "1g",
-															 flowname, flow_base_path, 
+															 flowname, flow_run_path, 
 															 grp_col = "samplename", 
 															 jobname_col = "jobname",
 															 cmd_col = "cmd", 
@@ -167,9 +167,9 @@ to_flow.data.frame <- function(x, def,
 		flowname = "flowname"
 		message("Using flowname default: ", flowname);
 	}
-	if(missing(flow_base_path)){
-		flow_base_path = "~/flowr"
-		message("Using flow_base_path default: ", flow_base_path);
+	if(missing(flow_run_path)){
+		flow_run_path = getOption("flow_run_path")
+		message("Using flow_run_path default: ", flow_run_path);
 	}
 	
 	## --- change all the input columns into character
@@ -216,7 +216,7 @@ to_flow.data.frame <- function(x, def,
 		fobj = to_flow(x = cmd.list, def = def, 
 									 desc = desc,
 									 flowname = flowname,
-									 flow_base_path, 
+			flow_run_path, 
 									 qobj = qobj, ...)
 		fobjuuid <- submit_flow(fobj, execute = execute)
 		if(execute)
@@ -245,7 +245,7 @@ to_flow.data.frame <- function(x, def,
 #' @param samplename name of the sample
 #' @param flowname name of the flow
 #' @param execute whether to submit the flow to the cluster after creation
-#' @param flow_base_path base path for log file etc. Basically the main operating folder for this flow.
+#' @param flow_run_path base path for log file etc. Basically the main operating folder for this flow.
 #' @export
 cmds_to_flow <- function(cmd.list,
 												 samplename = "",
@@ -253,7 +253,7 @@ cmds_to_flow <- function(cmd.list,
 												 q_obj = queue(type = "lsf", verbose=FALSE),
 												 flowname = "stage2",
 												 execute = FALSE,
-												 flow_base_path = "/scratch/iacs/flow_pipe/tmp"){
+	flow_run_path = "/scratch/iacs/flow_pipe/tmp"){
 	## trim down the list
 	cmd.list = lapply(cmd.list, function(y) Filter(function(x) !x == "", y))
 	infomat$dep_type = ifelse(infomat$previous_job==".", "none", "serial")
@@ -324,7 +324,7 @@ cmds_to_flow <- function(cmd.list,
 	}
 	fobj <- flow(jobs = jobs,
 								desc=sprintf("%s-%s", flowname, samplename), name = flowname,
-								mode="scheduler", flow_base_path = flow_base_path)
+								mode="scheduler", flow_run_path = flow_run_path)
 	len = length(jobs)
 	#debug(flow:::.submit_flow)
 	#mypack:::reload('flow')

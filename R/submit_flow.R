@@ -5,104 +5,6 @@
 
 
 
-## --- submit job as part of a flow, this would be called from function flow
-#' @rdname submit_job
-#' @title .submit_job
-#' @description .submit_job
-#' @param jobj Object of calls \link{job}
-#' @param fobj Object of calls \link{flow}
-#' @param execute A \code{logical} vector suggesting whether to submit this job
-#' @param verbose logical
-#' @param wd working direcotry
-#' @param job_id job id
-#' @param ... not used
-#' @examples \dontrun{
-#' .submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
-#' verbose = TRUE, wd = wd, job_id = job_id)
-#' }
-.submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id,...){
-	
-	## --- get the trigger path
-	## --- comes from the flow
-	trigger_path=fobj@trigger_path=file.path(fobj@flow_path, "trigger") 
-	if(!file.exists(trigger_path)) 
-		dir.create(trigger_path, showWarnings=FALSE)
-	
-	## --- create the name of the job with its index in the supplied flow
-	if(!jobj@status %in% c("processed","submitted","running","completed","error"))
-		jobj@jobname <- sprintf("%03d.%s", job_id,jobj@name)
-	
-	## --- get the working dir for these job(s)
-	## jobj@name: is indexed
-	wd <- file.path(fobj@flow_path, jobj@jobname) 
-	if(!file.exists(wd)) 
-		dir.create (wd, recursive=TRUE, showWarnings=FALSE);
-	
-	## --- get the CWD/PWD for all submissions
-	jobj@cwd <- file.path(dirname(wd), "tmp") ## FLOWBASE
-	
-	## --- if serial, MERGE all commands in ONE file
-	if(jobj@submission_type %in% c("serial")){
-		jobj@cmds <-  paste("## ------", names(jobj@cmds),
-												 "\n", jobj@cmds, "\n\n", collapse="")
-	}
-	
-	## --- shell scripts and their respective STDOUT/ERR
-	files <- sprintf("%s/%s_cmd_%s.sh", wd, jobj@name, 1:length(jobj@cmds))
-	## gsub .sh from end of file
-	jobj@stderr = jobj@stdout = gsub(".sh$", ".out", files)
-	#jobj@stderr <- file.path(wd, jobj@jobname)
-	#jobj@stdout <- file.path(wd, jobj@jobname)
-	
-	## ---- do this for all commands (in case of scatter)
-	jobids <- sapply(1:length(jobj@cmds), function(i){
-		## ---   make a long job name to capture the run
-		obj <- jobj;
-		obj@jobname <- sprintf("%s_%s-%s", jobj@jobname,basename(fobj@flow_path),i)
-		cmd <- create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
-		
-		## ------- make the script; add support for other shells, zsh etc OR detect shell
-		beforescript <- c("#!/bin/env bash",
-											sprintf("## %s", cmd),
-											sprintf("touch %s/trigger/trigger_%s_%s.txt",
-															fobj@flow_path, jobj@jobname,i),
-											"echo 'BGN at' `date`")
-		afterscript <- c(sprintf("exitstat=$?;echo $exitstat > %s/trigger/trigger_%s_%s.txt",
-														 fobj@flow_path, jobj@jobname,i),
-										 "echo 'END at' `date`",
-										 "exit $exitstat") ## returning the exit code
-		script <- c(beforescript, jobj@cmds[i], afterscript)
-		
-		## --- write script to file
-		if(verbose) message("Submitting using script:\n", cmd, "\n")
-		write(script, files[i])
-		
-		## --- return CMD if local, else jobid
-		if(jobj@platform == "local")
-			return(cmd)
-		if(execute){
-			return(system(cmd, intern = TRUE))
-		} ## execute
-		return('0') ## if no execute return the 0, as JOBID!
-	}) ## for loop
-	
-	## --- run local and get 0 as jobids
-	if(jobj@platform == "local")
-		jobids <- run_local(jobids, jobj = jobj, execute = execute)
-	#cat("ALERT !! stopping jobs submission. Please don't press Ctrl+C...\n");
-	
-	## --- Parse jobids
-	if(execute)
-		jobj@id <- parse_jobids(jobids, platform = jobj@platform)
-	
-	## --- change the status of this job(s) for logs
-	jobj@status <- "processed"
-	if(execute) jobj@status <- "submitted"
-	
-	#Sys.sleep(5);
-	return(jobj)
-}
-
 
 
 
@@ -152,7 +54,7 @@ submit_flow.flow <- function(x, uuid, execute = FALSE,
 	## --- Assumption here is that a submitted/processed flow 
 	## --- has uuid part of its flow_path already
 	if(!x@status %in% c("processed","submitted","running","completed","exit")){
-		x@flow_path <- sprintf("%s/%s", x@flow_base_path, uuid)
+		x@flow_path <- sprintf("%s/%s", x@flow_run_path, uuid)
 	}
 	##jobnames <- sapply(x@jobs, function(x) x@name)
 	##names(x@jobs) <- jobnames
@@ -191,7 +93,7 @@ submit_flow.flow <- function(x, uuid, execute = FALSE,
 			}
 		}
 		## ------ submit the job
-		x@jobs[[i]] <- .submit_job(x@jobs[[i]], x, execute=execute, 
+		x@jobs[[i]] <- submit_job(x@jobs[[i]], x, execute=execute, 
 															 job_id=i, verbose = verbose, ...)
 		## ------ check if this is NOT last job in the flow
 		## if(i < length(x@jobs)){
@@ -226,29 +128,6 @@ submit_flow.flow <- function(x, uuid, execute = FALSE,
 #setMethod("submit_flow", signature(fobj = "flow"), definition = .submit_flow)
 
 
-#### ----------------------- submit loner job
-if(FALSE){
-	setMethod("submit_job", signature(jobj = "job"),
-						function (jobj, execute = FALSE,verbose = TRUE, wd, ...){
-							## if(verbose) cat(jobj@base_path, jobj@name, "\n")
-							if(missing(wd)){
-								wd <- file.path(jobj@base_path,paste(jobj@name,
-																											UUIDgenerate(),sep="_"))
-							}
-							dir.create(wd, recursive=TRUE, showWarnings = FALSE)
-							script <- c(jobj@cmd, sprintf("echo $? > %s/trigger_%s.txt", wd,jobj@name))
-							file <- sprintf("%s/%s.sh", wd, jobj@name)
-							write(script, file)
-							jobj@stderr <- wd;jobj@stdout <- wd;jobj@cwd <- wd
-							cmd <- sprintf("%s %s",create_queue_cmd(jobj), file)
-							if (verbose) print(cmd)
-							if(execute){
-								jobid <- system(cmd, intern = TRUE)
-								jobj@id <- jobid
-							}
-							return(jobj)
-						})
-}
 
 ## trace("create_queue_cmd", browser, exit=browser, signature = c("queue","character"));
 ## cmd <- create_queue_cmd(jobj, file=files[i])

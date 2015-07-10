@@ -55,6 +55,12 @@ parse_dependency.torque <- function(x, index, ...){
 	return(dep)
 }
 
+
+## 
+parse_dependency.local <- function(...){
+	return("")
+}
+
 parse_dependency.lsf <- function(x, index, ...){
 	#message(index)
 	dep_type = x@dependency_type

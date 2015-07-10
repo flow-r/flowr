@@ -11,5 +11,11 @@ setup <- function(bin = "~/bin", pkg = "flowr"){
 	tmp <- c("Consider adding ~/bin to your PATH variable in .bashrc.",
 		"\nexport PATH=$PATH:$HOME/bin",
 		"\nYou may now use all R functions using 'flowr' from shell.")
+	
+	message("Creating a directory structure under ",
+		getOption("flow_base_path"))
+	dir.create(getOption("flow_base_path"), showWarnings = FALSE)
+	dir.create(getOption("flow_conf_path"), showWarnings = FALSE)
+	dir.create(getOption("flow_run_path"), showWarnings = FALSE)
 	message(tmp)
 }

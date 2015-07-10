@@ -23,6 +23,8 @@ error <- function(x){
 	if(x == "perm.flow_status.file")
 		y = c("flow_status.txt is not writable. Will skip updating it.")
 	
+	if(x == "no.shell")
+		y = "There are no shell scripts, did this flow run ?"
 	
   return(y)
 }

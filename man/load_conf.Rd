@@ -4,7 +4,7 @@
 \alias{load_conf}
 \title{load a configuration file into the environment}
 \usage{
-load_conf(x)
+load_conf(x, chk = TRUE, ...)
 }
 \description{
 load a configuration file into the environment

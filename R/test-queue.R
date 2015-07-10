@@ -29,7 +29,7 @@ test_queue <- function(q_obj, verbose = TRUE, ...){
 											"new directory called test_....\n",
 											"You may also do bjobs/qstat or a respective command for your",
 											"scheduler to look at these jobs.\n\n\n")
-	f_obj <- flow(jobs = list(jobj1, jobj2), desc = "test", flow_base_path = "~/flows")
+	f_obj <- flow(jobs = list(jobj1, jobj2), desc = "test", flow_run_path = "~/flowr/runs")
 	tmp <- submit_flow(f_obj, execute = TRUE, make_flow_plot = FALSE, verbose = TRUE)
 	message("Flow path:\t", tmp@flow_path, "\n")
 	message("First job ID: \t", tmp@jobs[[1]]@id, "\n")

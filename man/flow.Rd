@@ -5,8 +5,9 @@
 \title{Flow constructor}
 \usage{
 flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
-  mode = c("scheduler", "trigger", "R"), flow_base_path = "~/flowr/runs",
-  trigger_path = "", flow_path = "", status = "", execute = "")
+  mode = c("scheduler", "trigger", "R"),
+  flow_run_path = getOption("flow_run_path"), trigger_path = "",
+  flow_path = "", status = "", execute = "")
 }
 \arguments{
 \item{jobs}{\code{list} A list of jobs to be included in this flow}
@@ -22,7 +23,7 @@ Defaults to 'my_super_flow'. We usually use this to put sample names of the data
 
 \item{mode}{\code{character} Mode of submission of the flow.}
 
-\item{flow_base_path}{The base path of all the flows you would submit.
+\item{flow_run_path}{The base path of all the flows you would submit.
 Defaults to \code{~/flows}. Best practice to ignore it.}
 
 \item{trigger_path}{\code{character}

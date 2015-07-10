@@ -6,7 +6,7 @@
 \usage{
 cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
   verbose = FALSE), flowname = "stage2", execute = FALSE,
-  flow_base_path = "/scratch/iacs/flow_pipe/tmp")
+  flow_run_path = "/scratch/iacs/flow_pipe/tmp")
 }
 \arguments{
 \item{samplename}{name of the sample}
@@ -15,7 +15,7 @@ cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
 
 \item{execute}{whether to submit the flow to the cluster after creation}
 
-\item{flow_base_path}{base path for log file etc. Basically the main operating folder for this flow.}
+\item{flow_run_path}{base path for log file etc. Basically the main operating folder for this flow.}
 
 \item{x}{\link{list} of commands}
 

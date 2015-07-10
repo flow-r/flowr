@@ -29,7 +29,10 @@ read_sheet <- function(x, id_column, start_row = 1, sheet = "sample_sheet", ext,
 		cat("Sorry we do not recognize this file format", ext, "please use tsv, csv or xlsx2 (sheetname: sample_sheet)")
 	}
 	### ------ remove blank rows and columns
-	if(missing(id_column)) {message("Using '", colnames(mat)[1], "'' as id_column");id_column = 1}
+	if(missing(id_column)) {
+		id_column = 1
+		message("Reading file, using '", colnames(mat)[id_column], "' as id_column to remove empty rows.");
+		}
 	mat <- mat[!mat[, id_column] %in% c("", NA), !grepl("^X", colnames(mat))]
 	return(mat)
 }

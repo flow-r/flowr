@@ -6,6 +6,10 @@ flowr 0.9.6.10
 - supports moab
 - burst as dependency type
 - node can be character
+- final job names changed to: sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
+- Using PBS/LSF script instead of one line commands
+- Format now a script, parsed using whisker
+
 
 
 flowr 0.9.6.7

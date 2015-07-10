@@ -26,12 +26,6 @@ setClass("queue", representation(submit_exe = "character", ## submit job
 	extra_opts= "character", ## extra options for your queue
 	server = "character")) ## address of head node
 
-setClass("local", contains = "queue")
-setClass("torque", contains = "queue")
-setClass("pbs", contains = "queue")
-setClass("lsf", contains = "queue")
-setClass("sge", contains = "queue")
-setClass("moab", contains = "queue")
 
 #### ----------------------- represents a single job
 setClass("job", representation(cmds = "character",
@@ -45,13 +39,21 @@ setClass("job", representation(cmds = "character",
 	dependency_type = "character", ## gather, serial
 	previous_job = "character",
 	script = "character", ## the final script which has been used (if multiple cmds the last one)
+	trigger = "character",
 	next_job = "character"),
 	contains = "queue") ## a string of cmd to run
+
+setClass("local", contains = "job")
+setClass("torque", contains = "job")
+setClass("pbs", contains = "job")
+setClass("lsf", contains = "job")
+setClass("sge", contains = "job")
+setClass("moab", contains = "job")
 
 #' flow defines the class
 #' @exportClass flow
 setClass("flow", representation(jobs = "list",
-	flow_base_path = "character",
+	flow_run_path = "character",
 	flow_path = "character",
 	trigger_path = "character",
 	desc = "character",
@@ -100,7 +102,7 @@ setClass("flow", representation(jobs = "list",
 #' @examples
 #' qobj <- queue(platform='lsf')
 queue <- function(object, 
-	platform = c('lsf', 'torque', 'sge', 'moab', 'local'), 
+	platform = c('local', 'lsf', 'torque', 'sge', 'moab'), 
 	## --- format is a advanced option, use with caution
 	format = "",
 	## --- Following are replaced by job()
@@ -108,14 +110,16 @@ queue <- function(object,
 	walltime, memory, cpu = 1, 
 	## format
 	extra_opts = "", 
-	submit_exe,  cwd="~/flows", 
+	submit_exe,  
+	cwd=getOption("flow_run_path"), 
 	nodes='1',  ## only used in torque
 	## debug use
 	jobname = "name", 
 	email = Sys.getenv("USER"),
 	dependency = list(),
 	server = "localhost",  verbose = FALSE,
-	stderr = "~/flowr/tmp", stdout = "~/flowr",
+	stderr = getOption("flow_run_path"), 
+	stdout = getOption("flow_run_path"),
 	...){
 		platform = match.arg(platform)
 		if(!missing(object)){
@@ -189,7 +193,7 @@ queue <- function(object,
 				server=server)
 			
 		}else{
-			object <- new("queue", submit_exe=submit_exe,queue=queue,
+			object <- new('queue', submit_exe=submit_exe,queue=queue,
 				nodes=nodes, memory=memory,
 				cpu=cpu,dependency=dependency,walltime=walltime,
 				cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
@@ -269,7 +273,7 @@ job <- function(cmds = "",
 		#cat("\nPrevious job check\n", previous_job[1], "\t", dependency_type, "\n")
 		if(!previous_job[1] == "" & dependency_type == 'none') ## add [1] since at times we specify two jobs
 			stop("Previous job specified, but you have not specified dependency_type")
-		object <- new("job", cmds = cmds, object, name = name, submission_type = submission_type,
+		object <- new(q_obj@platform, cmds = cmds, object, name = name, submission_type = submission_type,
 			previous_job = previous_job, status = "",
 			dependency_type = dependency_type,...)
 		return(object)
@@ -285,7 +289,7 @@ job <- function(cmds = "",
 #' An underscore '_' seems like a good word separator.
 #' Defaults to 'my_super_flow'. We usually use this to put sample names of the data.
 #' @param mode \code{character} Mode of submission of the flow.
-#' @param flow_base_path The base path of all the flows you would submit.
+#' @param flow_run_path The base path of all the flows you would submit.
 #' Defaults to \code{~/flows}. Best practice to ignore it.
 #' @param trigger_path \code{character}
 #' Defaults to \code{~/flows/trigger}. Best practice to ignore it.
@@ -319,16 +323,17 @@ job <- function(cmds = "",
 #' ## execute the jobs: ONLY works on computing cluster, would fail otherwise
 #' submit_flow(fobj, execute = TRUE)
 #' }
-flow <- function(jobs=list(new("job")), name="newflow", desc = "my_super_flow",
-	mode=c("scheduler","trigger","R"),
-	flow_base_path="~/flowr/runs",
+flow <- function(jobs = list(new("job")),
+	name="newflow", desc = "my_super_flow",
+	mode = c("scheduler","trigger","R"),
+	flow_run_path = getOption("flow_run_path"),
 	trigger_path="", flow_path="", status="", execute = ""){
 		mode <- match.arg(mode)
 		## create a list of jobs if nore already
 		if(class(jobs) == "job") jobs = list(jobs)
 		jobnames <-  sapply(jobs, slot, "name")
 		names(jobs) = jobnames
-		object <- new("flow", jobs=jobs, mode = mode, name = name, flow_base_path=flow_base_path,
+		object <- new("flow", jobs=jobs, mode = mode, name = name, flow_run_path = flow_run_path,
 			trigger_path=trigger_path, flow_path=flow_path, desc=desc, status=status)
 		return(object)
 	}

@@ -1,30 +1,58 @@
 
 
-#' load a configuration file into the environment
-load_conf <- function(x){
+.load_conf <- function(x, chk, ...){
 	conf <- read_sheet(x)
-	
-	## -- check the ones with file paths
-	chk_conf(conf)
-	
+
 	lst = as.list(conf$value)
 	names(lst) = conf$name
 	
-	## -- populate these in the global environment
+	lst = parse_conf(lst)
+	
+	## -- check the ones with file paths
+	if(chk)
+		chk_conf(lst)
+
+		## -- populate these in the global environment
 	options(lst)
+	invisible(lst)
+	
+}
+
+## process conf line by line
+## use whisker to evaluate the string, given available data
+
+#' @import whisker
+parse_conf <- function(lst){
+	## --- sequentially evaluae each configuration
+	for(i in 1:length(lst)){
+		lst[[i]] = whisker.render(lst[[i]], lst)
+	}
+	return(lst)
+}
+
+
+#' load a configuration file into the environment
+load_conf <- function(x, chk = TRUE, ...){
+	## .load_conf: works on a single file
+	lst <- lapply(x, .load_conf, chk = chk, ...)
+	
+	## in future this could be a normalized list
+	## with the final set of options used
 	invisible(lst)
 }
 
 chk_conf <- function(x){
 	path_pattern = c("path$|dir$|exe$")
 	
-	pths = grep(path_pattern, x$name)
+	pths = grep(path_pattern, names(x))
 	
-	mis_pths = !file.exists(conf$value[pths])
+	mis_pths = !file.exists(as.character(x)[pths])
 	
 	if(sum(mis_pths) > 0){
 		msg = "\n\nSeems like these paths do not exist, this may cause issues later:\n"
-		warning(msg, paste(kable(x[mis_pths, ], row.names = FALSE), collapse = "\n"))
+		df = data.frame(name = names(x)[mis_pths], 
+			value = as.character(x)[mis_pths])
+		warning(msg, paste(kable(df, row.names = FALSE), collapse = "\n"))
 	}
 }
 
@@ -41,7 +69,7 @@ chk_conf <- function(x){
 search_conf <- function(x = "flowr.conf", places){
 	if(missing(places)){
 		places = c(system.file(package = "flowr", "conf"),
-			"~/flowr/conf", "~/")
+			getOption("flow_conf_path"), "~/")
 	}
 	
 	y = list.files(path = places, pattern = x, full.names = TRUE)

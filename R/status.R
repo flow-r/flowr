@@ -14,6 +14,8 @@ get_flow_status <- function(x, cores = 6, out_format = "markdown"){
 	
 	## --- get all the cmd files
 	files_cmd <- list.files(x, pattern = "cmd", full.names = TRUE, recursive = TRUE)
+	if(length(files_cmd) == 0)
+		stop(error("no.shell"))
 	files_cmd = grep("sh$", files_cmd, value = TRUE)
 	## dirname, JOBNAME_cmd_JOBINDEX
 	mat_cmd <- data.frame(do.call(rbind,
