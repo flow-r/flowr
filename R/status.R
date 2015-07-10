@@ -166,7 +166,8 @@ detect_kill_cmd <- function(fobj){
 				 moab = "qdel",
 				 lsf = "bkill",
 				 torque = "qdel",
-				 sge = "qdel")
+				 sge = "qdel",
+				 slurm = "")
 }
 
 if(FALSE){

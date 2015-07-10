@@ -4,7 +4,7 @@
 \alias{search_conf}
 \title{Given a name of a configuration file, searches for it in few places}
 \usage{
-search_conf(x = "flowr.conf", places)
+search_conf(x = "flowr.conf", places, verbose = FALSE)
 }
 \arguments{
 \item{x}{name of the file to search for}
@@ -19,5 +19,10 @@ sequence: the later overrides former if parameter name matches
 ~/                                 ## home dir
 ~/flowr/conf                       ## flowr default home
 MYRLIB/flowr/conf folder           ## flow pipeline folder
+}
+\examples{
+{
+search_conf("torque")
+}
 }
 

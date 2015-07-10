@@ -5,6 +5,10 @@ parse_dependency <- function(x, ...) {
 }
 
 
+parse_dependency.local <- function(...){
+	return("")
+}
+
 parse_dependency.torque <- function(x, index, ...){
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
@@ -24,10 +28,6 @@ parse_dependency.torque <- function(x, index, ...){
 }
 
 
-## 
-parse_dependency.local <- function(...){
-	return("")
-}
 
 parse_dependency.lsf <- function(x, index, ...){
 	#message(index)
@@ -63,3 +63,45 @@ parse_dependency.moab <- function(x, index, ...){
 	}else{dep = ""}
 	return(dep)
 }
+
+parse_dependency.sge <- function(x, index, ...){
+	dep_type = x@dependency_type
+	if(dep_type == 'gather'){
+		dep = sprintf("-W depend=afterok:%s", 
+									paste(unlist(x@dependency), collapse = ":"))
+	}else if(dep_type == "serial"){
+		dep <- sprintf("-W %s", paste(" depend=afterok:",
+																	x@dependency[[index]], 
+																	sep="", collapse=":"))
+	}else if(dep_type == "burst"){
+		index=1
+		dep <- sprintf("-W %s",paste(" depend=afterok:", 
+																 x@dependency[[index]], sep="",
+																 collapse=":"))
+	}else{dep = ""}
+	return(dep)
+}
+
+
+## this has not been tested !
+parse_dependency.slurm <- function(x, index, ...){
+	dep_type = x@dependency_type
+	if(dep_type == 'gather'){
+		dep = sprintf("-W depend=afterok:%s", 
+									paste(unlist(x@dependency), collapse = ":"))
+	}else if(dep_type == "serial"){
+		dep <- sprintf("-W %s", paste(" depend=afterok:",
+																	x@dependency[[index]], 
+																	sep="", collapse=":"))
+	}else if(dep_type == "burst"){
+		index=1
+		dep <- sprintf("-W %s",paste(" depend=afterok:", 
+																 x@dependency[[index]], sep="",
+																 collapse=":"))
+	}else{dep = ""}
+	return(dep)
+}
+
+
+
+

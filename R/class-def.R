@@ -49,6 +49,8 @@ setClass("pbs", contains = "job")
 setClass("lsf", contains = "job")
 setClass("sge", contains = "job")
 setClass("moab", contains = "job")
+setClass("slurm", contains = "job")
+
 
 #' flow defines the class
 #' @exportClass flow

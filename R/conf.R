@@ -21,6 +21,7 @@
 ## process conf line by line
 ## use whisker to evaluate the string, given available data
 
+#' parse_conf 
 #' @import whisker
 parse_conf <- function(lst){
 	## --- sequentially evaluae each configuration
