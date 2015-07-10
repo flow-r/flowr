@@ -24,6 +24,9 @@ to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path,
 
 \item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
 
+\item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
+This over-rides the platform column in flow_def.}
+
 \item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
 
 \item{qobj}{Depreciated. A object of class \link{queue}.}

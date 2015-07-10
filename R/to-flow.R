@@ -29,6 +29,8 @@ guess_dep_type <- function(cmds, prev_job){
 #' Use a set of shell commands and flow definiton to create \link{flow} object.
 #' @param x path (char. vector) to flow_mat, a data.frame or a list.
 #' @param def A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow
+#' @param platform character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
+#' This over-rides the platform column in flow_def.
 #' @param grp_col column name used to split x (flow_mat). Default: `samplename`
 #' @param jobname_col column name with job names. Default: `jobname`
 #' @param cmd_col column name with commands. Default: `cmd`

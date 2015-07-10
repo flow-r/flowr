@@ -15,19 +15,23 @@
 #' @title submit_flow
 #' @description submit_flow
 #' @aliases submit_flow
-#' @param fobj \code{object} of class \code{flow}.
-#' @param uuid \code{character} A character string pointing to the folder (unique) where all the logs and other files are processed. This is optional and defaults to:
-#'  \code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}.
-#'  Refer to \code{desc} and \code{name} paramters of \link{flow}.
+#' 
+#' @param x a \code{object} of class \code{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
-#' @param plot \code{logical} whether to make a flow plot (saves it in the flow working directory)
+#' 
+#' @param plot \code{logical} whether to make a pdf flow plot (saves it in the flow working directory).
+#' @param uuid \code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.
 #' @param verbose logical.
-#' @param ... Any additional parameter are passed on to \link{submit_job} function
+#' @param ... Advanced use. Any additional parameters are passed on to \link{submit_job} function.
+#' 
+#' 
 #' @export
 #' @examples
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
-submit_flow <- function(x, ...) {
+submit_flow <- function(x, 
+	uuid, execute = FALSE,
+	plot = TRUE, verbose = FALSE, ...) {
 	message("input x is ", class(x))
 	UseMethod("submit_flow")
 }
@@ -41,8 +45,9 @@ submit_flow.list <- function(x, ...){
 }
 
 #' @export
-submit_flow.flow <- function(x, uuid, execute = FALSE,
-												 plot = TRUE, verbose = FALSE, ...){
+submit_flow.flow <- function(x, 
+	uuid, execute,
+	plot, verbose, ...){
 	## -- store, for use later
 	x@execute=execute
 	## the case of resubmission

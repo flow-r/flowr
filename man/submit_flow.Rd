@@ -4,22 +4,20 @@
 \alias{submit_flow}
 \title{submit_flow}
 \usage{
-submit_flow(x, ...)
+submit_flow(x, uuid, execute = FALSE, plot = TRUE, verbose = FALSE, ...)
 }
 \arguments{
-\item{...}{Any additional parameter are passed on to \link{submit_job} function}
+\item{x}{a \code{object} of class \code{flow}.}
 
-\item{fobj}{\code{object} of class \code{flow}.}
-
-\item{uuid}{\code{character} A character string pointing to the folder (unique) where all the logs and other files are processed. This is optional and defaults to:
-\code{FLOW_DESCRIPTION_UUID}, and this folder is typically created in \code{~/flows/FLOW_NAME}.
-Refer to \code{desc} and \code{name} paramters of \link{flow}.}
+\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
 
 \item{execute}{\code{logical} whether or not to submit the jobs}
 
-\item{plot}{\code{logical} whether to make a flow plot (saves it in the flow working directory)}
+\item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
 
 \item{verbose}{logical.}
+
+\item{...}{Advanced use. Any additional parameters are passed on to \link{submit_job} function.}
 }
 \description{
 submit_flow
