@@ -57,6 +57,7 @@ check.flow_def <- function(x,
 	if(is.null(x$cpu_reserved) & !is.null(x$cpu)){
 		x$cpu_reserved = as.numeric(x$cpu)
 	}
+	x$cpu_reserved = as.numeric(x$cpu_reserved)
 	
 
 	#print(x)

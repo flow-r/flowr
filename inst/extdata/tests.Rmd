@@ -65,3 +65,23 @@ fobj = .run_sleep(platform = "moab") ## should be local
 
 ```
 
+
+## test that script renders properly
+```{r}
+exdata = file.path(system.file(package = "flowr"), "extdata")
+flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
+flow_mat = subset(flow_mat, samplename == "sample1")
+flow_def = read_sheet(file.path(exdata,  "example1_flow_def.txt"))
+
+## remove memory, should detect and throw error:
+colnames(flow_def)[6] = "mem"
+debug(render_queue_cmd)
+
+fobj = to_flow(x = flow_mat, def = flow_def, submit = TRUE, platform = "torque")
+
+
+
+
+```
+
+
