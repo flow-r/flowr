@@ -68,7 +68,8 @@ fobj = .run_sleep(platform = "moab") ## should be local
 
 ## test that script renders properly
 ```{r}
-exdata = file.path(system.file(package = "flowr"), "extdata")
+#exdata = file.path(system.file(package = "flowr"), "extdata")
+exdata = "~/Dropbox/public/github_flow/inst/extdata"
 flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
 flow_mat = subset(flow_mat, samplename == "sample1")
 flow_def = read_sheet(file.path(exdata,  "example1_flow_def.txt"))
