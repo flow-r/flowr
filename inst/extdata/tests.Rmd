@@ -3,6 +3,21 @@ title: "tests.Rmd"
 output: html_document
 ---
 
+
+```
+module load R git
+git clone git@github.com:sahilseth/flowr.git
+git clone https://github.com/sahilseth/flowr.git
+R CMD INSTALL flowr
+
+## or 
+install.flow
+
+flowr run sleep execute=TRUE
+```
+
+
+
 ```{r}
 devtools::install_github("sahilseth/flowr")
 library(flowr)
@@ -13,10 +28,16 @@ setup()
 ```{r}
 setwd("~/Dropbox/public/github_flow/")
 devtools::load_all(".")
+```
 
+
+```{r}
+library(flowr)
+setup()
 
 platform = "torque"
 platform = "lsf"
+platform = "moab"
 
 
 fobj = flowr:::.run_sleep(platform = platform)

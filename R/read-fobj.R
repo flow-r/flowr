@@ -24,7 +24,7 @@ read_flow_detail_fl <- function(x){
 	det_file = file.path(x, "flow_details.txt")
 	if(!file.exists(det_file))
 		stop(error("no.flow_details.file"))
-	flow_details = read_sheet(det_file)
+	flow_details = read_sheet(det_file, id_column = "jobname")
 	return(flow_details)
 }
 

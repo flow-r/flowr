@@ -1,17 +1,19 @@
-#MSUB-N {{JOBNAME}}                                  # name of the job
-#MSUB-l nodes=1:ppn={{CPU}}                          # specify number of nodes and cpu to reserve
-#MSUB-o {{STDOUT}}                                   # output is sent to logfile, stdout + stderr by default
-#MSUB-e {{STDOUT}}                                   # output is sent to logfile, stdout + stderr by default
-#MSUB-q {{QUEUE}}                                    # Job queue
-#MSUB-l walltime={{WALLTIME}}                        # Walltime in minutes
-#MSUB-l mem={{MEMORY}}                               # Memory requirements in Kbytes
-#MSUB-r y -V                                         # make the jobs re-runnable. -V export all env of user to compute nodes
-#MSUB-j oe                                           # merge output from stdout and stderr
-#MSUB-S /bin/bash                                    # use bash shell
-#MSUB-d {CWD}}                                       # the workding dir for each job, this is {{flow_path}}/tmp
-#MSUB-M {EMAIL}                                      # email address of the person
-#MSUB{{DEPENDENCY}}                                  # Don't remove dependency args come here
-#MSUB{{EXTRA_OPTS}}                                  # Any extra arguments passed onto queue(), don't change. Format handled by R
+#MSUB -N ex_sleep-sample1-20150709-20-19-27-JNavXg0f_001.sleep-1                                  # name of the job
+#MSUB -l nodes=1:ppn=1                          # specify number of nodes and cpu to reserve
+#MSUB -o ~/flowr/runs/ex_sleep-sample1-20150709-20-19-27-JNavXg0f/001.sleep/sleep_cmd_1.out                                   # output is sent to logfile, stdout + stderr by default
+#MSUB -e ~/flowr/runs/ex_sleep-sample1-20150709-20-19-27-JNavXg0f/001.sleep/sleep_cmd_1.out                                   # output is sent to logfile, stdout + stderr by default
+#MSUB -l walltime=23:00                        # Walltime in minutes
+#MSUB -l mem=163185                               # Memory requirements in Kbytes
+#MSUB -r y -V                                         # make the jobs re-runnable. -V export all env of user to compute nodes
+#MSUB -j oe                                           # merge output from stdout and stderr
+#MSUB -S /bin/bash                                    # use bash shell
+#MSUB -d {{CWD}}                                       # the workding dir for each job, this is /tmp
+#MSUB -M {{EMAIL}}                                      # email address of the person
+#MSUB                                   # Don't remove dependency args come here
+#MSUB                                   # Any extra arguments passed onto queue(), don't change. Format handled by R
+
+## -------   REMOVE one # to make QUEUE work
+##MSUB -q medium                                    # Job queue
 
 
 
