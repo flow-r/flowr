@@ -114,3 +114,5 @@ if(is.na(args[1])) {
 	}
 }
 
+
+warnings()

@@ -11,9 +11,9 @@ git clone https://github.com/sahilseth/flowr.git
 R CMD INSTALL flowr
 
 ## or 
-install.flow
+#install.flow
 
-flowr run sleep execute=TRUE
+flowr run sleep execute=TRUE platform=torque
 ```
 
 
