@@ -26,5 +26,8 @@ error <- function(x){
 	if(x == "no.shell")
 		y = "There are no shell scripts, did this flow run ?"
 	
+	if(x == "jobid.non.num")
+		y = "Unable to parse JOB IDs as numbers, it likely submission failed. OR parsing of job ids failed \n\n"
+	
   return(y)
 }

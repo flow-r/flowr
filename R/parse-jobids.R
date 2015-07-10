@@ -2,6 +2,14 @@
 #' @export
 parse_jobids <- function(jobids, platform){
 	
+	## --- TORQUE
+	##     Example
+	##  40947.dqsfacpriv01.mdanderson.edu
+	## if there is a . in the middle, get stuff before it
+	if(platform=="torque")
+		jobids <- gsub(".*\\..*","\\1", jobids)
+	
+	
 	## --- LSF
 	## --- Example: 
 	## Job <4809> is submitted to queue <transfer>.
@@ -21,11 +29,13 @@ parse_jobids <- function(jobids, platform){
 	}
 	
 	## --- check how jobids looks
+	##     forcing jobids to be numeric !!
+	##     is this a big assumption ?
 	chk = is.na(as.numeric(jobids))
 	if(sum(chk) > 0)
-		stop("Looks like jobsubmission failed. Please check the jobs submission format. Submission died with error: \n\n\n",
-				 jobids)
-	
+		warning(error("jobid.non.num"))
+	## stop(jobids)
+
 	return(jobids)
 }
 
