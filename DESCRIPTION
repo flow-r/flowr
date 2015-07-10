@@ -13,6 +13,7 @@ Depends:
 Imports:
     knitr,
     ggplot2,
+    tools,
     RSQLite,
     reshape2,
     openxlsx

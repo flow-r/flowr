@@ -4,13 +4,15 @@
 \alias{to_flow}
 \title{Create flow objects}
 \usage{
-to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path,
-  submit = FALSE, platform, execute, qobj, ...)
+to_flow(x, def, ...)
 }
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
 
 \item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
+
+\item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
+This over-rides the platform column in flow_def.}
 
 \item{grp_col}{column name used to split x (flow_mat). Default: `samplename`}
 
@@ -23,9 +25,6 @@ to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path,
 \item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.}
 
 \item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
-
-\item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flow_def.}
 
 \item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
 

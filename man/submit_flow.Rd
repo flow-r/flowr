@@ -4,20 +4,20 @@
 \alias{submit_flow}
 \title{submit_flow}
 \usage{
-submit_flow(x, uuid, execute = FALSE, plot = TRUE, verbose = FALSE, ...)
+submit_flow(x, ...)
 }
 \arguments{
 \item{x}{a \code{object} of class \code{flow}.}
 
-\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
+\item{...}{Advanced use. Any additional parameters are passed on to \link{submit_job} function.}
 
 \item{execute}{\code{logical} whether or not to submit the jobs}
 
 \item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
 
-\item{verbose}{logical.}
+\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
 
-\item{...}{Advanced use. Any additional parameters are passed on to \link{submit_job} function.}
+\item{verbose}{logical.}
 }
 \description{
 submit_flow

@@ -50,15 +50,7 @@ guess_dep_type <- function(cmds, prev_job){
 #' 
 #' @export
 to_flow <- function(x, def, 
-	grp_col,
-	jobname_col,
-	cmd_col,
-	flowname,
-	flow_run_path,
-	submit = FALSE,
-	platform,
-	execute,
-	qobj, ...) {
+	...) {
 	message("input x is ", class(x))
 	UseMethod("to_flow")
 	warnings()
@@ -66,7 +58,7 @@ to_flow <- function(x, def,
 
 #' @inheritParams to_flow.data.frame
 #' @export
-to_flow.vector <- function(x, ...){
+to_flow.vector <- function(x, def, ...){
 	x = read_sheet(x)
 	def <- as.flow_def(def)
 	to_flow(x, def, ...)
@@ -243,10 +235,10 @@ to_flow.data.frame <- function(x, def,
 		cmd.list = split.data.frame(x2, x2$jobname)
 		desc = paste(flowname, samp, sep = "-")
 		fobj = to_flow(x = cmd.list, def = def, 
-									 desc = desc,
-									 flowname = flowname,
+			desc = desc,
+			flowname = flowname,
 			flow_run_path, 
-									 qobj = qobj, ...)
+			qobj = qobj, ...)
 		
 		
 		### ----- remove THESE !

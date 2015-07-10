@@ -63,6 +63,7 @@ chk_conf <- function(x){
 #' Given a name of a configuration file, searches for it in few places
 #' @param x name of the file to search for
 #' @param places places (paths) to look for it. Its best to use the defaults
+#' @export
 #' @details  
 #' 
 #' sequence: the later overrides former if parameter name matches
@@ -72,7 +73,6 @@ chk_conf <- function(x){
 #' @examples {
 #' search_conf("torque.sh")
 #' }
-#' @export
 search_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 	if(missing(places)){
 		places = c(system.file(package = "flowr", "conf"),

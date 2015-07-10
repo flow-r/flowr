@@ -29,9 +29,7 @@
 #' @examples
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
-submit_flow <- function(x, 
-	uuid, execute = FALSE,
-	plot = TRUE, verbose = FALSE, ...) {
+submit_flow <- function(x, ...) {
 	message("input x is ", class(x))
 	UseMethod("submit_flow")
 }
@@ -46,8 +44,8 @@ submit_flow.list <- function(x, ...){
 
 #' @export
 submit_flow.flow <- function(x, 
-	uuid, execute,
-	plot, verbose, ...){
+	uuid, execute = FALSE,
+	plot = TRUE, verbose = FALSE, ...){
 	## -- store, for use later
 	x@execute=execute
 	## the case of resubmission
