@@ -195,7 +195,7 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	##     use the list to replace
 	plat_conf = tail(search_conf(paste0(class(jobj),".sh"), verbose = FALSE), 1)
 	template <- paste(readLines(plat_conf), collapse = "\n")
-	out = whisker.render(template = template, data = l)
+	#out = whisker.render(template = template, data = l)
 
 	out = render(template = template, data = l)
 	
@@ -223,13 +223,19 @@ create_queue_cmd=render_queue_cmd
 render <- function(template, data) {
 	## --- remove items, missing in data
 	mis = which(sapply(data, length) == 0)
-	data = data[-mis]
+	if(length(mis) > 0)
+		data = data[-mis]
 	
 	vars <- unlist(regmatches(template, gregexpr('(?<=\\{\\{)[[:alnum:]_.]+(?=\\}\\})', template, perl=TRUE)))
 	#stopifnot(all(vars %in% names(data)))
 	
 	mis = vars[!vars %in% names(data)]
-	stop("Some variables are specfied in script template, but missing in job object: ", 
-		mis, ".\nRefer to ?job, for details on variable names that can be used.")
-	whisker.render(template, data) 
+	
+	if(length(mis) > 0)
+		stop("Some variables are specfied in script template, but missing in job object: ", 
+		paste(mis, collapse = " "),
+		".\nRefer to ?job, for details on variable names that can be used.")
+	out = whisker.render(template, data)
+	return(out)
+	
 }

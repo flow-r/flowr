@@ -9,14 +9,14 @@
 
 ## --- DO NOT EDIT from below here---- ##
 
-touch {{TRIGGER}}
+touch {{{TRIGGER}}}
 echo 'BGN at' `date`
 
 ## --- command to run comes here (flow_mat)
-{{CMD}}
+{{{CMD}}}
 
 echo 'END at' `date`
 
 exitstat=$?
-echo $exitstat > {{TRIGGER}}
+echo $exitstat > {{{TRIGGER}}}
 exit $exitstat

@@ -1,5 +1,5 @@
 samplename	jobname	cmd
-sample1	sleep	sleep 6
+sample1	sleep	sleep 6 && sleep 1
 sample1	sleep	sleep 16
 sample1	sleep	sleep 8
 sample1	tmp	head -c 100000 /dev/urandom > tmp1_1

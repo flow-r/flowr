@@ -27,7 +27,9 @@ Generate 100 commands each for sleep make div
 
 example1 <- function(samp, n, i){
 	## sleep for a few seconds (100 times)
-	cmd_sleep = sprintf("sleep %s", abs(round(rnorm(n)*10, 0)))
+	cmd_sleep = sprintf("sleep %s && sleep %s", 
+		abs(round(rnorm(n)*10, 0)), 
+		abs(round(rnorm(n)*10, 0)))
 	
 	## Create 100 temporary files
 	tmp10 = sprintf("tmp%s_%s", i, 1:n)

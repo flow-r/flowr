@@ -1,20 +1,20 @@
 #!/bin/bash
-#PBS -N {{JOBNAME}}                                  
-#PBS -l nodes={{NODES}}:ppn={{CPU}}                  
-#PBS -o {{STDOUT}}                                   
-#PBS -e {{STDOUT}}                                   
-#PBS -l walltime={{WALLTIME}}                        
-#PBS -l mem={{MEMORY}}                               
+#PBS -N {{{JOBNAME}}}                                  
+#PBS -l nodes={{{NODES}}}:ppn={{{CPU}}}                  
+#PBS -o {{{STDOUT}}}                                   
+#PBS -e {{{STDOUT}}}                                   
+#PBS -l walltime={{{WALLTIME}}}                        
+#PBS -l mem={{{MEMORY}}}                               
 #PBS -r y -V                                         
 #PBS -j oe
 #PBS -S /bin/bash
-#PBS -d {{CWD}}                                      
-#PBS -M {{EMAIL}}                                    
-#PBS {{DEPENDENCY}}                                  
-#PBS {{EXTRA_OPTS}}                                  
+#PBS -d {{{CWD}}}                                      
+#PBS -M {{{EMAIL}}}                                    
+#PBS {{{DEPENDENCY}}}                                  
+#PBS {{{EXTRA_OPTS}}}                                  
 
 ## -------   REMOVE one # to make QUEUE work
-##PBS -q {{QUEUE}}                                    ## Job queue
+##PBS -q {{{QUEUE}}}                                    ## Job queue
 
 
 ## ------------------------------ n o t e s -------------------------##
@@ -26,14 +26,14 @@
 
 ## --- DO NOT EDIT from below here---- ##
 
-touch {{TRIGGER}}
+touch {{{TRIGGER}}}
 echo 'BGN at' `date`
 
 ## --- command to run comes here (flow_mat)
-{{CMD}}
+{{{CMD}}}
 
 echo 'END at' `date`
 
 exitstat=$?
-echo $exitstat > {{TRIGGER}}
+echo $exitstat > {{{TRIGGER}}}
 exit $exitstat

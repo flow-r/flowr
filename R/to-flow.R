@@ -193,7 +193,7 @@ to_flow.data.frame <- function(x, def,
 			
 			### ----- remove THESE !
 			if(execute|submit){
-				message("You may use fobj <- to_flow(...); submit_flow(fobj)")
+				message("\nYou may use fobj <- to_flow(...); submit_flow(fobj)")
 				if(execute)
 					submit = TRUE
 			}

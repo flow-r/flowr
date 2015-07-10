@@ -1,20 +1,20 @@
 #!/bin/bash
-#MSUB -N {{JOBNAME}}                                  # name of the job
-#MSUB -l nodes={{NODES}}:ppn={{CPU}}                          # specify number of nodes and cpu to reserve
-#MSUB -o {{STDOUT}}                                   # output is sent to logfile, stdout + stderr by default
-#MSUB -e {{STDOUT}}                                   # output is sent to logfile, stdout + stderr by default
-#MSUB -l walltime={{WALLTIME}}                        # Walltime in minutes
-#MSUB -l mem={{MEMORY}}                               # Memory requirements in Kbytes
+#MSUB -N {{{JOBNAME}}}                                  # name of the job
+#MSUB -l nodes={{{NODES}}}:ppn={{{CPU}}}                          # specify number of nodes and cpu to reserve
+#MSUB -o {{{STDOUT}}}                                   # output is sent to logfile, stdout + stderr by default
+#MSUB -e {{{STDOUT}}}                                   # output is sent to logfile, stdout + stderr by default
+#MSUB -l walltime={{{WALLTIME}}}                        # Walltime in minutes
+#MSUB -l mem={{{MEMORY}}}                               # Memory requirements in Kbytes
 #MSUB -r y -V                                         # make the jobs re-runnable. -V export all env of user to compute nodes
 #MSUB -j oe                                           # merge output from stdout and stderr
 #MSUB -S /bin/bash                                    # use bash shell
-#MSUB -d {{CWD}}                                      # the workding dir for each job, this is {{flow_path}}/tmp
-#MSUB -M {{EMAIL}}                                    # email address of the person
-#MSUB {{DEPENDENCY}}                                  # Don't remove dependency args come here
-#MSUB {{EXTRA_OPTS}}                                  # Any extra arguments passed onto queue(), don't change. Format handled by R
+#MSUB -d {{{CWD}}}                                      # the workding dir for each job, this is {{{flow_path}}}/tmp
+#MSUB -M {{{EMAIL}}}                                    # email address of the person
+#MSUB {{{DEPENDENCY}}}                                  # Don't remove dependency args come here
+#MSUB {{{EXTRA_OPTS}}}                                  # Any extra arguments passed onto queue(), don't change. Format handled by R
 
 ## -------   REMOVE one # to make QUEUE work
-##MSUB -q {{QUEUE}}                                    # Job queue
+##MSUB -q {{{QUEUE}}}                                    # Job queue
 
 
 ## ------------------------------ n o t e s -------------------------##
@@ -26,14 +26,14 @@
 
 ## --- DO NOT EDIT from below here---- ##
 
-touch {{TRIGGER}}
+touch {{{TRIGGER}}}
 echo 'BGN at' `date`
 
 ## --- command to run comes here (flow_mat)
-{{CMD}}
+{{{CMD}}}
 
 echo 'END at' `date`
 
 exitstat=$?
-echo $exitstat > {{TRIGGER}}
+echo $exitstat > {{{TRIGGER}}}
 exit $exitstat
