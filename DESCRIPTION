@@ -7,7 +7,8 @@ Date: 2015-04-02
 Depends: 
     diagram, 
     methods,
-    rmarkdown
+    rmarkdown,
+    whisker
 Imports:
     knitr,
     ggplot2,
