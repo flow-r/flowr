@@ -16,6 +16,8 @@
 ## -------   REMOVE one # to make QUEUE work
 ##PBS -q {{QUEUE}}                                    ## Job queue
 
+## PBS does not seem to like in-line comments, use torque.sh instead of this file.
+
 
 ## ------------------------------ n o t e s -------------------------##
 ## All variables specified above are replaced on the fly. 
