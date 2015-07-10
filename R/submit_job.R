@@ -146,7 +146,7 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 	return(cmd=cmd)
 }
 
-#' create_queue_cmd
+#' render_queue_cmd
 #' 
 #' @param file path to the output file
 #' @param jobj job object
@@ -154,7 +154,7 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 #' @param fobj flow object
 #' 
 #' @import whisker
-create_queue_cmd <- function(jobj, file, index, fobj){
+render_queue_cmd <- function(jobj, file, index, fobj){
 	
 	## --- get platform of previous job
 	prev_plat = try(fobj@jobs[[jobj@previous_job]]@platform, silent = TRUE)
@@ -207,6 +207,7 @@ create_queue_cmd <- function(jobj, file, index, fobj){
 	}
 	
 }
+create_queue_cmd=render_queue_cmd
 
 #cmd <- .create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
 

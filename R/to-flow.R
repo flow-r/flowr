@@ -42,7 +42,7 @@ guess_dep_type <- function(x, cmds, prev_job){
 #' @param cmd_col column name with commands. Default: `cmd`
 #' @param flowname name of the flow
 #' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.
-#' @param desc final flow name
+#' @param desc Advanced Use. final flow name. don't change.
 #'
 #' @param ... Supplied to specific functions like \link{to_flow.data.frame}
 #'
@@ -56,6 +56,20 @@ guess_dep_type <- function(x, cmds, prev_job){
 #' This is a minimum three column matrix with:
 #' 
 #' samplename<TAB>jobname<TAB>cmd
+#' 
+#' 
+#' ## Behaviour, in terms of submit and execute
+#' 
+#' submit=FALSE execute=FALSE: default, only flow object creation
+#' 
+#' submit=TRUE, execute=FALSE: dry-run
+#' 
+#' submit=TRUE, execute=TRUE: submit to cluster
+#' 
+#' @return 
+#' Returns a flow object. If execute=TRUE, fobj is rich with information about where and how 
+#' the flow was executed. It would include details like jobids, path to exact scripts run etc.
+#' To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 #' 
 #' @export
 to_flow <- function(x, ...) {
@@ -84,11 +98,6 @@ to_flow.data.frame <- function(x, def,
 	submit = FALSE,
 	execute = FALSE,
 	qobj, ...){
-		if(execute|submit){
-			warning("This feature has been depciated. Please to fobj <- to_flow(...); submit_flow(fobj)")
-			if(execute)
-				submit = TRUE
-		}
 		
 		message("\n\n##--- Getting default values for missing parameters...")
 		## --- get defaults sample, job and cmd columns
@@ -183,6 +192,12 @@ to_flow.data.frame <- function(x, def,
 			
 			
 			### ----- remove THESE !
+			if(execute|submit){
+				message("You may use fobj <- to_flow(...); submit_flow(fobj)")
+				if(execute)
+					submit = TRUE
+			}
+			
 			if(submit)
 				fobjuuid <- submit_flow(fobj, execute = execute)
 			if(execute)
@@ -198,6 +213,104 @@ to_flow.data.frame <- function(x, def,
 		return(fobjs)
 		
 	}
+
+
+
+#' @rdname to_flow
+#' @method to_flow list
+#' @export to_flow
+to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
+	## --- qobj, missing only works for arguments
+	## x is a list of flow_mat, split by jobname
+	
+	jobs <- lapply(1:nrow(def), function(i, qobj){
+		message(".", appendLF = FALSE)
+		jobnm = def[i, "jobname"]
+		cmds = x[[jobnm]]$cmd; 
+		
+		## --- submit def, to get resources for this particular job
+		def2 = subset(def, def$jobname == jobnm)
+		prev_job = unlist(def2$prev_jobs)
+		if(!is.na(prev_job))
+			prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
+		d_cpu = unlist(def2$cpu_reserved)
+		d_walltime = unlist(def2$walltime)
+		d_memory = as.character(unlist(def2$memory_reserved))
+		d_queue = unlist(def2$queue)
+		d_dep_type = unlist(def2$dep_type)
+		d_sub_type = unlist(def2$sub_type)
+		if(missing(qobj))
+			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
+		
+		## --- getting defaults of submission and depedency types		
+		if(length(d_sub_type) == 0){
+			d_sub_type = guess_sub_type(cmds = cmds)
+		}
+		## guess dep_type
+		if(length(d_dep_type) == 0){
+			d_dep_type <- guess_dep_type(prev_job = prev_job, cmds = cmds)
+		}
+		
+		## -------- if cmds are missing; change to echo 0 and make cpu = 1
+		cpu = ifelse(cmds[1] == ".", 1, d_cpu)
+		## if starts from . echo
+		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
+		
+		jobj = job(q_obj = qobj, name = jobnm, 
+			previous_job = prev_job,
+			cmds = cmds,
+			dependency_type = d_dep_type, 
+			submission_type = d_sub_type,
+			cpu = d_cpu, queue = d_queue,
+			walltime = d_walltime, 
+			memory = d_memory)
+		return(jobj)
+	})
+	
+	
+	fobj <- flow(jobs = jobs,
+		desc = desc, name = flowname,
+		mode = "scheduler", 
+		flow_run_path = flow_run_path)
+	
+	## --- check if submission or depedency types were guessed
+	if(is.null(def$sub_type) | is.null(def$dep_type)){
+		message("Submission/definition types were guessed.",
+			"\nThis is really a experimental feature.",
+			"\nPlease check the following table.",
+			"\nIncase of issues please re-submit specifying them explicitly.")
+		mydef = create_jobs_mat(fobj)
+		cols = c("jobname",  'prev_jobs',  'dep_type', 'sub_type')
+		print(knitr::kable(mydef[, cols], col.names=FALSE))
+	}
+	
+	return(fobj)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #setMethod("to_flow", signature(x = "list"), definition = .to_flow.list)
 #setMethod("to_flow", signature(x = "data.frame"), definition = .to_flow.data.frame)
@@ -308,78 +421,7 @@ cmds_to_flow <- function(cmd.list,
 
 
 
-#' @return \code{NULL}
-#' 
-#' @rdname to_flow
-#' @method to_flow list
-#' @export to_flow
-to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
-	## --- qobj, missing only works for arguments
-	## x is a list of flow_mat, split by jobname
-	
-	jobs <- lapply(1:nrow(def), function(i, qobj){
-		message(".", appendLF = FALSE)
-		jobnm = def[i, "jobname"]
-		cmds = x[[jobnm]]$cmd; 
 
-		## --- submit def, to get resources for this particular job
-		def2 = subset(def, def$jobname == jobnm)
-		prev_job = unlist(def2$prev_jobs)
-		if(!is.na(prev_job))
-			prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
-		d_cpu = unlist(def2$cpu_reserved)
-		d_walltime = unlist(def2$walltime)
-		d_memory = as.character(unlist(def2$memory_reserved))
-		d_queue = unlist(def2$queue)
-		d_dep_type = unlist(def2$dep_type)
-		d_sub_type = unlist(def2$sub_type)
-		if(missing(qobj))
-			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
-
-		## --- getting defaults of submission and depedency types		
-		if(length(d_sub_type) == 0){
-			d_sub_type = guess_sub_type(cmds = cmds)
-		}
-		## guess dep_type
-		if(length(d_dep_type) == 0){
-			d_dep_type <- guess_dep_type(prev_job = prev_job, cmds = cmds)
-		}
-
-		## -------- if cmds are missing; change to echo 0 and make cpu = 1
-		cpu = ifelse(cmds[1] == ".", 1, d_cpu)
-		## if starts from . echo
-		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
-		
-		jobj = job(q_obj = qobj, name = jobnm, 
-						previous_job = prev_job,
-						cmds = cmds,
-						dependency_type = d_dep_type, 
-						submission_type = d_sub_type,
-						cpu = d_cpu, queue = d_queue,
-						walltime = d_walltime, 
-						memory = d_memory)
-		return(jobj)
-	})
-	
-	
-	fobj <- flow(jobs = jobs,
-							 desc = desc, name = flowname,
-							 mode = "scheduler", 
-		flow_run_path = flow_run_path)
-
-	## --- check if submission or depedency types were guessed
-	if(is.null(def$sub_type) | is.null(def$dep_type)){
-		message("Submission/definition types were guessed.",
-						"\nThis is really a experimental feature.",
-						"\nPlease check the following table.",
-						"\nIncase of issues please re-submit specifying them explicitly.")
-		mydef = create_jobs_mat(fobj)
-		cols = c("jobname",  'prev_jobs',  'dep_type', 'sub_type')
-		print(knitr::kable(mydef[, cols], col.names=FALSE))
-	}
-
-	return(fobj)
-}
 
 # def = system.file(package = "flowr", "files/flow_def_ex1.txt")
 

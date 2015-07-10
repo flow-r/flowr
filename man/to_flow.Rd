@@ -42,10 +42,12 @@ This over-rides the platform column in flow_def.}
 
 \item{qobj}{Depreciated. A object of class \link{queue}.}
 
-\item{desc}{final flow name}
+\item{desc}{Advanced Use. final flow name. don't change.}
 }
 \value{
-\code{NULL}
+Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
+the flow was executed. It would include details like jobids, path to exact scripts run etc.
+To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 }
 \description{
 Use a set of shell commands and flow definiton to create \link{flow} object.
@@ -55,5 +57,14 @@ The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sh
 This is a minimum three column matrix with:
 
 samplename<TAB>jobname<TAB>cmd
+
+
+## Behaviour, in terms of submit and execute
+
+submit=FALSE execute=FALSE: default, only flow object creation
+
+submit=TRUE, execute=FALSE: dry-run
+
+submit=TRUE, execute=TRUE: submit to cluster
 }
 
