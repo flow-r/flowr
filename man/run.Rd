@@ -25,6 +25,8 @@ run(x = "sleep", type = "example", platform, flow_mat, flow_def,
 \item{flow_def}{flow definition}
 
 \item{execute}{TRUE/FALSE}
+
+\item{...}{passed onto the function used to create the flow_mat}
 }
 \description{
 run pipelines

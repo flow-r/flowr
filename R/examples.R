@@ -25,6 +25,7 @@
 #' @param type adv.
 #' @param platform what platform to use, overrides flow_def
 #' @param execute TRUE/FALSE
+#' @param ... passed onto the function used to create the flow_mat
 #' 
 #' 
 #' @aliases run_flow
