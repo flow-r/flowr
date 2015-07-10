@@ -15,7 +15,6 @@ read_sheet <- function(x, id_column, start_row = 1, sheet = "sample_sheet", ext,
 		ext <- file_ext(x)
 	if(ext %in% c("tsv", "txt", "conf")){
 		mat <- read.table(x, as.is=TRUE, sep="\t", header=TRUE, stringsAsFactors = FALSE,
-			quote = "",
 			comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, ...)
 	}else if(ext=="csv"){
 		mat <- read.csv2(x, as.is=TRUE, sep=",", header=TRUE, stringsAsFactors = FALSE,

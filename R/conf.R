@@ -1,7 +1,7 @@
 
 
 .load_conf <- function(x, chk, ...){
-	conf <- read_sheet(x)
+	conf <- read_sheet(x, allowEscape = TRUE)
 
 	lst = as.list(conf$value)
 	names(lst) = conf$name

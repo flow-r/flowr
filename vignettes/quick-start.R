@@ -16,7 +16,7 @@ library(flowr)
 setup()
 
 ## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5-------------
-require(DiagrammeR)
+library(DiagrammeR)
 mermaid("
 graph LR
 A(sleep)-->B(create_few_files) 
