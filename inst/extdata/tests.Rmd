@@ -5,11 +5,25 @@ output: html_document
 
 ```{r}
 devtools::install_github("sahilseth/flowr")
+library(flowr)
+setup()
 ```
 
 
 ```{r}
 devtools::load_all(".")
+```
+
+## tesing a platform
+```{r}
+platform = "torque"
+fobj = flowr:::.run_sleep(platform = platform)
+
+
+```
+
+
+```{r}
 
 fobj = .run_sleep() ## should be local
 fobj@jobs[[1]]@platform == "local"
@@ -17,7 +31,6 @@ fobj = .run_sleep(execute = TRUE)
 
 
 fobj = .run_sleep(platform = "lsf") ## should be local
-fobj = .run_sleep(platform = "torque") ## should be local
 fobj = .run_sleep(platform = "sge") ## should be local
 fobj = .run_sleep(platform = "moab") ## should be local
 

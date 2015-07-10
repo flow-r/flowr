@@ -44,7 +44,7 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 	## --- shell scripts and their respective STDOUT/ERR
 	jobj@script <- sprintf("%s/%s_cmd_%s.sh", wd, jobj@name, 1:length(jobj@cmds))
 	## gsub .sh from end of file
-	jobj@stderr = jobj@stdout = gsub(".sh$", ".out", files)
+	jobj@stderr = jobj@stdout = gsub(".sh$", ".out", jobj@script)
 	jobj@trigger = sprintf("%s/trigger/trigger_%s_%s.txt", fobj@flow_path, jobj@jobname, 1:length(jobj@cmds))
 	
 	#jobj@stderr <- file.path(wd, jobj@jobname)
@@ -194,6 +194,7 @@ create_queue_cmd <- function(jobj, file, index, fobj, ...){
 	}else{
 		cmd <- sprintf("%s %s", jobj@submit_exe, jobj@script[index])
 		return(cmd)
+		
 	}
 	
 }
