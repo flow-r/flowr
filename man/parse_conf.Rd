@@ -6,6 +6,9 @@
 \usage{
 parse_conf(lst)
 }
+\arguments{
+\item{lst}{a list of configuration options to parse}
+}
 \description{
 parse_conf
 }

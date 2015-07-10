@@ -7,11 +7,11 @@ Date: 2015-07-10
 Depends: 
     methods,
     utils,
-    rmarkdown,
     diagram, 
     whisker
 Imports:
     knitr,
+    rmarkdown,
     ggplot2,
     tools,
     RSQLite,

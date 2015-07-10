@@ -2,20 +2,27 @@
 % Please edit documentation in R/submit_flow.R
 \name{submit_flow}
 \alias{submit_flow}
+\alias{submit_flow.flow}
+\alias{submit_flow.list}
 \title{submit_flow}
 \usage{
 submit_flow(x, ...)
+
+\method{submit_flow}{list}(x, ...)
+
+\method{submit_flow}{flow}(x, uuid, execute = FALSE, plot = TRUE,
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{a \code{object} of class \code{flow}.}
 
 \item{...}{Advanced use. Any additional parameters are passed on to \link{submit_job} function.}
 
+\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
+
 \item{execute}{\code{logical} whether or not to submit the jobs}
 
 \item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
-
-\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
 
 \item{verbose}{logical.}
 }

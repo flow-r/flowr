@@ -12,6 +12,7 @@
 # 	standardGeneric("submit_flow")
 # })
 
+#' @rdname submit_flow
 #' @title submit_flow
 #' @description submit_flow
 #' @aliases submit_flow
@@ -36,12 +37,14 @@ submit_flow <- function(x, ...) {
 
 ## --- this works when there are a list of fobjs
 
+#' @rdname submit_flow
 #' @export
 submit_flow.list <- function(x, ...){
 	fobjs = lapply(x, submit_flow, ....)
 	return(fobjs)
 }
 
+#' @rdname submit_flow
 #' @export
 submit_flow.flow <- function(x, 
 	uuid, execute = FALSE,

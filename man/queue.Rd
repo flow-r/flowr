@@ -51,6 +51,8 @@ queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
 \item{stdout}{[debug use] Ignore}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
+
+\item{status}{status of this job, not really used currently.}
 }
 \description{
 This function defines the queue used to submit jobs to the cluster. In essence details about the

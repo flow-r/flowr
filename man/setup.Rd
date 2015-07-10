@@ -4,7 +4,10 @@
 \alias{setup}
 \title{Setup and initialize some scripts.}
 \usage{
-setup(bin = "~/bin", pkg = "flowr")
+setup(bin = "~/bin")
+}
+\arguments{
+\item{bin}{path to bin folder}
 }
 \description{
 Setup and initialize some scripts.

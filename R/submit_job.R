@@ -3,6 +3,7 @@
 
 #' @title submit_job
 #' @description submit_job
+#' 
 #' @param jobj Object of calls \link{job}
 #' @param fobj Object of calls \link{flow}
 #' @param execute A \code{logical} vector suggesting whether to submit this job
@@ -10,6 +11,7 @@
 #' @param wd working direcotry
 #' @param job_id job id
 #' @param ... not used
+#' 
 #' @importFrom tools file_path_as_absolute
 #' @examples \dontrun{
 #' submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
@@ -41,7 +43,7 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 		jobj@cmds <-  paste("## ------", names(jobj@cmds),
 			"\n", jobj@cmds, "\n\n", collapse="")
 	}
-
+	
 	## -- from here on use full WD path	
 	wd = file_path_as_absolute(wd)
 	## --- shell scripts and their respective STDOUT/ERR
@@ -60,10 +62,10 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 		obj <- jobj;
 		obj@jobname <- sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
 		cmd <- create_queue_cmd(jobj = obj, fobj = fobj, index=i)
-
+		
 		## --- write script to file
 		if(verbose) message("Submitting using script:\n", cmd, "\n")
-
+		
 		## --- return CMD if local, else jobid
 		if(jobj@platform == "local")
 			return(cmd)
@@ -95,7 +97,7 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 	
 	if(jobj@platform == "local"){
 		cmd <- sprintf("cd %s;%s %s > %s 2>&1;echo 0",
-									 jobj@cwd, jobj@submit_exe, file, jobj@stdout[index])
+			jobj@cwd, jobj@submit_exe, file, jobj@stdout[index])
 		return(cmd)
 	}
 	
@@ -117,7 +119,7 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 		class(jobj) = jobj@platform
 		dependency <- parse_dependency(jobj, index = index)
 	}
-
+	
 	## this might be the case if re-run, when only a subset of jobs are to be rerun
 	if(length(jobj@dependency) == 0){
 		dependency <- ""
@@ -145,11 +147,14 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 }
 
 #' create_queue_cmd
+#' 
 #' @param file path to the output file
+#' @param jobj job object
+#' @param index If more than one, which command to focus on. Can be from \code{1:length(cmds)}
+#' @param fobj flow object
+#' 
 #' @import whisker
-create_queue_cmd <- function(jobj, file, index, fobj, ...){
-
-
+create_queue_cmd <- function(jobj, file, index, fobj){
 	
 	## --- get platform of previous job
 	prev_plat = try(fobj@jobs[[jobj@previous_job]]@platform, silent = TRUE)

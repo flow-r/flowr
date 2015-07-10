@@ -6,6 +6,11 @@
 \usage{
 parse_jobids(jobids, platform)
 }
+\arguments{
+\item{jobids}{output from HPCC upon job submission, as a character vector}
+
+\item{platform}{string specifying the platform. This determines how the jobids are parsed}
+}
 \description{
 parse_jobids
 }

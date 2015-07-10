@@ -9,6 +9,8 @@ check(x, ...)
 }
 \arguments{
 \item{x}{a flow_def object}
+
+\item{...}{suppled to \code{check.classname} function}
 }
 \description{
 check consistency of objects

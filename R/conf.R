@@ -22,6 +22,9 @@
 ## use whisker to evaluate the string, given available data
 
 #' parse_conf 
+#' @param lst a list of configuration options to parse
+#' 
+#' 
 #' @import whisker
 parse_conf <- function(lst){
 	## --- sequentially evaluae each configuration
@@ -33,7 +36,9 @@ parse_conf <- function(lst){
 
 
 #' load a configuration file into the environment
-#' x path to a configuration file
+#' @param x path to a configuration file
+#' @param chk check the file after loading?
+#' @param ... Not used
 #' @export
 load_conf <- function(x, chk = TRUE, ...){
 	## .load_conf: works on a single file
@@ -61,8 +66,11 @@ chk_conf <- function(x){
 
 
 #' Given a name of a configuration file, searches for it in few places
+#' 
 #' @param x name of the file to search for
 #' @param places places (paths) to look for it. Its best to use the defaults
+#' @param verbose be chatty?
+#' 
 #' @export
 #' @details  
 #' 

@@ -5,7 +5,7 @@
 \title{Create a skeleton flow definition
 A helper function to create a skeleton flow_definition.}
 \usage{
-sample_flow_def(fl, jobnames, cols)
+sample_flow_def(fl, jobnames)
 }
 \arguments{
 \item{fl}{path to a matrix with commands to run}

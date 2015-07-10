@@ -9,6 +9,8 @@ parse_dependency(x, ...)
 }
 \arguments{
 \item{x}{is a `job` object}
+
+\item{...}{not used}
 }
 \description{
 Parse dependency

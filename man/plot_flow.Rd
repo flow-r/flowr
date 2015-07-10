@@ -2,10 +2,16 @@
 % Please edit documentation in R/plot.R
 \name{plot_flow}
 \alias{plot_flow}
-\alias{plot_flow-method}
+\alias{plot_flow.flow}
+\alias{plot_flow.list}
 \title{plot_flow}
 \usage{
 plot_flow(x, ...)
+
+\method{plot_flow}{flow}(x, detailed = TRUE, type = c("1", "2"),
+  pdf = FALSE, pdffile = sprintf("\%s.pdf", x@name), ...)
+
+\method{plot_flow}{list}(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{flow}}
@@ -14,11 +20,11 @@ plot_flow(x, ...)
 
 \item{detailed}{include some details}
 
+\item{type}{1 is original, and 2 is a elipse with less details}
+
 \item{pdf}{create a pdf instead of plotting interactively}
 
 \item{pdffile}{output file name for the pdf file}
-
-\item{type}{1 is original, and 2 is a elipse with less details}
 }
 \description{
 plot the flow object

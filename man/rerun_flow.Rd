@@ -9,6 +9,12 @@ rerun_flow(x, mat, def, start_from, execute = TRUE, kill = TRUE)
 \arguments{
 \item{x}{Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.}
 
+\item{mat}{path to flow_mat. should fetch on the fly}
+
+\item{def}{path to should fetch on the fly}
+
+\item{start_from}{which job to start from}
+
 \item{execute}{[logical] whether to execute or not}
 
 \item{kill}{logical indicating whether to kill the jobs from old flow}

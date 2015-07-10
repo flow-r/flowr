@@ -20,7 +20,6 @@ if(FALSE){
 #' @description generate_flow_code
 #' @param x flow object
 #' @param ... currently ignored
-#' @export
 #' @keywords internal
 #' @examples
 #' \dontrun{

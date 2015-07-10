@@ -4,10 +4,16 @@
 \alias{create_queue_cmd}
 \title{create_queue_cmd}
 \usage{
-create_queue_cmd(jobj, file, index, fobj, ...)
+create_queue_cmd(jobj, file, index, fobj)
 }
 \arguments{
+\item{jobj}{job object}
+
 \item{file}{path to the output file}
+
+\item{index}{If more than one, which command to focus on. Can be from \code{1:length(cmds)}}
+
+\item{fobj}{flow object}
 }
 \description{
 create_queue_cmd

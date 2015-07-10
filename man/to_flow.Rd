@@ -2,17 +2,26 @@
 % Please edit documentation in R/to-flow.R
 \name{to_flow}
 \alias{to_flow}
+\alias{to_flow.data.frame}
+\alias{to_flow.list}
+\alias{to_flow.vector}
 \title{Create flow objects}
 \usage{
-to_flow(x, def, ...)
+to_flow(x, ...)
+
+\method{to_flow}{vector}(x, def, ...)
+
+\method{to_flow}{data.frame}(x, def, grp_col, jobname_col, cmd_col, flowname,
+  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
+
+\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, ...)
 }
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
 
-\item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
+\item{...}{Supplied to specific functions like \link{to_flow.data.frame}}
 
-\item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flow_def.}
+\item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
 
 \item{grp_col}{column name used to split x (flow_mat). Default: `samplename`}
 
@@ -24,11 +33,19 @@ This over-rides the platform column in flow_def.}
 
 \item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.}
 
+\item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
+This over-rides the platform column in flow_def.}
+
 \item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
 
 \item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
 
 \item{qobj}{Depreciated. A object of class \link{queue}.}
+
+\item{desc}{final flow name}
+}
+\value{
+\code{NULL}
 }
 \description{
 Use a set of shell commands and flow definiton to create \link{flow} object.

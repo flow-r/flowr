@@ -28,8 +28,6 @@ job(cmds = "", name = "myjob", q_obj = new("queue"), previous_job = "",
 \item{dependency_type}{depedency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
-
-\item{status}{status [ignore]. this is used internally to update status of the job.}
 }
 \description{
 job class

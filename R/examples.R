@@ -22,6 +22,11 @@
 #' @param x name of the pipeline to run. This is a function called to create a flow_mat.
 #' @param flow_mat flow matrix, with commands to run (if we already have this, start here)
 #' @param flow_def flow definition
+#' @param type adv.
+#' @param platform what platform to use, overrides flow_def
+#' @param execute TRUE/FALSE
+#' 
+#' 
 #' @aliases run_flow
 #' @export
 run <- function(x="sleep", type = "example", platform, flow_mat, flow_def, execute = FALSE, ...){

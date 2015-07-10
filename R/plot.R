@@ -1,16 +1,20 @@
 
 
-
+#' @rdname plot_flow
+#' 
 #' @title plot_flow
 #' @description plot the flow object
-#' @aliases plot_flow plot_flow-method
+#' 
+#' @aliases plot_flow plot_flow.list plot_flow.flow
 #' @aliases plot
+#' 
 #' @param x Object of class \code{flow}
 #' @param detailed include some details
 #' @param pdf create a pdf instead of plotting interactively
 #' @param pdffile output file name for the pdf file
 #' @param type 1 is original, and 2 is a elipse with less details
 #' @param ... experimental
+#' 
 #' @export plot_flow
 #' @import diagram
 #' @examples 
@@ -35,12 +39,15 @@
 #'              dependency_type = "burst", previous_job = "job1")
 #' fobj <- flow(jobs = list(jobj1, jobj2))
 #' plot_flow(fobj)
+#' 
 plot_flow <- function(x, ...) {
 	message("input x is ", class(x))
 	UseMethod("plot_flow")
 }
 
 ## ------------- make a flowchart using the object
+#' @rdname plot_flow
+#' @method plot_flow flow
 #' @export
 plot_flow.flow <- function(x, detailed = TRUE, 
 													 type = c('1','2'),
@@ -56,6 +63,9 @@ plot_flow.flow <- function(x, detailed = TRUE,
 
 
 ## compatible with a list of flows as well !
+
+#' @rdname plot_flow
+#' @method plot_flow list
 #' @export
 plot_flow.list <- function(x, ...){
 	tmp <- lapply(x, plot_flow)

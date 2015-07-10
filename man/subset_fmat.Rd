@@ -7,7 +7,11 @@
 subset_fmat(fobj, mat, start_from)
 }
 \arguments{
-\item{mods}{modules to rerun}
+\item{fobj}{flow object}
+
+\item{mat}{a part of flow_def}
+
+\item{start_from,}{where to start from}
 }
 \description{
 subset_fmat

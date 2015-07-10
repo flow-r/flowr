@@ -7,7 +7,11 @@
 subset_fdef(fobj, def, start_from)
 }
 \arguments{
-\item{mods}{modules to rerun}
+\item{fobj}{flow object}
+
+\item{def}{flow_def}
+
+\item{start_from}{where to start from}
 }
 \description{
 subset_fdef

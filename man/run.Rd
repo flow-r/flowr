@@ -16,9 +16,15 @@ run(x = "sleep", type = "example", platform, flow_mat, flow_def,
 \arguments{
 \item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}
 
+\item{type}{adv.}
+
+\item{platform}{what platform to use, overrides flow_def}
+
 \item{flow_mat}{flow matrix, with commands to run (if we already have this, start here)}
 
 \item{flow_def}{flow definition}
+
+\item{execute}{TRUE/FALSE}
 }
 \description{
 run pipelines

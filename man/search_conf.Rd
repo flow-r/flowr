@@ -10,6 +10,8 @@ search_conf(x = "flowr.conf", places, verbose = FALSE)
 \item{x}{name of the file to search for}
 
 \item{places}{places (paths) to look for it. Its best to use the defaults}
+
+\item{verbose}{be chatty?}
 }
 \description{
 Given a name of a configuration file, searches for it in few places

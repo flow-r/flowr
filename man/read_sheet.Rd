@@ -11,6 +11,12 @@ read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext, ...)
 
 \item{id_column}{all rows which have this column as blank are skipped. See details.}
 
+\item{start_row}{supplied to read.xlsx}
+
+\item{sheet}{supplied to read.xlsx}
+
+\item{ext}{determined using file extention. Specifying will override}
+
 \item{...}{passed onto \link{read.xlsx}, read.table of read.csv2 depending on the file type.}
 }
 \description{

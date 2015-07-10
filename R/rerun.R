@@ -9,9 +9,16 @@ if(FALSE){
 
 #' @title rerun_flow
 #' @description rerun_flow
+#' 
+#' 
 #' @param x Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.
 #' @param execute [logical] whether to execute or not
 #' @param kill logical indicating whether to kill the jobs from old flow
+#' @param start_from which job to start from
+#' @param mat path to flow_mat. should fetch on the fly
+#' @param def path to should fetch on the fly
+#' 
+#' 
 #' @details We need path to the flow folder (\code{wd}). The \link{flow} object needs to have upate 'base_path' slow with wd (the path to the flow folder). Also its important to know that we need details regarding the previous submission from flow_details.txt file. Which should typically be in \code{wd}
 #' @export
 #' @examples \dontrun{
@@ -45,6 +52,9 @@ rerun_flow <- function(x, mat, def, start_from, execute = TRUE, kill = TRUE){
 		mat = get_flow_mat(fobj)
 	}
 	
+	if(kill) 
+		capture.output(try(kill_flow(wd = wd)), file = file.path(wd, "kill_jobs.out")) ## kill the flow
+	
 	message("Subsetting... get stuff to run starting ", start_from)
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from)
 	def = subset_fdef(fobj = fobj, def = def, start_from = start_from)
@@ -66,7 +76,6 @@ detect_redo <- function(fobj, wd){
 	## ingest everything in the fobj !
 	#head(flow_status)
 	mods = unique(as.character(flow_status$jobnm))
-	if(kill) capture.output(try(kill_flow(wd = wd)), file = file.path(wd, "kill_jobs.out")) ## kill the flow
 	fobj2 = fobj
 	fobj2@status = "" ## reset flow status, will be submitted as a independent flow
 	for(m in mods){
@@ -82,26 +91,32 @@ detect_redo <- function(fobj, wd){
 }
 
 #' subset_fmat
-#' @param mods modules to rerun
+#' 
+#' @param fobj flow object
+#' @param mat a part of flow_def
+#' @param start_from, where to start from
 subset_fmat <- function(fobj, mat, start_from){
 	mods = names(fobj@jobs)
 	mods = mods[which(grepl(start_from, mods)):length(mods)]
 	## get mat
-	mat = subset(mat, jobname %in% mods)
+	mat = subset(mat, mat$jobname %in% mods)
 	## subset and get jobs which failed
 	#rerun = cbind(module = mods, rerun = unlist(lapply(mods, function(m) length(fobj@jobs[[m]]@cmds))))
 	return(mat)
 }
 
 #' subset_fdef
-#' @param mods modules to rerun
+#' @param fobj flow object
+#' @param def flow_def
+#' @param start_from where to start from
+#' 
 subset_fdef <- function(fobj, def, start_from){
 	if(missing(def))
 		stop("Please supply a flow def file")
 	mods = names(fobj@jobs)
 	mods = mods[which(grepl(start_from, mods)):length(mods)]
 	## get mat
-	def = subset(def, jobname %in% mods)
+	def = subset(def, def$jobname %in% mods)
 	def$prev_jobs = ifelse(def$prev_jobs %in% mods, def$prev_jobs, "none")
 	def$dep_type = ifelse(def$prev_jobs %in% mods, def$dep_type, "none")
 	return(def)

@@ -2,13 +2,18 @@
 % Please edit documentation in R/conf.R
 \name{load_conf}
 \alias{load_conf}
-\title{load a configuration file into the environment
-x path to a configuration file}
+\title{load a configuration file into the environment}
 \usage{
 load_conf(x, chk = TRUE, ...)
 }
+\arguments{
+\item{x}{path to a configuration file}
+
+\item{chk}{check the file after loading?}
+
+\item{...}{Not used}
+}
 \description{
 load a configuration file into the environment
-x path to a configuration file
 }
 

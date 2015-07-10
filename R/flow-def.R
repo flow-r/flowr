@@ -5,6 +5,7 @@ setClass("flow_def", contains = "data.frame")
 #' check consistency of objects
 #' Currently only checks for flow_def
 #' @param x a flow_def object
+#' @param ... suppled to \code{check.classname} function
 #' @export
 check <- function(x, ...) {
 	UseMethod("check")
@@ -18,7 +19,7 @@ is.flow_def <- function(x){
 #' @importFrom knitr kable
 check.flow_def <- function(x, 
 													 sub_types = c("serial", "scatter"),
-													 dep_types = c("none", "serial", "gather", "burst")){
+													 dep_types = c("none", "serial", "gather", "burst"), ...){
 	if(sum(!x$dep_type %in% dep_types)) 
 		stop("Dependency type not recognized.\n Inputs are: ",
 				 paste(x$dep_type, collapse = " "), 
@@ -86,12 +87,13 @@ as.flow_def <- function(x){
 
 #' Create a skeleton flow definition
 #' A helper function to create a skeleton flow_definition.
+#' 
 #' @param jobnames names of the jobs in a flow
 #' @param fl path to a matrix with commands to run
 #' @details flow_tab: as defined by fl is a (minimum) three column matrix with
 #' samplename, jobname, cmd
 #' @export
-sample_flow_def <- function(fl, jobnames, cols){
+sample_flow_def <- function(fl, jobnames){
 	if(!missing(fl)){
 		mat <- read_sheet(fl)
 		jobnames <- unique(mat$jobname)

@@ -2,7 +2,7 @@
 #' Parse dependency
 #' Advanced use, for debugging. Or adding a currenltly un-supported platform.
 #' @param x is a `job` object
-#' @export
+#' @param ... not used
 parse_dependency <- function(x, ...) {
 	# 	message("input x is ", class(x))
 	UseMethod("parse_dependency")

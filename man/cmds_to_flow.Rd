@@ -2,14 +2,26 @@
 % Please edit documentation in R/to-flow.R
 \name{cmds_to_flow}
 \alias{cmds_to_flow}
-\title{to_flow}
+\title{cmds_to_flow: DEPRECIATED}
 \usage{
 cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
   verbose = FALSE), flowname = "stage2", execute = FALSE,
   flow_run_path = "/scratch/iacs/flow_pipe/tmp")
 }
 \arguments{
-\item{x}{\link{list} of commands}
+\item{cmd.list}{list of commands}
+
+\item{samplename}{name of the sample}
+
+\item{infomat}{flow_def}
+
+\item{q_obj}{queue object}
+
+\item{flowname}{name of the flow}
+
+\item{execute}{TRUE/FALSE}
+
+\item{flow_run_path}{outpath}
 }
 \description{
 Create a \link{flow} object from a list of commands

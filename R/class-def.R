@@ -89,6 +89,9 @@ setClass("flow", representation(jobs = "list",
 #' @param stderr [debug use] Ignore
 #' @param stdout [debug use] Ignore
 #' @param server [not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
+#' @param status status of this job, not really used currently.
+#' 
+#' 
 #' @details 
 #' ## Resources:
 #' Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
@@ -157,7 +160,8 @@ queue <- function(object,
 				cwd=cwd, #stderr=stderr,
 				memory=memory,
 				stdout=stdout,email = email,platform=platform,
-				format=format, extra_opts = extra_opts,
+				#format=format,
+				extra_opts = extra_opts,
 				server=server)
 		}else if(platform=="lsf"){
 			## restrict cores to one node
@@ -174,14 +178,16 @@ queue <- function(object,
 				memory=memory,
 				cwd=cwd, stderr=stderr, 
 				stdout=stdout, email=email,platform=platform,
-				format=format, extra_opts = extra_opts,
+				#format=format,
+				extra_opts = extra_opts,
 				server=server)
 		}else if(platform=="local"){
 			object <- new("local", submit_exe='bash',queue=queue,
 				nodes=nodes, memory=memory,
 				cpu=cpu,dependency=dependency,walltime=walltime,
 				cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
-				jobname=jobname,format=format,server=server)
+				jobname=jobname,#format=format,
+				server=server)
 		}else if(platform %in% c("moab")){
 			if(missing(format))
 				format="${SUBMIT_EXE} -N ${JOBNAME} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
@@ -191,7 +197,7 @@ queue <- function(object,
 				cwd=cwd,#stderr=stderr,
 				memory=memory,
 				stdout=stdout,email = email,platform=platform,
-				format=format, extra_opts = extra_opts,
+				extra_opts = extra_opts,
 				server=server)
 			
 		}else{
@@ -199,7 +205,7 @@ queue <- function(object,
 				nodes=nodes, memory=memory,
 				cpu=cpu,dependency=dependency,walltime=walltime,
 				cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
-				jobname=jobname,format=format,server=server)
+				jobname=jobname,server=server)
 		}
 		return(object)
 	}
@@ -208,6 +214,7 @@ queue <- function(object,
 ## flow_type: if multi dependencies, wait for all or according to order
 
 #' job class
+#' 
 #' @param cmds the commands to run
 #' @param name name of the job
 #' @param q_obj queue object
@@ -215,10 +222,10 @@ queue <- function(object,
 #' @param dependency_type depedency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]
 #' @param cpu no of cpu's reserved
 #' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL, '.', or ''. In future this could specify multiple previous jobs.
-#' @param status status [ignore]. this is used internally to update status of the job.
 #' @param memory The amount of memory reserved. Units depend on the platform used to process jobs
 #' @param walltime The amount of time reserved for this job. Format is unique to a platform. Typically it looks like 12:00 (12 hours reserved, say in LSF), in Torque etc. we often see measuring in seconds: 12:00:00
 #' @param ... other passed onto object creation. Example: memory, walltime, cpu
+#' 
 #' @export
 #' @examples
 #' qobj <- queue(platform="torque")
@@ -297,6 +304,7 @@ job <- function(cmds = "",
 #' Defaults to \code{~/flows/trigger}. Best practice to ignore it.
 #' @param flow_path \code{character}
 #' @param status \code{character} Not used at this time
+#' @param execute executtion status of flow object.
 #' @export
 #' @examples
 #' cmds = rep("sleep 5", 10)
