@@ -10,8 +10,8 @@ git clone git@github.com:sahilseth/flowr.git
 git clone https://github.com/sahilseth/flowr.git
 R CMD INSTALL flowr
 
-## or 
-#install.flow
+## HMS test
+install.flow; flowr run sleep platform=lsf execute=TRUE
 
 flowr run sleep execute=TRUE platform=torque
 Rscript -e 'flowr:::.run_sleep(platform = "moab", execute=TRUE)'

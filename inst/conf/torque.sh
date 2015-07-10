@@ -9,7 +9,7 @@
 #PBS -j oe                                           # merge output from stdout and stderr
 #PBS -S /bin/bash                                    # use bash shell
 #PBS -d {{CWD}}                                       # the workding dir for each job, this is {{flow_path}}/tmp
-#PBS -M {{EMAIL}                                      # email address of the person
+#PBS -M {{EMAIL}}                                      # email address of the person
 #PBS {{DEPENDENCY}}                                  # Don't remove dependency args come here; format handled by: parse_dependency()
 #PBS {{EXTRA_OPTS}}                                  # Any extra arguments passed onto queue(), don't change. Format handled by R
 
