@@ -186,7 +186,7 @@ create_queue_cmd <- function(jobj, file, index, fobj, ...){
 	
 	## --- find the relevent conf file(s)
 	##     use the list to replace
-	plat_conf = tail(search_conf(paste0(class(jobj),".sh"), verbose = TRUE), 1)
+	plat_conf = tail(search_conf(paste0(class(jobj),".sh"), verbose = FALSE), 1)
 	template <- paste(readLines(plat_conf), collapse = "\n")
 	out = whisker.render(template = template, data = l)
 	write(x = out, file = jobj@script[index])
