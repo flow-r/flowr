@@ -66,13 +66,18 @@ chk_conf <- function(x){
 #' ~/                                 ## home dir
 #' ~/flowr/conf                       ## flowr default home
 #' MYRLIB/flowr/conf folder           ## flow pipeline folder
-search_conf <- function(x = "flowr.conf", places){
+#' @examples {
+#' search_conf("torque")
+#' }
+search_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 	if(missing(places)){
 		places = c(system.file(package = "flowr", "conf"),
 			getOption("flow_conf_path"), "~/")
 	}
 	
-	y = list.files(path = places, pattern = x, full.names = TRUE)
+	y = sapply(places, list.files, pattern = paste0(x, "$"), full.names = TRUE)
+	y = as.character(unlist(y))
+	if(verbose) message(y)
 	
 	return(y)
 }

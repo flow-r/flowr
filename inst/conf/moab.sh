@@ -1,6 +1,6 @@
 #!/bin/bash
 #MSUB -N {{JOBNAME}}                                  # name of the job
-#MSUB -l nodes=1:ppn={{CPU}}                          # specify number of nodes and cpu to reserve
+#MSUB -l nodes={{NODES}}:ppn={{CPU}}                          # specify number of nodes and cpu to reserve
 #MSUB -o {{STDOUT}}                                   # output is sent to logfile, stdout + stderr by default
 #MSUB -e {{STDOUT}}                                   # output is sent to logfile, stdout + stderr by default
 #MSUB -l walltime={{WALLTIME}}                        # Walltime in minutes

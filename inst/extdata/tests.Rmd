@@ -7,13 +7,17 @@ output: html_document
 ```
 module load R git
 git clone git@github.com:sahilseth/flowr.git
+
+## test for roel
+cd ~/apps
+rm -rf ~/apps/flowr
 git clone https://github.com/sahilseth/flowr.git
 R CMD INSTALL flowr
+flowr run sleep execute=TRUE platform=torque
 
 ## HMS test
 install.flow; flowr run sleep platform=lsf execute=TRUE
 
-flowr run sleep execute=TRUE platform=torque
 Rscript -e 'flowr:::.run_sleep(platform = "moab", execute=TRUE)'
 ```
 
