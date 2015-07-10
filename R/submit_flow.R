@@ -40,7 +40,9 @@ submit_flow <- function(x, ...) {
 #' @rdname submit_flow
 #' @export
 submit_flow.list <- function(x, ...){
-	fobjs = lapply(x, submit_flow, ....)
+	fobjs = lapply(x, function(y)
+		submit_flow(y, ....)
+	)
 	return(fobjs)
 }
 

@@ -7,6 +7,7 @@ read_fobj <- function(x){
 	rds = file.path(x, "flow_details.rds")
 	
 	if(file.exists(rda)){
+		message("Status on these functions, may not work with later versions.")
 		## attach it:
 		tmp <- attach(rda)
 		fobj <- get(ls(tmp), tmp)

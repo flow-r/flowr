@@ -89,7 +89,6 @@ setClass("flow", representation(jobs = "list",
 #' @param stderr [debug use] Ignore
 #' @param stdout [debug use] Ignore
 #' @param server [not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
-#' @param status status of this job, not really used currently.
 #' 
 #' 
 #' @details 

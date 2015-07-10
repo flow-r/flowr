@@ -8,10 +8,10 @@ Depends:
     methods,
     utils,
     diagram, 
+    rmarkdown,
     whisker
 Imports:
     knitr,
-    rmarkdown,
     ggplot2,
     tools,
     RSQLite,
