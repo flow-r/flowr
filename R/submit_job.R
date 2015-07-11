@@ -208,7 +208,11 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 			jobj@cwd, jobj@submit_exe, jobj@script[index], jobj@stdout[index])
 		return(cmd)
 	}else{
-		cmd <- sprintf("%s %s", jobj@submit_exe, jobj@script[index])
+		if(jobj@platform == "lsf")
+			cmd <- sprintf("%s < %s", jobj@submit_exe, jobj@script[index])
+		else
+			cmd <- sprintf("%s %s", jobj@submit_exe, jobj@script[index])
+
 		return(cmd)
 		
 	}

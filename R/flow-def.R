@@ -49,14 +49,17 @@ check.flow_def <- function(x,
 		stop("Previous jobs NOT defined, but dependency type is NOT none")
 	}
 	
-	## --- if flow def has memory and not memory_reserved, handle it
-	if(is.null(x$memory_reserved) & !is.null(x$memory)){
-		x$memory_reserved = x$memory
+	if(FALSE){ # does not work as expected
+		## --- if flow def has memory and not memory_reserved, handle it
+		if(is.null(x$memory_reserved) & !is.null(x$memory)){
+			x$memory_reserved = x$memory
+		}
+		
+		if(is.null(x$cpu_reserved) & !is.null(x$cpu)){
+			x$cpu_reserved = as.numeric(x$cpu)
+		}
 	}
-
-	if(is.null(x$cpu_reserved) & !is.null(x$cpu)){
-		x$cpu_reserved = as.numeric(x$cpu)
-	}
+	
 	x$cpu_reserved = as.numeric(x$cpu_reserved)
 	
 

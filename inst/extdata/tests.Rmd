@@ -78,7 +78,9 @@ flow_def = read_sheet(file.path(exdata,  "example1_flow_def.txt"))
 #colnames(flow_def)[6] = "mem"
 #debug(render_queue_cmd)
 
-fobj = to_flow(x = flow_mat, def = flow_def, submit = TRUE, platform = "torque")
+flowr:::check.flow_def(flow_def)
+
+fobj = to_flow(x = flow_mat, def = flow_def, submit = TRUE, platform = "lsf")
 
 
 
