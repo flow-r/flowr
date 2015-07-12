@@ -335,7 +335,7 @@ cmds_to_flow <- function(cmd.list,
 	flowname = "stage2",
 	execute = FALSE,
 	flow_run_path = "/scratch/iacs/flow_pipe/tmp"){
-		message("Depreciated, use cmds_to_flow instead")
+		.Deprecated("to_flow")
 		## trim down the list
 		cmd.list = lapply(cmd.list, function(y) Filter(function(x) !x == "", y))
 		infomat$dep_type = ifelse(infomat$previous_job==".", "none", "serial")
