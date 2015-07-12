@@ -16,8 +16,8 @@ flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
 
 ## ----ex1, eval=FALSE, echo=FALSE-----------------------------------------
 #  fobj = suppressMessages(to_flow(flow_mat, def = flow_def, platform = "torque"))
-#  debug(submit_flow)
-#  submit_flow(fobj)
+#  #debug(submit_flow)
+#  fobj = submit_flow(fobj)
 #  
 
 ## ----exdef---------------------------------------------------------------

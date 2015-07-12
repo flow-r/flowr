@@ -49,6 +49,8 @@ check.flow_def <- function(x,
 		stop("Previous jobs NOT defined, but dependency type is NOT none")
 	}
 	
+	## check resource requirements, substitute by defaults
+	
 	if(FALSE){ # does not work as expected
 		## --- if flow def has memory and not memory_reserved, handle it
 		if(is.null(x$memory_reserved) & !is.null(x$memory)){
@@ -78,6 +80,10 @@ check.flow_def <- function(x,
 	##      any --(none)--> any
 	invisible(x)
 }
+
+## needs two new functions:
+## check resources
+## check relationships
 
 #
 #' Reeading a flow_definition file and checking it.

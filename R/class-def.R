@@ -116,7 +116,7 @@ queue <- function(object,
 	extra_opts = "", 
 	submit_exe,  
 	cwd=getOption("flow_run_path"), 
-	nodes='1',  ## only used in torque
+	nodes = '1',  ## only used in torque
 	## debug use
 	jobname = "name", 
 	email = Sys.getenv("USER"),

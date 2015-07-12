@@ -239,8 +239,14 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		d_queue = unlist(def2$queue)
 		d_dep_type = unlist(def2$dep_type)
 		d_sub_type = unlist(def2$sub_type)
+		d_nodes = unlist(def2$nodes)
+		
 		if(missing(qobj))
 			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
+		
+		## --- getting default for nodes
+		if(is.null(d_nodes)) 
+			d_nodes = '1'
 		
 		## --- getting defaults of submission and depedency types		
 		if(length(d_sub_type) == 0){
@@ -263,6 +269,7 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 			submission_type = d_sub_type,
 			cpu = d_cpu, queue = d_queue,
 			walltime = d_walltime, 
+			nodes = d_nodes,
 			memory = d_memory)
 		return(jobj)
 	})
