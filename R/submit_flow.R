@@ -41,7 +41,7 @@ submit_flow <- function(x, ...) {
 #' @export
 submit_flow.list <- function(x, ...){
 	fobjs = lapply(x, function(y)
-		submit_flow(y, ....)
+		submit_flow(y, ...)
 	)
 	return(fobjs)
 }
@@ -49,8 +49,9 @@ submit_flow.list <- function(x, ...){
 #' @rdname submit_flow
 #' @export
 submit_flow.flow <- function(x, 
-	uuid, execute = FALSE,
+	execute = FALSE, uuid, 
 	plot = TRUE, verbose = FALSE, ...){
+	
 	## -- store, for use later
 	x@execute=execute
 	## the case of resubmission

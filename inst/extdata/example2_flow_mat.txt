@@ -1,0 +1,5 @@
+samplename	jobname	cmd
+sample1	A	sleep 2 && sleep 5;echo 'hello'
+sample1	B	sleep 13 && sleep 7;echo 'hello'
+sample1	C	sleep 23 && sleep 7;echo 'hello'
+sample1	D	head -c 100000 /dev/urandom > tmp1_1

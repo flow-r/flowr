@@ -10,7 +10,7 @@ submit_flow(x, ...)
 
 \method{submit_flow}{list}(x, ...)
 
-\method{submit_flow}{flow}(x, uuid, execute = FALSE, plot = TRUE,
+\method{submit_flow}{flow}(x, execute = FALSE, uuid, plot = TRUE,
   verbose = FALSE, ...)
 }
 \arguments{
@@ -18,9 +18,9 @@ submit_flow(x, ...)
 
 \item{...}{Advanced use. Any additional parameters are passed on to \link{submit_job} function.}
 
-\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
-
 \item{execute}{\code{logical} whether or not to submit the jobs}
+
+\item{uuid}{\code{character} Advanced use. Incase of rerunning the flow. uuid: typically is the final path of a previous flow.}
 
 \item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
 

@@ -1,4 +1,4 @@
-## ---- echo = FALSE, message = FALSE--------------------------------------
+## ----libs, echo = FALSE, message = FALSE---------------------------------
 library(knitr)
 knitr::opts_chunk$set(
   comment = "#>",
@@ -9,15 +9,21 @@ knitr::opts_chunk$set(
 library(flowr)
 
 
-## ------------------------------------------------------------------------
+## ----exdata, message=FALSE-----------------------------------------------
 exdata = file.path(system.file(package = "flowr"), "extdata")
 flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
 flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
 
-## ------------------------------------------------------------------------
+## ----ex1, eval=FALSE, echo=FALSE-----------------------------------------
+#  fobj = suppressMessages(to_flow(flow_mat, def = flow_def, platform = "torque"))
+#  debug(submit_flow)
+#  submit_flow(fobj)
+#  
+
+## ----exdef---------------------------------------------------------------
 kable(head(flow_def))
 
-## ------------------------------------------------------------------------
+## ----exmat---------------------------------------------------------------
 kable(subset(flow_mat, samplename == "sample1"))
 
 ## ----getqobj-------------------------------------------------------------
@@ -34,31 +40,28 @@ plot_flow(fobj)
 dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 
-## ------------------------------------------------------------------------
-cmds = rep("sleep 5", 10)
-jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
-             dependency_type = "serial", previous_job = "job1")
-fobj <- flow(jobs = list(jobj1, jobj2))
+## ---- eval=FALSE, echo=FALSE---------------------------------------------
+#  jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+#  jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
+#               dependency_type = "gather", previous_job = "job1")
+#  fobj <- flow(jobs = list(jobj1, jobj2))
+#  plot_flow(fobj)
+
+## ---- eval=FALSE, echo=FALSE---------------------------------------------
+#  jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
+#  jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
+#               dependency_type = "burst", previous_job = "job1")
+#  fobj <- flow(jobs = list(jobj1, jobj2))
+#  plot_flow(fobj)
+
+## ----ex2def, message=FALSE-----------------------------------------------
+ex2def = read_sheet(file.path(exdata, "example2_flow_def.txt"))
+ex2mat = read_sheet(file.path(exdata, "example2_flow_mat.txt"))
+fobj = to_flow(x = ex2mat, def = ex2def)
+kable(ex2def[, 1:4])
 plot_flow(fobj)
 
 ## ------------------------------------------------------------------------
-jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
-             dependency_type = "gather", previous_job = "job1")
-fobj <- flow(jobs = list(jobj1, jobj2))
-plot_flow(fobj)
-
-## ------------------------------------------------------------------------
-jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
-jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
-             dependency_type = "burst", previous_job = "job1")
-fobj <- flow(jobs = list(jobj1, jobj2))
-plot_flow(fobj)
-
-## ------------------------------------------------------------------------
-queue(type = "lsf")@format
-
-## ------------------------------------------------------------------------
-queue(type = "torque")@format
+mat = read_sheet(file.path(exdata, "flow_def_columns.txt"))
+kable(mat)
 
