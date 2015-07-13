@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-10" />
+<meta name="date" content="2015-07-13" />
 
 <title>flowr simple examples</title>
 
@@ -62,71 +62,60 @@ img {
 
 <div id="header">
 <h1 class="title">flowr simple examples</h1>
-<h4 class="date"><em>2015-07-10</em></h4>
+<h4 class="date"><em>2015-07-13</em></h4>
 </div>
 
 
-<div id="hpcc-platforms" class="section level1">
-<h1>HPCC Platforms</h1>
-<p>As of now we have tested this on the following clusters:</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Platform</th>
-<th align="left">command</th>
-<th align="left">status</th>
-<th align="left">queue.type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">LSF 7</td>
-<td align="left">bsub</td>
-<td align="left">Not tested</td>
-<td align="left">lsf</td>
-</tr>
-<tr class="even">
-<td align="left">LSF 9.1</td>
-<td align="left">bsub</td>
-<td align="left">Yes</td>
-<td align="left">lsf</td>
-</tr>
-<tr class="odd">
-<td align="left">Torque</td>
-<td align="left">qsub</td>
-<td align="left">Yes</td>
-<td align="left">torque</td>
-</tr>
-<tr class="even">
-<td align="left">SGE</td>
-<td align="left">qsub</td>
-<td align="left">Beta</td>
-<td align="left">sge</td>
-</tr>
-</tbody>
-</table>
-<p>*queue short-name used in <a href="https://github.com/sahilseth/flow">flow</a></p>
-<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? Send a <a href="mailto:sahil.seth@me.com">message</a></p>
-<ul>
-<li>PBS: <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a></li>
-<li>Torque: <a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
-<ul>
-<li>MD Anderson</li>
-<li><a href="http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html">University of Houston</a></li>
-</ul></li>
-<li>LSF <a href="http://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
-<ul>
-<li>Harvard Medicla School uses: <a href="https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF">LSF HPC 7</a></li>
-<li>Also Used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a></li>
-</ul></li>
-<li>SGE <a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
-<ul>
-<li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a></li>
-<li>Another from <a href="http://www.biostat.jhsph.edu/bit/cluster-usage.html">JHSPH</a></li>
-<li>Dependecy info <a href="https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies">here</a></li>
-</ul></li>
-</ul>
-<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software" class="uri">http://en.wikipedia.org/wiki/Comparison_of_cluster_software</a></p>
+<div id="let-us-load-some-example-data" class="section level2">
+<h2>Let us load some example data</h2>
+<pre class="r"><code>exdata = file.path(system.file(package = &quot;flowr&quot;), &quot;extdata&quot;)
+flow_mat = read_sheet(file.path(exdata, &quot;example1_flow_mat.txt&quot;))</code></pre>
+<pre><code>## Reading file, using 'samplename' as id_column to remove empty rows.</code></pre>
+<pre class="r"><code>flow_def = read_sheet(file.path(exdata, &quot;example1_flow_def.txt&quot;))</code></pre>
+<pre><code>## Reading file, using 'jobname' as id_column to remove empty rows.</code></pre>
+<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, def = flow_def)</code></pre>
+<pre><code>## input x is data.frame
+## 
+## 
+## ##--- Getting default values for missing parameters...
+## Using `samplename` as the grouping column
+## Using `jobname` as the jobname column
+## Using `cmd` as the cmd column
+## Using flowname default: flowname
+## Using flow_run_path default: ~/flowr/runs
+## 
+## 
+## ##--- Checking flow definition and flow matrix for consistency...
+## 
+## 
+## ##--- Detecting platform...
+## 
+## 
+## ##--- flowr submission...
+## 
+## 
+## Detected 3 samples/groups in flow_mat.
+## flow_mat would be split and each would be submitted seperately...
+## 
+## 
+## Working on... sample1
+## input x is list
+## ....
+## 
+## Working on... sample2
+## input x is list
+## ....
+## 
+## Working on... sample3
+## input x is list
+## ....</code></pre>
+</div>
+<div id="do-the-following-for-tests" class="section level2">
+<h2>— do the following for tests</h2>
+<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;local&quot;, 
+                                execute = TRUE)
+fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;moab&quot;)
+fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;lsf&quot;)</code></pre>
 </div>
 
 
