@@ -356,7 +356,7 @@ myjob3   myjob3    myjob1      serial     scatter    1              1           
 <p>In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).</p>
 <pre class="r"><code>ex2def = read_sheet(file.path(exdata, &quot;example2_flow_def.txt&quot;))
 ex2mat = read_sheet(file.path(exdata, &quot;example2_flow_mat.txt&quot;))
-fobj = to_flow(x = ex2mat, def = ex2def)
+fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])</code></pre>
 <table>
 <thead>

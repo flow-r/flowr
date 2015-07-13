@@ -59,7 +59,7 @@ knitr:::kable(dat)
 ## ----ex2def, message=FALSE-----------------------------------------------
 ex2def = read_sheet(file.path(exdata, "example2_flow_def.txt"))
 ex2mat = read_sheet(file.path(exdata, "example2_flow_mat.txt"))
-fobj = to_flow(x = ex2mat, def = ex2def)
+fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])
 plot_flow(fobj)
 
