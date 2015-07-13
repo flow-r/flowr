@@ -83,7 +83,9 @@ chk_conf <- function(x){
 #' }
 search_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 	if(missing(places)){
-		places = c(system.file(package = "flowr", "conf"),
+		places = c(
+			system.file(package = "flowr", "conf"),
+			system.file(package = "ngsflows", "conf"),
 			getOption("flow_conf_path"), "~/")
 	}
 	

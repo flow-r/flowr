@@ -15,7 +15,9 @@ flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
 flow_def = read_sheet(file.path(exdata, "example1_flow_def.txt"))
 
 ## ----ex1, eval=FALSE, echo=FALSE-----------------------------------------
+#  flow_def = read_sheet(file.path(exdata, "example1_flow_def2.txt"))
 #  fobj = suppressMessages(to_flow(flow_mat, def = flow_def, platform = "torque"))
+#  fobj[[1]]@jobs[[1]]@nodes
 #  #debug(submit_flow)
 #  fobj = submit_flow(fobj)
 #  

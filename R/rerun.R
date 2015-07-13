@@ -61,7 +61,7 @@ rerun_flow <- function(x, mat, def, start_from, execute = TRUE, kill = TRUE){
 
 	fobj2 <- to_flow(x = mat, def=def, desc = fobj@desc)
   #knitr::kable(rerun)
-  fobj2 <- submit_flow(fobj2, uuid = fobj@flow_path, execute = execute)
+  fobj2 <- submit_flow(fobj2, uuid = fobj@flow_path, execute = execute, dump = FALSE)
   return("Done !")
 }
 rerun=rerun_flow

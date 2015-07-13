@@ -50,7 +50,8 @@ submit_flow.list <- function(x, ...){
 #' @export
 submit_flow.flow <- function(x, 
 	execute = FALSE, uuid, 
-	plot = TRUE, verbose = FALSE, ...){
+	plot = TRUE, verbose = FALSE, 
+	dump = TRUE, ...){
 	
 	## -- store, for use later
 	x@execute=execute
@@ -120,16 +121,18 @@ submit_flow.flow <- function(x,
 		message(sprintf("Test Successful!\nYou may check this folder for consistency. Also you may re-run submit with execute=TRUE\n %s",
 										x@flow_path))
 	}
-	try(dump_flow_details(fobj = x))
-	try(saveRDS(x, file = sprintf("%s/flow_details.rds", x@flow_path)))
-	if(plot & length(x@jobs) > 2){
-		try(
-			plot_flow(x, detailed = FALSE, pdf = TRUE, type = '1',
-								 pdffile = sprintf("%s/%s-flow_design.pdf", 
-								 									x@flow_path, x@name))
-		)
-	}else{
-		if(verbose) message("Skipping plots...\n")
+	if(dump){
+		try(dump_flow_details(fobj = x))
+		try(saveRDS(x, file = sprintf("%s/flow_details.rds", x@flow_path)))
+		if(plot & length(x@jobs) > 2){
+			try(
+				plot_flow(x, detailed = FALSE, pdf = TRUE, type = '1',
+					pdffile = sprintf("%s/%s-flow_design.pdf", 
+						x@flow_path, x@name))
+			)
+		}else{
+			if(verbose) message("Skipping plots...\n")
+		}
 	}
 	invisible(x)
 }

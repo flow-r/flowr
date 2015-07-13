@@ -11,7 +11,7 @@ submit_flow(x, ...)
 \method{submit_flow}{list}(x, ...)
 
 \method{submit_flow}{flow}(x, execute = FALSE, uuid, plot = TRUE,
-  verbose = FALSE, ...)
+  verbose = FALSE, dump = TRUE, ...)
 }
 \arguments{
 \item{x}{a \code{object} of class \code{flow}.}
