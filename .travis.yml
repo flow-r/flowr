@@ -1,5 +1,6 @@
 # a good example: https://github.com/OuhscBbmc/REDCapR/blob/master/.travis.yml
 language: r
+sudo: required
 
 # Be strict when checking our package
 warnings_are_errors: false
