@@ -5,11 +5,13 @@
 #PBS -e {{{STDOUT}}}                                   
 #PBS -l walltime={{{WALLTIME}}}                        
 #PBS -l mem={{{MEMORY}}}                               
-#PBS -r y -V                                         
+#PBS -r y 
+#PBS -V                                         
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -d {{{CWD}}}                                      
-#PBS -M {{{EMAIL}}}                                    
+#PBS -M {{{EMAIL}}} 
+#PBS -m n 
 #PBS {{{DEPENDENCY}}}                                  
 #PBS {{{EXTRA_OPTS}}}                                  
 
@@ -26,14 +28,17 @@
 
 ## --- DO NOT EDIT from below here---- ##
 
+# following will always overwrite previous output file, if any. See https://github.com/sahilseth/flowr/issues/13
+# credits: @dyndna
+set +o noclobber
+
 touch {{{TRIGGER}}}
-echo 'BGN at' `date`
+echo 'BGN at' $(date)
 
 ## --- command to run comes here (flow_mat)
 {{{CMD}}}
-
-echo 'END at' `date`
-
 exitstat=$?
+
+echo 'END at' $(date)
 echo $exitstat > {{{TRIGGER}}}
 exit $exitstat
