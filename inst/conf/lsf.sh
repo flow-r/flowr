@@ -25,15 +25,17 @@
 ## ------------------------------------------------------------------##
 
 ## --- DO NOT EDIT from below here---- ##
+## following will always overwrite previous output file, if any. See https://github.com/sahilseth/flowr/issues/13
+set +o noclobber
 
 touch {{{TRIGGER}}}
-echo 'BGN at' `date`
+echo 'BGN at' $(date)
 
 ## --- command to run comes here (flow_mat)
 {{{CMD}}}
 
-echo 'END at' `date`
-
 exitstat=$?
-echo $exitstat > {{{TRIGGER}}}
-exit $exitstat
+
+echo 'END at' $(date)
+echo ${exitstat} > {{{TRIGGER}}}
+exit ${exitstat}

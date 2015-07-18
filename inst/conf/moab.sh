@@ -5,11 +5,13 @@
 #MSUB -e {{{STDOUT}}}                                   # output is sent to logfile, stdout + stderr by default
 #MSUB -l walltime={{{WALLTIME}}}                        # Walltime in minutes
 #MSUB -l mem={{{MEMORY}}}                               # Memory requirements in Kbytes
-#MSUB -r y -V                                         # make the jobs re-runnable. -V export all env of user to compute nodes
+#MSUB -r y                                              # make the jobs re-runnable. 
+#MSUB -V                                               # -V export all env of user to compute nodes
 #MSUB -j oe                                           # merge output from stdout and stderr
 #MSUB -S /bin/bash                                    # use bash shell
 #MSUB -d {{{CWD}}}                                      # the workding dir for each job, this is {{{flow_path}}}/tmp
 #MSUB -M {{{EMAIL}}}                                    # email address of the person
+#MSUB -m n                                              # when to send a email
 #MSUB {{{DEPENDENCY}}}                                  # Don't remove dependency args come here
 #MSUB {{{EXTRA_OPTS}}}                                  # Any extra arguments passed onto queue(), don't change. Format handled by R
 
@@ -25,15 +27,17 @@
 ## ------------------------------------------------------------------##
 
 ## --- DO NOT EDIT from below here---- ##
+# following will always overwrite previous output file, if any. See https://github.com/sahilseth/flowr/issues/13
+set +o noclobber
 
 touch {{{TRIGGER}}}
-echo 'BGN at' `date`
+echo 'BGN at' $(date)
 
 ## --- command to run comes here (flow_mat)
 {{{CMD}}}
 
-echo 'END at' `date`
-
 exitstat=$?
-echo $exitstat > {{{TRIGGER}}}
-exit $exitstat
+
+echo 'END at' $(date)
+echo ${exitstat} > {{{TRIGGER}}}
+exit ${exitstat}

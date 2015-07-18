@@ -41,3 +41,16 @@
 #SBATCH --output=job.%J.out
 
 srun ./my_program
+
+touch {{{TRIGGER}}}
+echo 'BGN at' $(date)
+
+## --- command to run comes here (flow_mat)
+{{{CMD}}}
+
+exitstat=$?
+
+echo 'END at' $(date)
+echo ${exitstat} > {{{TRIGGER}}}
+exit ${exitstat}
+
