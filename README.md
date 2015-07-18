@@ -11,6 +11,9 @@ Please visit [docs.flowr.space](http://docs.flowr.space) for more information an
 Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your flow.
 [`guest; guestpass`]
 
+Here are some useful questions:
+https://github.com/sahilseth/flowr/issues?q=label%3Aquestion
+
 
 ```
 ## From the official R repository (may be a few version behind)
