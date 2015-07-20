@@ -78,14 +78,6 @@ kable(flow_def)
 ```
 
 
-```{r, eval=FALSE}
-## load these files
-exdata = file.path(system.file(package = "flowr"), "extdata")
-flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-flow_mat = subset(flow_mat, samplename == "sample1")
-flow_def = read_sheet(file.path(exdata,  "example1_flow_def.txt"))
-```
-
 # Stitch
 
 ```{r, message=FALSE}
