@@ -16,7 +16,6 @@ is.flowdef <- function(x){
 }
 
 #' @export
-#' @importFrom knitr kable
 check.flowdef <- function(x,
 	sub_types = c("serial", "scatter"),
 	dep_types = c("none", "serial", "gather", "burst"), ...){
