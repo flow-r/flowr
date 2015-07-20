@@ -4,6 +4,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   error = FALSE,
   tidy = FALSE,
+  dev = 'png',
 	fig.cap = ""
 )
 

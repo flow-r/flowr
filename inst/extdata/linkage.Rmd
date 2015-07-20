@@ -1,3 +1,10 @@
+---
+title: "show linkage"
+output: html_document
+---
+
+
+```{r}
 library(igraph)
 library(reshape2)
 library(stringr)
@@ -51,6 +58,14 @@ clean.data <- clean.data[!apply(clean.data[, c("from", "to")], 1, function(x) x[
 
 
 
+
+
+
+
+```
+
+
+```{r}
 #' Draws a subset of a data.frame as a network graph.
 #' @param x data.frame. Has at least three columns, from, to and relation.
 #' @param relation Character vector of length one. Rows with what relation from column relation (see x) should be used?
@@ -87,15 +102,65 @@ plotGraph <- function(x, relation = NULL, pkg.to = NULL, pkg.from = NULL, plot =
 		E(g)$color <- cc
 		
 		if (plot) 
-			plot(g, ...)
+			plot(g, layout = layout.fruchterman.reingold(g, niter=10000, area=50*vcount(g)^2), ...)
 		# see ?igraph:::layout for possible layout options
 		g
 	}
 
+```
 
 
 
-graph.somepara.all <- plotGraph(x = clean.data, pkg.to = c("snowfall", "snow", 
-	"foreach", "Rmpi", "multicore", "sprint", "biopara", "bigrf", "doMPI", "doRedis", 
-	"nws", "snowFT"), vertex.label.color = "black", edge.width = 1, edge.arrow.size = 0.2, 
-	vertex.label.cex = 0.9, vertex.size = 0, vertex.color = "white", layout = layout.kamada.kawai)
+Depends: 
+    methods,
+    utils,
+    diagram, 
+    rmarkdown,
+    whisker
+Imports:
+    knitr,
+    tools
+
+
+
+```{r}
+graph.flowr <- plotGraph(x = clean.data, pkg.from = c("flowr", "RSQLite", "ggplot2", "reshape2", "diagram", "knitr", "openxlsx", 'plyr'),
+	vertex.label.color = "black", edge.width = 1, edge.arrow.size = 0.5, 
+	vertex.label.cex = 1, vertex.size = 1, vertex.color = "white")
+
+
+require(dplyr)
+
+
+
+flwr = data.frame(from = "flowr", 
+	to = c("diagram", "rmarkdown", "whisker", "tools", "knitr"),
+	relation=c(rep("Depends", 3), rep("Imports", 2)))
+
+clean.data2 = bind_rows(filter(clean.data, from != "flowr"), flwr)
+
+pdf("~/Dropbox/public/github_flow/inst/extdata/flowr_deps_red.pdf", width = 11, height = 8)
+par(mfrow = c(1,2))
+graph.flowr <- filter(clean.data, relation != "Suggests") %>%
+	plotGraph(pkg.from = c("flowr", "tools", 
+		"diagram", 
+		"rmarkdown", 
+		"whisker", 
+		"ggplot2", "reshape2", "RSQLite", "openxlsx",
+		"knitr", "markdown", "highr"),
+		vertex.label.color = "black", edge.width = 1, edge.arrow.size = 0.5, 
+		vertex.label.cex = 1, vertex.size = 1, vertex.color = "white")
+
+graph.flowr <- filter(clean.data2, relation != "Suggests") %>%
+	plotGraph(pkg.from = c("flowr", "tools", 
+		"diagram", 
+		"rmarkdown", 
+		"whisker", 
+		"knitr", "markdown", "highr"),
+		vertex.label.color = "black", edge.width = 1, edge.arrow.size = 0.5, 
+		vertex.label.cex = 1, vertex.size = 1, vertex.color = "white")
+
+dev.off()
+#layout.kamada.kawai
+
+```

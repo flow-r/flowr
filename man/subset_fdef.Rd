@@ -9,7 +9,7 @@ subset_fdef(fobj, def, start_from)
 \arguments{
 \item{fobj}{flow object}
 
-\item{def}{flow_def}
+\item{def}{flowdef}
 
 \item{start_from}{where to start from}
 }

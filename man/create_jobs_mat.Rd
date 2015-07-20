@@ -13,13 +13,13 @@ create_jobs_mat(x)
 create_jobs_mat
 }
 \details{
-This create a table similar to flow_def, except it has
+This create a table similar to flowdef, except it has
 jobids and previous jobids instead of only names.
 This helps in creating the diagram for the flow.
 Currently the only way to create a diagram is from a flow object,
 by calling the function plot_flow.
 
-In future plot_flow may be able to accept a flow_def only.
+In future plot_flow may be able to accept a flowdef only.
 }
 \examples{
 \dontrun{

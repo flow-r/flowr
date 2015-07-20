@@ -34,7 +34,7 @@ to_flow(x, ...)
 \item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.}
 
 \item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flow_def.}
+This over-rides the platform column in flowdef.}
 
 \item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
 

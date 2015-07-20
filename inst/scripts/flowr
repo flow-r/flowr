@@ -124,7 +124,7 @@ if(is.data.frame(out)){
 	message("Showing a head of the data.frame")
 	print(head(out))
 }else if(is.null(out)){
-	print(cat(""))
+	cat("")
 }else if(is.list(out)){
 	print(out)
 }else{

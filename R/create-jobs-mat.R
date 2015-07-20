@@ -18,6 +18,8 @@
 #' @examples \dontrun{
 #' create_jobs_mat(x = x)}
 create_jobs_mat <- function(x){
+	#.Deprecated("to_flowdef")
+	
 	jobnames <- sapply(x@jobs, slot, "name")
 	prev_jobs <- sapply(x@jobs, slot, "previous_job")
 	prev_jobs <- sapply(prev_jobs, function(x) ifelse(length(x) > 0, paste(x,collapse=","), NA))

@@ -9,7 +9,7 @@ subset_fmat(fobj, mat, start_from)
 \arguments{
 \item{fobj}{flow object}
 
-\item{mat}{a part of flow_def}
+\item{mat}{a part of flowdef}
 
 \item{start_from,}{where to start from}
 }

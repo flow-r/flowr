@@ -13,7 +13,7 @@ cmds_to_flow(cmd.list, samplename = "", infomat, q_obj = queue(type = "lsf",
 
 \item{samplename}{name of the sample}
 
-\item{infomat}{flow_def}
+\item{infomat}{flowdef}
 
 \item{q_obj}{queue object}
 

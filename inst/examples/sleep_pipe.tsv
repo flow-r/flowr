@@ -1,0 +1,9 @@
+samplename	jobname	cmd
+sample1	sleep	sleep 10 && sleep 2;echo 'hello'
+sample1	sleep	sleep 11 && sleep 8;echo 'hello'
+sample1	sleep	sleep 11 && sleep 17;echo 'hello'
+sample1	create_tmp	head -c 100000 /dev/urandom > sample1_tmp_1
+sample1	create_tmp	head -c 100000 /dev/urandom > sample1_tmp_2
+sample1	create_tmp	head -c 100000 /dev/urandom > sample1_tmp_3
+sample1	merge	cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged
+sample1	size	du -sh sample1_merged; echo 'MY shell:' $SHELL

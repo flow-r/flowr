@@ -21,13 +21,23 @@ pkg
 #debug(rtd:::to_rst)
 #debug(rtd:::to_rst.character)
 #build_site(pkg = "~/Dropbox/public/github_flow/", topics)
-topics = topics = c("setup", "to_flow",
-	"check.flow_def",
-	"queue", "job", "flow", 
-	"plot_flow", "submit_flow",
-	"get_flow_status", "kill_flow", "rerun_flow")
+topics = topics = c(
+	"setup", 
+	"to_flowmat",
+	"to_flowdef",
+	"to_flow",
+	"plot_flow",
+	"submit_flow",
+	"kill_flow", 
+	"rerun_flow",
+	"queue", 
+	"job",
+	"flow"
+	)
+
 tmp <- build_topics(pkg = pkg, topics = topics)
-#debug(build_vignettes)
+#undebug(build_vignettes)
+require(tools)
 tmp <- build_vignettes(pkg = pkg)
 
 

@@ -3,17 +3,17 @@
 \name{check}
 \alias{check}
 \title{check consistency of objects
-Currently only checks for flow_def}
+Currently only checks for flowdef}
 \usage{
 check(x, ...)
 }
 \arguments{
-\item{x}{a flow_def object}
+\item{x}{a flowdef object}
 
 \item{...}{suppled to \code{check.classname} function}
 }
 \description{
 check consistency of objects
-Currently only checks for flow_def
+Currently only checks for flowdef
 }
 
