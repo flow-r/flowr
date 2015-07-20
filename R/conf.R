@@ -2,7 +2,6 @@
 
 .load_conf <- function(x, chk, ...){
 	conf <- read_sheet(x, allowEscape = TRUE)
-
 	lst = as.list(conf$value)
 	names(lst) = conf$name
 	
@@ -16,6 +15,21 @@
 	options(lst)
 	invisible(lst)
 	
+}
+
+
+#' load a configuration file into the environment
+#' @param x path to a configuration file
+#' @param chk check the file after loading?
+#' @param ... Not used
+#' @export
+load_conf <- function(x, chk = TRUE, ...){
+	## .load_conf: works on a single file
+	lst <- lapply(x, .load_conf, chk = chk, ...)
+	
+	## in future this could be a normalized list
+	## with the final set of options used
+	invisible(lst)
 }
 
 ## process conf line by line
@@ -34,20 +48,6 @@ parse_conf <- function(lst){
 	return(lst)
 }
 
-
-#' load a configuration file into the environment
-#' @param x path to a configuration file
-#' @param chk check the file after loading?
-#' @param ... Not used
-#' @export
-load_conf <- function(x, chk = TRUE, ...){
-	## .load_conf: works on a single file
-	lst <- lapply(x, .load_conf, chk = chk, ...)
-	
-	## in future this could be a normalized list
-	## with the final set of options used
-	invisible(lst)
-}
 
 chk_conf <- function(x){
 	path_pattern = c("path$|dir$|exe$")
@@ -81,7 +81,7 @@ chk_conf <- function(x){
 #' @examples {
 #' search_conf("torque.sh")
 #' }
-search_conf <- function(x = "flowr.conf", places, verbose = FALSE){
+fetch_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 	if(missing(places)){
 		places = c(
 			system.file(package = "flowr", "conf"),
@@ -95,4 +95,18 @@ search_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 	
 	return(y)
 }
+# i will be a very good coder, better than you ..he he he... :p :p :p
+# yay yay yay
+
+
+
+fetch_pipes <- function(){
+	
+}
+
+search_conf <- function(...){
+	.Deprecated("fetch_conf")
+	fetch_conf(...)
+}
+
 
