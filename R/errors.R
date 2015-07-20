@@ -15,7 +15,8 @@ error <- function(x){
 	
 	if(x == "no.start_from")
 		y = c("Please mention where to start this flow from.",
-					"\nDetection of failure point is currently not supported")
+					"\nDetection of failure point is currently not supported",
+					"Use start_from=<jobname>")
 	
 	if(x == "perm.flow_details.file")
 		y = c("flow_details.txt is not writable. Will skip updating it.")

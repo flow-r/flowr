@@ -1,6 +1,6 @@
 ## Needs some work
-## in future if output of this is made similar to flow_def,
-## plot_flow could direclty work on flow_def.
+## in future if output of this is made similar to flowdef,
+## plot_flow could direclty work on flowdef.
 
 
 
@@ -8,13 +8,13 @@
 #' @description create_jobs_mat
 #' @param x a \link{flow} object.
 #' @keywords internal
-#' @details This create a table similar to flow_def, except it has 
-#' jobids and previous jobids instead of only names. 
+#' @details This create a table similar to flowdef, except it has
+#' jobids and previous jobids instead of only names.
 #' This helps in creating the diagram for the flow.
-#' Currently the only way to create a diagram is from a flow object, 
+#' Currently the only way to create a diagram is from a flow object,
 #' by calling the function plot_flow.
-#' 
-#' In future plot_flow may be able to accept a flow_def only.
+#'
+#' In future plot_flow may be able to accept a flowdef only.
 #' @examples \dontrun{
 #' create_jobs_mat(x = x)}
 create_jobs_mat <- function(x){
@@ -52,7 +52,7 @@ create_jobs_mat <- function(x){
 
 ## --- remove this in the next version change
 .create_jobs_mat  <- function(...){
-	message(".create_jobs_mat is depreciated, use create_jobs_mat instead")
+	.Deprecated("create_jobs_mat")
 	create_jobs_mat(...)
 }
 

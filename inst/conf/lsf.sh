@@ -1,5 +1,6 @@
 #!/bin/bash
 #BSUB -J {{{JOBNAME}}}                                  # name of the job
+#BSUB -cwd {{{CWD}}}                                      # the workding dir for each job, this is <flow_run_path>/uniqueid/tmp
 #BSUB -o {{{STDOUT}}}                                   # output is sent to logfile, stdout + stderr by default
 #BSUB -e {{{STDERR}}}                                   # output is sent to logfile, stdout + stderr by default
 #BSUB -q {{{QUEUE}}}                                    # Job queue
@@ -8,10 +9,8 @@
 #BSUB -R rusage[mem={{{MEMORY}}}]                       # memory reserved
 #BSUB -R span[ptile={{{CPU}}}]                          # CPU reserved
 #BSUB -r                                                # make the jobs re-runnable
+#BSUB {{{DEPENDENCY}}}                                  # Don't remove dependency args come here
 #BSUB {{{EXTRA_OPTS}}}                                  # Any extra arguments passed onto queue()
-#BUSB {{{DEPENDENCY}}}                                  # Don't remove dependency args come here
-
-
 
 
 

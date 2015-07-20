@@ -39,3 +39,17 @@ get_unique_id <- function(prefix="id", suffix = "", random_length = 8){
   ret <- sprintf("%s-%s-%s%s", prefix, tm, uid, suffix)
   return(ret)
 }
+
+
+
+
+
+jobnames <- function(x){
+	sapply(x@jobs, slot, 'name')
+}
+
+cmds <- function(x){
+	sapply(x@jobs, slot, 'cmds')
+}
+
+

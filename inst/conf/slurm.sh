@@ -1,19 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## example from
 ## https://www.hpc2n.umu.se/node/738
 

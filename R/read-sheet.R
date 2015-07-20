@@ -8,16 +8,17 @@
 #' @param start_row supplied to read.xlsx
 #' @param sheet supplied to read.xlsx
 #' @param ext determined using file extention. Specifying will override
-#' 
-#' @details 
+#'
+#' @details
 #' If id_column is skipped the first column takes its place.
-#' @importFrom openxlsx read.xlsx
+
 #' @importFrom tools file_ext
+#'
 #' @export
 read_sheet <- function(x, id_column, start_row = 1, sheet = "sample_sheet", ext, ...){
 	if(missing(ext))
 		ext <- file_ext(x)
-	if(ext %in% c("tsv", "txt", "conf")){
+	if(ext %in% c("tsv", "txt", "conf", "def")){
 		mat <- read.table(x, as.is=TRUE, sep="\t", header=TRUE, stringsAsFactors = FALSE,
 			comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, ...)
 	}else if(ext=="csv"){
@@ -26,6 +27,10 @@ read_sheet <- function(x, id_column, start_row = 1, sheet = "sample_sheet", ext,
 			comment.char = '#', strip.white=TRUE, blank.lines.skip=TRUE, ...)
 	}
 	else if(ext=="xlsx"){
+		if (!requireNamespace("pkg", quietly = TRUE)) {
+			stop("openxlsx needed for this function to work. Please install it.",
+				call. = FALSE)
+		}
 		mat <- read.xlsx(x, sheet = sheet, startRow = start_row, ...)
 	}
 	else{

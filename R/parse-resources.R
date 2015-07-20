@@ -22,8 +22,13 @@ parse_lsf_out <- function(x, scale_time = 1/3600, n = 100){
 #' @examples \dontrun{
 #' get_resources(x = x, odir = ~/tmp)
 #' }
-#' @import ggplot2
 get_resources <- function(x, odir, ...){
+	## Suggested packages
+	if (!requireNamespace("ggplot2", quietly = TRUE)) {
+		stop("ggpplot2 needed for this function to work. Please install it.",
+			call. = FALSE)
+	}
+	
 	wds = get_wds(x)
 	for(wd in wds){
 		if(missing(odir)) odir = wd
@@ -37,13 +42,16 @@ get_resources <- function(x, odir, ...){
 #' @param wd Path to a flow working directory
 #' @param cores Number of cores to use. [Numeric]
 #' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
-#' @importFrom reshape2 melt
 #' @importFrom tools file_path_sans_ext
 #' @keywords internal
 #' @examples \dontrun{
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }
 get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
+	if (!requireNamespace("reshape2", quietly = TRUE)) {
+		stop("reshape2 needed for this function to work. Please install it.",
+			call. = FALSE)
+	}
 	flow_mat = read_flow_detail_fl(wd)
 	rownames(flow_mat) = flow_mat$jobid
 	#files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)

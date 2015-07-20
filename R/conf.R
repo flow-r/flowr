@@ -65,10 +65,12 @@ chk_conf <- function(x){
 }
 
 
-#' Given a name of a configuration file, searches for it in few places
+
+#' A generic functions to search for files
 #' 
 #' @param x name of the file to search for
 #' @param places places (paths) to look for it. Its best to use the defaults
+#' @param urls urls to look for, works well for pipelines.
 #' @param verbose be chatty?
 #' 
 #' @export
@@ -81,7 +83,33 @@ chk_conf <- function(x){
 #' @examples {
 #' search_conf("torque.sh")
 #' }
-fetch_conf <- function(x = "flowr.conf", places, verbose = FALSE){
+fetch <- function(x, pattern, places, urls, verbose = FALSE){
+	y = sapply(places, list.files, pattern = paste0(x, "$"),
+						 full.names = TRUE)
+	y = as.character(unlist(y))
+	if(verbose) message(y)
+	
+	return(y)
+	
+}
+
+#' @rdname fetch
+#' @details 
+#' Looks at: github repo: ngsflows/pipelines 
+#' @export
+fetch_pipes <- function(places, urls){
+	if(missing(places)){
+		places = c(
+			system.file(package = "flowr", "examples"),
+			system.file(package = "ngsflows", "pipelines"),
+			getOption("flow_pipe_path"), "~/")
+	}
+	
+}
+
+#' @rdname fetch
+#' @export
+fetch_conf <- function(x = "flowr.conf", places, ...){
 	if(missing(places)){
 		places = c(
 			system.file(package = "flowr", "conf"),
@@ -89,20 +117,10 @@ fetch_conf <- function(x = "flowr.conf", places, verbose = FALSE){
 			getOption("flow_conf_path"), "~/")
 	}
 	
-	y = sapply(places, list.files, pattern = paste0(x, "$"), full.names = TRUE)
-	y = as.character(unlist(y))
-	if(verbose) message(y)
-	
-	return(y)
+	x = paste0(x, "$") ## x should be a full file name
+	fetch(x, places = places, ...)
 }
-# i will be a very good coder, better than you ..he he he... :p :p :p
-# yay yay yay
 
-
-
-fetch_pipes <- function(){
-	
-}
 
 search_conf <- function(...){
 	.Deprecated("fetch_conf")

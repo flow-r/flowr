@@ -1,65 +1,66 @@
 
 
 #' @rdname plot_flow
-#' 
+#'
 #' @title plot_flow
 #' @description plot the flow object
-#' 
+#'
 #' @aliases plot_flow plot_flow.list plot_flow.flow
 #' @aliases plot
-#' 
+#'
 #' @param x Object of class \code{flow}
 #' @param detailed include some details
 #' @param pdf create a pdf instead of plotting interactively
 #' @param pdffile output file name for the pdf file
 #' @param type 1 is original, and 2 is a elipse with less details
 #' @param ... experimental
-#' 
+#'
 #' @export plot_flow
 #' @import diagram
-#' @examples 
+#' @examples
 #' qobj = queue(type="lsf")
 #' cmds = rep("sleep 5", 10)
 #' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
 #'              dependency_type = "serial", previous_job = "job1")
 #' fobj <- flow(jobs = list(jobj1, jobj2))
 #' plot_flow(fobj)
-#' 
+#'
 #' ### Gather: many to one relationship
 #' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
 #'              dependency_type = "gather", previous_job = "job1")
 #' fobj <- flow(jobs = list(jobj1, jobj2))
 #' plot_flow(fobj)
-#' 
+#'
 #' ### Burst: one to many relationship
 #' jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
-#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+#' jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
 #'              dependency_type = "burst", previous_job = "job1")
 #' fobj <- flow(jobs = list(jobj1, jobj2))
 #' plot_flow(fobj)
-#' 
+#'
 plot_flow <- function(x, ...) {
-	message("input x is ", class(x))
-	UseMethod("plot_flow")
+  message("input x is ", class(x))
+  UseMethod("plot_flow")
 }
 
 ## ------------- make a flowchart using the object
 #' @rdname plot_flow
 #' @method plot_flow flow
 #' @export
-plot_flow.flow <- function(x, detailed = TRUE, 
-													 type = c('1','2'),
-													 pdf = FALSE, 
-													 pdffile = sprintf("%s.pdf", x@name),
-													 ...){
-	type = match.arg(type)
-	dat <- create_jobs_mat(x)
-	switch(type,
-				 '1' = .plot_flow_dat_type1(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
-				 '2' = .plot_flow_dat_type2(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
-}
+plot_flow.flow <- function(x, detailed = TRUE,
+  type = c('1','2'),
+  pdf = FALSE,
+  pdffile = sprintf("%s.pdf", x@name),
+  ...){
+    type = match.arg(type)
+    dat <- create_jobs_mat(x)
+    p <- switch(type,
+      '1' = .plot_flow_dat_type1(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
+      '2' = .plot_flow_dat_type2(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
+    invisible(p)
+  }
 
 
 ## compatible with a list of flows as well !
@@ -68,23 +69,43 @@ plot_flow.flow <- function(x, detailed = TRUE,
 #' @method plot_flow list
 #' @export
 plot_flow.list <- function(x, ...){
-	tmp <- lapply(x, plot_flow)
-	invisible(tmp)
+  tmp <- lapply(x, plot_flow)
+  invisible(tmp)
 }
 
-.plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE, 
-																 ## vector of columns to be used in plotting
-																 pdffile=sprintf("flow.pdf"),
-                           width, height, ...){
-	if(missing(height))  height = 2.5 * nrow(x)
+
+display_mat <- function(x){
+  x$level = 0
+  for(i in 1:nrow(x)){
+    prev = x$prev_jobs[i]
+    if(prev != ""){
+      prev_level = subset(x, jobname == prev)$level
+      x$level[i] = prev_level + 1
+    }
+  }
+  table(x$level)
+}
+
+
+
+#' @rdname plot_flow
+#'  @param x a data.frame as given out create_jobs_mat()
+.plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE,
+  ## vector of columns to be used in plotting
+  pdffile = sprintf("flow_details.pdf"),
+  width, height, ...){
+    if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
     jobnames=unique(as.c(x$jobname))
-    dat_compl <- x[complete.cases(x),]
+    dat_dep <- x[complete.cases(x),] ## remove first two
     dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
+
     ## -------- get positions
-    disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-    elpos <- coordinates (disp_mat)
+    #disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+    disp_mat = display_mat(dat_uniq)
+    elpos <- coordinates(disp_mat)
+
     ## -------- graphic params:
     shadow.col <- "lightskyblue4";boxwd=0.08;boxht=0.04;box.lcol = "gray26"
     if(detailed) boxht=0.06
@@ -95,105 +116,104 @@ plot_flow.list <- function(x, ...){
     detail.cex=0.8; detail.offset=c(0,0.04)
     ## ---- change params for pdf
     if(pdf){
-        shadow.col <- "lightskyblue4";boxwd=0.08;boxht=0.03;box.lcol = "gray26"
-        if(detailed) boxht=0.0
-        shadow.sizes.scatter=seq(from=0.001, by=0.003, length.out=4);shadow.sizes.serial=c(0.004)
-        arr.col="gray26";arr.lwd=3;arr.len=0.6; arr.pos=0.55
-        curves=c(-0.2,0.2);arr.lwd.curve=2;
-        textsize=1.1;textcol="gray30"
-        detail.cex=0.8; detail.offset=c(0,0.04)
+      boxht=0.03;
+      if(detailed) boxht=0.05
     }
     #detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
     detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
     detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
     ## --------------- start plotting
-    par(mar = c(1, 1, 1, 1))
+    par(mar = c(1, 1, 1, 1)) ## how much margin to leave around...
     if(pdf) pdf(file=pdffile, width = width, height = height)
     openplotmat()
-    if(nrow(dat_compl>0)){
-        for (i in 1:nrow(dat_compl)){
-            to=elpos[dat_compl$jobid[i], ]; from=elpos[dat_compl$prev_jobid[i], ]
-            if(dat_compl$dep_type[i]=="gather"){
-                for(curve in curves)
-                    curvedarrow (to = to, from = from, lwd = arr.lwd.curve, arr.pos = arr.pos,
-                                 arr.length = arr.len,
-                                 segment=c(0.2,0.8), curve=curve, arr.col=arr.col, lcol=arr.col)
-            }
-            straightarrow (to = to, from = from, lwd = arr.lwd, arr.pos = arr.pos, arr.length = arr.len,
-                           arr.col=arr.col, lcol=arr.col)
+
+    ## -------------------------------- a r r o w s ------------------------------- ##
+    if(nrow(dat_dep>0)){
+      for (i in 1:nrow(dat_dep)){
+        to=elpos[dat_dep$jobid[i], ]; from=elpos[dat_dep$prev_jobid[i], ]
+        if(dat_dep$dep_type[i]=="gather"){
+          for(curve in curves)
+            curvedarrow (to = to, from = from, lwd = arr.lwd.curve, arr.pos = arr.pos,
+              arr.length = arr.len,
+              segment=c(0.2,0.8), curve=curve, arr.col=arr.col, lcol=arr.col)
         }
+        straightarrow (to = to, from = from, lwd = arr.lwd, arr.pos = arr.pos, arr.length = arr.len,
+          arr.col=arr.col, lcol=arr.col)
+      }
     }
+
+    ## -------------------------------- b o x e s ------------------------------- ##
     for (i in 1:nrow(dat_uniq)){
-        lab=dat_uniq$jobname[i]
-        if(dat_uniq$sub_type[i]=="scatter"){shadow.sizes=shadow.sizes.scatter
-                                        }else{shadow.sizes=shadow.sizes.serial}
-        for(shadow in shadow.sizes)
-            textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
-                     shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
-        if(detailed){
-          textplain(elpos[i,] + detail.offset, boxht, lab = detailed.labs.dep[i],
-                    cex=detail.cex, col=textcol)
-          textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs.sub[i],
-                      cex=detail.cex, col=textcol)
-        }
+      lab=dat_uniq$jobname[i]
+      if(dat_uniq$sub_type[i]=="scatter"){shadow.sizes=shadow.sizes.scatter
+      }else{shadow.sizes=shadow.sizes.serial}
+      for(shadow in shadow.sizes)
+        textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
+          shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
+      if(detailed){
+        textplain(elpos[i,] + detail.offset, boxht, lab = detailed.labs.dep[i],
+          cex=detail.cex, col=textcol)
+        textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs.sub[i],
+          cex=detail.cex, col=textcol)
+      }
     }
     if(pdf) dev.off()
-}
+  }
 
 .plot_flow_dat_type2 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
-																 width, height, 
-																 curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
-																 segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
-																 cex.txt = 0.8, ## labels
-																 box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, 
-                                 box.lcol = "lightskyblue4", relsize = 0.85,...){
-	if(missing(height))  height = 2.5 * nrow(x)
-	if(missing(width)) width = 2 * nrow(x)
-	if(nrow(x) < 2) return(c("need a few more jobs.."))
-	jobnames=unique(as.c(x$jobname))
-	dat_compl <- x[complete.cases(x),]
-	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
-	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
-	colnames(m) = rownames(m) = jobnames
-	## -------- get positions
-	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-	dat_compl$dep_type = ifelse(dat_compl$dep_type %in% c(".", "none") |
-                                is.na(dat_compl$dep_type) | is.null(dat_compl$dep_type), 0, dat_compl$dep_type)
-  for(i in 1:nrow(dat_compl)){ 
-    m[dat_compl$jobname[i], dat_compl$prev_jobs[i]] = dat_compl$dep_type[i]
+  width, height,
+  curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
+  segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
+  cex.txt = 0.8, ## labels
+  box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0,
+  box.lcol = "lightskyblue4", relsize = 0.85,...){
+    if(missing(height))  height = 2.5 * nrow(x)
+    if(missing(width)) width = 2 * nrow(x)
+    if(nrow(x) < 2) return(c("need a few more jobs.."))
+    jobnames=unique(as.c(x$jobname))
+    dat_dep <- x[complete.cases(x),]
+    dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
+    m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
+    colnames(m) = rownames(m) = jobnames
+    ## -------- get positions
+    disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+    dat_dep$dep_type = ifelse(dat_dep$dep_type %in% c(".", "none") |
+        is.na(dat_dep$dep_type) | is.null(dat_dep$dep_type), 0, dat_dep$dep_type)
+    for(i in 1:nrow(dat_dep)){
+      m[dat_dep$jobname[i], dat_dep$prev_jobs[i]] = dat_dep$dep_type[i]
+    }
+    ##### some options
+    if(pdf){
+      #box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
+    }
+    if(pdf) pdf(file=pdffile, width = width, height = height)
+    p <- plotmat(m,
+      curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
+      segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
+      cex.txt = cex.txt, ## labels
+      box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd,
+      shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
+    if(pdf) dev.off()
   }
-  ##### some options
-  if(pdf){
-    #box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
-	}
-	if(pdf) pdf(file=pdffile, width = width, height = height)
-	p <- plotmat(m, 
-							 curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
-							 segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
-							 cex.txt = cex.txt, ## labels
-							 box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd, 
-               shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
-	if(pdf) dev.off()	
-}
 
 
 ##----- plotmat of diagram
 if(FALSE){
-	jobnames=unique(as.c(x$jobname))
-	dat_compl <- x[complete.cases(x),]
-	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
-	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
-	colnames(m) = rownames(m) = jobnames
-	## -------- get positions
-	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-	m[dat_compl$jobname, dat_compl$prev_jobs] = dat_compl$dep_type
-	p <- plotmat(m, 
-					curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
-					segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
-					cex.txt = 0.8, ## labels
-					box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
-					relsize = 0.85) ## box
-	
+  jobnames=unique(as.c(x$jobname))
+  dat_dep <- x[complete.cases(x),]
+  dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
+  m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
+  colnames(m) = rownames(m) = jobnames
+  ## -------- get positions
+  disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+  m[dat_dep$jobname, dat_dep$prev_jobs] = dat_dep$dep_type
+  p <- plotmat(m,
+    curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
+    segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
+    cex.txt = 0.8, ## labels
+    box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
+    relsize = 0.85) ## box
 
-	
+
+
 }
