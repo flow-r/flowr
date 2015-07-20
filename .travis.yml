@@ -13,5 +13,6 @@ warnings_are_errors: false
 #r_check_args: --no-install
 
 ## Following to take care of stringi error from travis (temporary)
-#r_github_packages:
+r_github_packages:
+  - rstudio/rmarkdown
 #  - Rexamine/stringi
