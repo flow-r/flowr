@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-13" />
+<meta name="date" content="2015-07-20" />
 
 <title>flowr simple examples</title>
 
@@ -62,16 +62,17 @@ img {
 
 <div id="header">
 <h1 class="title">flowr simple examples</h1>
-<h4 class="date"><em>2015-07-13</em></h4>
+<h4 class="date"><em>2015-07-20</em></h4>
 </div>
 
 
 <div id="let-us-load-some-example-data" class="section level2">
 <h2>Let us load some example data</h2>
-<pre class="r"><code>exdata = file.path(system.file(package = &quot;flowr&quot;), &quot;extdata&quot;)
-flow_mat = read_sheet(file.path(exdata, &quot;example1_flow_mat.txt&quot;))</code></pre>
+<pre class="r"><code>require(flowr)
+ex = file.path(system.file(package = &quot;flowr&quot;), &quot;examples&quot;)
+flow_mat = read_sheet(file.path(ex, &quot;sleep_pipe.tsv&quot;))</code></pre>
 <pre><code>## Reading file, using 'samplename' as id_column to remove empty rows.</code></pre>
-<pre class="r"><code>flow_def = read_sheet(file.path(exdata, &quot;example1_flow_def.txt&quot;))</code></pre>
+<pre class="r"><code>flow_def = read_sheet(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <pre><code>## Reading file, using 'jobname' as id_column to remove empty rows.</code></pre>
 <pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, def = flow_def)</code></pre>
 <pre><code>## input x is data.frame
@@ -89,31 +90,19 @@ flow_mat = read_sheet(file.path(exdata, &quot;example1_flow_mat.txt&quot;))</cod
 ## 
 ## 
 ## ##--- Detecting platform...
+## Will use platform from flow definition
 ## 
 ## 
 ## ##--- flowr submission...
 ## 
 ## 
-## Detected 3 samples/groups in flow_mat.
-## flow_mat would be split and each would be submitted seperately...
-## 
-## 
 ## Working on... sample1
-## input x is list
-## ....
-## 
-## Working on... sample2
-## input x is list
-## ....
-## 
-## Working on... sample3
 ## input x is list
 ## ....</code></pre>
 </div>
 <div id="do-the-following-for-tests" class="section level2">
 <h2>— do the following for tests</h2>
-<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;local&quot;, 
-                                execute = TRUE)
+<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;local&quot;)
 fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;moab&quot;)
 fobj &lt;- to_flow(x = flow_mat, def = flow_def, platform = &quot;lsf&quot;)</code></pre>
 </div>

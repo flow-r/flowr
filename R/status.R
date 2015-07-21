@@ -94,7 +94,6 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 #' If the path has more than one flow then this could give a summary of **all** of them.
 #' Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
 #' @export
-#' @importFrom knitr kable
 #' @importFrom parallel mclapply
 #' @examples
 #' \dontrun{

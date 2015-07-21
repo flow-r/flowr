@@ -12,17 +12,17 @@ library(flowr)
 
 ## ----build_pipe_exdata, message=FALSE------------------------------------
 ## ------ load some example data
-exdata = file.path(system.file(package = "flowr"), "extdata")
-flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-flowdef = read_sheet(file.path(exdata, "example1_flow_def.txt"))
+ex = file.path(system.file(package = "flowr"), "examples")
+flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
+flow_def = read_sheet(file.path(ex, "sleep_pipe.def"))
 
 ## ----build_pipe_ex1, eval=FALSE, echo=FALSE------------------------------
-#  flow_def = read_sheet(file.path(exdata, "example1_flow_def2.txt"))
+#  #flow_def = read_sheet(file.path(exdata, "example1_flow_def2.txt"))
 #  fobj = suppressMessages(to_flow(flow_mat, def = flow_def, platform = "torque"))
 #  fobj[[1]]@jobs[[1]]@nodes
 #  #debug(submit_flow)
 #  fobj = submit_flow(fobj)
-#
+#  
 
 ## ----build_pipe_exdef, echo=FALSE----------------------------------------
 kable(head(flow_def))
@@ -57,7 +57,7 @@ knitr:::kable(dat)
 #  D <- job(name = "D", cmds = "sleep2", q_obj = qobj,
 #  				 previous_job = "C",
 #  				 dependency_type = "burst", submission_type = "scatter")
-#
+#  
 #  pab <- plot_flow(flow(jobs = list(A, B)))
 
 ## ----build_pipe_plt_bc, echo=FALSE, message=FALSE, eval=FALSE------------
@@ -81,13 +81,14 @@ knitr:::kable(dat)
 #  plot_flow(fobj)
 
 ## ----build_pipe_plt_abcd, message=FALSE----------------------------------
-ex2def = read_sheet(file.path(exdata, "example2_flow_def.txt"))
-ex2mat = read_sheet(file.path(exdata, "example2_flow_mat.txt"))
+ex2def = read_sheet(file.path(ex, "abcd.def"))
+ex2mat = read_sheet(file.path(ex, "abcd.tsv"))
 fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])
 plot_flow(fobj)
 
 ## ----build_pipe_flow_def_cols, echo=FALSE, message=FALSE-----------------
-mat = read_sheet(file.path(exdata, "flow_def_columns.txt"))
+extdata = file.path(system.file(package = "flowr"), "extdata")
+mat = read_sheet(file.path(extdata, "flow_def_columns.txt"))
 kable(mat)
 

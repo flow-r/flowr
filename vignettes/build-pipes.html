@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-07-15" />
+<meta name="date" content="2015-07-20" />
 
 <title>flowr simple examples</title>
 
@@ -62,7 +62,7 @@ img {
 
 <div id="header">
 <h1 class="title">flowr simple examples</h1>
-<h4 class="date"><em>2015-07-15</em></h4>
+<h4 class="date"><em>2015-07-20</em></h4>
 </div>
 
 
@@ -71,9 +71,9 @@ img {
 <div id="ingredients" class="section level2">
 <h2>Ingredients</h2>
 <pre class="r"><code>## ------ load some example data
-exdata = file.path(system.file(package = &quot;flowr&quot;), &quot;extdata&quot;)
-flow_mat = read_sheet(file.path(exdata, &quot;example1_flow_mat.txt&quot;))
-flow_def = read_sheet(file.path(exdata, &quot;example1_flow_def.txt&quot;))</code></pre>
+ex = file.path(system.file(package = &quot;flowr&quot;), &quot;examples&quot;)
+flow_mat = read_sheet(file.path(ex, &quot;sleep_pipe.tsv&quot;))
+flow_def = read_sheet(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <div id="flow-definition" class="section level3">
 <h3>1. Flow Definition</h3>
 <p>Each row in this table refers to one step of the pipeline. It describes the resources used by this step and also its relationship with other steps. Especially, the step immediately prior to it.</p>
@@ -101,55 +101,60 @@ flow_def = read_sheet(file.path(exdata, &quot;example1_flow_def.txt&quot;))</cod
 <thead>
 <tr class="header">
 <th align="left">jobname</th>
+<th align="left">sub_type</th>
 <th align="left">prev_jobs</th>
 <th align="left">dep_type</th>
-<th align="left">sub_type</th>
 <th align="left">queue</th>
 <th align="right">memory_reserved</th>
 <th align="left">walltime</th>
 <th align="right">cpu_reserved</th>
+<th align="left">platform</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">sleep</td>
-<td align="left">none</td>
-<td align="left">none</td>
 <td align="left">scatter</td>
-<td align="left">medium</td>
-<td align="right">163185</td>
-<td align="left">23:00</td>
+<td align="left">NA</td>
+<td align="left">none</td>
+<td align="left">short</td>
+<td align="right">2000</td>
+<td align="left">1:00</td>
 <td align="right">1</td>
+<td align="left">torque</td>
 </tr>
 <tr class="even">
-<td align="left">tmp</td>
+<td align="left">create_tmp</td>
+<td align="left">scatter</td>
 <td align="left">sleep</td>
 <td align="left">serial</td>
-<td align="left">scatter</td>
-<td align="left">medium</td>
-<td align="right">163185</td>
-<td align="left">23:00</td>
+<td align="left">short</td>
+<td align="right">2000</td>
+<td align="left">1:00</td>
 <td align="right">1</td>
+<td align="left">torque</td>
 </tr>
 <tr class="odd">
 <td align="left">merge</td>
-<td align="left">tmp</td>
-<td align="left">gather</td>
 <td align="left">serial</td>
-<td align="left">medium</td>
-<td align="right">163185</td>
-<td align="left">23:00</td>
+<td align="left">create_tmp</td>
+<td align="left">gather</td>
+<td align="left">short</td>
+<td align="right">2000</td>
+<td align="left">1:00</td>
 <td align="right">1</td>
+<td align="left">torque</td>
 </tr>
 <tr class="even">
 <td align="left">size</td>
+<td align="left">serial</td>
 <td align="left">merge</td>
 <td align="left">serial</td>
-<td align="left">serial</td>
-<td align="left">medium</td>
-<td align="right">163185</td>
-<td align="left">23:00</td>
+<td align="left">short</td>
+<td align="right">2000</td>
+<td align="left">1:00</td>
 <td align="right">1</td>
+<td align="left">torque</td>
 </tr>
 </tbody>
 </table>
@@ -192,42 +197,42 @@ Its best to have this as a tab seperated file (with no row.names). -->
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 2 &amp;&amp; sleep 5;echo hello</td>
+<td align="left">sleep 10 &amp;&amp; sleep 2;echo hello</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 13 &amp;&amp; sleep 7;echo hello</td>
+<td align="left">sleep 11 &amp;&amp; sleep 8;echo hello</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 23 &amp;&amp; sleep 7;echo hello</td>
+<td align="left">sleep 11 &amp;&amp; sleep 17;echo hello</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
-<td align="left">tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; tmp1_1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_1</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
-<td align="left">tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; tmp1_2</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_2</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
-<td align="left">tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; tmp1_3</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_3</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">merge</td>
-<td align="left">cat tmp1_1 tmp1_2 tmp1_3 &gt; merge1</td>
+<td align="left">cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 &gt; sample1_merged</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">size</td>
-<td align="left">du -sh merge1; echo MY shell: $SHELL</td>
+<td align="left">du -sh sample1_merged; echo MY shell: $SHELL</td>
 </tr>
 </tbody>
 </table>
@@ -358,8 +363,8 @@ myjob3   myjob3    myjob1      serial     scatter    1              1           
 
 --->
 <p>In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).</p>
-<pre class="r"><code>ex2def = read_sheet(file.path(exdata, &quot;example2_flow_def.txt&quot;))
-ex2mat = read_sheet(file.path(exdata, &quot;example2_flow_mat.txt&quot;))
+<pre class="r"><code>ex2def = read_sheet(file.path(ex, &quot;abcd.def&quot;))
+ex2mat = read_sheet(file.path(ex, &quot;abcd.tsv&quot;))
 fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])</code></pre>
 <table>

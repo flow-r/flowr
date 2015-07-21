@@ -26,23 +26,16 @@ setup()
 #  ")
 
 ## ----echo=FALSE, message=FALSE-------------------------------------------
-exdata = file.path(system.file(package = "flowr"), "extdata")
-flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-flow_mat = subset(flow_mat, samplename == "sample1")
-flow_def = read_sheet(file.path(exdata,  "example1_flow_def.txt"))
+extdata = file.path(system.file(package = "flowr"), "extdata")
+ex = file.path(system.file(package = "flowr"), "examples")
+flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
+flow_def = read_sheet(file.path(ex, "sleep_pipe.def"))
 
 ## ----echo=FALSE----------------------------------------------------------
 kable(flow_mat)
 
 ## ---- message=FALSE, echo=FALSE------------------------------------------
 kable(flow_def)
-
-## ---- eval=FALSE---------------------------------------------------------
-#  ## load these files
-#  exdata = file.path(system.file(package = "flowr"), "extdata")
-#  flow_mat = read_sheet(file.path(exdata, "example1_flow_mat.txt"))
-#  flow_mat = subset(flow_mat, samplename == "sample1")
-#  flow_def = read_sheet(file.path(exdata,  "example1_flow_def.txt"))
 
 ## ---- message=FALSE------------------------------------------------------
 fobj <- to_flow(x = flow_mat, def = flow_def, 
