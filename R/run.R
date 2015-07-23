@@ -17,6 +17,7 @@
 #' @aliases run_flow
 #' @export
 run <- function(x="sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
+	.Deprecated("run_pipe")
 	library(flowr)
 	message("\n\nPerforming initial setup....")
 	setup()
@@ -38,7 +39,7 @@ run_flow = run
 
 
 run_pipe <- function(x, type = "pipe", ...){
-	func = search_pipe(x)
+	func = fetch_pipes(x)
 	args <- as.list(match.call(expand.dots=TRUE))
 	## remove some of them
 	args

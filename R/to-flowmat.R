@@ -1,6 +1,10 @@
 
 
 
+is.flowmat <- function(x){
+	class(x)[1] == "flowmat"
+}
+
 ## add to flowr:
 #' @title
 #' Taking in a named list and returns a two columns data.frame
@@ -10,6 +14,9 @@ to_flowmat <- function(x, ...) {
 	UseMethod("to_flowmat")
 }
 
+#' @rdname to_flowmat
+#' @export
+as.flowmat = to_flowmat
 
 
 #' @rdname to_flowmat

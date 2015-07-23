@@ -81,7 +81,7 @@ kable(flow_def)
 # Stitch
 
 ```{r, message=FALSE}
-fobj <- to_flow(x = flow_mat, def = flow_def, 
+fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
 	flowname = "example1", platform = "lsf")
 ```
 

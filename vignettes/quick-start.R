@@ -38,7 +38,7 @@ kable(flow_mat)
 kable(flow_def)
 
 ## ---- message=FALSE------------------------------------------------------
-fobj <- to_flow(x = flow_mat, def = flow_def, 
+fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
 	flowname = "example1", platform = "lsf")
 
 ## ----plot_example1, fig.cap="Flow chart describing process for example 1", fig.height=5, fig.width=5, message=FALSE----

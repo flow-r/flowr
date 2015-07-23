@@ -82,8 +82,21 @@ flowr:::check.flow_def(flow_def)
 
 fobj = to_flow(x = flow_mat, def = flow_def, submit = TRUE, platform = "lsf")
 
+```
 
 
+## test to_flow
+```{r}
+extdata = file.path(system.file(package = "flowr"), "extdata")
+ex = file.path(system.file(package = "flowr"), "examples")
+flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
+flow_def = read_sheet(file.path(ex, "sleep_pipe.def"))
+
+fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
+	flowname = "example1", platform = "lsf", execute = t)
+
+fobj <- to_flow(x = as.flowmat(flow_mat), def = as.flowdef(flow_def), 
+	flowname = "example1", platform = "lsf")
 
 ```
 

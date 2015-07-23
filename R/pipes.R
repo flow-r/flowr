@@ -1,5 +1,2 @@
 
 
-fetch_pipes <- function(){
-	
-}

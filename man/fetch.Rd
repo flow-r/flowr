@@ -6,9 +6,9 @@
 \alias{fetch_pipes}
 \title{A generic functions to search for files}
 \usage{
-fetch(x, pattern, places, urls, verbose = FALSE)
+fetch(x, places, urls, verbose = FALSE)
 
-fetch_pipes()
+fetch_pipes(x = "sleep_pipe", places, urls)
 
 fetch_conf(x = "flowr.conf", places, ...)
 }
@@ -22,19 +22,18 @@ fetch_conf(x = "flowr.conf", places, ...)
 \item{verbose}{be chatty?}
 }
 \description{
-A generic functions to search for files
-}
-\details{
-sequence: the later overrides former if parameter name matches
-~/                                 ## home dir
-~/flowr/conf                       ## flowr default home
-MYRLIB/flowr/conf folder           ## flow pipeline folder
+These functions help in searching for specific files in the user space.
 
-Looks at: github repo: ngsflows/pipelines
+MYRLIB/flowr/conf folder           ## flowr/ngsflows internal default configurations
+~/flowr/conf                       ## flowr default home
+
+fetch_pipes(): Looks at: github repo: ngsflows/pipelines
+
+fetch_conf(): Searching for .conf files in various places
 }
 \examples{
 {
-search_conf("torque.sh")
+fetch_conf("torque.sh")
 }
 }
 

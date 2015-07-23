@@ -2,7 +2,7 @@
 % Please edit documentation in R/conf.R
 \name{load_conf}
 \alias{load_conf}
-\title{load a configuration file into the environment}
+\title{Fetching and loading configuration files.}
 \usage{
 load_conf(x, chk = TRUE, ...)
 }
@@ -14,6 +14,9 @@ load_conf(x, chk = TRUE, ...)
 \item{...}{Not used}
 }
 \description{
-load a configuration file into the environment
+These are two column tab seperated files (namely name and value).
+}
+\seealso{
+\link{get_opts}
 }
 

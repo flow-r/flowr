@@ -1,27 +1,30 @@
+flowr 0.9.6.13
+----------------------------------------------
+- Using PBS/LSF script instead of one line commands
+- Format now a script, parsed using whisker
+- to_flowmat() and to_flowdef() introduced; creating of these tables simplified
+- Refactored code for plot_flow, handles multiple dependencies beautifully
+
+
 flowr 0.9.6.10
 ----------------------------------------------
-- add to_flow()
-	- 
-- kill_flow()
+- Now to_flow is a S3 function and accepts multiple input types
+- Add function: kill_flow(), rerun_flow()
 - supports moab
 - burst as dependency type
 - node can be character
-- final job names changed to: sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
-- Using PBS/LSF script instead of one line commands
-- Format now a script, parsed using whisker
-
 
 
 flowr 0.9.6.7
 ----------------------------------------------
 - add read_sample_sheet
 - clean package dependencies
-- flow(): conver jobs to list()
+
 
 flowr 0.9.6.6
 ----------------------------------------------
 - switch cat to messages
-- adding to_flow
+- added to_flow
 
 flowr 0.9.6.5
 ----------------------------------------------

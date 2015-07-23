@@ -8,7 +8,8 @@ Depends:
     methods,
     utils,
     diagram, 
-    whisker
+    whisker,
+    checkmate
 Imports:
     tools
 Suggests:

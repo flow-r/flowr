@@ -52,26 +52,29 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param execute Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()
 #' @param qobj Depreciated. A object of class \link{queue}.
 #'
+#' @examples
+#' ex = file.path(system.file(package = "flowr"), "examples")
+#' flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
+#' flow_def = as.flowdef(file.path(ex, "sleep_pipe.def") ## reads and checks
+#' fobj <- to_flow(x = flow_mat, def = flow_def, 
+#' 	flowname = "example1", platform = "lsf")
 #'
 #'
 #' @details The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
-#' This is a minimum three column matrix with:
-#'
-#' samplename<TAB>jobname<TAB>cmd
+#' This is a minimum three column matrix with three columns: samplename, jobname and cmd
 #'
 #'
-#' ## Behaviour, in terms of submit and execute
-#'
-#' submit=FALSE execute=FALSE: default, only flow object creation
-#'
-#' submit=TRUE, execute=FALSE: dry-run
-#'
-#' submit=TRUE, execute=TRUE: submit to cluster
 #'
 #' @return
 #' Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
 #' the flow was executed. It would include details like jobids, path to exact scripts run etc.
 #' To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
+#' 
+#' #' ## Behaviour, in terms of submit and execute
+#'
+#' submit=FALSE & execute=FALSE: Create and return a flow object
+#' submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
+#' submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
 #'
 #' @export
 to_flow <- function(x, ...) {
@@ -84,7 +87,6 @@ to_flow <- function(x, ...) {
 #' @export
 to_flow.vector <- function(x, def, ...){
 	x = read_sheet(x)
-	def <- as.flowdef(def)
 	to_flow(x, def, ...)
 }
 
@@ -100,7 +102,12 @@ to_flow.data.frame <- function(x, def,
 	submit = FALSE,
 	execute = FALSE,
 	qobj, ...){
-
+	
+		def <- as.flowdef(def)
+		assertFlowdef(def)
+		assertLogical(submit)
+		assertLogical(execute)
+		
 		message("\n\n##--- Getting default values for missing parameters...")
 		## --- get defaults sample, job and cmd columns
 		if(missing(grp_col)){
