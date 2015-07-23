@@ -1,3 +1,66 @@
+
+
+run_pipe <- function(x, 
+	platform, 
+	def, 
+	flow_run_path = get_opts("flow_run_path"), 
+	execute = FALSE,  ...){
+	
+	#print(get_opts("flow_run_path"))
+	## find a Rscript with name {{x}}.R
+	
+	message("\n##--- fetching pipeline... ")
+	pip = fetch_pipes(x)
+	pip = fetch_pipes(x)
+	print.opts(pip)
+	
+	
+	## --- source the file and get the main function from it
+	source(pip$pipe)
+	func = get(x) ## find function of the original name
+	
+
+	message("\n##--- loading confs....")
+	## load default options for the pipeline
+	confs = c(fetch_conf("flowr.conf"), 
+		fetch_conf("ngsflows.conf"),
+		pip$conf)
+	print(kable(as.data.frame(confs)))
+	load_conf(confs, verbose = FALSE, chk = FALSE)
+	
+	message("\n##--- creating flowmat....")
+	## crate a flowmat
+	args <- list(...)
+	out = do.call(func, args)
+	
+
+	message("\n##--- stitching a flow object....")
+	## get a flowdef
+	if(missing(def))
+		def = as.flowdef(pip$def)
+	## create a flow object
+	fobj = to_flow(x = out$flowmat,
+		def = def, 
+		platform = platform,
+		flowname = x,
+		flow_run_path = flow_run_path)
+	
+	## submit the flow
+	message("\n##--- submitting....")
+	fobj = submit_flow(fobj, execute = execute)
+	
+	invisible(fobj)
+}
+
+if(FALSE){
+	
+	debug(run_pipe)
+	run_pipe("sleep_pipe", samplename = "samp2")
+
+}
+
+
+
 #' run pipelines
 #' Running examples flows
 #' This wraps a few steps:
@@ -13,11 +76,12 @@
 #' @param execute TRUE/FALSE
 #' @param ... passed onto the function used to create the flow_mat
 #'
-#'
-#' @aliases run_flow
 #' @export
-run <- function(x="sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
-	.Deprecated("run_pipe")
+#' @aliases run_flow
+run <- run_pipe
+
+.run <- function(x="sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
+	.Deprecated("run")
 	library(flowr)
 	message("\n\nPerforming initial setup....")
 	setup()
@@ -33,16 +97,8 @@ run <- function(x="sleep", type = "example", platform, flowmat, def, execute = F
 	return("Done !")
 }
 
-#' @export
-run_pipe = run
-run_flow = run
 
 
-run_pipe <- function(x, type = "pipe", ...){
-	func = fetch_pipes(x)
-	args <- as.list(match.call(expand.dots=TRUE))
-	## remove some of them
-	args
 
 
-}
+

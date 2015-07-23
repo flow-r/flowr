@@ -2,14 +2,30 @@
 % Please edit documentation in R/flow-det.R
 \name{to_flowdet}
 \alias{to_flowdet}
+\alias{to_flowdet.character}
+\alias{to_flowdet.flow}
+\alias{to_flowdet.rootdir}
 \title{to_flowdet}
 \usage{
 to_flowdet(x, ...)
+
+\method{to_flowdet}{rootdir}(x)
+
+\method{to_flowdet}{character}(x)
+
+\method{to_flowdet}{flow}(x)
 }
 \arguments{
 \item{x}{this is a wd}
 }
 \description{
 to_flowdet
+
+get a flow_details file from the directory structure. This has less information than the
+one generated using a flow object. Lacks jobids etc...
+}
+\details{
+if x is char. assumed a path, check if flow object exists in it and read it.
+If there is no flow object, try using a simpler function
 }
 

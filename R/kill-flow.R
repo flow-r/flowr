@@ -1,3 +1,11 @@
+
+
+#' @export
+kill_flow <- function(x, ...) {
+	UseMethod("kill_flow")
+}
+
+
 #' kill_flow
 #' @param x either path to flow [character] or fobj object of class \link{flow}
 #' @param wd path to a specific which needs to be killed
@@ -10,19 +18,15 @@
 #' flowr kill_flow wd=path_to_flow_directory
 #' }
 #' @export
-kill_flow <- function(x, wd, fobj, kill_cmd,
+kill_flow <- function(x, fobj, kill_cmd,
 	jobid_col = "job_sub_id"){
-		if(!missing(wd)){
-			fobj = read_fobj(wd)
-		}
-		if(missing(wd)){
-			wd = dump_flow_details(fobj)
-		}
 		if(missing(kill_cmd)){
 			kill_cmd = detect_kill_cmd(fobj)
 		}
-		flow_details = read_flow_detail_fl(wd)
-		cmds <- sprintf("%s %s", kill_cmd, flow_details[,jobid_col])
+		#flow_details = read_flow_detail_fl(wd)
+		fobj = read_fobj(x)
+		flow_det = to_flowdet(fobj)
+		cmds <- sprintf("%s %s", kill_cmd, flow_det[,jobid_col])
 		tmp <- sapply(cmds, function(x){
 			message(x, "\n")
 			system(x, intern = TRUE)

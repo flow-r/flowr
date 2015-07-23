@@ -5,6 +5,79 @@ is.flowmat <- function(x){
 	class(x)[1] == "flowmat"
 }
 
+check.flowmat <- function(x, ...){
+	numcol = ncol(x)
+	if(numcol < 3)
+		stop("We need at lease 3 columns")
+
+	
+	return(x)
+	
+}
+
+
+is.flowmat <- function(x){
+	class(x)[1] == "flowmat"
+}
+
+
+#' @rdname to_flowmat
+#' @description 
+#' as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.
+#' @export
+as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
+	## ---- assuming x is a file
+	
+	
+	if(is.flowmat(x))
+		return(check(x))
+	
+	if(is.data.frame(x))
+		y = x
+
+	if(is.character(x)){
+		if(!file.exists(x))
+			stop("file does not exists: ", x)
+		message("mat seems to be a file, reading it...")
+		x <- read_sheet(x, id_column = "jobname")
+	}
+
+	if(missing(grp_col)){
+		grp_col = "samplename"
+		if(grp_col %in% colnames(x))
+			message("Using `", grp_col, "` as the grouping column")
+		else
+			stop("grouping column not specified, and the default 'samplename' is absent in the input x.")
+	}
+	if(missing(jobname_col)){
+		jobname_col = "jobname"
+		if(jobname_col %in% colnames(x))
+			message("Using `", jobname_col, "` as the jobname column")
+		else
+			stop("jobname column not specified, and the default 'jobname' is absent in the input x.")
+	}
+	if(missing(cmd_col)){
+		cmd_col = "cmd"
+		if(cmd_col %in% colnames(x))
+			message("Using `", cmd_col, "` as the cmd column")
+		else
+			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
+	}
+	
+	## ---- renaming columns to make it easier for subsequent.
+	x[, "jobname"] = x[, jobname_col]
+	x[, "cmd"] = x[, cmd_col]
+	x[, "samplename"] = x[, grp_col]
+	
+	## --- add class flowmat, suggests that this has been checked
+	class(x) <- c("flowmat", "data.frame")
+	x = check(x)
+	return(x)
+}
+
+
+
+
 ## add to flowr:
 #' @title
 #' Taking in a named list and returns a two columns data.frame
@@ -14,9 +87,7 @@ to_flowmat <- function(x, ...) {
 	UseMethod("to_flowmat")
 }
 
-#' @rdname to_flowmat
-#' @export
-as.flowmat = to_flowmat
+
 
 
 #' @rdname to_flowmat

@@ -129,7 +129,7 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	l <- slots_as_list(jobj, names=slotNames("queue"))
 	## --- dependency initially is a list which can have multiple values
 	## --- ignore a few of the slots
-	l <- l[! names(l) %in% c("format","platform", "dependency")]
+	l <- l[! names(l) %in% c("format", "platform", "dependency")]
 	## --- dependency here is a string according to the policies of the cluster platform
 	l <- c(l, dependency=dependency) ## add dependency to the list
 	names(l) = toupper(names(l)) ## get list of slots
@@ -147,9 +147,10 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	template <- paste(readLines(plat_conf), collapse = "\n")
 	#out = whisker.render(template = template, data = l)
 
-	out = whisker_render(template = template, data = l)$out
-
-	## --- check, out should not have any {{}}, left
+	## render user CMD, if it has {{{CPU}}} etc...
+	l$CMD = whisker_render(l$CMD, data = l)
+	## render HPCC script, if it has {{{CPU}}} etc...
+	out = whisker_render(template, data = l)$out
 
 	write(x = out, file = jobj@script[index])
 

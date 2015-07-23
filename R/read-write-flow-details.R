@@ -28,6 +28,7 @@ read_fobj <- function(x){
 
 
 read_flow_detail_fl <- function(x){
+	.Deprecated("to_flowdet")
 	det_file = file.path(x, "flow_details.txt")
 	if(!file.exists(det_file))
 		stop(error("no.flow_details.file"))
@@ -38,7 +39,7 @@ read_flow_detail_fl <- function(x){
 #' write files desribing this flow
 #' @param x path to write to
 #' @param fobj flow object
-#' @param status a status summary.
+#' @param summ a status summary.
 #' @param flow_det a flow details data.frame
 #' @param plot logical, plot or not
 write_flow_details <- function(x, fobj, summ, flow_det, plot = FALSE){

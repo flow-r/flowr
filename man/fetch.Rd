@@ -8,7 +8,7 @@
 \usage{
 fetch(x, places, urls, verbose = FALSE)
 
-fetch_pipes(x = "sleep_pipe", places, urls)
+fetch_pipes(x, places, urls, check = TRUE, ask)
 
 fetch_conf(x = "flowr.conf", places, ...)
 }
@@ -20,6 +20,8 @@ fetch_conf(x = "flowr.conf", places, ...)
 \item{urls}{urls to look for, works well for pipelines.}
 
 \item{verbose}{be chatty?}
+
+\item{ask}{ask before downloading or copying, not used !}
 }
 \description{
 These functions help in searching for specific files in the user space.

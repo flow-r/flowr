@@ -1,4 +1,16 @@
-## ---- define_modules  ----
+## ---- echo = FALSE, message = FALSE--------------------------------------
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE
+)
+library(flowr)
+library(knitr)
+
+## ----example1, cache = FALSE---------------------------------------------
+read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
+
+## ----define_modules------------------------------------------------------
 #' @param x number of sleep commands
 sleep <- function(x, samplename){
 	cmd = list(sleep = sprintf("sleep %s && sleep %s;echo 'hello'",
@@ -34,9 +46,9 @@ merge_size <- function(x, samplename){
 	return(list(flowmat = flowmat, outfiles = mergedfile))
 }
 
-## ---- define_pipeline  ----
+## ----define_pipeline-----------------------------------------------------
 #' @param x number of files to make
-sleep_pipe <- function(x, samplename){
+sleep_pipe <- function(x = 3, samplename = "samp1"){
 
 	## call the modules one by one...
 	out_sleep = sleep(x, samplename)
@@ -51,33 +63,24 @@ sleep_pipe <- function(x, samplename){
 	return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
 }
 
+## ------------------------------------------------------------------------
+out = sleep_pipe(x = 3, "sample1")
+flowmat = out$flowmat
 
-## ---- run_sleep_example ----
-main <- function(){
-	#setwd("inst/examples"); ## cd to folder containing this script
-	
-	require(flowr)
+kable(flowmat)
 
-	out = sleep_pipe(x = 3, "sample1")
-	flowmat = out$flowmat
-	def = to_flowdef(out$flowmat)
-	
-	## change submission and dependency types
-	def$sub_type = c("scatter", "scatter", "serial", "serial")
-	def$dep_type = c("none", "serial", "gather", "serial")
+## ------------------------------------------------------------------------
+def = to_flowdef(flowmat)
+kable(def)
 
-	## save a exmple plot
-	plot_flow(to_flow(flowmat, def), pdffile = "sleep_pipe.pdf", pdf = TRUE)
+## ----message=FALSE-------------------------------------------------------
+plot_flow(to_flow(flowmat, def))
 
-	## save the data
-	write_sheet(def, "sleep_pipe.def")
+## ----message=FALSE-------------------------------------------------------
+def$sub_type = c("scatter", "scatter", "serial", "serial")
+def$dep_type = c("none", "serial", "gather", "serial")
+kable(def)
 
-	## write a example output
-	write_sheet(flowmat, "sleep_pipe.tsv")
-
-}
-
-
-
-
+## ----message=FALSE-------------------------------------------------------
+plot_flow(to_flow(flowmat, def))
 

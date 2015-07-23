@@ -26,6 +26,8 @@ Especially useful in case of re-running a flow.}
 \item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
 
 \item{verbose}{logical.}
+
+\item{dump}{dump all the flow details to the flow path}
 }
 \description{
 submit_flow

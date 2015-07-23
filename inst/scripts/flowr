@@ -15,20 +15,26 @@ nm = "flowr"
 get_params <- function(paramPairs){
 	func <- as.character(paramPairs[1])
 	if(length(func) == 0) return(help())
+	
 	args <- formals(func)
 	paramPairs <- paramPairs[grep("=", paramPairs)] ## get those with =
+	#args_supplied = sapply(strsplit(paramPairs, "="), "[[", 1)
+	
+	
 	if(verbose) message("We have ",length(paramPairs)," parameters\n")
 	for(param in paramPairs){
 		temp <- unlist(strsplit(param, "="));
 		nm = gsub("-", "", temp[1])
 		value=temp[2]
 		value <- strsplit(value,",")[[1]] #handling those with , in value.. for multiple R values
-		## ---------- if function supports ... need to pass ALL arguments
+		
+		## --- if function supports ... need to pass ALL arguments
 		if(sum(names(args) %in% "...") & !nm %in% names(args)){
 			message("Adding ", nm, ":", value)
 			l = list(nm = value);names(l) = nm
 			args <- c(args, l)
 		}
+		
 		if(class(args[[nm]]) == "numeric" ){
 			args[[nm]] = as.numeric(value)
 		}else if(class(args[[nm]]) %in% c("character", "name" )){
@@ -41,6 +47,11 @@ get_params <- function(paramPairs){
 			args[[nm]] = as.character(value)
 		}
 	}
+	
+	## -- remove the dots argument
+	dots = which(names(args) == "...")
+	args = args[-dots]
+	
 	##print(do.call(rbind, as.list(args)))
 	if(verbose) print(args)
 	return(as.list(args))
@@ -80,11 +91,11 @@ generic_help <- function(){
 
 main <- function(){
 	args <- commandArgs(trailingOnly = TRUE)
-
+	
 	##-------- if default function is not in the space, load flowr library
 	if(nm == "flowr")
 		require(flowr, quietly=!verbose, warn.conflicts=verbose)
-
+	
 	## -------------- Load the required package
 	if(grepl("::", args[1])){
 		pkg <- gsub("(.?)::.*", "\\1", args[1])
@@ -92,7 +103,7 @@ main <- function(){
 		library(pkg, character.only = TRUE)
 		args[1] = as.character(gsub(".*::(.*)", "\\1", args[1]))
 	}
-
+	
 	if(is.na(args[1])){
 		generic_help()
 	}else if(args[1] == "-h"){
@@ -127,8 +138,10 @@ if(is.data.frame(out)){
 	cat("")
 }else if(is.list(out)){
 	print(out)
-}else{
+}else if(is.atomic(out)){
 	print(cat(out, "\n"))
+}else{
+	cat("")
 }
 
 
@@ -138,7 +151,7 @@ if(FALSE){
 	paramPairs=c('bwa', 'fqs1=sample1.fq', 'bwa_index=index', 'bwa_samse_opts=myopts')
 	debug(get_params)
 	get_params(paramPairs)
-
+	
 }
 
 if(verbose) warnings()

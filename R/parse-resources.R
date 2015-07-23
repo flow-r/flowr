@@ -18,7 +18,6 @@ parse_lsf_out <- function(x, scale_time = 1/3600, n = 100){
 #' @param odir Output directory to save the results
 #' @param \dots other arguments sent to \link{get_resources_lsf}
 #' @details If \code{x} is a parent level folder, then resources are summarized for all its child folders.
-#' @export
 #' @examples \dontrun{
 #' get_resources(x = x, odir = ~/tmp)
 #' }
@@ -48,10 +47,16 @@ get_resources <- function(x, odir, ...){
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }
 get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
+	
 	if (!requireNamespace("reshape2", quietly = TRUE)) {
 		stop("reshape2 needed for this function to work. Please install it.",
 			call. = FALSE)
 	}
+	if (!requireNamespace("ggplot2", quietly = TRUE)) {
+		stop("ggplot2 needed for this function to work. Please install it.",
+			call. = FALSE)
+	}
+
 	flow_mat = read_flow_detail_fl(wd)
 	rownames(flow_mat) = flow_mat$jobid
 	#files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)

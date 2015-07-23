@@ -11,11 +11,11 @@ write_flow_details(x, fobj, summ, flow_det, plot = FALSE)
 
 \item{fobj}{flow object}
 
+\item{summ}{a status summary.}
+
 \item{flow_det}{a flow details data.frame}
 
 \item{plot}{logical, plot or not}
-
-\item{status}{a status summary.}
 }
 \description{
 write files desribing this flow

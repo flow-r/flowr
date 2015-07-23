@@ -8,10 +8,10 @@ Depends:
     methods,
     utils,
     diagram, 
-    whisker,
-    checkmate
+    whisker
 Imports:
-    tools
+    tools,
+    knitr
 Suggests:
     reshape2,
     ggplot2,

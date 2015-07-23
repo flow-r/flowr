@@ -6,15 +6,15 @@ centos: 6
 
 ## R CMD CHECK
 
-There was  previous issue, in which I was automatically copying a file to user's bin folder upon loading the package.
+## Previous issue
+ - Archived on 2015-05-18 as violated the CRAN policy on the use of the user's file space.
+Now changing of user's file space has been seperated as independent function: setup(), instead of automatic call by .onAttach()
 
-Now this has been seperated as independent function: setup(), which a user needs to call.
-
-### Package in Depends field not imported from: ‘rmarkdown’
+## Package in Depends field not imported from: ‘rmarkdown’
   These packages need to be imported from (in the NAMESPACE file)
   
 ## File ‘flowr/R/read-fobj.R’:
   attach(rda)
-  
-I have replaced attach, with readRDS, attach is now only for legacy purposes. This will go away in the next major release.
+I have replaced attach with readRDS, and this remains for legacy purposes. This will go away in the next major release.
+
 

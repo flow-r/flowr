@@ -22,7 +22,8 @@ get_status <- function(x, ...) {
 #' @rdname get_status
 #' @export
 get_status.character <- function(x, out_format = "markdown", ...){
-	flow_det = to_flowdet(x)
+	## Get a shorter get_status
+	flow_det = to_flowdet.rootdir(x)
 	flow_det = get_status(flow_det)
 	summ = summarize_flow_det(flow_det)
 	write_flow_details(x, summ = summ)
@@ -57,8 +58,6 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 	## --- get initial flow_det from the flow object
 	flow_det = to_flowdet(x)
 	## --- update the flow_det using the triggers
-	flow_det$trigger = gsub("~/", "/rsrch2/iacs/iacs_dep/sseth/", 
-													flow_det$trigger)
 	flow_det = get_status(flow_det)
 
 	message(paste0("Showing status of: ", x@flow_path))
@@ -75,7 +74,7 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 	## update status and exit code in the flow object
 
 	## write out fobj, status and flow_det
-	write_flow_details(x = x@flow_path)
+	write_flow_details(x = x@flow_path, summ = summ, flow_det = flow_det)
 
 	#flow_det = try(update_flow_det(wd = x@flow_path, mat_cmd = mat_cmd))
 	invisible(flow_det)

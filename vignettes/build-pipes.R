@@ -12,17 +12,16 @@ library(flowr)
 
 ## ----build_pipe_exdata, message=FALSE------------------------------------
 ## ------ load some example data
-ex = file.path(system.file(package = "flowr"), "examples")
-flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
-flow_def = read_sheet(file.path(ex, "sleep_pipe.def"))
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
 
 ## ----build_pipe_ex1, eval=FALSE, echo=FALSE------------------------------
 #  #flow_def = read_sheet(file.path(exdata, "example1_flow_def2.txt"))
 #  fobj = suppressMessages(to_flow(flow_mat, def = flow_def, platform = "torque"))
-#  fobj[[1]]@jobs[[1]]@nodes
+#  fobj@jobs[[1]]@nodes
 #  #debug(submit_flow)
 #  fobj = submit_flow(fobj)
-#  
 
 ## ----build_pipe_exdef, echo=FALSE----------------------------------------
 kable(head(flow_def))
@@ -81,8 +80,8 @@ knitr:::kable(dat)
 #  plot_flow(fobj)
 
 ## ----build_pipe_plt_abcd, message=FALSE----------------------------------
-ex2def = read_sheet(file.path(ex, "abcd.def"))
-ex2mat = read_sheet(file.path(ex, "abcd.tsv"))
+ex2def = as.flowdef(file.path(ex, "abcd.def"))
+ex2mat = as.flowmat(file.path(ex, "abcd.tsv"))
 fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])
 plot_flow(fobj)

@@ -4,7 +4,8 @@
 \alias{read_sheet}
 \title{read_sheet}
 \usage{
-read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext, ...)
+read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext,
+  header = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{path to a file, to be read}
@@ -17,12 +18,16 @@ read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext, ...)
 
 \item{ext}{determined using file extention. Specifying will override}
 
+\item{header}{first line is header?}
+
+\item{verbose}{be chatty?}
+
 \item{...}{passed onto \link{read.xlsx}, read.table of read.csv2 depending on the file type.}
 }
 \description{
 Auto detect file type, read it and clean it.
 }
 \details{
-If id_column is skipped the first column takes its place.
+If id_column is missing, default if first column
 }
 

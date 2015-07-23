@@ -55,9 +55,9 @@ C-->D[get size]
 
 ```{r echo=FALSE, message=FALSE}
 extdata = file.path(system.file(package = "flowr"), "extdata")
-ex = file.path(system.file(package = "flowr"), "examples")
-flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
-flow_def = read_sheet(file.path(ex, "sleep_pipe.def"))
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
 ```
 
 A simple example where we have three instances of sleep (wait for few seconds), after completion three tmp jobs are started which create files with some random data. After all these are complete, a merge step follows, which combines them into one big file. Next we use `du` to calculate the size of the resulting file. 

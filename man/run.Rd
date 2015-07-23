@@ -10,13 +10,11 @@ Get all the commands to run (flow_mat)
 Create a `flow` object, using flow_mat and a default flowdef (picked from the same folder).
 Use `submit_flow()` to submit this to the cluster.}
 \usage{
-run(x = "sleep", type = "example", platform, flowmat, def,
+run(x, platform, def, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
 }
 \arguments{
 \item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}
-
-\item{type}{adv.}
 
 \item{platform}{what platform to use, overrides flowdef}
 
@@ -27,6 +25,8 @@ run(x = "sleep", type = "example", platform, flowmat, def,
 \item{flow_mat}{flow matrix, with commands to run (if we already have this, start here)}
 
 \item{flowdef}{flow definition}
+
+\item{type}{adv.}
 }
 \description{
 run pipelines

@@ -13,6 +13,20 @@ to_flowdef(x, ...)
 }
 \arguments{
 \item{x}{can a path to a flowmat, flowmat object.}
+
+\item{sub_type}{}
+
+\item{dep_type}{}
+
+\item{queue}{}
+
+\item{platform}{}
+
+\item{memory_reserved}{}
+
+\item{cpu_reserved}{}
+
+\item{walltime}{}
 }
 \value{
 Returns a flow object. If execute=TRUE, fobj is rich with information about where and how

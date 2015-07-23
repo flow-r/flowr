@@ -92,7 +92,7 @@ as.flowdef <- function(x){
 	if(is.character(x)){
 		if(!file.exists(x))
 			stop(error("no.def"), x)
-		message("Def seems to be a file, reading it...")
+		message("def seems to be a file, reading it...")
 		y <- read_sheet(x, id_column = "jobname")
 	}
 	class(y) <- c("flowdef", "data.frame")
@@ -108,7 +108,13 @@ as.flowdef <- function(x){
 
 #' Crate a skeleton flow definition using a flowmat !
 #' @param x can a path to a flowmat, flowmat object.
-#'
+#' @param sub_type
+#' @param dep_type
+#' @param queue
+#' @param platform
+#' @param memory_reserved
+#' @param cpu_reserved
+#' @param walltime
 #' @return
 #' Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
 #' the flow was executed. It would include details like jobids, path to exact scripts run etc.
@@ -180,6 +186,25 @@ to_flowdef.flow <- function(x){
 	return(def)
 }
 
+#' Create a skeleton flow definition
+#' A helper function to create a skeleton flow definition.
+#'
+#' @param jobnames names of the jobs in a flow
+#' @param fl path to a matrix with commands to run
+#' @details flow_tab: as defined by fl is a (minimum) three column matrix with
+#' samplename, jobname, cmd
+#' @export
+to_flowdef.character <- function(x, jobnames){
+	if(!missing(x)){
+		mat <- read_sheet(x)
+		mat = to_flowmat(mat)
+	}
+	def = to_flowdef(mat)
+	write.table(def, file = file.path(dirname(x), "flowdef.txt"),
+		sep = "\t", row.names = FALSE, quote = FALSE)
+	invisible(def)
+}
+
 
 #' split_multi_dep
 #' Split rows with multiple dependencies
@@ -231,25 +256,6 @@ if(FALSE){
 	return(dat)
 }
 
-
-#' Create a skeleton flow definition
-#' A helper function to create a skeleton flow definition.
-#'
-#' @param jobnames names of the jobs in a flow
-#' @param fl path to a matrix with commands to run
-#' @details flow_tab: as defined by fl is a (minimum) three column matrix with
-#' samplename, jobname, cmd
-#' @export
-to_flowdef.character <- function(x, jobnames){
-	if(!missing(x)){
-		mat <- read_sheet(x)
-		mat = to_flomat(mat)
-	}
-	def = to_flowdef(mat)
-	write.table(def, file = file.path(dirname(x), "flowdef.txt"),
-		sep = "\t", row.names = FALSE, quote = FALSE)
-	invisible(def)
-}
 
 
 

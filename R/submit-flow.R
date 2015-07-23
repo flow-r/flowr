@@ -24,6 +24,7 @@
 #' @param uuid \code{character} Advanced use. This is the final path used for flow execution.
 #' Especially useful in case of re-running a flow.
 #' @param verbose logical.
+#' @param dump dump all the flow details to the flow path
 #' @param ... Advanced use. Any additional parameters are passed on to \link{submit_job} function.
 #'
 #'
@@ -145,7 +146,7 @@ prevjob_exists <- function(x){
 	}
 }
 
-dump_flow_helpers <- function(x, plot){
+dump_flow_helpers <- function(x, plot, verbose){
 
 	.Deprecated("write_flow_details")
 	## should update instead of overwrite.

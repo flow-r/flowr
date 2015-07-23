@@ -4,7 +4,7 @@
 \alias{load_conf}
 \title{Fetching and loading configuration files.}
 \usage{
-load_conf(x, chk = TRUE, ...)
+load_conf(x, chk = TRUE, verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{path to a configuration file}

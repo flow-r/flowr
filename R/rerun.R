@@ -100,8 +100,8 @@ update.flow <- function(x, child){
 
 detect_redo <- function(fobj, wd){
 	## get detail file
-	det_file = read_flow_detail_fl(wd)
-	get_flow_status(x = wd)
+	det_file = to_flowdet(wd)
+	get_status(x = wd)
 	## subset those which need to be rerun
 	flow_status = read.table(det_file, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
 	#plot_flow(x = fobj, pdf = TRUE)

@@ -1,18 +1,18 @@
 ## --- this is being archived for now...
 
-
-get_connection <- function(path = "/rsrch2/iacs/iacs_dep/sseth/rflow/db/main.sqlite"){
-#' @importFrom RSQLite dbConnect
-#' @importFrom RSQLite SQLite
-  #   library(sqldf)
-	if (!requireNamespace("pkg", quietly = TRUE)) {
-		stop("Pkg needed for this function to work. Please install it.",
-			call. = FALSE)
+if(FALSE){
+	get_connection <- function(path = "/rsrch2/iacs/iacs_dep/sseth/rflow/db/main.sqlite"){
+		#' @importFrom RSQLite dbConnect
+		#' @importFrom RSQLite SQLite
+		#   library(sqldf)
+		if (!requireNamespace("pkg", quietly = TRUE)) {
+			stop("Pkg needed for this function to work. Please install it.",
+				call. = FALSE)
+		}
+		db <- dbConnect(SQLite(), dbname = path)
+		return(db)
 	}
-  db <- dbConnect(SQLite(), dbname = path)
-  return(db)
 }
-
 
 
 

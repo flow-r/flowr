@@ -1,8 +1,9 @@
 
 
 
-#' @export
 .flow_opts <- new.env()
+#' @export
+flow_opts = .flow_opts
 
 #' @rdname opts
 #' @title Setting/loading and extracting various options into the environment
@@ -14,6 +15,7 @@
 #' @param x get_opts: a character vector of names of options to extract.
 #' @seealso \link{load_conf}
 #' @export
+#' @importFrom knitr kable
 #' @examples
 #' ## Prints all the default options set via flowr.conf
 #' get_opts()
@@ -45,26 +47,30 @@ set_opts = function(x = list()){
 }
 
 
+#' @importFrom knitr kable
 #' @export
 print.opts <- function(x){
 	if(length(x) > 1){
-		message("\nPrinting list of options as a pretty table.")
-		x = cbind(lapply(x, function(f) {
-			as.data.frame(Filter(Negate(is.null), f))
+		#message("\nPrinting list of options as a pretty table.")
+		y = cbind(lapply(x, function(f) {
+			unlist(as.data.frame(Filter(Negate(is.null), f)))
 		}))
-		print(kable(x))
-		# 		print(kable(t(as.data.frame(x, row.names = names(x)))))
+		print(kable(y, col.names = c("")))
+		## following does not handle null values well
+		# print(kable(t(as.data.frame(x, row.names = names(x)))))
 	}
-	else(print.default(x))
+	else(print.default(y))
 }
 
 
-.load_conf <- function(x, chk, ...){
+.load_conf <- function(x, chk, verbose,...){
+	
 	if(!file.exists(x)){
 		message(error("no.conf"), x)
 		return()
 	}
-	conf <- read_sheet(x, allowEscape = TRUE)
+	conf <- read_sheet(x, allowEscape = TRUE, header = FALSE, verbose = verbose)
+	colnames(conf) = c("name", "value")
 	lst = as.list(conf$value)
 	names(lst) = conf$name
 
@@ -90,9 +96,9 @@ print.opts <- function(x){
 #' @param ... Not used
 #' @seealso \link{get_opts}
 #' @export
-load_conf <- function(x, chk = TRUE, ...){
+load_conf <- function(x, chk = TRUE, verbose = TRUE, ...){
 	## .load_conf: works on a single file
-	lst <- lapply(x, .load_conf, chk = chk, ...)
+	lst <- lapply(x, .load_conf, chk = chk, verbose = verbose, ...)
 
 	## in future this could be a normalized list
 	## with the final set of options used
@@ -143,6 +149,7 @@ chk_conf <- function(x){
 #' @param places places (paths) to look for it. Its best to use the defaults
 #' @param urls urls to look for, works well for pipelines.
 #' @param verbose be chatty?
+#' @param ask ask before downloading or copying, not used !
 #'
 #' @export
 #'
@@ -166,15 +173,20 @@ fetch <- function(x, places, urls, verbose = FALSE){
 fetch_pipes <- function(x, places, urls, check = TRUE, ask){
 	if(missing(places)){
 		places = c(
-			system.file(package = "flowr", "examples"),
+			system.file(package = "flowr", "pipelines"),
 			system.file(package = "ngsflows", "pipelines"),
-			get_opts("flow_pipe_paths"), "~/")
+			get_opts("flow_pipe_paths"), 
+			getwd())
 	}
-	if(missing(x))
-		avail_pipes(places)
+# 	if(missing(x))
+# 		avail_pipes(places)
+	
+	## in case of multiple files, use the last one
 	r = fetch(paste0("^", x, ".R$"), places)
+	r = tail(r, 1)
 	def = gsub("R$", "def", r)
 	conf = gsub("R$", "conf", r)
+
 	if(check)
 		if(length(r) == 0)
 			stop(error("no.pipe"), x)
@@ -182,11 +194,6 @@ fetch_pipes <- function(x, places, urls, check = TRUE, ask){
 }
 
 
-avail_pipes <- function(){
-	urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
-	urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
-	GET(url)
-}
 
 #' @rdname fetch
 #' @description fetch_conf(): Searching for .conf files in various places
@@ -196,7 +203,7 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
 		places = c(
 			system.file(package = "flowr", "conf"),
 			system.file(package = "ngsflows", "conf"),
-			get_opts("flow_conf_path"), "~/")
+			get_opts("flow_conf_path"), getwd())
 	}
 
 	x = paste0(x, "$") ## x should be a full file name
@@ -207,6 +214,12 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
 search_conf <- function(...){
 	.Deprecated("fetch_conf")
 	fetch_conf(...)
+}
+
+## testing....
+avail_pipes <- function(){
+	urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
+	urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
 }
 
 

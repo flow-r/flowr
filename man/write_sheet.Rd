@@ -6,6 +6,11 @@
 \usage{
 write_sheet(x, file)
 }
+\arguments{
+\item{x}{a data.frame}
+
+\item{file}{output file}
+}
 \description{
 A simple wrapper around write.table with some sugar.
 }

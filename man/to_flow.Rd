@@ -9,7 +9,7 @@
 \usage{
 to_flow(x, ...)
 
-\method{to_flow}{vector}(x, def, ...)
+\method{to_flow}{vector}(x, def, grp_col, jobname_col, cmd_col, ...)
 
 \method{to_flow}{data.frame}(x, def, grp_col, jobname_col, cmd_col, flowname,
   flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
@@ -65,8 +65,7 @@ This is a minimum three column matrix with three columns: samplename, jobname an
 \examples{
 ex = file.path(system.file(package = "flowr"), "examples")
 flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
-flow_def = as.flowdef(file.path(ex, "sleep_pipe.def") ## reads and checks
-fobj <- to_flow(x = flow_mat, def = flow_def,
-	flowname = "example1", platform = "lsf")
+flow_def = as.flowdef(file.path(ex, "sleep_pipe.def")
+fobj <- to_flow(x = flow_mat, def = flow_def, flowname = "example1", platform = "lsf")
 }
 

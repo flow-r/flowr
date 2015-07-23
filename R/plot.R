@@ -79,7 +79,7 @@ display_mat <- function(x){
   for(i in 1:nrow(x)){
     prev = x$prev_jobs[i]
     if(prev != ""){
-      prev_level = subset(x, jobname == prev)$level
+      prev_level = subset(x, x$jobname == prev)$level
       x$level[i] = prev_level + 1
     }
   }

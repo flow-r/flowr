@@ -4,18 +4,18 @@
 \alias{kill_flow}
 \title{kill_flow}
 \usage{
-kill_flow(x, wd, fobj, kill_cmd, jobid_col = "job_sub_id")
+kill_flow(x, fobj, kill_cmd, jobid_col = "job_sub_id")
 }
 \arguments{
 \item{x}{either path to flow [character] or fobj object of class \link{flow}}
-
-\item{wd}{path to a specific which needs to be killed}
 
 \item{fobj}{a object of class \link{flow}}
 
 \item{kill_cmd}{The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.}
 
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
+
+\item{wd}{path to a specific which needs to be killed}
 }
 \description{
 kill_flow

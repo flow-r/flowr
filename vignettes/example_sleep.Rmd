@@ -21,7 +21,7 @@ library(knitr)
 # Example1
 
 ```{r example1, cache = FALSE}
-read_chunk(system.file('examples', 'sleep_pipe.R', package = 'flowr'))
+read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
 ```
 
 

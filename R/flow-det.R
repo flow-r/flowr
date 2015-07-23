@@ -1,16 +1,17 @@
 #' to_flowdet
 #' @param x this is a wd
+#' @export
 to_flowdet <- function(x, ...) {
 	UseMethod("to_flowdet")
 }
 
 
-#' @rdname get_status
+#' @rdname to_flowdet
 #' @description
 #' get a flow_details file from the directory structure. This has less information than the
 #' one generated using a flow object. Lacks jobids etc...
 #' @export
-to_flowdet.character <- function(x){
+to_flowdet.rootdir <- function(x){
 	## --- get all the cmd files
 	files_cmd <- list.files(x, pattern = "cmd", full.names = TRUE, recursive = TRUE)
 	if(length(files_cmd) == 0)
@@ -29,7 +30,21 @@ to_flowdet.character <- function(x){
 	return(cmd_mat)
 }
 
+#' @rdname to_flowdet
+#' @export
+#' @details 
+#' if x is char. assumed a path, check if flow object exists in it and read it.
+#' If there is no flow object, try using a simpler function
+to_flowdet.character <- function(x){
+	x = read_fobj(x)
+	if(is.character(x))
+		return(to_flowdet.rootdir(x)) ## where x is a parent path
+	to_flowdet(x) ## where x is a flow
+}
+	
 
+#' @rdname to_flowdet
+#' @export
 to_flowdet.flow <- function(x){
 	fobj = x
 	ret <- lapply(1:length(fobj@jobs), function(i){
