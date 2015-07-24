@@ -5,12 +5,12 @@ output: html_document
 
 flowr 0.9.7 2015-07-25
 ----------------------------------------------
-- run(): runs a complete pipelines
-	- create flowmat
-	- load conf
-	- load flowdef
-	- call to_flow(), created a flow object
-	- submit_flow()
+- run(): runs a complete pipeline:
+	- create flowmat, my_pipeline()
+	- load conf, load_conf()
+	- load flowdef, as.flowdef()
+	- created a flow object, to_flow()
+	- Submit to the cluster, submit_flow()
 - kill(): now a S3 functions, and operates on both a flow object
    and flow_path folder
 - check(): Now works on flowdef and flowmat
