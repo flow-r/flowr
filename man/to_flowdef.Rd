@@ -2,38 +2,47 @@
 % Please edit documentation in R/flow-def.R
 \name{to_flowdef}
 \alias{to_flowdef}
+\alias{to_flowdef.character}
+\alias{to_flowdef.flow}
 \alias{to_flowdef.flowmat}
-\title{Crate a skeleton flow definition using a flowmat !}
+\title{Create a skeleton flow definition using a flowmat.}
 \usage{
 to_flowdef(x, ...)
 
-\method{to_flowdef}{flowmat}(x, sub_type = "serial", dep_type = "gather",
+\method{to_flowdef}{flowmat}(x, sub_type, dep_type, prev_jobs,
   queue = "short", platform = "torque", memory_reserved = "2000",
   cpu_reserved = "1", walltime = "1:00", ...)
+
+\method{to_flowdef}{flow}(x, ...)
+
+\method{to_flowdef}{character}(x, ...)
 }
 \arguments{
-\item{x}{can a path to a flowmat, flowmat object.}
+\item{x}{can a path to a flowmat, flomat or flow object.}
 
-\item{sub_type}{}
+\item{...}{not used}
 
-\item{dep_type}{}
+\item{sub_type}{submission type, one of: scatter, serial. Character, of length one or same as the number of jobnames}
 
-\item{queue}{}
+\item{dep_type}{dependency type, one of: gather, serial or burst. Character, of length one or same as the number of jobnames}
 
-\item{platform}{}
+\item{prev_jobs}{previous job name}
 
-\item{memory_reserved}{}
+\item{queue}{Cluster queue to be used}
 
-\item{cpu_reserved}{}
+\item{platform}{platform of the cluster: lsf, sge, moab, torque, slurm etc.}
 
-\item{walltime}{}
-}
-\value{
-Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
-the flow was executed. It would include details like jobids, path to exact scripts run etc.
-To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
+\item{memory_reserved}{amount of memory required.}
+
+\item{cpu_reserved}{number of cpu's required}
+
+\item{walltime}{amount of walltime required}
 }
 \description{
-Crate a skeleton flow definition using a flowmat !
+Creation of a skeleton flow definition with several default values.
+
+All params may be of length one, or same as the number of jobnames
+
+to_flowdef.character: x is a flowmat file.
 }
 

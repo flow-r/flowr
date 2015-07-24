@@ -1,42 +1,24 @@
 
 
-
-is.flowmat <- function(x){
-	class(x)[1] == "flowmat"
-}
-
-check.flowmat <- function(x, ...){
-	numcol = ncol(x)
-	if(numcol < 3)
-		stop("We need at lease 3 columns")
-
-	
-	return(x)
-	
-}
-
-
-is.flowmat <- function(x){
-	class(x)[1] == "flowmat"
-}
-
-
-#' @rdname to_flowmat
-#' @description 
+#' @rdname as.flowmat
+#' @title flow mat
+#'
+#' @description
 #' as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.
-#' @param x a data.frame or flow_def file (tab seperated)
+#'
+#' @param x a data.frame or path to file with flow details in it.
 #' @param grp_col column used for grouping, default samplename.
 #' @param jobname_col column specifying jobname, default jobname
 #' @param cmd_col column specifying commands to run, default cmd
-#' @param ...
+#' @param ... not used
+#'
 #' @export
 as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	## ---- assuming x is a file
-	
-	
+
 	if(is.flowmat(x))
 		return(check(x))
-	
+
 	if(is.data.frame(x))
 		y = x
 
@@ -68,12 +50,12 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 		else
 			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
 	}
-	
+
 	## ---- renaming columns to make it easier for subsequent.
 	x[, "jobname"] = x[, jobname_col]
 	x[, "cmd"] = x[, cmd_col]
 	x[, "samplename"] = x[, grp_col]
-	
+
 	## --- add class flowmat, suggests that this has been checked
 	class(x) <- c("flowmat", "data.frame")
 	x = check(x)
@@ -81,18 +63,26 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 }
 
 
+#' @rdname as.flowmat
+#' @export
+is.flowmat <- function(x){
+	class(x)[1] == "flowmat"
+}
 
 
-## add to flowr:
-#' @title
-#' Taking in a named list and returns a two columns data.frame
+
+#' @rdname to_flowmat
+#'
+#' @title Taking in a named list and returns a two columns data.frame
+#'
 #' @param x a named list OR vector. Where name corresponds to the jobname and value is a vector of commands to run
+#' @param samplename character of length 1 or that of nrow(x)
+#' @param ... not used
+#'
 #' @export
 to_flowmat <- function(x, ...) {
 	UseMethod("to_flowmat")
 }
-
-
 
 
 #' @rdname to_flowmat
@@ -124,17 +114,6 @@ to_flowmat.data.frame <- function(x, ...){
 	return(x)
 }
 
-## not used, use char instead
-to_flowmat.character <- function(x, ...){
-	.Deprecated("to_flowmat.list", msg = "Supply a named list instead of a vector.")
-	ret <- lapply(1:length(x), function(i){
-		cmd = x[i]
-		jobname = names(x[i])
-		data.frame(jobname, cmd, stringsAsFactors = FALSE)
-	})
-	do.call(rbind, ret)
-}
-
 
 #' @rdname to_flowmat
 #' @export
@@ -150,3 +129,15 @@ to_flowmat.flow <- function(x, ...){
 }
 
 
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
+
+## not used, use char instead
+to_flowmat.character <- function(x, ...){
+	.Deprecated("to_flowmat.list", msg = "Supply a named list instead of a vector.")
+	ret <- lapply(1:length(x), function(i){
+		cmd = x[i]
+		jobname = names(x[i])
+		data.frame(jobname, cmd, stringsAsFactors = FALSE)
+	})
+	do.call(rbind, ret)
+}

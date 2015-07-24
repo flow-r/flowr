@@ -17,6 +17,8 @@ to_flowdet(x, ...)
 }
 \arguments{
 \item{x}{this is a wd}
+
+\item{...}{not used}
 }
 \description{
 to_flowdet

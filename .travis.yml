@@ -8,11 +8,11 @@ warnings_are_errors: false
 # System dependencies for HTTP calling
 # http://docs.travis-ci.com/user/languages/r/
 
-# R 
+# R
 #r_check_args: --timings --as-cran --no-install
 r_check_args: --no-build-vignettes --no-manual --as-cran rpack
 
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
   - rstudio/rmarkdown
-#  - Rexamine/stringi
+  - sahilseth/params

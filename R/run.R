@@ -1,8 +1,8 @@
 
 
 #' run pipelines
-#' 
-#' @description 
+#'
+#' @description
 #' Running examples flows
 #' This wraps a few steps:
 #' Get all the commands to run (flow_mat)
@@ -18,55 +18,55 @@
 #'
 #' @export
 #' @aliases run_flow
-run <- function(x, 
-	platform, 
-	def, 
-	flow_run_path = get_opts("flow_run_path"), 
+run <- function(x,
+	platform,
+	def,
+	flow_run_path = get_opts("flow_run_path"),
 	execute = FALSE,  ...){
-	
+
 	#print(get_opts("flow_run_path"))
 	## find a Rscript with name {{x}}.R
-	
+
 	message("\n##--- fetching pipeline... ")
 	pip = fetch_pipes(x)
 	pip = fetch_pipes(x)
 	print.opts(pip)
-	
-	
+
+
 	## --- source the file and get the main function from it
 	source(pip$pipe)
 	func = get(x) ## find function of the original name
-	
-	
+
+
 	message("\n##--- loading confs....")
 	## load default options for the pipeline
-	confs = c(fetch_conf("flowr.conf"), 
+	confs = c(fetch_conf("flowr.conf"),
 		fetch_conf("ngsflows.conf"),
 		pip$conf)
 	print(kable(as.data.frame(confs)))
 	load_conf(confs, verbose = FALSE, check = FALSE)
-	
+
 	message("\n##--- creating flowmat....")
 	## crate a flowmat
 	args <- list(...)
 	out = do.call(func, args)
-	
-	
+
+
 	message("\n##--- stitching a flow object....")
 	## get a flowdef
 	if(missing(def))
 		def = as.flowdef(pip$def)
 	## create a flow object
 	fobj = to_flow(x = out$flowmat,
-		def = def, 
+		def = def,
 		platform = platform,
 		flowname = x,
 		flow_run_path = flow_run_path)
-	
+
 	## submit the flow
 	message("\n##--- submitting....")
 	fobj = submit_flow(fobj, execute = execute)
-	
+
 	invisible(fobj)
 }
 
@@ -77,13 +77,13 @@ run_pipe <- run
 
 
 if(FALSE){
-	
+
 	debug(run_pipe)
 	run_pipe("sleep_pipe", samplename = "samp2")
-	
+
 }
 
-
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
 .run <- function(x = "sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
 	.Deprecated("run")
@@ -94,10 +94,10 @@ if(FALSE){
 	if(is.character(x))
 		if(x == "sleep")
 			fobj <- .run_sleep(platform = platform, ...)
-	
+
 	## x is the name of the function
-	
-	
+
+
 	tmp <- submit_flow(fobj, execute = execute)
 	return("Done !")
 }

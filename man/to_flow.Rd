@@ -50,10 +50,11 @@ the flow was executed. It would include details like jobids, path to exact scrip
 To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 
 ## Behaviour, in terms of submit and execute
-
-submit=FALSE & execute=FALSE: Create and return a flow object
-submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
-submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
+\itemize{
+\item submit=FALSE & execute=FALSE: Create and return a flow object
+\item submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
+\item submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
+}
 }
 \description{
 Use a set of shell commands and flow definiton to create \link{flow} object.
@@ -64,8 +65,8 @@ This is a minimum three column matrix with three columns: samplename, jobname an
 }
 \examples{
 ex = file.path(system.file(package = "flowr"), "pipelines")
-flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
-flow_def = as.flowdef(file.path(ex, "sleep_pipe.def")
-fobj <- to_flow(x = flow_mat, def = flow_def, flowname = "example1", platform = "lsf")
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
+fobj = to_flow(x = flowmat, def = flowdef, flowname = "sleep_pipe", platform = "lsf")
 }
 

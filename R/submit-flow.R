@@ -49,7 +49,7 @@ submit_flow.list <- function(x, ...){
 }
 
 parse_prevjobids <- function(x){
-	
+
 }
 
 
@@ -74,7 +74,7 @@ submit_flow.flow <- function(x,
 			uuid = get_unique_id(prefix = wd)
 		}
 		x@flow_path = uuid
-		# 		if(!x@status %in% 
+		# 		if(!x@status %in%
 		# 			 c("processed","submitted","running","completed","exit"))
 
 		##jobnames <- sapply(x@jobs, function(x) x@name)
@@ -86,11 +86,11 @@ submit_flow.flow <- function(x,
 		if(length(x@jobs[[1]]@dependency_type) > 0 & x@jobs[[1]]@dependency_type !="none")
 			stop("Seems like the first job has a dependency, please check")
 
-		## ------   create CWD 
+		## ------   create CWD
 		if(!file.exists(file.path(x@flow_path,"tmp")))
 			dir.create(file.path(x@flow_path,"tmp"),
 				showWarnings=FALSE, recursive=TRUE)
-		
+
 		## -----   loop on jobs
 		## parse dependency from the previous
 		## then send it along to submit_job
@@ -102,15 +102,15 @@ submit_flow.flow <- function(x,
 			previous_job <- x@jobs[[i]]@previous_job
 			## if there is a previous job
 			if(prevjob_exists(previous_job)){
-				
+
 				## --- split multiple dependencies as a list
 				## get say a multi column matrix. JOBIDS X PREV JOBS
 				previds <- do.call(cbind, lapply(previous_job, function(y)
 					x@jobs[[y]]@id))
 				## split the MATRIX by rowindex, into a LIST
 				x@jobs[[i]]@dependency <- split(previds, row(previds))
-				
-				
+
+
 			}
 			## ------ submit the job
 			x@jobs[[i]] <- submit_job(x@jobs[[i]], x, execute=execute,
@@ -146,25 +146,8 @@ prevjob_exists <- function(x){
 	}
 }
 
-dump_flow_helpers <- function(x, plot, verbose){
 
-	.Deprecated("write_flow_details")
-	## should update instead of overwrite.
-	try(dump_flow_details(fobj = x))
-
-	try(saveRDS(x, file = sprintf("%s/flow_details.rds", x@flow_path)))
-
-	if(plot & length(x@jobs) > 2){
-		try(
-			plot_flow(x, detailed = FALSE, pdf = TRUE, type = '1',
-				pdffile = sprintf("%s/flow_design.pdf",
-					x@flow_path))
-		)
-	}else{
-		if(verbose) message("Skipping plots...\n")
-	}
-}
-
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
 #setMethod("submit_flow", signature(fobj = "flow"), definition = .submit_flow)
 

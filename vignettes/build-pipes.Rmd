@@ -129,13 +129,13 @@ Here instead of seperating cmds and definitions one defines them step by step in
 
 Currently we support LSF, Torque and SGE. Let us use LSF for this example.
 
-```{r getqobj}
+```{r getqobj, eval=FALSE}
 qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 ```
 
 Let us stitch a simple flow with three jobs, which are submitted one after the other.
 
-```{r plot_simpleflow}
+```{r plot_simpleflow, eval=FALSE}
 job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
 job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
 job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
@@ -145,7 +145,7 @@ plot_flow(fobj)
 
 The above translates to a flow definition which looks like this:
 
-```{r}
+```{r, eval=FALSE}
 dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```

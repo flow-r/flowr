@@ -14,6 +14,7 @@ if(FALSE){
 #' @param start_from which job to start from
 #' @param mat path to flow_mat. should fetch on the fly
 #' @param def path to should fetch on the fly
+#' @param ... not used
 #'
 #'
 #' @details We need path to the flow folder (\code{wd}). The \link{flow} object needs to have upate 'base_path' slow with wd (the path to the flow folder). Also its important to know that we need details regarding the previous submission from flow_details.txt file. Which should typically be in \code{wd}
@@ -33,11 +34,11 @@ rerun <- function(x, ...) {
 rerun.character <- function(x, ...){
 	message("x looks like a path")
 	fobj <- read_fobj(x)
-	
+
 	if(is.character(fobj))
 		stop("x does not seems to be a correct path to the flow submission")
 	rerun(fobj, ...)
-	
+
 }
 
 
@@ -47,7 +48,7 @@ rerun.flow <- function(x, mat, def, start_from,
 											 execute = TRUE, kill = TRUE, ...){
 	fobj = x
 	wd = fobj@flow_path
-	
+
 	if(missing(start_from)){
 		stop(error("no.start_from"))
 		#start_from = detect_redo()
@@ -65,8 +66,8 @@ rerun.flow <- function(x, mat, def, start_from,
 
 	## kill the flow
 	if(kill)
-		capture.output(try(kill_flow(wd = wd)), 
-									 file = file.path(wd, "kill_jobs.out")) 
+		capture.output(try(kill_flow(wd = wd)),
+									 file = file.path(wd, "kill_jobs.out"))
 
 	message("Subsetting... get stuff to run starting ", start_from)
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from)
@@ -77,13 +78,13 @@ rerun.flow <- function(x, mat, def, start_from,
 	fobj2@status = "rerun"
   fobj2 <- submit_flow(fobj2, uuid = fobj@flow_path,
   										 execute = execute, dump = FALSE)
-  
+
   ## -- need a function to read and update the old flow object with new ids
   fobj = update.flow(fobj, child = fobj2)
-  
+
   flowdet = to_flowdet(fobj)
   write_flow_details(wd, fobj, flow_det = flowdet)
-  
+
   return("Done !")
 }
 
@@ -97,7 +98,7 @@ update.flow <- function(x, child){
 		x@jobs[[j]]@id = child@jobs[[j]]@id
 	}
 	return(x)
-	
+
 }
 
 

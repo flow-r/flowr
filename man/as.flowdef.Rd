@@ -2,9 +2,12 @@
 % Please edit documentation in R/flow-def.R
 \name{as.flowdef}
 \alias{as.flowdef}
-\title{Reeading a flow definition file and checking it.}
+\alias{is.flowdef}
+\title{flow definition}
 \usage{
 as.flowdef(x)
+
+is.flowdef(x)
 }
 \arguments{
 \item{x}{can be a data.frame or a path for a flow definition file}

@@ -63,6 +63,13 @@ write_flow_details <- function(x, fobj, summ, flow_det, plot = FALSE){
 	}
 }
 
+
+
+
+
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
+
+
 write_flow_detail_fl <- function(x, flow_det){
 	.Deprecated("write_flow_details")
 	det_file = file.path(x, "flow_details.txt")
@@ -86,4 +93,22 @@ write_flow_status_fl <- function(x, summ){
 
 
 
+dump_flow_helpers <- function(x, plot, verbose){
+
+	.Deprecated("write_flow_details")
+	## should update instead of overwrite.
+	try(dump_flow_details(fobj = x))
+
+	try(saveRDS(x, file = sprintf("%s/flow_details.rds", x@flow_path)))
+
+	if(plot & length(x@jobs) > 2){
+		try(
+			plot_flow(x, detailed = FALSE, pdf = TRUE, type = '1',
+								pdffile = sprintf("%s/flow_design.pdf",
+																	x@flow_path))
+		)
+	}else{
+		if(verbose) message("Skipping plots...\n")
+	}
+}
 

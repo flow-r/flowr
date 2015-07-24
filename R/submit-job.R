@@ -175,12 +175,12 @@ create_queue_cmd=render_queue_cmd
 
 
 #' @title Wrapper around whisker.render with some sugar on it...
-#' 
+#'
 #' @description This is a wrapper around \link{whisker.render}
 #' @param template template used
 #' @param data a list with variables to be used to fill in the template.
-#' 
-#' 
+#'
+#'
 #' @export
 whisker_render <- function(template, data) {
 	## --- remove items, missing in data
@@ -203,25 +203,27 @@ whisker_render <- function(template, data) {
 
 
 
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
+
 
 .create_queue_cmd <- function(jobj, file, index, fobj, ...){
 	.Deprecated("render_queue_cmd")
-	
+
 	if(jobj@platform == "local"){
 		cmd <- sprintf("cd %s;%s %s > %s 2>&1;echo 0",
 									 jobj@cwd, jobj@submit_exe, file, jobj@stdout[index])
 		return(cmd)
 	}
-	
+
 	## --- get platform of previous job
 	prev_plat = try(fobj@jobs[[jobj@previous_job]]@platform, silent = TRUE)
 	prev_plat = ifelse(class(prev_plat) == "try-error", "", prev_plat)
-	
+
 	## --- this job depends on multiple jobs.
 	## --- create a string with multiple job ids
 	## --- introduce possibility that the jobid is empty,
 	## --- or missing especially for reruns
-	
+
 	## --- prev LOCAL	OR execute is FALSE
 	if(prev_plat == "local" | !fobj@execute){
 		dependency <- ""
@@ -231,12 +233,12 @@ whisker_render <- function(template, data) {
 		class(jobj) = jobj@platform
 		dependency <- render_dependency(jobj, index = index)
 	}
-	
+
 	## this might be the case if re-run, when only a subset of jobs are to be rerun
 	if(length(jobj@dependency) == 0){
 		dependency <- ""
 	}
-	
+
 	l <- slots_as_list(jobj, names=slotNames("queue"))
 	## --- dependency initially is a list which can have multiple values
 	## --- ignore a few of the slots
@@ -246,12 +248,12 @@ whisker_render <- function(template, data) {
 	names(l) = toupper(names(l)) ## get list of slots
 	l <- c(l, "CMD" = file)
 	l$STDERR=l$STDOUT=jobj@stdout[index]
-	
+
 	if(FALSE){ ##finding an alternative to interal call
 		## set slots in BASH if we dont use internal they change temporarily
 		.Internal(Sys.setenv(names(l), as.character(unlist(l))))
 	}
-	
+
 	## --- send all the arguments to SHELL
 	do.call(Sys.setenv, l)
 	cmd <- system(sprintf("echo %s ", jobj@format), intern=TRUE)

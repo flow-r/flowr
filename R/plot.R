@@ -82,6 +82,28 @@ plot_flow.flowdef <- function(x,
 	invisible(p)
 }
 
+#' split_multi_dep
+#' Split rows with multiple dependencies
+#' @param x this is a flow def
+split_multi_dep <- function(x){
+	dat = x
+	## ----------- handle cases where we have multiple dependencies
+	rows <- grep(",",dat$prev_jobs)
+	if(length(rows)>0){
+		dat2 <- data.frame()
+		for(row in rows){
+			prev_jobs=strsplit(as.c(dat[row,]$prev_jobs),",")[[1]]
+			dat2 <- rbind(dat2,
+										cbind(jobname=dat[row,"jobname"], prev_jobs=prev_jobs,
+													dep_type=dat[row,"dep_type"],sub_type=dat[row,"sub_type"],
+													cpu_reserved=dat[row, "cpu_reserved"],
+													nodes=dat[row,"nodes"]))
+		}
+		dat <- rbind(dat[-rows,],dat2)
+	}
+	return(dat)
+}
+
 
 arrange_flowdef <- function(x){
 	for(j in 1:4){
@@ -93,7 +115,7 @@ arrange_flowdef <- function(x){
 		x <- x[order(x$prev_jobid, x$jobid, na.last=FALSE, decreasing=FALSE),]
 	}
 	return(x)
-	
+
 }
 
 display_mat <- function(x){
@@ -112,18 +134,19 @@ display_mat <- function(x){
 
 
 
-.plot_flow_dat_type1 <- function(x, 
+.plot_flow_dat_type1 <- function(x,
 	detailed = FALSE,
 	pdf = FALSE,
   ## vector of columns to be used in plotting
   pdffile = sprintf("flow_details.pdf"),
   width, height, ...){
-	
+
     if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
     x = arrange_flowdef(x)
-    
+    x = split_multi_dep(x)
+
     jobnames=unique(as.c(x$jobname))
     dat_dep <- x[complete.cases(x),] ## remove first two
     dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
@@ -214,7 +237,7 @@ display_mat <- function(x){
     if(nrow(x) < 2) return(c("need a few more jobs.."))
 
     x = arrange_flowdef(x)
-    
+
     jobnames=unique(as.c(x$jobname))
     dat_dep <- x[complete.cases(x),]
     dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]

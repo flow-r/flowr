@@ -1,5 +1,6 @@
 #' to_flowdet
 #' @param x this is a wd
+#' @param ... not used
 #' @export
 to_flowdet <- function(x, ...) {
 	UseMethod("to_flowdet")
@@ -32,7 +33,7 @@ to_flowdet.rootdir <- function(x, ...){
 
 #' @rdname to_flowdet
 #' @export
-#' @details 
+#' @details
 #' if x is char. assumed a path, check if flow object exists in it and read it.
 #' If there is no flow object, try using a simpler function
 to_flowdet.character <- function(x, ...){
@@ -41,7 +42,7 @@ to_flowdet.character <- function(x, ...){
 		return(to_flowdet.rootdir(x)) ## where x is a parent path
 	to_flowdet(x) ## where x is a flow
 }
-	
+
 
 #' @rdname to_flowdet
 #' @export
@@ -64,14 +65,14 @@ to_flowdet.job <- function(x){
 	#ifelse(prev != "") prev = paste(prev, 1:length(fobj@jobs[[prev]]@id), sep = "_")
 	job_no = 1:length(cmds)
 	job_id = paste(x@jobname, job_no, sep = "_")
-	
+
 	## HPCC ids and exit codes
 	ids = x@id ## jobid for submission
 	if(length(ids) == 0)
 		ids = NA
 	exit_codes = x@exit_code
 	exit_codes = ifelse(length(exit_codes) == 0, NA, exit_codes)
-	
+
 	job_det = data.frame(
 		jobname = x@jobname,
 		jobnm = x@name,
@@ -82,7 +83,7 @@ to_flowdet.job <- function(x){
 		exit_code = exit_codes,
 		cmd = cmds,
 		trigger = triggers, stringsAsFactors = FALSE)
-	
+
 	return(job_det)
 }
 

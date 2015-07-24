@@ -3,14 +3,13 @@
 \name{run}
 \alias{run}
 \alias{run_flow}
-\title{run pipelines
-Running examples flows
-This wraps a few steps:
-Get all the commands to run (flow_mat)
-Create a `flow` object, using flow_mat and a default flowdef (picked from the same folder).
-Use `submit_flow()` to submit this to the cluster.}
+\alias{run_pipe}
+\title{run pipelines}
 \usage{
 run(x, platform, def, flow_run_path = get_opts("flow_run_path"),
+  execute = FALSE, ...)
+
+run_pipe(x, platform, def, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
 }
 \arguments{
@@ -18,18 +17,15 @@ run(x, platform, def, flow_run_path = get_opts("flow_run_path"),
 
 \item{platform}{what platform to use, overrides flowdef}
 
+\item{def}{flow definition}
+
+\item{flow_run_path}{passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs}
+
 \item{execute}{TRUE/FALSE}
 
-\item{...}{passed onto the function used to create the flow_mat}
-
-\item{flow_mat}{flow matrix, with commands to run (if we already have this, start here)}
-
-\item{flowdef}{flow definition}
-
-\item{type}{adv.}
+\item{...}{passed onto the pipeline function specified in x}
 }
 \description{
-run pipelines
 Running examples flows
 This wraps a few steps:
 Get all the commands to run (flow_mat)

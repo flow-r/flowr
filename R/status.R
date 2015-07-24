@@ -12,17 +12,55 @@ get_wds <- function(x){
 }
 
 
+#' @title status
+#' @description Summarize status of executed flow(x)
+#' @aliases status
+#'
+#' @param x path to the flow root folder or a parent folder to summarize several flows.
+#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
+#'
+#' @details
+#' basename(x) is used in a wild card search.
+#'
+#' \itemize{
+#' \item If x is a path with a single flow, it outputs the status of one flow.
+#' \item If the path has more than one flow then this could give a summary of **all** of them.
+#' \item Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
+#' }
+#'
+#' Alternatively, x can also be a flow object
+#'
+#' @export
+#'
+#' @importFrom parallel mclapply
+#'
+#' @examples
+#' \dontrun{
+#' status(x = "~/flowr/runs/sleep_pipe*")
+#' ## an example for running from terminal
+#' flowr status x=path_to_flow_directory cores=6
+#' }
+status <- function(x, out_format = "markdown"){
+	## get the total jobs
+	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+	wds = get_wds(x)
+	for(wd in wds){
+		x = read_fobj(wd)
+		get_status(x, out_format = out_format)
+	}
+	invisible()
+}
 
-#' get_status
-#' 
-#' @param x flow, flow_det or a path to flow run.
-#' @param out_format format in which status is to be printed. Default is markdown
+#' @rdname status
+#'
 #' @param ... not used
+#'
+#' @export
 get_status <- function(x, ...) {
 	UseMethod("get_status")
 }
 
-#' @rdname get_status
+#' @rdname status
 #' @export
 get_status.character <- function(x, out_format = "markdown", ...){
 	## Get a shorter get_status
@@ -32,13 +70,11 @@ get_status.character <- function(x, out_format = "markdown", ...){
 	write_flow_details(x, summ = summ)
 }
 
-
-#' @rdname get_status
-#' @description 
-#' Uses the trigger column to get the exit status and updates the data.frame.
+#' @rdname status
 #' @export
 get_status.data.frame <- function(x, ...){
-	exit_code <- unlist(mclapply(x$trigger, function(y){
+
+	exit_code <- unlist(lapply(x$trigger, function(y){
 		if(file.exists(y)){
 			tmp <- as.numeric(scan(y, what = "character", quiet = TRUE))
 			tmp <- ifelse(length(tmp) > 0, tmp, -1) ## -1 mean not completed
@@ -54,7 +90,7 @@ get_status.data.frame <- function(x, ...){
 }
 
 
-#' @rdname get_status
+#' @rdname status
 #' @export
 get_status.flow <- function(x, out_format = "markdown", ...){
 
@@ -85,34 +121,7 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 
 
 
-#' @title status
-#' @description status
-#' @aliases status
-#' @param x path to the flow; may be without the uuid.
-#' @param cores number of cores to use
-#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
-#' @param get_mem_usage under progress, whether to extract mem_usage of jobs
-#' @details If x is a path with a single flow, it outputs the status of just that.
-#' If the path has more than one flow then this could give a summary of **all** of them.
-#' Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
-#' @export
-#' @importFrom parallel mclapply
-#' @examples
-#' \dontrun{
-#' status(x = x, cores = 6)
-#' ## an example for running from terminal
-#' flowr status x=path_to_flow_directory cores=6
-#' }
-status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
-	## get the total jobs
-	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
-	wds = get_wds(x)
-	for(wd in wds){
-		x = read_fobj(wd)
-		get_status(x, out_format = out_format)
-	}
-	invisible()
-}
+
 
 ### provides status of a single flow
 ## read and update flow_details status

@@ -3,6 +3,7 @@
 ## plot_flow could direclty work on flowdef.
 
 
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
 #' @title create_jobs_mat
 #' @description create_jobs_mat
@@ -19,7 +20,7 @@
 #' create_jobs_mat(x = x)}
 create_jobs_mat <- function(x){
 	.Deprecated("to_flowdef")
-	
+
 	jobnames <- sapply(x@jobs, slot, "name")
 	prev_jobs <- sapply(x@jobs, slot, "previous_job")
 	prev_jobs <- sapply(prev_jobs, function(x) ifelse(length(x) > 0, paste(x,collapse=","), NA))

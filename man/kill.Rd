@@ -2,26 +2,36 @@
 % Please edit documentation in R/kill-flow.R
 \name{kill}
 \alias{kill}
-\title{kill_flow}
+\alias{kill.character}
+\alias{kill.flow}
+\title{kill}
 \usage{
 kill(x, ...)
+
+\method{kill}{character}(x, ...)
+
+\method{kill}{flow}(x, kill_cmd, jobid_col = "job_sub_id", ...)
 }
 \arguments{
 \item{x}{either path to flow [character] or fobj object of class \link{flow}}
 
-\item{fobj}{a object of class \link{flow}}
+\item{...}{not used}
 
 \item{kill_cmd}{The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.}
 
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
 }
 \description{
-kill_flow
+kill
+
+works on flow_path. Reads flow object and calls kill.flow()
+
+works on flow object
 }
 \examples{
 \dontrun{
 ## example for terminal
-flowr kill_flow wd=path_to_flow_directory
+## flowr kill_flow x=path_to_flow_directory
 }
 }
 
