@@ -17,6 +17,9 @@
 #' @param ... passed onto the pipeline function specified in x
 #'
 #' @export
+#'
+#' @importFrom params load_conf read_sheet write_sheet
+#'
 #' @aliases run_flow
 run <- function(x,
 	platform,
@@ -30,7 +33,7 @@ run <- function(x,
 	message("\n##--- fetching pipeline... ")
 	pip = fetch_pipes(x)
 	pip = fetch_pipes(x)
-	print.opts(pip)
+	class(pip) = c("opts", "list");print(pip)
 
 
 	## --- source the file and get the main function from it

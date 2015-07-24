@@ -27,14 +27,6 @@ read_fobj <- function(x){
 }
 
 
-read_flow_detail_fl <- function(x){
-	.Deprecated("to_flowdet")
-	det_file = file.path(x, "flow_details.txt")
-	if(!file.exists(det_file))
-		stop(error("no.flow_details.file"))
-	flow_details = read_sheet(det_file, id_column = "jobname")
-	return(flow_details)
-}
 
 #' write files desribing this flow
 #' @param x path to write to
@@ -69,6 +61,14 @@ write_flow_details <- function(x, fobj, summ, flow_det, plot = FALSE){
 
 ## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
+read_flow_detail_fl <- function(x){
+	.Deprecated("to_flowdet")
+	det_file = file.path(x, "flow_details.txt")
+	if(!file.exists(det_file))
+		stop(error("no.flow_details.file"))
+	flow_details = read_sheet(det_file, id_column = "jobname")
+	return(flow_details)
+}
 
 write_flow_detail_fl <- function(x, flow_det){
 	.Deprecated("write_flow_details")
@@ -90,14 +90,11 @@ write_flow_status_fl <- function(x, summ){
 	invisible()
 }
 
-
-
-
 dump_flow_helpers <- function(x, plot, verbose){
 
 	.Deprecated("write_flow_details")
 	## should update instead of overwrite.
-	try(dump_flow_details(fobj = x))
+	try(write_flow_details(fobj = x))
 
 	try(saveRDS(x, file = sprintf("%s/flow_details.rds", x@flow_path)))
 

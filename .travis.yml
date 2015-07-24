@@ -16,3 +16,7 @@ r_check_args: --no-build-vignettes --no-manual --as-cran rpack
 r_github_packages:
   - rstudio/rmarkdown
   - sahilseth/params
+
+
+after_success:
+  - Rscript -e 'covr::codecov()'
