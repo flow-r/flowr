@@ -10,9 +10,7 @@ centos: 6
  - Archived on 2015-05-18 as violated the CRAN policy on the use of the user's file space.
 Now changing of user's file space has been seperated as independent function: setup(), instead of automatic call by .onAttach()
 
-## Package in Depends field not imported from: ‘rmarkdown’
-  These packages need to be imported from (in the NAMESPACE file)
-  
+
 ## File ‘flowr/R/read-fobj.R’:
   attach(rda)
 I have replaced attach with readRDS, and this remains for legacy purposes. This will go away in the next major release.

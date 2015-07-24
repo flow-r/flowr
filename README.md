@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.org/sahilseth/flowr.png)](https://travis-ci.org/sahilseth/flowr)
 [![DOI](https://zenodo.org/badge/11075/sahilseth/flowr.svg)](http://dx.doi.org/10.5281/zenodo.16170)
+[![Build Status](https://travis-ci.org/sahilseth/flowr.png)](https://travis-ci.org/sahilseth/flowr)
+[![Coverage Status](https://img.shields.io/coveralls/sahilseth/flowr.svg)](https://coveralls.io/r/sahilseth/flowr?branch=master)
+
 
 flow
 ======
@@ -33,10 +35,11 @@ As of now we have tested this on the following clusters:
 
 |Platform|submission commnd|Works?|label*|
 |:---|:---:|:---:|:---:|
-|LSF 9.1|bsub|Yes|lsf
+|LSF 9|bsub|Yes|lsf
+|LSF 7|bsub|should work|lsf
 |Torque|qsub|Yes|torque
+|moab|msub|Yes|moab
 |SGE|qsub|should work|sge
-|LSF HPC 7|bsub|should work|lsf
 
 *label: This serves as the type argument for [queue](http://docs.flowr.space/en/latest/rd/topics/queue.html) function.
 
