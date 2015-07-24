@@ -202,10 +202,6 @@ to_flow.data.frame <- function(x, def,
 
 
 #' @rdname to_flow
-project.id = runid = subproject = 'PM190';transfer = TRUE;project ='TH' # done, w/ n0
-#project.id = runid = subproject = 'PM191';transfer = TRUE;project ='TH' # done, w/ n0
-
-
 #' @export
 to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 	## --- qobj, missing only works for arguments
@@ -253,7 +249,6 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 			memory = d_memory)
 		return(jobj)
 	})
-
 
 	fobj <- flow(jobs = jobs,
 		desc = desc, name = flowname,

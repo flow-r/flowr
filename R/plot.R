@@ -92,9 +92,9 @@ split_multi_dep <- function(x){
 	if(length(multi_rows)>0){
 		x2 <- data.frame()
 		for(row in multi_rows){
-			prev_jobs = strsplit(as.c(x[row,]$prev_jobs),",")[[1]]
+			prev_jobs = prev_jobs = strsplit(as.c(x[row,]$prev_jobs),",")[[1]]
 			dt = x[row, ]
-			x2 = suppressWarnings(cbind(dt[, -prev_col], prev_jobs, deparse.level = 0))
+			x2 = suppressWarnings(cbind(dt[, -prev_col], prev_jobs))
 		}
 		x <- rbind(x[-multi_rows,],x2)
 	}

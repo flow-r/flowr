@@ -6,11 +6,9 @@
 \usage{
 queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
   format = "", queue = "long", walltime, memory, cpu = 1,
-  extra_opts = "", submit_exe, cwd = getOption("flow_run_path"),
-  nodes = "1", jobname = "name", email = Sys.getenv("USER"),
-  dependency = list(), server = "localhost", verbose = FALSE,
-  stderr = getOption("flow_run_path"), stdout = getOption("flow_run_path"),
-  ...)
+  extra_opts = "", submit_exe, nodes = "1", jobname = "name",
+  email = Sys.getenv("USER"), dependency = list(), server = "localhost",
+  verbose = FALSE, cwd = "", stderr = "", stdout = "", ...)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}
@@ -32,8 +30,6 @@ queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
 
 \item{submit_exe}{[advanced use] Already defined by 'platform'. The exact command used to submit jobs to the cluster example 'qsub'}
 
-\item{cwd}{[debug use] Ignore}
-
 \item{nodes}{[advanced use] number of nodes you would like to request. Or in case of torque name of the nodes.\emph{optional} [Used by class job]}
 
 \item{jobname}{[debug use] name of this job in the computing cluster}
@@ -45,6 +41,8 @@ queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
 \item{server}{[not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted}
 
 \item{verbose}{[logical] TRUE/FALSE}
+
+\item{cwd}{[debug use] Ignore}
 
 \item{stderr}{[debug use] Ignore}
 
