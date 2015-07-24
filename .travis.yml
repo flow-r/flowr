@@ -12,9 +12,11 @@ warnings_are_errors: false
 #r_check_args: --timings --as-cran --no-install
 r_check_args: --no-build-vignettes --no-manual --as-cran rpack
 
+r_packages:
+  - rmarkdown
+
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
-  - rstudio/rmarkdown
   - sahilseth/params
 
 

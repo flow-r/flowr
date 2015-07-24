@@ -1,4 +1,9 @@
-flowr 0.9.6.14
+---
+output: html_document
+---
+
+
+flowr 0.9.7 2015-07-25
 ----------------------------------------------
 - run(): runs a complete pipelines
 	- create flowmat
@@ -16,7 +21,7 @@ flowr 0.9.6.14
 	- moved read_sheet, write_shee()
 	- moved get_opts(), set_opts()
 	- moved .load_conf() load_conf()
-
+	- [params]()
 
 
 flowr 0.9.6.13
@@ -73,7 +78,7 @@ flow_status.txt
 - save flow.rda files with all details on the flow
 - update flow details with job exit status, to be used in rerun
 
-### TODO
+**TODO**
 
 - add more examples
 - update and cleanup documentation
@@ -86,16 +91,13 @@ flow_status.txt
 flow 0.85
 ----------------------------------------------
 
-### todo
-
-  - get\_flow_details():
-    Attach a job_number
-  Attach a flow level unique ID
-  - update flow details with exited jobs
-  - Create trigger upon start
-  - add started/pending column in details and summary
-
-### plot_flow():
+- get\_flow_details():
+ - Attach a job_number
+ - Attach a flow level unique ID
+- update flow details with exited jobs
+- Create trigger upon start
+- add started/pending column in details and summary
+- plot_flow():
   make plot type 1 as default
-### get_flow_status():
-  exit_status: reports number of exited jobs (not sum of exit codes)
+- get_flow_status():
+  -exit_status: reports number of exited jobs (not sum of exit codes)

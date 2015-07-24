@@ -2,8 +2,8 @@ Package: flowr
 Type: Package
 Title: Streamlining Design and Deployment of Complex Workflows
 Description: An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.
-Version: 0.9.6.14
-Date: 2015-07-10
+Version: 0.9.7
+Date: 2015-07-25
 Depends:
     methods,
     utils,
