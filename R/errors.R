@@ -30,17 +30,32 @@ error <- function(x){
 	if(x == "jobid.non.num")
 		y = "Unable to parse JOB IDs as numbers, it likely submission failed. OR parsing of job ids failed \n\n"
 
-	if(x == "no.conf"){
+	if(x == "no.conf")
 		y = "Configuration file does not exist, loading skipped. Expecting a file at: "
-	}
 
-	if(x == "no.def"){
+	if(x == "no.def")
 		y = "Flow definition file does not seems to exist. Expecting a file at: "
-	}
 
-	if(x == "no.pipe"){
+	if(x == "no.pipe")
 		y = "Could not find a pipeline by the name of, "
-	}
+
+	if(x == "def.need.cols")
+		y = "flowdef needs these columns to proceed: "
+
+	if(x == "def.opt.cols")
+		y = "flowr works better with these columns in flowdef: "
+
+	if(x == "prev_job.wo.dep_type")
+		y = c("There are rows in flowdef where a dependency type is not specified,",
+			"but dependency type is specified",
+			"This is incompatible, either specify both or none.",
+			"Possible values for dependency_type are: serial, gather, burst.")
+
+	if(x == "dep_type.wo.prev_job")
+		y = c("There are rows in flowdef where a previous job is not specified,",
+			"but dependency type is specified",
+			"This is incompatible, either specify both or none.")
+
 
 	return(y)
 }

@@ -148,7 +148,7 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	#out = whisker.render(template = template, data = l)
 
 	## render user CMD, if it has {{{CPU}}} etc...
-	l$CMD = whisker_render(l$CMD, data = l)
+	l$CMD = whisker_render(l$CMD, data = l)$out
 	## render HPCC script, if it has {{{CPU}}} etc...
 	out = whisker_render(template, data = l)$out
 

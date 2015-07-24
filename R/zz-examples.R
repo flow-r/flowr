@@ -1,5 +1,8 @@
 
 
+
+## depreciated
+
 .run_sleep <- function(platform, ...){
 	message("\n\nLets work on a simple example")
 	exdata = file.path(system.file(package = "flowr"), "extdata")

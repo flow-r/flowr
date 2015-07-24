@@ -86,28 +86,29 @@ plot_flow.flowdef <- function(x,
 #' Split rows with multiple dependencies
 #' @param x this is a flow def
 split_multi_dep <- function(x){
-	dat = x
-	## ----------- handle cases where we have multiple dependencies
-	rows <- grep(",",dat$prev_jobs)
-	if(length(rows)>0){
-		dat2 <- data.frame()
-		for(row in rows){
-			prev_jobs=strsplit(as.c(dat[row,]$prev_jobs),",")[[1]]
-			dat2 <- rbind(dat2,
-										cbind(jobname=dat[row,"jobname"], prev_jobs=prev_jobs,
-													dep_type=dat[row,"dep_type"],sub_type=dat[row,"sub_type"],
-													cpu_reserved=dat[row, "cpu_reserved"],
-													nodes=dat[row,"nodes"]))
+	## --- handle cases where we have multiple dependencies
+	multi_rows <- grep(",", x$prev_jobs)
+	prev_col = which(colnames(x) == "prev_jobs")
+	if(length(multi_rows)>0){
+		x2 <- data.frame()
+		for(row in multi_rows){
+			prev_jobs = strsplit(as.c(x[row,]$prev_jobs),",")[[1]]
+			dt = x[row, ]
+			x2 = cbind(dt[, -prev_col], prev_jobs, deparse.level = 0)
+			x2 = rbind(x2)
 		}
-		dat <- rbind(dat[-rows,],dat2)
+		x <- rbind(x[-multi_rows,],x2)
 	}
-	return(dat)
+	return(x)
 }
 
 
-arrange_flowdef <- function(x){
-	for(j in 1:4){
-		jobnames=unique(as.c(x$jobname))
+arrange_flowdef <- function(x, n = 1){
+	jobnames=unique(as.c(x$jobname))
+	jobid <- 1:length(jobnames);names(jobid)=jobnames
+	prev_jobid <- jobid[as.c(x$prev_jobs)]
+	for(j in 1:n){
+		jobnames = unique(as.c(x$jobname))
 		jobid <- 1:length(jobnames);names(jobid)=jobnames
 		prev_jobid <- jobid[as.c(x$prev_jobs)]
 		x$jobid <- jobid[as.c(x$jobname)];
@@ -144,8 +145,8 @@ display_mat <- function(x){
     if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
-    x = arrange_flowdef(x)
     x = split_multi_dep(x)
+    x = arrange_flowdef(x)
 
     jobnames=unique(as.c(x$jobname))
     dat_dep <- x[complete.cases(x),] ## remove first two
@@ -180,7 +181,8 @@ display_mat <- function(x){
     ## -------------------------------- a r r o w s ------------------------------- ##
     if(nrow(dat_dep>0)){
       for (i in 1:nrow(dat_dep)){
-        to=elpos[dat_dep$jobid[i], ]; from=elpos[dat_dep$prev_jobid[i], ]
+        to = elpos[dat_dep$jobid[i], ];
+        from = elpos[dat_dep$prev_jobid[i], ]
         if(dat_dep$dep_type[i]=="gather"){
           for(curve in curves)
             curvedarrow (to = to, from = from, lwd = arr.lwd.curve, arr.pos = arr.pos,

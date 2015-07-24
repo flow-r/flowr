@@ -32,6 +32,14 @@ check.flowdef <- function(x, ...){
 
 	dep_types = c("none", "serial", "gather", "burst")
 	sub_types = c("serial", "scatter")
+	need_cols = c("jobname", "prev_jobs", "sub_type", "dep_type")
+	opt_cols = c("platform", "cpu_reserved", 'walltime', 'queue')
+
+	if(any(!need_cols  %in% colnames(x)))
+		stop(error("def.need.cols"), paste(need_cols, collapse = " "))
+
+	if(any(!need_cols  %in% colnames(x)))
+		stop(error("def.opt.cols"), paste(opt_cols, collapse = " "))
 
 	if(sum(!x$dep_type %in% dep_types))
 		stop("Dependency type not recognized.\n Inputs are: ",
@@ -40,6 +48,7 @@ check.flowdef <- function(x, ...){
 	if(sum(!x$sub_type %in% sub_types))
 		stop("Submission type not recognized. Inputs are: ", paste(x$sub_type, collapse = " "),
 				 ".\nAnd they can be one of  ", paste(sub_types, collapse = " "))
+
 	## check if some jobs are put as dependencies but not properly defined
 	x$prev_jobs = gsub("\\.|none", NA, x$prev_jobs)
 	prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
@@ -48,18 +57,18 @@ check.flowdef <- function(x, ...){
 		stop("Some jobs do not exist: ", miss_jobs, "\n", kable(x))
 	## check if dep is none, but prev jobs defined
 	x$prev_jobs = ifelse(x$prev_jobs=="", NA, x$prev_jobs)
-	rows = x$dep_type == "none" & !is.na(x$prev_jobs)
-	if(sum(rows) > 0){
-		print(kable(x[rows,]))
-		stop("\nA Jobname has been specified as a previous job,",
-				 "but dependency type is not clearly specified.",
-				 "Either change the dependency type into: serial, gather, burst.\n",
-				 "Or remove this dependency.")
+
+	## --- check if there are rows where prev_job specied but dep NOT specified
+	extra_rows = x$dep_type == "none" & !is.na(x$prev_jobs)
+	if(sum(extra_rows) > 0){
+		print(kable(x[extra_rows,]))
+		stop(error("prev_job.wo.dep_type"))
 	}
+
 	rows = x$dep_type != "none" & is.na(x$prev_jobs)
 	if(sum(rows)){
 		print(kable(x[rows,]))
-		stop("Previous jobs NOT defined, but dependency type is NOT none")
+		stop(error("dep_type.wo.prev_job"))
 	}
 
 	## check resource requirements, substitute by defaults

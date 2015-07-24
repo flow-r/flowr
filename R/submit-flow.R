@@ -69,6 +69,9 @@ submit_flow.flow <- function(x,
 		## --- Assumption here is that a submitted/processed flow
 		## --- has uuid part of its flow_path already
 		## the case of resubmission
+		if(!file.exists(x@flow_run_path))
+			dir.create(x@flow_run_path, recursive = TRUE)
+
 		if(missing(uuid)){
 			wd = file.path(file_path_as_absolute(x@flow_run_path), x@desc)
 			uuid = get_unique_id(prefix = wd)
@@ -81,8 +84,12 @@ submit_flow.flow <- function(x,
 		##names(x@jobs) <- jobnames
 		### ---------- Error handling
 		if(execute)
-			message(sprintf("\nFlow is being processed. Track it from R/Terminal using:\nflowr status x=%s\nOR from R using:\nstatus(x='%s')\n\n\n",
+			message(sprintf("\nFlow is being processed.",
+				"Track it from R/Terminal using:\nflowr status x=%s\n",
+				"OR from R using:\nstatus(x='%s')\n\n\n",
 				x@flow_path, x@flow_path))
+
+		## should be included in flow_def
 		if(length(x@jobs[[1]]@dependency_type) > 0 & x@jobs[[1]]@dependency_type !="none")
 			stop("Seems like the first job has a dependency, please check")
 
@@ -121,8 +128,10 @@ submit_flow.flow <- function(x,
 		if(execute){
 			x@status <- "submitted"
 		}else{
-			message(sprintf("Test Successful!\nYou may check this folder for consistency. Also you may re-run submit with execute=TRUE\n %s",
-				x@flow_path))
+			message("Test Successful!\n",
+				"You may check this folder for consistency.",
+				"Also you may re-run submit with execute=TRUE\n",
+				x@flow_path)
 		}
 
 		if(dump){
