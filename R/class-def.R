@@ -89,12 +89,12 @@ setClass("flow", representation(jobs = "list",
 #' @param stderr [debug use] Ignore
 #' @param stdout [debug use] Ignore
 #' @param server [not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
-#' 
-#' 
-#' @details 
+#'
+#'
+#' @details
 #' ## Resources:
 #' Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
-#' job level they overwrite the one supplied in \link{queue} 
+#' job level they overwrite the one supplied in \link{queue}
 #' Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
 #' ## Server:
 #' This a hook which may be implemented in future.
@@ -105,115 +105,115 @@ setClass("flow", representation(jobs = "list",
 #' @export
 #' @examples
 #' qobj <- queue(platform='lsf')
-queue <- function(object, 
-	platform = c('local', 'lsf', 'torque', 'sge', 'moab'), 
+queue <- function(object,
+	platform = c('local', 'lsf', 'torque', 'sge', 'moab'),
 	## --- format is a advanced option, use with caution
 	format = "",
 	## --- Following are replaced by job()
 	queue = "long",
-	walltime, memory, cpu = 1, 
+	walltime, memory, cpu = 1,
 	## format
-	extra_opts = "", 
-	submit_exe,  
-	cwd=getOption("flow_run_path"), 
+	extra_opts = "",
+	submit_exe,
+	cwd=getOption("flow_run_path"),
 	nodes = '1',  ## only used in torque
 	## debug use
-	jobname = "name", 
+	jobname = "name",
 	email = Sys.getenv("USER"),
 	dependency = list(),
 	server = "localhost",  verbose = FALSE,
-	stderr = getOption("flow_run_path"), 
+	stderr = getOption("flow_run_path"),
 	stdout = getOption("flow_run_path"),
 	...){
-		platform = match.arg(platform)
-		if(!missing(object)){
-			object = replace_slots(object = object, ...)
-			return(object)
-		}
-		
-		## --- setting defaults
-		if(missing(walltime)){
-			walltime = switch(platform,
-				torque = "72:00:00",
-				lsf = "72:00",
-				"24:00")
-			if(verbose)
-				message("Setting default time to: ", walltime,
-					". If this is more than queue max (/improper format), job will fail. You may change this in job()\n")
-		}
-		if(missing(memory)){
-			memory = switch(platform,
-				lsf = "10000",
-				torque = "10g",
-				"1000")
-			if(verbose)
-				message("Setting default memory to: ", memory, 
-					". If this is more than queue max (/improper format), job will fail.\n")
-		}
-		if(platform %in% c("torque", "sge")){
-			if(missing(format))
-				format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
-			object <- new("torque", submit_exe="qsub", queue=queue,
-				nodes=nodes,cpu=cpu,jobname=jobname,
-				dependency=dependency,walltime=walltime,
-				cwd=cwd, #stderr=stderr,
-				memory=memory,
-				stdout=stdout,email = email,platform=platform,
-				#format=format,
-				extra_opts = extra_opts,
-				server=server)
-		}else if(platform=="lsf"){
-			## restrict cores to one node
-			## bsub -q myqueue -J myjob -o myout -e myout -n cpu -cwd mywd -m mem -W 02:00 < script.sh
-			## -r: rerun
-			## -W: walltime
-			## -M: max mem
-			## -R rusage[mem=16385]: min mem (reserved mem)
-			if(missing(format))
-				format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R rusage[mem=${MEMORY}] -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
-			object <- new("lsf", submit_exe="bsub",queue=queue,
-				nodes=nodes, cpu=cpu, jobname=jobname,
-				dependency=dependency, walltime=walltime,
-				memory=memory,
-				cwd=cwd, stderr=stderr, 
-				stdout=stdout, email=email,platform=platform,
-				#format=format,
-				extra_opts = extra_opts,
-				server=server)
-		}else if(platform=="local"){
-			object <- new("local", submit_exe='bash',queue=queue,
-				nodes=nodes, memory=memory,
-				cpu=cpu,dependency=dependency,walltime=walltime,
-				cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
-				jobname=jobname,#format=format,
-				server=server)
-		}else if(platform %in% c("moab")){
-			if(missing(format))
-				format="${SUBMIT_EXE} -N ${JOBNAME} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
-			object <- new("moab", submit_exe="msub", queue=queue,
-				nodes=nodes,cpu=cpu,jobname=jobname,
-				dependency=dependency,walltime=walltime,
-				cwd=cwd,#stderr=stderr,
-				memory=memory,
-				stdout=stdout,email = email,platform=platform,
-				extra_opts = extra_opts,
-				server=server)
-			
-		}else{
-			object <- new('queue', submit_exe=submit_exe,queue=queue,
-				nodes=nodes, memory=memory,
-				cpu=cpu,dependency=dependency,walltime=walltime,
-				cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
-				jobname=jobname,server=server)
-		}
+	platform = match.arg(platform)
+	if(!missing(object)){
+		object = replace_slots(object = object, ...)
 		return(object)
 	}
+
+	## --- setting defaults
+	if(missing(walltime)){
+		walltime = switch(platform,
+			torque = "72:00:00",
+			lsf = "72:00",
+			"24:00")
+		if(verbose)
+			message("Setting default time to: ", walltime,
+				". If this is more than queue max (/improper format), job will fail. You may change this in job()\n")
+	}
+	if(missing(memory)){
+		memory = switch(platform,
+			lsf = "10000",
+			torque = "10g",
+			"1000")
+		if(verbose)
+			message("Setting default memory to: ", memory,
+				". If this is more than queue max (/improper format), job will fail.\n")
+	}
+	if(platform %in% c("torque", "sge")){
+		if(missing(format))
+			format="${SUBMIT_EXE} -N ${JOBNAME} -q ${QUEUE} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+		object <- new("torque", submit_exe="qsub", queue=queue,
+			nodes=nodes,cpu=cpu,jobname=jobname,
+			dependency=dependency,walltime=walltime,
+			cwd=cwd, #stderr=stderr,
+			memory=memory,
+			stdout=stdout,email = email,platform=platform,
+			#format=format,
+			extra_opts = extra_opts,
+			server=server)
+	}else if(platform=="lsf"){
+		## restrict cores to one node
+		## bsub -q myqueue -J myjob -o myout -e myout -n cpu -cwd mywd -m mem -W 02:00 < script.sh
+		## -r: rerun
+		## -W: walltime
+		## -M: max mem
+		## -R rusage[mem=16385]: min mem (reserved mem)
+		if(missing(format))
+			format="${SUBMIT_EXE} -q ${QUEUE} -J ${JOBNAME} -o ${STDOUT} -e ${STDERR} -n ${CPU} -cwd ${CWD} -M ${MEMORY} -R rusage[mem=${MEMORY}] -R span[ptile=${CPU}] -W ${WALLTIME} -r ${EXTRA_OPTS} ${DEPENDENCY} '<' ${CMD} " ## rerun failed jobs
+		object <- new("lsf", submit_exe="bsub",queue=queue,
+			nodes=nodes, cpu=cpu, jobname=jobname,
+			dependency=dependency, walltime=walltime,
+			memory=memory,
+			cwd=cwd, stderr=stderr,
+			stdout=stdout, email=email,platform=platform,
+			#format=format,
+			extra_opts = extra_opts,
+			server=server)
+	}else if(platform=="local"){
+		object <- new("local", submit_exe='bash',queue=queue,
+			nodes=nodes, memory=memory,
+			cpu=cpu,dependency=dependency,walltime=walltime,
+			cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
+			jobname=jobname,#format=format,
+			server=server)
+	}else if(platform %in% c("moab")){
+		if(missing(format))
+			format="${SUBMIT_EXE} -N ${JOBNAME} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
+		object <- new("moab", submit_exe="msub", queue=queue,
+			nodes=nodes,cpu=cpu,jobname=jobname,
+			dependency=dependency,walltime=walltime,
+			cwd=cwd,#stderr=stderr,
+			memory=memory,
+			stdout=stdout,email = email,platform=platform,
+			extra_opts = extra_opts,
+			server=server)
+
+	}else{
+		object <- new('queue', submit_exe=submit_exe,queue=queue,
+			nodes=nodes, memory=memory,
+			cpu=cpu,dependency=dependency,walltime=walltime,
+			cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
+			jobname=jobname,server=server)
+	}
+	return(object)
+}
 
 ## submission_type: this decides that the cmds to be submittion in which manner
 ## flow_type: if multi dependencies, wait for all or according to order
 
 #' job class
-#' 
+#'
 #' @param cmds the commands to run
 #' @param name name of the job
 #' @param q_obj queue object
@@ -224,7 +224,7 @@ queue <- function(object,
 #' @param memory The amount of memory reserved. Units depend on the platform used to process jobs
 #' @param walltime The amount of time reserved for this job. Format is unique to a platform. Typically it looks like 12:00 (12 hours reserved, say in LSF), in Torque etc. we often see measuring in seconds: 12:00:00
 #' @param ... other passed onto object creation. Example: memory, walltime, cpu
-#' 
+#'
 #' @export
 #' @examples
 #' qobj <- queue(platform="torque")
@@ -254,38 +254,38 @@ queue <- function(object,
 #' submit_flow(fobj, execute = TRUE)
 #'
 #' }
-job <- function(cmds = "", 
+job <- function(cmds = "",
 	name = "myjob",
 	q_obj = new("queue"), previous_job = '', cpu = 1, memory, walltime,
 	submission_type = c("scatter", "serial"),
 	dependency_type = c("none", "gather", "serial", "burst"),
 	...){
-		#message(name)
-		## convert to numeric if possible
-		cpu <- as.numeric(cpu)
-		## replace some of the arguments
-		if(!missing(q_obj)){ ## if queue is provided use that to replace the things
-			#mget(names(formals()),sys.frame(sys.nframe()))
-			args <- as.list(match.call(expand.dots=TRUE))
-			args <- args[names(args) %in% slotNames(class(q_obj))]
-			args <- lapply(args,eval, sys.frame(-1)) ## by getting the values from a frame above
-			object <- do.call("replace_slots", args=c(object=q_obj,args))
-		}else{
-			formals(queue)
-			object <- new("queue", ...)
-		}
-		submission_type <- match.arg(submission_type)
-		dependency_type <- match.arg(dependency_type)
-		if(previous_job[1] %in% c("", NA, NULL, ".", "NA", "NULL"))
-			previous_job = ''
-		#cat("\nPrevious job check\n", previous_job[1], "\t", dependency_type, "\n")
-		if(!previous_job[1] == "" & dependency_type == 'none') ## add [1] since at times we specify two jobs
-			stop("Previous job specified, but you have not specified dependency_type")
-		object <- new(q_obj@platform, cmds = cmds, object, name = name, submission_type = submission_type,
-			previous_job = previous_job, status = "",
-			dependency_type = dependency_type,...)
-		return(object)
+	#message(name)
+	## convert to numeric if possible
+	cpu <- as.numeric(cpu)
+	## replace some of the arguments
+	if(!missing(q_obj)){ ## if queue is provided use that to replace the things
+		#mget(names(formals()),sys.frame(sys.nframe()))
+		args <- as.list(match.call(expand.dots=TRUE))
+		args <- args[names(args) %in% slotNames(class(q_obj))]
+		args <- lapply(args,eval, sys.frame(-1)) ## by getting the values from a frame above
+		object <- do.call("replace_slots", args=c(object=q_obj,args))
+	}else{
+		formals(queue)
+		object <- new("queue", ...)
 	}
+	submission_type <- match.arg(submission_type)
+	dependency_type <- match.arg(dependency_type)
+	if(previous_job[1] %in% c("", NA, NULL, ".", "NA", "NULL"))
+		previous_job = ''
+	#cat("\nPrevious job check\n", previous_job[1], "\t", dependency_type, "\n")
+	if(!previous_job[1] == "" & dependency_type == 'none') ## add [1] since at times we specify two jobs
+		stop("Previous job specified, but you have not specified dependency_type")
+	object <- new(q_obj@platform, cmds = cmds, object, name = name, submission_type = submission_type,
+		previous_job = previous_job, status = "",
+		dependency_type = dependency_type,...)
+	return(object)
+}
 
 #' Flow constructor
 #' @param jobs \code{list} A list of jobs to be included in this flow
@@ -332,28 +332,38 @@ job <- function(cmds = "",
 #' ## execute the jobs: ONLY works on computing cluster, would fail otherwise
 #' submit_flow(fobj, execute = TRUE)
 #' }
-flow <- function(jobs = list(new("job")),
-	name="newflow", desc = "my_super_flow",
+flow <- function(
+	jobs = list(new("job")),
+	name = "newflow",
+	desc = "my_super_flow",
 	mode = c("scheduler","trigger","R"),
 	flow_run_path = getOption("flow_run_path"),
-	trigger_path="", flow_path="", status="", execute = ""){
-		mode <- match.arg(mode)
-		## create a list of jobs if nore already
-		if(class(jobs) == "job") jobs = list(jobs)
-		jobnames <-  sapply(jobs, slot, "name")
-		names(jobs) = jobnames
-		object <- new("flow", jobs=jobs, mode = mode, name = name, flow_run_path = flow_run_path,
-			trigger_path=trigger_path, flow_path=flow_path, desc=desc, status=status)
-		return(object)
-	}
+	trigger_path = "",
+	flow_path = "",
+	status="",
+	execute = ""){
+	mode <- match.arg(mode)
+	## create a list of jobs if nore already
+	if(class(jobs) == "job") jobs = list(jobs)
+	jobnames <-  sapply(jobs, slot, "name")
+	names(jobs) = jobnames
+	object <- new("flow", jobs=jobs,
+		mode = mode,
+		name = name, flow_run_path = flow_run_path,
+		trigger_path = trigger_path,
+		flow_path=flow_path,
+		desc=desc,
+		status=status)
+	return(object)
+}
 
 if(FALSE){
-	
+
 	#q.obj <- queue(platform="torque")
 	q2 <- queue(object=q.obj,cpu=5)
-	
+
 	replace_slots(q.obj,cpu=4,name="newname")
-	
+
 	## class(q)
 	## test_queue(q, verbose=TRUE)
 	## hpcc.command.format <- "#{CMD} | qsub -N #{NAME} -q #{QUEUE} -l #{NODES}:#{PPN} -l #{WALLTIME} -S /bin/bash -d #{HOME} -V -e #{STDERR} -o #{STDERR} -m ae -M #{EMAIL}"
@@ -363,23 +373,23 @@ if(FALSE){
 	q_obj <- queue(platform="torque")
 	cpu_aln=1
 	jobj <- job(q_obj=q_obj,cmd="sleep 2",cpu=cpu_aln)
-	
+
 	jobj@base_path <- "~/tmp/flows"
 	#trace(create_queue_cmd, browser, signature="queue")
 	#debug(slots_as_list)
 	jobj <- submit_job(jobj, execute = TRUE, verbose = TRUE,
 		wd="~/tmp/flows/test_2481e475-31a0-41fc-8b01-cf01272abc3a")
-	
+
 	j.obj <- job(queue=q.obj,cmd="sleep 2")
-	
+
 	## flow name: align_merge
 	## job use bowtie on two of them
 	## merge them using picard
-	
+
 	f.align <- (name="align_merge")
 	align.cmds <- sprintf("echo 'aligning using bowtie';sleep %s",
 		round(runif(10)*10,2))
-	
-	
+
+
 }
 

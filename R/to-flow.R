@@ -236,14 +236,6 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		if(is.null(d_nodes))
 			d_nodes = '1'
 
-		## --- getting defaults of submission and depedency types
-		if(length(d_sub_type) == 0){
-			d_sub_type = detect_sub_type(cmds = cmds)
-		}
-		## guess dep_type
-		if(length(d_dep_type) == 0){
-			d_dep_type <- detect_dep_type(prev_job = prev_job, cmds = cmds)
-		}
 
 		## -------- if cmds are missing; change to echo 0 and make cpu = 1
 		cpu = ifelse(cmds[1] == ".", 1, d_cpu)

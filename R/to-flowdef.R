@@ -94,6 +94,17 @@ to_flowdef.flowmat <- function(x,
 	if(missing(prev_jobs))
 		prev_jobs = c("none", jobnames[-njobs])
 
+	if(FALSE){
+		## --- getting defaults of submission and depedency types
+		if(length(d_sub_type) == 0){
+			d_sub_type = detect_sub_type(cmds = cmds)
+		}
+		## guess dep_type
+		if(length(d_dep_type) == 0){
+			d_dep_type <- detect_dep_type(prev_job = prev_job, cmds = cmds)
+		}
+	}
+
 	def <- data.frame(jobname = jobnames,
 										sub_type = sub_type,
 										prev_jobs = prev_jobs,
