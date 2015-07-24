@@ -1,3 +1,24 @@
+flowr 0.9.6.14
+----------------------------------------------
+- run(): runs a complete pipelines
+	- create flowmat
+	- load conf
+	- load flowdef
+	- call to_flow(), created a flow object
+	- submit_flow()
+- kill(): now a S3 functions, and operates on both a flow object
+   and flow_path folder
+- check(): Now works on flowdef and flowmat
+- as.flowmat(), as.flodef(): easy ways to fetch and check these tables
+- fetch() along with fetch_pipes() and fetch_conf() simplifies finding files
+- dependecies: brought back knitr dependency
+- Reduce function overload, moving several functions a seperate params pkg
+	- moved read_sheet, write_shee()
+	- moved get_opts(), set_opts()
+	- moved .load_conf() load_conf()
+
+
+
 flowr 0.9.6.13
 ----------------------------------------------
 - Using PBS/LSF script instead of one line commands
