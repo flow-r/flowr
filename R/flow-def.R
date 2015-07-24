@@ -139,7 +139,7 @@ to_flowdef.flowmat <- function(x,
 	platform = "torque",
 	memory_reserved = "2000", ## in MB
 	cpu_reserved = "1",
-	walltime = "1:00"){
+	walltime = "1:00", ...){
 
 		message("Creating a skeleton flow definition")
 		jobnames <- unique(x$jobname)
@@ -164,7 +164,7 @@ to_flowdef.flowmat <- function(x,
 
 
 
-to_flowdef.flow <- function(x){
+to_flowdef.flow <- function(x, ...){
 	slts = c(jobname = "name",
 		prev_jobs = 'previous_job',
 		dep_type = "dependency_type",
@@ -194,7 +194,7 @@ to_flowdef.flow <- function(x){
 #' @details flow_tab: as defined by fl is a (minimum) three column matrix with
 #' samplename, jobname, cmd
 #' @export
-to_flowdef.character <- function(x, jobnames){
+to_flowdef.character <- function(x, jobnames, ...){
 	if(!missing(x)){
 		mat <- read_sheet(x)
 		mat = to_flowmat(mat)

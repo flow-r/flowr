@@ -1,6 +1,24 @@
 
 
-run_pipe <- function(x, 
+#' run pipelines
+#' 
+#' @description 
+#' Running examples flows
+#' This wraps a few steps:
+#' Get all the commands to run (flow_mat)
+#' Create a `flow` object, using flow_mat and a default flowdef (picked from the same folder).
+#' Use `submit_flow()` to submit this to the cluster.
+#'
+#' @param x name of the pipeline to run. This is a function called to create a flow_mat.
+#' @param def flow definition
+#' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
+#' @param platform what platform to use, overrides flowdef
+#' @param execute TRUE/FALSE
+#' @param ... passed onto the pipeline function specified in x
+#'
+#' @export
+#' @aliases run_flow
+run <- function(x, 
 	platform, 
 	def, 
 	flow_run_path = get_opts("flow_run_path"), 
@@ -19,21 +37,21 @@ run_pipe <- function(x,
 	source(pip$pipe)
 	func = get(x) ## find function of the original name
 	
-
+	
 	message("\n##--- loading confs....")
 	## load default options for the pipeline
 	confs = c(fetch_conf("flowr.conf"), 
 		fetch_conf("ngsflows.conf"),
 		pip$conf)
 	print(kable(as.data.frame(confs)))
-	load_conf(confs, verbose = FALSE, chk = FALSE)
+	load_conf(confs, verbose = FALSE, check = FALSE)
 	
 	message("\n##--- creating flowmat....")
 	## crate a flowmat
 	args <- list(...)
 	out = do.call(func, args)
 	
-
+	
 	message("\n##--- stitching a flow object....")
 	## get a flowdef
 	if(missing(def))
@@ -52,35 +70,22 @@ run_pipe <- function(x,
 	invisible(fobj)
 }
 
+
+#' @rdname run
+#' @export
+run_pipe <- run
+
+
 if(FALSE){
 	
 	debug(run_pipe)
 	run_pipe("sleep_pipe", samplename = "samp2")
-
+	
 }
 
 
 
-#' run pipelines
-#' Running examples flows
-#' This wraps a few steps:
-#' Get all the commands to run (flow_mat)
-#' Create a `flow` object, using flow_mat and a default flowdef (picked from the same folder).
-#' Use `submit_flow()` to submit this to the cluster.
-#'
-#' @param x name of the pipeline to run. This is a function called to create a flow_mat.
-#' @param flow_mat flow matrix, with commands to run (if we already have this, start here)
-#' @param flowdef flow definition
-#' @param type adv.
-#' @param platform what platform to use, overrides flowdef
-#' @param execute TRUE/FALSE
-#' @param ... passed onto the function used to create the flow_mat
-#'
-#' @export
-#' @aliases run_flow
-run <- run_pipe
-
-.run <- function(x="sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
+.run <- function(x = "sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
 	.Deprecated("run")
 	library(flowr)
 	message("\n\nPerforming initial setup....")
@@ -89,10 +94,10 @@ run <- run_pipe
 	if(is.character(x))
 		if(x == "sleep")
 			fobj <- .run_sleep(platform = platform, ...)
-
+	
 	## x is the name of the function
-
-
+	
+	
 	tmp <- submit_flow(fobj, execute = execute)
 	return("Done !")
 }

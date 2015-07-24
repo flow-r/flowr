@@ -18,7 +18,7 @@
 #' @examples \dontrun{
 #' create_jobs_mat(x = x)}
 create_jobs_mat <- function(x){
-	#.Deprecated("to_flowdef")
+	.Deprecated("to_flowdef")
 	
 	jobnames <- sapply(x@jobs, slot, "name")
 	prev_jobs <- sapply(x@jobs, slot, "previous_job")

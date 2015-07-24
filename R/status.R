@@ -14,7 +14,10 @@ get_wds <- function(x){
 
 
 #' get_status
+#' 
 #' @param x flow, flow_det or a path to flow run.
+#' @param out_format format in which status is to be printed. Default is markdown
+#' @param ... not used
 get_status <- function(x, ...) {
 	UseMethod("get_status")
 }
@@ -124,39 +127,11 @@ status <- function(x, cores = 6, out_format = "markdown", get_mem_usage = TRUE){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
 #' update_flow_det
-#' @param wd
-#'
+#' @param wd flow working directory
+#' @param mat_cmd a table with details about cmd files
 #' @details
 #'
 #' Get the flow_det files from wd, and update it with new statuses.
@@ -174,15 +149,6 @@ update_flow_det <- function(wd, mat_cmd){
 	#dim(flow_det)
 	invisible(flow_det)
 }
-
-
-
-
-
-
-
-
-
 
 
 

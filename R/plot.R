@@ -8,7 +8,7 @@
 #' @aliases plot_flow plot_flow.list plot_flow.flow
 #' @aliases plot
 #'
-#' @param x Object of class \code{flow}
+#' @param x Object of class \code{flow}, or a list of flow objects or a flowdef
 #' @param detailed include some details
 #' @param pdf create a pdf instead of plotting interactively
 #' @param pdffile output file name for the pdf file
@@ -41,7 +41,7 @@
 #' plot_flow(fobj)
 #'
 plot_flow <- function(x, ...) {
-  message("input x is ", class(x))
+  #message("input x is ", class(x))
   UseMethod("plot_flow")
 }
 
@@ -49,18 +49,11 @@ plot_flow <- function(x, ...) {
 #' @rdname plot_flow
 #' @method plot_flow flow
 #' @export
-plot_flow.flow <- function(x, detailed = TRUE,
-  type = c('1','2'),
-  pdf = FALSE,
-  pdffile = sprintf("%s.pdf", x@name),
-  ...){
-    type = match.arg(type)
-    dat <- create_jobs_mat(x)
-    p <- switch(type,
-      '1' = .plot_flow_dat_type1(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
-      '2' = .plot_flow_dat_type2(x=dat, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
-    invisible(p)
-  }
+plot_flow.flow <- function(x, ...){
+    #dat <- create_jobs_mat(x)
+    x = to_flowdef(x)
+    plot_flow(x, ...)
+}
 
 
 ## compatible with a list of flows as well !
@@ -73,14 +66,45 @@ plot_flow.list <- function(x, ...){
   invisible(tmp)
 }
 
+#' @rdname plot_flow
+#' @export
+plot_flow.flowdef <- function(x,
+	detailed = TRUE,
+	type = c('1','2'),
+	pdf = FALSE,
+	pdffile = sprintf("%s.pdf", x@name),
+	...){
+
+	type = match.arg(type)
+	p <- switch(type,
+		'1' = .plot_flow_dat_type1(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
+		'2' = .plot_flow_dat_type2(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
+	invisible(p)
+}
+
+
+arrange_flowdef <- function(x){
+	for(j in 1:4){
+		jobnames=unique(as.c(x$jobname))
+		jobid <- 1:length(jobnames);names(jobid)=jobnames
+		prev_jobid <- jobid[as.c(x$prev_jobs)]
+		x$jobid <- jobid[as.c(x$jobname)];
+		x$prev_jobid <- prev_jobid
+		x <- x[order(x$prev_jobid, x$jobid, na.last=FALSE, decreasing=FALSE),]
+	}
+	return(x)
+	
+}
 
 display_mat <- function(x){
   x$level = 0
   for(i in 1:nrow(x)){
     prev = x$prev_jobs[i]
-    if(prev != ""){
-      prev_level = subset(x, x$jobname == prev)$level
-      x$level[i] = prev_level + 1
+    if(!is.na(prev)){
+    	if(prev != ""){
+    		prev_level = subset(x, x$jobname == prev)$level
+    		x$level[i] = prev_level + 1
+    	}
     }
   }
   table(x$level)
@@ -88,15 +112,18 @@ display_mat <- function(x){
 
 
 
-#' @rdname plot_flow
-#'  @param x a data.frame as given out create_jobs_mat()
-.plot_flow_dat_type1 <- function(x, detailed = FALSE, pdf = FALSE,
+.plot_flow_dat_type1 <- function(x, 
+	detailed = FALSE,
+	pdf = FALSE,
   ## vector of columns to be used in plotting
   pdffile = sprintf("flow_details.pdf"),
   width, height, ...){
+	
     if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
+    x = arrange_flowdef(x)
+    
     jobnames=unique(as.c(x$jobname))
     dat_dep <- x[complete.cases(x),] ## remove first two
     dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
@@ -160,16 +187,34 @@ display_mat <- function(x){
     if(pdf) dev.off()
   }
 
-.plot_flow_dat_type2 <- function(x, detailed = FALSE, pdf = FALSE, pdffile=sprintf("flow.pdf"),
+.plot_flow_dat_type2 <- function(x,
+	detailed = FALSE,
+	pdf = FALSE,
+	pdffile=sprintf("flow.pdf"),
   width, height,
-  curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
-  segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
+  curve = 0.5,
+	arr.type = "simple",
+	arr.lcol = "gray26",
+	arr.col = "gray26", ## arraow
+  segment.from = 0.1,
+	segment.to = 0.9,
   cex.txt = 0.8, ## labels
-  box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0,
-  box.lcol = "lightskyblue4", relsize = 0.85,...){
-    if(missing(height))  height = 2.5 * nrow(x)
+	arr.pos = 0.9,
+  box.prop = 0.15,
+	box.cex = 0.7,
+	box.type = "rect",
+	box.lwd = 0.6,
+	shadow.size = 0,
+  box.lcol = "lightskyblue4",
+	relsize = 0.85,
+	...){
+
+	  if(missing(height))  height = 2.5 * nrow(x)
     if(missing(width)) width = 2 * nrow(x)
     if(nrow(x) < 2) return(c("need a few more jobs.."))
+
+    x = arrange_flowdef(x)
+    
     jobnames=unique(as.c(x$jobname))
     dat_dep <- x[complete.cases(x),]
     dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]

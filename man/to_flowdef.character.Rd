@@ -5,7 +5,7 @@
 \title{Create a skeleton flow definition
 A helper function to create a skeleton flow definition.}
 \usage{
-\method{to_flowdef}{character}(x, jobnames)
+\method{to_flowdef}{character}(x, jobnames, ...)
 }
 \arguments{
 \item{jobnames}{names of the jobs in a flow}

@@ -46,24 +46,26 @@ set_opts = function(x = list()){
 	invisible()
 }
 
-
+#' Pretty print options
+#' @description print pkg options as a pretty table
 #' @importFrom knitr kable
+#' @param ... passed onto print
 #' @export
-print.opts <- function(x){
+print.opts <- function(x, ...){
 	if(length(x) > 1){
 		#message("\nPrinting list of options as a pretty table.")
 		y = cbind(lapply(x, function(f) {
 			unlist(as.data.frame(Filter(Negate(is.null), f)))
 		}))
-		print(kable(y, col.names = c("")))
+		print(kable(y, col.names = c("")), ...)
 		## following does not handle null values well
 		# print(kable(t(as.data.frame(x, row.names = names(x)))))
 	}
-	else(print.default(y))
+	else(print.default(y, ...))
 }
 
 
-.load_conf <- function(x, chk, verbose,...){
+.load_conf <- function(x, check, verbose,...){
 	
 	if(!file.exists(x)){
 		message(error("no.conf"), x)
@@ -77,7 +79,7 @@ print.opts <- function(x){
 	lst = parse_conf(lst)
 
 	## -- check the ones with file paths
-	if(chk)
+	if(check)
 		chk_conf(lst)
 	options(lst)
 	set_opts(lst)
@@ -92,13 +94,16 @@ print.opts <- function(x){
 #' These are two column tab seperated files (namely name and value).
 #' @description load a configuration file into the environment
 #' @param x path to a configuration file
-#' @param chk check the file after loading?
+#' @param check in case of a configuration file, whether to check if files defined in parameters exists.. 
 #' @param ... Not used
+#' 
+#' @details params ending in: "path$|dir$|exe$" are checked in case of check=TRUE.
+#' 
 #' @seealso \link{get_opts}
 #' @export
-load_conf <- function(x, chk = TRUE, verbose = TRUE, ...){
+load_conf <- function(x, check = TRUE, verbose = TRUE, ...){
 	## .load_conf: works on a single file
-	lst <- lapply(x, .load_conf, chk = chk, verbose = verbose, ...)
+	lst <- lapply(x, .load_conf, check = check, verbose = verbose, ...)
 
 	## in future this could be a normalized list
 	## with the final set of options used

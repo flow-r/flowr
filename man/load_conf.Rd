@@ -4,17 +4,20 @@
 \alias{load_conf}
 \title{Fetching and loading configuration files.}
 \usage{
-load_conf(x, chk = TRUE, verbose = TRUE, ...)
+load_conf(x, check = TRUE, verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{path to a configuration file}
 
-\item{chk}{check the file after loading?}
+\item{check}{in case of a configuration file, whether to check if files defined in parameters exists..}
 
 \item{...}{Not used}
 }
 \description{
 These are two column tab seperated files (namely name and value).
+}
+\details{
+params ending in: "path$|dir$|exe$" are checked in case of check=TRUE.
 }
 \seealso{
 \link{get_opts}

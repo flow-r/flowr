@@ -22,7 +22,7 @@ read_sheet(x, id_column, start_row = 1, sheet = "sample_sheet", ext,
 
 \item{verbose}{be chatty?}
 
-\item{...}{passed onto \link{read.xlsx}, read.table of read.csv2 depending on the file type.}
+\item{...}{passed onto read.xlsx of openxlsx, read.table of read.csv2 depending on the file type.}
 }
 \description{
 Auto detect file type, read it and clean it.

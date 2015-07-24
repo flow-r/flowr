@@ -53,7 +53,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param qobj Depreciated. A object of class \link{queue}.
 #'
 #' @examples
-#' ex = file.path(system.file(package = "flowr"), "examples")
+#' ex = file.path(system.file(package = "flowr"), "pipelines")
 #' flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
 #' flow_def = as.flowdef(file.path(ex, "sleep_pipe.def") 
 #' fobj <- to_flow(x = flow_mat, def = flow_def, flowname = "example1", platform = "lsf")
@@ -69,7 +69,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' the flow was executed. It would include details like jobids, path to exact scripts run etc.
 #' To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 #' 
-#' #' ## Behaviour, in terms of submit and execute
+#' ## Behaviour, in terms of submit and execute
 #'
 #' submit=FALSE & execute=FALSE: Create and return a flow object
 #' submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
@@ -89,8 +89,10 @@ to_flow.vector <- function(x, def,
 	jobname_col,
 	cmd_col,
 	...){
+	
 	x = as.flowmat(x, grp_col, jobname_col, cmd_col)
 	to_flow(x, def, ...)
+
 }
 
 #' @rdname to_flow

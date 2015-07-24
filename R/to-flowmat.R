@@ -24,6 +24,11 @@ is.flowmat <- function(x){
 #' @rdname to_flowmat
 #' @description 
 #' as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.
+#' @param x a data.frame or flow_def file (tab seperated)
+#' @param grp_col column used for grouping, default samplename.
+#' @param jobname_col column specifying jobname, default jobname
+#' @param cmd_col column specifying commands to run, default cmd
+#' @param ...
 #' @export
 as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	## ---- assuming x is a file
@@ -92,7 +97,7 @@ to_flowmat <- function(x, ...) {
 
 #' @rdname to_flowmat
 #' @export
-to_flowmat.list <- function(x, samplename){
+to_flowmat.list <- function(x, samplename, ...){
 	if(missing(samplename))
 		stop("to_flowmat needs a samplename !")
 
@@ -113,14 +118,14 @@ to_flowmat.list <- function(x, samplename){
 
 #' @rdname to_flowmat
 #' @export
-to_flowmat.data.frame <- function(x){
+to_flowmat.data.frame <- function(x, ...){
 	attr(x, "class") <- c("flowmat", "data.frame")
 	message("Looks good, just check...")
 	return(x)
 }
 
 ## not used, use char instead
-to_flowmat.character <- function(x){
+to_flowmat.character <- function(x, ...){
 	.Deprecated("to_flowmat.list", msg = "Supply a named list instead of a vector.")
 	ret <- lapply(1:length(x), function(i){
 		cmd = x[i]
@@ -133,7 +138,7 @@ to_flowmat.character <- function(x){
 
 #' @rdname to_flowmat
 #' @export
-to_flowmat.flow <- function(x){
+to_flowmat.flow <- function(x, ...){
 	## -- get all the commands as rows
 	lst = lapply(x@jobs, function(y){
 		cmd = list(y@cmds)

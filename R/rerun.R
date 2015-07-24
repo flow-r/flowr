@@ -4,26 +4,8 @@ if(FALSE){
   wd = "/rsrch2/iacs/ngs_runs/1412_tcga_normals/BRCA/logs/brca-2015-02-17-12-42-32-MCscE2AW"
 }
 
-#' @export
-rerun <- function(x, ...) {
-	message("input x is ", class(x))
-	UseMethod("rerun")
-}
-
-
-#' @export
-rerun.character <- function(x, ...){
-	message("x looks like a path")
-	fobj <- read_fobj(x)
-	
-	if(is.character(fobj))
-		stop("x does not seems to be a correct path to the flow submission")
-	rerun(fobj, ...)
-	
-}
-
-#' @title rerun_flow
-#' @description rerun_flow
+#' @title rerun
+#' @description rerun
 #'
 #'
 #' @param x Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.
@@ -40,8 +22,29 @@ rerun.character <- function(x, ...){
 #' rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
 #' }
 #'  @export
+rerun <- function(x, ...) {
+	message("input x is ", class(x))
+	UseMethod("rerun")
+}
+
+
+#' @rdname rerun
+#' @export
+rerun.character <- function(x, ...){
+	message("x looks like a path")
+	fobj <- read_fobj(x)
+	
+	if(is.character(fobj))
+		stop("x does not seems to be a correct path to the flow submission")
+	rerun(fobj, ...)
+	
+}
+
+
+#' @rdname rerun
+#' @export
 rerun.flow <- function(x, mat, def, start_from,
-											 execute = TRUE, kill = TRUE){
+											 execute = TRUE, kill = TRUE, ...){
 	fobj = x
 	wd = fobj@flow_path
 	

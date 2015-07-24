@@ -2,11 +2,16 @@
 % Please edit documentation in R/submit-job.R
 \name{whisker_render}
 \alias{whisker_render}
-\title{a wrapper around whisker.render with some sugar on it...}
+\title{Wrapper around whisker.render with some sugar on it...}
 \usage{
 whisker_render(template, data)
 }
+\arguments{
+\item{template}{template used}
+
+\item{data}{a list with variables to be used to fill in the template.}
+}
 \description{
-a wrapper around whisker.render with some sugar on it...
+This is a wrapper around \link{whisker.render}
 }
 

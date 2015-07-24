@@ -7,7 +7,9 @@
 update_flow_det(wd, mat_cmd)
 }
 \arguments{
-\item{wd}{}
+\item{wd}{flow working directory}
+
+\item{mat_cmd}{a table with details about cmd files}
 }
 \description{
 update_flow_det

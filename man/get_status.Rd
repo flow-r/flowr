@@ -17,6 +17,10 @@ get_status(x, ...)
 }
 \arguments{
 \item{x}{flow, flow_det or a path to flow run.}
+
+\item{...}{not used}
+
+\item{out_format}{format in which status is to be printed. Default is markdown}
 }
 \description{
 get_status

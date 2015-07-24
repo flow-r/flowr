@@ -9,7 +9,6 @@ dots <- function (..., .env){
   return(args2)
 }
 
-#' @export
 assert_args_not_null <- function(...,
   .env = environment()){
   
@@ -22,7 +21,6 @@ assert_args_not_null <- function(...,
 
 #' checks all the arguments in the parent frame.
 #' None of them should be null.
-#' @export
 check_args <- function(){
   fn = sys.call(sys.parent())[1]
   env = parent.frame()

@@ -15,7 +15,6 @@ Imports:
 Suggests:
     reshape2,
     ggplot2,
-    knitr,
     openxlsx
 VignetteBuilder: knitr
 URL: https://github.com/sahilseth/flowr

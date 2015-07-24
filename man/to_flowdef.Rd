@@ -9,7 +9,7 @@ to_flowdef(x, ...)
 
 \method{to_flowdef}{flowmat}(x, sub_type = "serial", dep_type = "gather",
   queue = "short", platform = "torque", memory_reserved = "2000",
-  cpu_reserved = "1", walltime = "1:00")
+  cpu_reserved = "1", walltime = "1:00", ...)
 }
 \arguments{
 \item{x}{can a path to a flowmat, flowmat object.}

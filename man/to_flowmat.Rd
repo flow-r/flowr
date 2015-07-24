@@ -12,13 +12,23 @@ as.flowmat(x, grp_col, jobname_col, cmd_col, ...)
 
 to_flowmat(x, ...)
 
-\method{to_flowmat}{list}(x, samplename)
+\method{to_flowmat}{list}(x, samplename, ...)
 
-\method{to_flowmat}{data.frame}(x)
+\method{to_flowmat}{data.frame}(x, ...)
 
-\method{to_flowmat}{flow}(x)
+\method{to_flowmat}{flow}(x, ...)
 }
 \arguments{
+\item{x}{a data.frame or flow_def file (tab seperated)}
+
+\item{grp_col}{column used for grouping, default samplename.}
+
+\item{jobname_col}{column specifying jobname, default jobname}
+
+\item{cmd_col}{column specifying commands to run, default cmd}
+
+\item{...}{}
+
 \item{x}{a named list OR vector. Where name corresponds to the jobname and value is a vector of commands to run}
 }
 \description{

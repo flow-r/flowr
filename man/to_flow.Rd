@@ -49,7 +49,7 @@ Returns a flow object. If execute=TRUE, fobj is rich with information about wher
 the flow was executed. It would include details like jobids, path to exact scripts run etc.
 To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 
-#' ## Behaviour, in terms of submit and execute
+## Behaviour, in terms of submit and execute
 
 submit=FALSE & execute=FALSE: Create and return a flow object
 submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
@@ -63,7 +63,7 @@ The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sh
 This is a minimum three column matrix with three columns: samplename, jobname and cmd
 }
 \examples{
-ex = file.path(system.file(package = "flowr"), "examples")
+ex = file.path(system.file(package = "flowr"), "pipelines")
 flow_mat = read_sheet(file.path(ex, "sleep_pipe.tsv"))
 flow_def = as.flowdef(file.path(ex, "sleep_pipe.def")
 fobj <- to_flow(x = flow_mat, def = flow_def, flowname = "example1", platform = "lsf")

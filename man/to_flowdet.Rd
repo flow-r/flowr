@@ -9,11 +9,11 @@
 \usage{
 to_flowdet(x, ...)
 
-\method{to_flowdet}{rootdir}(x)
+\method{to_flowdet}{rootdir}(x, ...)
 
-\method{to_flowdet}{character}(x)
+\method{to_flowdet}{character}(x, ...)
 
-\method{to_flowdet}{flow}(x)
+\method{to_flowdet}{flow}(x, ...)
 }
 \arguments{
 \item{x}{this is a wd}

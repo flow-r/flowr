@@ -174,7 +174,13 @@ create_queue_cmd=render_queue_cmd
 #cmd <- .create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
 
 
-#' a wrapper around whisker.render with some sugar on it...
+#' @title Wrapper around whisker.render with some sugar on it...
+#' 
+#' @description This is a wrapper around \link{whisker.render}
+#' @param template template used
+#' @param data a list with variables to be used to fill in the template.
+#' 
+#' 
 #' @export
 whisker_render <- function(template, data) {
 	## --- remove items, missing in data

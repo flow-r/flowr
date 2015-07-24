@@ -11,7 +11,7 @@ to_flowdet <- function(x, ...) {
 #' get a flow_details file from the directory structure. This has less information than the
 #' one generated using a flow object. Lacks jobids etc...
 #' @export
-to_flowdet.rootdir <- function(x){
+to_flowdet.rootdir <- function(x, ...){
 	## --- get all the cmd files
 	files_cmd <- list.files(x, pattern = "cmd", full.names = TRUE, recursive = TRUE)
 	if(length(files_cmd) == 0)
@@ -35,7 +35,7 @@ to_flowdet.rootdir <- function(x){
 #' @details 
 #' if x is char. assumed a path, check if flow object exists in it and read it.
 #' If there is no flow object, try using a simpler function
-to_flowdet.character <- function(x){
+to_flowdet.character <- function(x, ...){
 	x = read_fobj(x)
 	if(is.character(x))
 		return(to_flowdet.rootdir(x)) ## where x is a parent path
@@ -45,7 +45,7 @@ to_flowdet.character <- function(x){
 
 #' @rdname to_flowdet
 #' @export
-to_flowdet.flow <- function(x){
+to_flowdet.flow <- function(x, ...){
 	fobj = x
 	ret <- lapply(1:length(fobj@jobs), function(i){
 		to_flowdet(fobj@jobs[[i]])
