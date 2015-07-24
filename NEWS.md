@@ -21,7 +21,7 @@ flowr 0.9.7 2015-07-25
 	- moved read_sheet, write_shee()
 	- moved get_opts(), set_opts()
 	- moved .load_conf() load_conf()
-	- [params]()
+	- [params](https://github.com/sahilseth/params)
 
 
 flowr 0.9.6.13
