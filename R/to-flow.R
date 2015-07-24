@@ -156,7 +156,7 @@ to_flow.data.frame <- function(x, def,
 
 	samps = unique(x$samplename)
 	if(length(samps) > 1)
-		message("Detected multiple sample. Would containirize this submission.")
+		message("Detected multiple samples. Would containerize this submission.")
 
 	fobjs <- lapply(samps, function(samp){
 		x2 = subset(x, x$samplename == samp)

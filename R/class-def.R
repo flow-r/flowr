@@ -115,15 +115,16 @@ queue <- function(object,
 	## format
 	extra_opts = "",
 	submit_exe,
-	cwd=getOption("flow_run_path"),
 	nodes = '1',  ## only used in torque
 	## debug use
 	jobname = "name",
 	email = Sys.getenv("USER"),
 	dependency = list(),
-	server = "localhost",  verbose = FALSE,
-	stderr = getOption("flow_run_path"),
-	stdout = getOption("flow_run_path"),
+	server = "localhost",
+	verbose = FALSE,
+	cwd = "",
+	stderr = "",
+	stdout = "",
 	...){
 	platform = match.arg(platform)
 	if(!missing(object)){
@@ -200,7 +201,8 @@ queue <- function(object,
 			server=server)
 
 	}else{
-		object <- new('queue', submit_exe=submit_exe,queue=queue,
+		object <- new('queue', submit_exe=submit_exe,
+			queue=queue,
 			nodes=nodes, memory=memory,
 			cpu=cpu,dependency=dependency,walltime=walltime,
 			cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
@@ -256,7 +258,10 @@ queue <- function(object,
 #' }
 job <- function(cmds = "",
 	name = "myjob",
-	q_obj = new("queue"), previous_job = '', cpu = 1, memory, walltime,
+	q_obj = new("queue"),
+	previous_job = '',
+	cpu = 1,
+	memory, walltime,
 	submission_type = c("scatter", "serial"),
 	dependency_type = c("none", "gather", "serial", "burst"),
 	...){
@@ -281,8 +286,13 @@ job <- function(cmds = "",
 	#cat("\nPrevious job check\n", previous_job[1], "\t", dependency_type, "\n")
 	if(!previous_job[1] == "" & dependency_type == 'none') ## add [1] since at times we specify two jobs
 		stop("Previous job specified, but you have not specified dependency_type")
-	object <- new(q_obj@platform, cmds = cmds, object, name = name, submission_type = submission_type,
-		previous_job = previous_job, status = "",
+	object <- new(q_obj@platform,
+		cmds = cmds,
+		object,
+		name = name,
+		submission_type = submission_type,
+		previous_job = previous_job,
+		status = "",
 		dependency_type = dependency_type,...)
 	return(object)
 }

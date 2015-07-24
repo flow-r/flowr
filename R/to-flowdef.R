@@ -137,7 +137,9 @@ to_flowdef.flow <- function(x, ...){
 					 status = "status",
 					 platform = "platform")
 	tmp <- lapply(x@jobs, function(y){
-		unlist(slots_as_list(y)[slts])
+		y = slots_as_list(y)[slts]
+		y$previous_job = paste(y$previous_job, collapse = ",")
+		unlist(y)
 	})
 	def = data.frame(do.call(rbind, tmp), stringsAsFactors = FALSE)
 	colnames(def) = names(slts)

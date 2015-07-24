@@ -11,5 +11,5 @@
 
 .onLoad <- function(lib, pkg){
 	fls = fetch_conf("flowr.conf")
-	#suppressMessages(params::load_conf(fls, check = FALSE))
+	suppressMessages(params::load_conf(fls, check = FALSE))
 }
