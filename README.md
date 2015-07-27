@@ -18,11 +18,18 @@ https://github.com/sahilseth/flowr/issues?q=label%3Aquestion
 
 
 ```
-## From the official R repository (may be a few version behind)
+## for the latest stable build, recommended:
+install.packages("drat")
+drat::addRepo("sahilseth")
+install.packages("flowr")
+
+## From the official R repository (may be a few versions behind)
 install.packages('flowr')
-## for a latest and greatest
+
+## for a latest and greatest, dev version.
 install.packages('devtools')
 devtools::install_github("sahilseth/flowr")
+
 ```
 
 ## Example:
