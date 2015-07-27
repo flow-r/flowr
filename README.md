@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/11075/sahilseth/flowr.svg)](http://dx.doi.org/10.5281/zenodo.16170)
 [![Build Status](https://travis-ci.org/sahilseth/flowr.png)](https://travis-ci.org/sahilseth/flowr)
-[![Coverage Status](https://img.shields.io/coveralls/sahilseth/flowr.svg)](https://coveralls.io/r/sahilseth/flowr?branch=master)
+[![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=master)](http://codecov.io/github/sahilseth/flowr?branch=master)
 
 
 flow
