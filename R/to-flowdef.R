@@ -67,7 +67,17 @@ to_flowdef <- function(x, ...){
 }
 
 
+guess_sub_dep <- function(x){
 
+	lst <- lapply(1:nrow(x), function(i){
+		cmds = "";
+		prev_job = ""
+		d_sub_type <- detect_sub_type(cmds = cmds)
+		d_dep_type <- detect_dep_type(prev_job = prev_job, cmds = cmds)
+		list(sub_type = d_sub_type, dep_type = d_dep_type)
+	})
+	return(lst)
+}
 
 #' @rdname to_flowdef
 #' @export
@@ -93,17 +103,6 @@ to_flowdef.flowmat <- function(x,
 		sub_type = "serial"
 	if(missing(prev_jobs))
 		prev_jobs = c("none", jobnames[-njobs])
-
-	if(FALSE){
-		## --- getting defaults of submission and depedency types
-		if(length(d_sub_type) == 0){
-			d_sub_type = detect_sub_type(cmds = cmds)
-		}
-		## guess dep_type
-		if(length(d_dep_type) == 0){
-			d_dep_type <- detect_dep_type(prev_job = prev_job, cmds = cmds)
-		}
-	}
 
 	def <- data.frame(jobname = jobnames,
 										sub_type = sub_type,

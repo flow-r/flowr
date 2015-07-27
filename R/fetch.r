@@ -31,7 +31,11 @@ fetch <- function(x, places, urls, verbose = FALSE){
 #' fetch_pipes(): Looks at: github repo: ngsflows/pipelines
 #' @param silent applicable to fetch_pipes() only. Throw if no such pipe is available
 #' @export
-fetch_pipes <- function(x, places, urls, silent = FALSE, ask){
+fetch_pipes <- function(x,
+												places,
+												urls = get_opts("flowr_pipe_urls"),
+												silent = FALSE,
+												ask = TRUE){
 	if(missing(places)){
 		places = c(
 			system.file(package = "flowr", "pipelines"),

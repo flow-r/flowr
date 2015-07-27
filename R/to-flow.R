@@ -9,17 +9,17 @@ detect_sub_type <- function(cmds){
 #' @param cmds a string of commands
 #' @param prev_job previous job name
 detect_dep_type <- function(x, cmds, prev_job){
-	if(length(prev_job) > 1){
+	if (length(prev_job) > 1) {
 		dep_type = "gather"
-	}else if(length(x[[prev_job]]) == 0){
+	}else if (length(x[[prev_job]]) == 0) {
 		dep_type = "none"
-	}else if(length(x[[prev_job]]) == length(cmds)){
+	}else if (length(x[[prev_job]]) == length(cmds)) {
 		## if same length, serial
 		dep_type = "serial"
-	}else if(length(x[[prev_job]]) > length(cmds) & length(cmds) == 1  ){
+	}else if (length(x[[prev_job]]) > length(cmds) & length(cmds) == 1  ) {
 		## --- if prevous job were more than current
 		dep_type = "gather"
-	}else if(length(x[[prev_job]]) == 1 & length(cmds) > 1){
+	}else if (length(x[[prev_job]]) == 1 & length(cmds) > 1) {
 		## previous was only one, and current are a few
 		dep_type = "burst"
 	}
@@ -118,11 +118,11 @@ to_flow.data.frame <- function(x, def,
 	def = as.flowdef(def)
 
 	## --- defaults
-	if(missing(flowname)){
+	if (missing(flowname)) {
 		flowname = "flowname"
 		message("Using flowname default: ", flowname);
 	}
-	if(missing(flow_run_path)){
+	if (missing(flow_run_path)) {
 		flow_run_path = getOption("flow_run_path")
 		message("Using flow_run_path default: ", flow_run_path);
 	}
@@ -133,10 +133,10 @@ to_flow.data.frame <- function(x, def,
 	## ---  COMPARE flowdef and flowmat jobnames
 	msg = c("\nflowdef jobs: ", paste(def$jobname, collapse = " "),
 					"\nflowmat jobs: ", paste(unique(x$jobname), collapse = " "))
-	if(mean(!unique(x$jobname) %in% na.omit(def$jobname))){
+	if (mean(!unique(x$jobname) %in% na.omit(def$jobname))) {
 		stop("Some jobs in x are not in flow definition\n", msg)
 	}
-	if(mean(!na.omit(def$jobname) %in% unique(x$jobname))){
+	if (mean(!na.omit(def$jobname) %in% unique(x$jobname))) {
 		stop("Some jobs in flowdef are not in flowmat\n", msg)
 
 	}
@@ -144,14 +144,14 @@ to_flow.data.frame <- function(x, def,
 
 	## --- Overrides
 	message("\n##--- Detecting platform...")
-	if("platform" %in% colnames(def)){
+	if ("platform" %in% colnames(def)){
 		message("Will use platform from flow definition")
 	}
-	if(!missing(platform)){
+	if (!missing(platform)){
 		message("Platform supplied, this will override defaults from flow definition...")
 		def$platform = platform
 	}
-	if(!missing(qobj)){
+	if (!missing(qobj)){
 		message("qobj supplied, this will override defaults from flow_definion OR platform variable")
 		message("Use of qobj is depreciated",
 			"Use shell scripts provided here as a template: https://github.com/sahilseth/flowr/tree/master/inst/conf",
@@ -159,7 +159,7 @@ to_flow.data.frame <- function(x, def,
 	}
 
 	samps = unique(x$samplename)
-	if(length(samps) > 1)
+	if (length(samps) > 1)
 		message("Detected multiple samples. Would containerize this submission.")
 
 	fobjs <- lapply(samps, function(samp){
@@ -177,27 +177,27 @@ to_flow.data.frame <- function(x, def,
 
 
 		### ----- remove THESE !
-		if(execute|submit){
+		if (execute|submit){
 			message("\n##--- flowr submission...")
 			message("\nYou may use fobj <- to_flow(...); submit_flow(fobj)")
-			if(length(samps) > 1){
+			if (length(samps) > 1){
 				message("\n\nDetected ", length(samps), " samples/groups in flow_mat.",
 					"\nflow_mat would be split and each would be submitted seperately...")
 			}
-			if(execute)
+			if (execute)
 				submit = TRUE
 		}
 
-		if(submit)
+		if (submit)
 			fobjuuid <- submit_flow(fobj, execute = execute)
-		if(execute)
+		if (execute)
 			return(fobjuuid)
 		else
 			return(fobj)
 	})
 
 	## --- if there is only one sample, fobj is returned, else a list of flow objects
-	if(length(fobjs) == 1)
+	if (length(fobjs) == 1)
 		fobjs = fobjs[[1]]
 
 	invisible(fobjs)
@@ -219,7 +219,7 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		## --- submit def, to get resources for this particular job
 		def2 = subset(def, def$jobname == jobnm)
 		prev_job = unlist(def2$prev_jobs) ## SHOULD be NA
-		if(!is.na(prev_job))
+		if (!is.na(prev_job))
 			prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
 		d_cpu = unlist(def2$cpu_reserved)
 		d_walltime = unlist(def2$walltime)
@@ -229,11 +229,11 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		d_sub_type = unlist(def2$sub_type)
 		d_nodes = unlist(def2$nodes)
 
-		if(missing(qobj))
+		if (missing(qobj))
 			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
 
 		## --- getting default for nodes
-		if(is.null(d_nodes))
+		if (is.null(d_nodes))
 			d_nodes = '1'
 
 
@@ -260,7 +260,7 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		flow_run_path = flow_run_path)
 
 	## --- check if submission or depedency types were guessed
-	if(is.null(def$sub_type) | is.null(def$dep_type)){
+	if (is.null(def$sub_type) | is.null(def$dep_type)){
 		message("Submission/definition types were guessed.",
 			"\nThis is really a experimental feature.",
 			"\nPlease check the following table.",
@@ -330,7 +330,7 @@ cmds_to_flow <- function(cmd.list,
 	#infomat <- cbind(jobnames, sub_type, cpus, prev_jobs, dep_type)
 	## Error handling: missing in info
 	missing.info = names(cmd.list)[!names(cmd.list) %in% infomat$jobname]
-	if(length(missing.info) > 0){
+	if (length(missing.info) > 0){
 		warning("\n\nMessage:\nOops issue with infomat.\n",
 			"It seems these job names are missing from the infomat:\n",
 			paste(missing.info, collapse="\n"),
@@ -341,12 +341,12 @@ cmds_to_flow <- function(cmd.list,
 	## chck if prev jobs have a job defined
 	prev_jobs = strsplit(infomat$previous_job, ",")
 	missing.prev = infomat$previous_job[!unlist(prev_jobs) %in% c(infomat$jobname, ".", NA, "NA")]
-	if(length(missing.prev) > 0)
+	if (length(missing.prev) > 0)
 		stop("\n\nMessage:\nOops issue with infomat.\n",
 			"It seems these previous job names are missing from the jobname column:\n",
 			"Dependencies are only supported within the same flow.\n",
 			missing.prev, "\n")
-	if( mean(table(infomat$jobname)) != 1 || mean(table(names(cmd.list))) != 1 )
+	if ( mean(table(infomat$jobname)) != 1 || mean(table(names(cmd.list))) != 1 )
 		stop("\n\nMessage:\nOops issue with infomat/cmd.list.\n",
 			"Seem either jobnames in infomat are or that in cmd.list are duplicated\n")
 
@@ -366,18 +366,18 @@ cmds_to_flow <- function(cmd.list,
 		queue = unlist(infomat2$queue)
 		dep_type = unlist(infomat2$dep_type)
 		sub_type = unlist(infomat2$sub_type)
-		if(length(sub_type) == 0)
+		if (length(sub_type) == 0)
 			sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
 		## guess dep_type
-		if(length(prev_job) > 1){
+		if (length(prev_job) > 1){
 			dep_type = "gather"
-		}else if(length(cmd.list[[prev_job]]) == 0){
+		}else if (length(cmd.list[[prev_job]]) == 0){
 			dep_type = "none"
-		}else if(length(cmd.list[[prev_job]]) == length(cmds) ){ ## if same length, serial
+		}else if (length(cmd.list[[prev_job]]) == length(cmds) ){ ## if same length, serial
 			dep_type = "serial"
-		}else if(length(cmd.list[[prev_job]]) > length(cmds) & length(cmds) == 1  ){ ## if same length, serial
+		}else if (length(cmd.list[[prev_job]]) > length(cmds) & length(cmds) == 1  ){ ## if same length, serial
 			dep_type = "gather"
-		}else if(length(cmd.list[[prev_job]]) == 1 & length(cmds) > 1){ ## if same length, serial
+		}else if (length(cmd.list[[prev_job]]) == 1 & length(cmds) > 1){ ## if same length, serial
 			dep_type = "burst"
 		}
 		##dep_type = unlist(subset(infomat, jobname == jobnm, select = 'sub_type'))
@@ -398,7 +398,7 @@ cmds_to_flow <- function(cmd.list,
 	#debug(flow:::.submit_flow)
 	#mypack:::reload('flow')
 	fobj_uuid <- submit_flow(fobj, execute = execute, make_flow_plot = TRUE)
-	#   if(sum(flow:::create_jobs_mat(fobj)$prev_jobs != ".") > 2){ ## at least 0.1some have dep.
+	#   if (sum(flow:::create_jobs_mat(fobj)$prev_jobs != ".") > 2){ ## at least 0.1some have dep.
 	#     cat("Plotting...\n")
 	#     try(flow:::plot_flow(x = fobj, type = '1',
 	#                           pdf = TRUE, pdffile = file.path(fobj_uuid@flow_path, "flow_design.pdf")))
