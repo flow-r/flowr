@@ -1,7 +1,7 @@
 ---
 output: html_document
 ---
-flowr 0.9.7.1
+flowr 0.9.7.1 2015-07-26
 ----------------------------------------------
 
 - Now supports new column of status (completed/processing/errored...):
@@ -13,7 +13,7 @@ flowr 0.9.7.1
 
 
 
-flowr 0.9.7.0 2015-07-25
+flowr 0.9.7.0 2015-07-23
 ----------------------------------------------
 - run(): runs a complete pipeline:
 	- create flowmat, my_pipeline()
