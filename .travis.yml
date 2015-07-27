@@ -18,6 +18,7 @@ r_packages:
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
   - sahilseth/params
+  - jimhester/covr
 
 
 after_success:
