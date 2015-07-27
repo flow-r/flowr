@@ -4,7 +4,7 @@ output: html_document
 flowr 0.9.7.1
 ----------------------------------------------
 
-- Now supports new type of status (showing subset of rows...):
+- Now supports new column of status (completed/processing/errored...):
 
 |                | total| started| completed| exit_status|status     |
 |:---------------|-----:|-------:|---------:|-----------:|:----------|
