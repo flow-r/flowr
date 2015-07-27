@@ -109,7 +109,12 @@ to_flow.data.frame <- function(x, def,
 	execute = FALSE,
 	qobj, ...){
 
-	x = as.flowmat(x)
+	## --- change all the input columns into character
+	x[] <- lapply(x, as.character)
+	x = as.flowmat(x,
+								 grp_col = grp_col,
+								 jobname_col = jobname_col,
+								 cmd_col = cmd_col)
 	def = as.flowdef(def)
 
 	## --- defaults
@@ -122,19 +127,18 @@ to_flow.data.frame <- function(x, def,
 		message("Using flow_run_path default: ", flow_run_path);
 	}
 
-	## --- change all the input columns into character
-	x[] <- lapply(x, as.character)
-	def[] <- lapply(def, as.character) ## prevent issues with factors
 
 	message("\n##--- Checking flow definition and flow matrix for consistency...")
-	def = as.flowdef(def)
-	## --- A check x should be in def
+
+	## ---  COMPARE flowdef and flowmat jobnames
+	msg = c("\nflowdef jobs: ", paste(def$jobname, collapse = " "),
+					"\nflowmat jobs: ", paste(unique(x$jobname), collapse = " "))
 	if(mean(!unique(x$jobname) %in% na.omit(def$jobname))){
-		stop("Some jobs in x are not in flow definition\n")
+		stop("Some jobs in x are not in flow definition\n", msg)
 	}
-	## B AND vice-versa
 	if(mean(!na.omit(def$jobname) %in% unique(x$jobname))){
-		stop("Some jobs in flowdef are not in x\n")
+		stop("Some jobs in flowdef are not in flowmat\n", msg)
+
 	}
 
 

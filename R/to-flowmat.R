@@ -19,8 +19,10 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	if(is.flowmat(x))
 		return(check(x))
 
-	if(is.data.frame(x))
-		y = x
+	if(is.data.frame(x)){
+		## prevent issues with factors
+		x[] <- lapply(x, as.character)
+	}
 
 	if(is.character(x)){
 		if(!file.exists(x))

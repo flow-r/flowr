@@ -41,8 +41,8 @@
 #' plot_flow(fobj)
 #'
 plot_flow <- function(x, ...) {
-  #message("input x is ", class(x))
-  UseMethod("plot_flow")
+	#message("input x is ", class(x))
+	UseMethod("plot_flow")
 }
 
 ## ------------- make a flowchart using the object
@@ -50,9 +50,9 @@ plot_flow <- function(x, ...) {
 #' @method plot_flow flow
 #' @export
 plot_flow.flow <- function(x, ...){
-    #dat <- create_jobs_mat(x)
-    x = to_flowdef(x)
-    plot_flow(x, ...)
+	#dat <- create_jobs_mat(x)
+	x = to_flowdef(x)
+	plot_flow(x, ...)
 }
 
 
@@ -62,23 +62,33 @@ plot_flow.flow <- function(x, ...){
 #' @method plot_flow list
 #' @export
 plot_flow.list <- function(x, ...){
-  tmp <- lapply(x, plot_flow)
-  invisible(tmp)
+	tmp <- lapply(x, function(y)
+		plot_flow(y, ...))
+	invisible(tmp)
 }
+
+#' @rdname plot_flow
+#' @description plot_flow.character: works on a flowdef file.
+#' @export
+plot_flow.character <- function(x, ...){
+	def = as.flowdef(x)
+	plot_flow(def, ...)
+}
+
 
 #' @rdname plot_flow
 #' @export
 plot_flow.flowdef <- function(x,
-	detailed = TRUE,
-	type = c('1','2'),
-	pdf = FALSE,
-	pdffile = sprintf("%s.pdf", x@name),
-	...){
+															detailed = TRUE,
+															type = c('1','2'),
+															pdf = FALSE,
+															pdffile = sprintf("%s.pdf", x@name),
+															...){
 
 	type = match.arg(type)
 	p <- switch(type,
-		'1' = .plot_flow_dat_type1(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
-		'2' = .plot_flow_dat_type2(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
+							'1' = .plot_flow_dat_type1(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
+							'2' = .plot_flow_dat_type2(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
 	invisible(p)
 }
 
@@ -89,29 +99,40 @@ split_multi_dep <- function(x){
 	## --- handle cases where we have multiple dependencies
 	multi_rows <- grep(",", x$prev_jobs)
 	prev_col = which(colnames(x) == "prev_jobs")
+
 	if(length(multi_rows)>0){
 		x2 <- data.frame()
-		for(row in multi_rows){
+		for(i in length(multi_rows)){
+			## always get the current index
+			row = head(grep(",", x$prev_jobs), 1)
 			prev_jobs = prev_jobs = strsplit(as.c(x[row,]$prev_jobs),",")[[1]]
 			dt = x[row, ]
 			x2 = suppressWarnings(cbind(dt[, -prev_col], prev_jobs))
+			## insert at the right place
+			x <- rbind(x[1:(row-1),], x2, x[(row+1):nrow(x),])
 		}
-		x <- rbind(x[-multi_rows,],x2)
 	}
 	return(x)
 }
 
 
-arrange_flowdef <- function(x, n = 1){
+arrange_flowdef <- function(x, n = 4){
 	jobnames=unique(as.c(x$jobname))
 	jobid <- 1:length(jobnames);names(jobid)=jobnames
 	prev_jobid <- jobid[as.c(x$prev_jobs)]
-	for(j in 1:n){
+	get_new_ids <- function(x){
 		jobnames = unique(as.c(x$jobname))
 		jobid <- 1:length(jobnames);names(jobid)=jobnames
 		prev_jobid <- jobid[as.c(x$prev_jobs)]
 		x$jobid <- jobid[as.c(x$jobname)];
 		x$prev_jobid <- prev_jobid
+		return(x)
+	}
+	if(n == 0){
+		return(get_new_ids(x))
+	}
+	for(j in 1:n){
+		x = get_new_ids(x)
 		x <- x[order(x$prev_jobid, x$jobid, na.last=FALSE, decreasing=FALSE),]
 	}
 	return(x)
@@ -119,169 +140,170 @@ arrange_flowdef <- function(x, n = 1){
 }
 
 display_mat <- function(x){
-  x$level = 0
-  for(i in 1:nrow(x)){
-    prev = x$prev_jobs[i]
-    if(!is.na(prev)){
-    	if(prev != ""){
-    		prev_level = subset(x, x$jobname == prev)$level
-    		x$level[i] = prev_level + 1
-    	}
-    }
-  }
-  table(x$level)
+	x$level = 0
+	for(i in 1:nrow(x)){
+		prev = x$prev_jobs[i]
+		if(!is.na(prev)){
+			if(prev != ""){
+				prev_level = subset(x, x$jobname == prev)$level
+				x$level[i] = prev_level + 1
+			}
+		}
+	}
+	table(x$level)
 }
 
 
 
 .plot_flow_dat_type1 <- function(x,
-	detailed = FALSE,
-	pdf = FALSE,
-  ## vector of columns to be used in plotting
-  pdffile = sprintf("flow_details.pdf"),
-  width, height, ...){
+																 detailed = FALSE,
+																 pdf = FALSE,
+																 ## vector of columns to be used in plotting
+																 pdffile = sprintf("flow_details.pdf"),
+																 width, height, ...){
 
-    if(missing(height))  height = 2.5 * nrow(x)
-    if(missing(width)) width = 2 * nrow(x)
-    if(nrow(x) < 2) return(c("need a few more jobs.."))
-    x = split_multi_dep(x)
-    x = arrange_flowdef(x)
+	if(missing(height))  height = 2.5 * nrow(x)
+	if(missing(width)) width = 2 * nrow(x)
+	if(nrow(x) < 2) return(c("need a few more jobs.."))
 
-    jobnames=unique(as.c(x$jobname))
-    dat_dep <- x[complete.cases(x),] ## remove first two
-    dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
+	x = split_multi_dep(x)
+	x = arrange_flowdef(x)
 
-    ## -------- get positions
-    #disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-    disp_mat = display_mat(dat_uniq)
-    elpos <- coordinates(disp_mat)
+	jobnames=unique(as.c(x$jobname))
+	dat_dep <- x[complete.cases(x),] ## remove first two
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
 
-    ## -------- graphic params:
-    shadow.col <- "lightskyblue4";boxwd=0.08;boxht=0.04;box.lcol = "gray26"
-    if(detailed) boxht=0.06
-    shadow.sizes.scatter=seq(from=0.001, by=0.003, length.out=4);shadow.sizes.serial=c(0.004)
-    arr.col="gray26";arr.lwd=3;arr.len=0.6; arr.pos=0.55
-    curves=c(-0.2,0.2);arr.lwd.curve=2;
-    textsize=1.1;textcol="gray30"
-    detail.cex=0.8; detail.offset=c(0,0.04)
-    ## ---- change params for pdf
-    if(pdf){
-      boxht=0.03;
-      if(detailed) boxht=0.05
-    }
-    #detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
-    detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
-    detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
-    ## --------------- start plotting
-    par(mar = c(1, 1, 1, 1)) ## how much margin to leave around...
-    if(pdf) pdf(file=pdffile, width = width, height = height)
-    openplotmat()
+	## -------- get positions
+	#disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+	disp_mat = display_mat(dat_uniq)
+	elpos <- coordinates(disp_mat)
 
-    ## -------------------------------- a r r o w s ------------------------------- ##
-    if(nrow(dat_dep>0)){
-      for (i in 1:nrow(dat_dep)){
-        to = elpos[dat_dep$jobid[i], ];
-        from = elpos[dat_dep$prev_jobid[i], ]
-        if(dat_dep$dep_type[i]=="gather"){
-          for(curve in curves)
-            curvedarrow (to = to, from = from, lwd = arr.lwd.curve, arr.pos = arr.pos,
-              arr.length = arr.len,
-              segment=c(0.2,0.8), curve=curve, arr.col=arr.col, lcol=arr.col)
-        }
-        straightarrow (to = to, from = from, lwd = arr.lwd, arr.pos = arr.pos, arr.length = arr.len,
-          arr.col=arr.col, lcol=arr.col)
-      }
-    }
+	## -------- graphic params:
+	shadow.col <- "lightskyblue4";boxwd=0.08;boxht=0.04;box.lcol = "gray26"
+	if(detailed) boxht=0.06
+	shadow.sizes.scatter=seq(from=0.001, by=0.003, length.out=4);shadow.sizes.serial=c(0.004)
+	arr.col="gray26";arr.lwd=3;arr.len=0.6; arr.pos=0.55
+	curves=c(-0.2,0.2);arr.lwd.curve=2;
+	textsize=1.1;textcol="gray30"
+	detail.cex=0.8; detail.offset=c(0,0.04)
+	## ---- change params for pdf
+	if(pdf){
+		boxht=0.03;
+		if(detailed) boxht=0.05
+	}
+	#detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
+	detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
+	detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
+	## --------------- start plotting
+	par(mar = c(1, 1, 1, 1)) ## how much margin to leave around...
+	if(pdf) pdf(file=pdffile, width = width, height = height)
+	openplotmat()
 
-    ## -------------------------------- b o x e s ------------------------------- ##
-    for (i in 1:nrow(dat_uniq)){
-      lab=dat_uniq$jobname[i]
-      if(dat_uniq$sub_type[i]=="scatter"){shadow.sizes=shadow.sizes.scatter
-      }else{shadow.sizes=shadow.sizes.serial}
-      for(shadow in shadow.sizes)
-        textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
-          shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
-      if(detailed){
-        textplain(elpos[i,] + detail.offset, boxht, lab = detailed.labs.dep[i],
-          cex=detail.cex, col=textcol)
-        textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs.sub[i],
-          cex=detail.cex, col=textcol)
-      }
-    }
-    if(pdf) dev.off()
-  }
+	## -------------------------------- a r r o w s ------------------------------- ##
+	if(nrow(dat_dep>0)){
+		for (i in 1:nrow(dat_dep)){
+			to = elpos[dat_dep$jobid[i], ];
+			from = elpos[dat_dep$prev_jobid[i], ]
+			if(dat_dep$dep_type[i]=="gather"){
+				for(curve in curves)
+					curvedarrow (to = to, from = from, lwd = arr.lwd.curve, arr.pos = arr.pos,
+											 arr.length = arr.len,
+											 segment=c(0.2,0.8), curve=curve, arr.col=arr.col, lcol=arr.col)
+			}
+			straightarrow (to = to, from = from, lwd = arr.lwd, arr.pos = arr.pos, arr.length = arr.len,
+										 arr.col=arr.col, lcol=arr.col)
+		}
+	}
+
+	## -------------------------------- b o x e s ------------------------------- ##
+	for (i in 1:nrow(dat_uniq)){
+		lab=dat_uniq$jobname[i]
+		if(dat_uniq$sub_type[i]=="scatter"){shadow.sizes=shadow.sizes.scatter
+		}else{shadow.sizes=shadow.sizes.serial}
+		for(shadow in shadow.sizes)
+			textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
+							 shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
+		if(detailed){
+			textplain(elpos[i,] + detail.offset, boxht, lab = detailed.labs.dep[i],
+								cex=detail.cex, col=textcol)
+			textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs.sub[i],
+								cex=detail.cex, col=textcol)
+		}
+	}
+	if(pdf) dev.off()
+}
 
 .plot_flow_dat_type2 <- function(x,
-	detailed = FALSE,
-	pdf = FALSE,
-	pdffile=sprintf("flow.pdf"),
-  width, height,
-  curve = 0.5,
-	arr.type = "simple",
-	arr.lcol = "gray26",
-	arr.col = "gray26", ## arraow
-  segment.from = 0.1,
-	segment.to = 0.9,
-  cex.txt = 0.8, ## labels
-	arr.pos = 0.9,
-  box.prop = 0.15,
-	box.cex = 0.7,
-	box.type = "rect",
-	box.lwd = 0.6,
-	shadow.size = 0,
-  box.lcol = "lightskyblue4",
-	relsize = 0.85,
-	...){
+																 detailed = FALSE,
+																 pdf = FALSE,
+																 pdffile=sprintf("flow.pdf"),
+																 width, height,
+																 curve = 0.5,
+																 arr.type = "simple",
+																 arr.lcol = "gray26",
+																 arr.col = "gray26", ## arraow
+																 segment.from = 0.1,
+																 segment.to = 0.9,
+																 cex.txt = 0.8, ## labels
+																 arr.pos = 0.9,
+																 box.prop = 0.15,
+																 box.cex = 0.7,
+																 box.type = "rect",
+																 box.lwd = 0.6,
+																 shadow.size = 0,
+																 box.lcol = "lightskyblue4",
+																 relsize = 0.85,
+																 ...){
 
-	  if(missing(height))  height = 2.5 * nrow(x)
-    if(missing(width)) width = 2 * nrow(x)
-    if(nrow(x) < 2) return(c("need a few more jobs.."))
+	if(missing(height))  height = 2.5 * nrow(x)
+	if(missing(width)) width = 2 * nrow(x)
+	if(nrow(x) < 2) return(c("need a few more jobs.."))
 
-    x = arrange_flowdef(x)
+	x = arrange_flowdef(x)
 
-    jobnames=unique(as.c(x$jobname))
-    dat_dep <- x[complete.cases(x),]
-    dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
-    m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
-    colnames(m) = rownames(m) = jobnames
-    ## -------- get positions
-    disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-    dat_dep$dep_type = ifelse(dat_dep$dep_type %in% c(".", "none") |
-        is.na(dat_dep$dep_type) | is.null(dat_dep$dep_type), 0, dat_dep$dep_type)
-    for(i in 1:nrow(dat_dep)){
-      m[dat_dep$jobname[i], dat_dep$prev_jobs[i]] = dat_dep$dep_type[i]
-    }
-    ##### some options
-    if(pdf){
-      #box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
-    }
-    if(pdf) pdf(file=pdffile, width = width, height = height)
-    p <- plotmat(m,
-      curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
-      segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
-      cex.txt = cex.txt, ## labels
-      box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd,
-      shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
-    if(pdf) dev.off()
-  }
+	jobnames=unique(as.c(x$jobname))
+	dat_dep <- x[complete.cases(x),]
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
+	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
+	colnames(m) = rownames(m) = jobnames
+	## -------- get positions
+	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+	dat_dep$dep_type = ifelse(dat_dep$dep_type %in% c(".", "none") |
+															is.na(dat_dep$dep_type) | is.null(dat_dep$dep_type), 0, dat_dep$dep_type)
+	for(i in 1:nrow(dat_dep)){
+		m[dat_dep$jobname[i], dat_dep$prev_jobs[i]] = dat_dep$dep_type[i]
+	}
+	##### some options
+	if(pdf){
+		#box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
+	}
+	if(pdf) pdf(file=pdffile, width = width, height = height)
+	p <- plotmat(m,
+							 curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
+							 segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
+							 cex.txt = cex.txt, ## labels
+							 box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd,
+							 shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
+	if(pdf) dev.off()
+}
 
 
 ##----- plotmat of diagram
 if(FALSE){
-  jobnames=unique(as.c(x$jobname))
-  dat_dep <- x[complete.cases(x),]
-  dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
-  m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
-  colnames(m) = rownames(m) = jobnames
-  ## -------- get positions
-  disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
-  m[dat_dep$jobname, dat_dep$prev_jobs] = dat_dep$dep_type
-  p <- plotmat(m,
-    curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
-    segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
-    cex.txt = 0.8, ## labels
-    box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
-    relsize = 0.85) ## box
+	jobnames=unique(as.c(x$jobname))
+	dat_dep <- x[complete.cases(x),]
+	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
+	m <- matrix(0, nrow = length(jobnames), ncol = length(jobnames))
+	colnames(m) = rownames(m) = jobnames
+	## -------- get positions
+	disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
+	m[dat_dep$jobname, dat_dep$prev_jobs] = dat_dep$dep_type
+	p <- plotmat(m,
+							 curve = 0.5, arr.type = "simple", arr.lcol = "gray26", arr.col = "gray26", ## arraow
+							 segment.from = 0.1, segment.to = 0.9, arr.pos = 0.9,
+							 cex.txt = 0.8, ## labels
+							 box.prop = 0.15, box.cex = 0.7, box.type = "rect", box.lwd = 0.6, shadow.size = 0, box.lcol = "lightskyblue4",
+							 relsize = 0.85) ## box
 
 
 

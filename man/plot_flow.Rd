@@ -2,6 +2,7 @@
 % Please edit documentation in R/plot.R
 \name{plot_flow}
 \alias{plot_flow}
+\alias{plot_flow.character}
 \alias{plot_flow.flow}
 \alias{plot_flow.flowdef}
 \alias{plot_flow.list}
@@ -12,6 +13,8 @@ plot_flow(x, ...)
 \method{plot_flow}{flow}(x, ...)
 
 \method{plot_flow}{list}(x, ...)
+
+\method{plot_flow}{character}(x, ...)
 
 \method{plot_flow}{flowdef}(x, detailed = TRUE, type = c("1", "2"),
   pdf = FALSE, pdffile = sprintf("\%s.pdf", x@name), ...)
@@ -31,6 +34,8 @@ plot_flow(x, ...)
 }
 \description{
 plot the flow object
+
+plot_flow.character: works on a flowdef file.
 }
 \examples{
 qobj = queue(type="lsf")

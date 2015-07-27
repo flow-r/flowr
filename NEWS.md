@@ -1,9 +1,19 @@
 ---
 output: html_document
 ---
+flowr 0.9.7.1
+----------------------------------------------
+
+- Now supports new type of status (showing subset of rows...):
+
+|                | total| started| completed| exit_status|status     |
+|:---------------|-----:|-------:|---------:|-----------:|:----------|
+|001.alnCmd1     |   109|     109|       109|           0|completed  |
+|007.markCmd     |     3|       3|         0|           0|processing |
 
 
-flowr 0.9.7 2015-07-25
+
+flowr 0.9.7.0 2015-07-25
 ----------------------------------------------
 - run(): runs a complete pipeline:
 	- create flowmat, my_pipeline()

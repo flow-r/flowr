@@ -25,8 +25,10 @@ kill <- function(x, ...) {
 #' @description works on flow_path. Reads flow object and calls kill.flow()
 #' @export
 kill.character <- function(x, ...){
-	fobj = read_fobj(x)
-	kill.flow(x, ...)
+	for(i in 1:length(x)){
+		fobj = read_fobj(x[i])
+		kill.flow(fobj, ...)
+	}
 }
 
 #' @rdname kill
