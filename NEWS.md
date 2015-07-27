@@ -24,14 +24,14 @@ flowr 0.9.7.0 2015-07-23
 - kill(): now a S3 functions, and operates on both a flow object
    and flow_path folder
 - check(): Now works on flowdef and flowmat
-- as.flowmat(), as.flodef(): easy ways to fetch and check these tables
+- as.flowmat(), as.flowdef(): easy ways to fetch and check these tables
 - fetch() along with fetch_pipes() and fetch_conf() simplifies finding files
 - dependecies: brought back knitr dependency
-- Reduce function overload, moving several functions a seperate params pkg
-	- moved read_sheet, write_shee()
+- Reduce function overload, moving several functions a seperate `params` pkg
+	- moved read_sheet(), write_sheet()
 	- moved get_opts(), set_opts()
 	- moved .load_conf() load_conf()
-	- [params](https://github.com/sahilseth/params)
+	- Here is a link to [params](https://github.com/sahilseth/params) package
 
 
 flowr 0.9.6.13
