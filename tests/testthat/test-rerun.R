@@ -1,5 +1,4 @@
-context("Test sleep pipe")
-
+context("Test fetching of sleep pipe")
 
 pip = fetch_pipes("sleep_pipe")
 
@@ -11,6 +10,8 @@ test_that("test fetching of sleep pipe", {
 source(pip$pipe)
 out = sleep_pipe(x = 3, "sample1")
 
+context("Test creation of flowmat")
+
 test_that("test creation of flowmat", {
 	expect_equal(length(out), 2)
 	expect_identical(class(out), "list")
@@ -18,6 +19,7 @@ test_that("test creation of flowmat", {
 })
 
 
+context("Test creation of flowdef")
 ## --- specify the resource requirement
 def = to_flowdef(out$flowmat,
 								 platform = "lsf", queue = "short" ,
@@ -29,6 +31,7 @@ test_that("test creation of flowdef", {
 })
 
 
+context("Test creation of flow")
 fobj = to_flow(out$flowmat, def = def)
 
 test_that("test creation of flow", {
