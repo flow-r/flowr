@@ -1,0 +1,67 @@
+---
+title: "tests.Rmd"
+output: html_document
+---
+
+
+```
+module load R git
+git clone git@github.com:sahilseth/flowr.git
+
+## test for roel
+cd ~/apps
+rm -rf ~/apps/flowr
+git clone https://github.com/sahilseth/flowr.git
+R CMD INSTALL flowr
+flowr run sleep execute=TRUE platform=torque
+
+## HMS test
+install.flow; flowr run sleep platform=lsf execute=TRUE
+
+Rscript -e 'flowr:::.run_sleep(platform = "moab", execute=TRUE)'
+```
+
+
+
+```{r}
+devtools::install_github("sahilseth/flowr")
+library(flowr)
+setup()
+```
+
+
+```{r}
+setwd("~/Dropbox/public/github_flow/")
+devtools::load_all(".")
+```
+
+
+```{r}
+library(flowr)
+setup()
+
+platform = "torque"
+platform = "lsf"
+platform = "moab"
+
+
+fobj = flowr:::.run_sleep(platform = platform)
+fobj = flowr:::.run_sleep(platform = platform, execute=TRUE)
+
+```
+
+
+```{r}
+
+fobj = .run_sleep() ## should be local
+fobj@jobs[[1]]@platform == "local"
+fobj = .run_sleep(execute = TRUE)
+
+
+fobj = .run_sleep(platform = "lsf") ## should be local
+fobj = .run_sleep(platform = "sge") ## should be local
+fobj = .run_sleep(platform = "moab") ## should be local
+
+
+```
+

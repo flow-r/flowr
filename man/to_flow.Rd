@@ -14,7 +14,7 @@ to_flow(x, ...)
 \method{to_flow}{data.frame}(x, def, grp_col, jobname_col, cmd_col, flowname,
   flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
 
-\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, ...)
+\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj, ...)
 }
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
@@ -31,7 +31,7 @@ to_flow(x, ...)
 
 \item{flowname}{name of the flow}
 
-\item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.}
+\item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.}
 
 \item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
 This over-rides the platform column in flowdef.}

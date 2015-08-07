@@ -1,12 +1,12 @@
 
 
-## 
+##
 ## Rscript -e 'source("test-rerun.R")'
 # source("~/Dropbox/public/github_flow/inst/extdata/test-rerun.R")
 
 
 ## test re run
-source('~/Dropbox/public/github_flow/inst/examples/sleep_pipe.R')
+source('~/Dropbox/public/github_flow/inst/pipelines/sleep_pipe.R')
 
 require(flowr)
 
@@ -14,27 +14,27 @@ require(flowr)
 test_submit <- function(){
 	## --- get sleep commands
 	out = sleep_pipe(x = 3, "sample1")
-	
+
 	## --- specify the resource requirement
-	def = to_flowdef(out$flowmat, 
-									 platform = "lsf", queue = "short" , 
+	def = to_flowdef(out$flowmat,
+									 platform = "lsf", queue = "short" ,
 									 memory_reserved = "16384", ## LSF wants more than 16GB
 									 cpu_reserved = 1, walltime = "00:59"
 	)
-	
+
 	## change submission and dependency types
 	def$sub_type = c("scatter", "scatter", "serial", "serial")
 	def$dep_type = c("none", "serial", "gather", "serial")
-	
+
 	fobj = to_flow(out$flowmat, def, platform = "lsf", flowname = "sleep_pipe")
-	
+
 	plot_flow(fobj)
 	fobj = submit_flow(fobj, execute = TRUE)
 }
 
 
 test_rerun <- function(){
-	
+
 	fobj = test_submit()
 	Sys.sleep(60)
 	require(flowr)
