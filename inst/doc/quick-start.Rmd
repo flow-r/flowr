@@ -1,0 +1,144 @@
+---
+title: "Quick Start Example"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quick Start Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE,
+  dev = 'png',
+	fig.cap = ""
+)
+```
+
+Get started
+-------------
+
+
+```{r eval=FALSE}
+install.packages('devtools')
+devtools::install_github("sahilseth/flowr")
+```
+
+Run a setup function which copies 'flowr' helper script to enable using flow from shell terminal itself.
+A few examples [here](https://github.com/sahilseth/rfun).
+
+```{r, message=FALSE}
+library(flowr)
+setup()
+```
+
+
+# Toy example
+
+
+```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
+library(DiagrammeR)
+mermaid("
+graph LR
+A(sleep)-->B(create_few_files) 
+B-->C{merge them}
+C-->D[get size]
+")
+```
+
+![](imgs/toy.png)
+
+
+```{r echo=FALSE, message=FALSE}
+extdata = file.path(system.file(package = "flowr"), "extdata")
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
+```
+
+A simple example where we have three instances of sleep (wait for few seconds), after completion three tmp jobs are started which create files with some random data. After all these are complete, a merge step follows, which combines them into one big file. Next we use `du` to calculate the size of the resulting file. 
+
+.. note:: 
+This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
+
+The table below is referred to as [flow_mat](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-mat-a-table-with-shell-commands-to-run).
+
+```{r echo=FALSE}
+kable(flow_mat)
+```
+
+We use an additional file specifying relationship between the steps, and also other resource requirements [flow_def](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition).
+
+```{r, message=FALSE, echo=FALSE}
+kable(flow_def)
+```
+
+
+# Stitch
+
+```{r, message=FALSE}
+fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
+	flowname = "example1", platform = "lsf")
+```
+
+# Plot
+```{r plot_example1, fig.cap="Flow chart describing process for example 1", fig.height=5, fig.width=5, message=FALSE}
+plot_flow(fobj)
+```
+
+
+# Test it
+> Dry run (submit)
+
+```{r eval=FALSE}
+submit_flow(fobj)
+```
+
+```
+Test Successful!
+You may check this folder for consistency. Also you may re-run submit with execute=TRUE
+ ~/flowr/type1-20150520-15-18-27-5mSd32G0
+```
+
+# Submit it !
+
+> Submit to the cluster
+
+```{r eval=FALSE}
+submit_flow(fobj, execute = TRUE)
+```
+
+```
+Flow has been submitted. Track it from terminal using:
+flowr::status(x="~/flowr/type1-20150520-15-18-46-sySOzZnE")
+OR
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+```
+
+
+# Check the status
+
+```
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+```
+
+```
+Loading required package: shape
+Flowr: streamlining workflows
+Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
+
+
+|          | total| started| completed| exit_status|
+|:---------|-----:|-------:|---------:|-----------:|
+|001.sleep |    10|      10|        10|           0|
+|002.tmp   |    10|      10|        10|           0|
+|003.merge |     1|       1|         1|           0|
+|004.size  |     1|       1|         1|           0|
+```
+
+.. note::
+Interested? Here are some details on [building pipelines](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html)

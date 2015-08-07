@@ -6,15 +6,17 @@
 \alias{submit_flow.list}
 \title{submit_flow}
 \usage{
-submit_flow(x, ...)
+submit_flow(x, verbose = get_opts("verbose"), ...)
 
-\method{submit_flow}{list}(x, ...)
+\method{submit_flow}{list}(x, verbose = get_opts("verbose"), ...)
 
-\method{submit_flow}{flow}(x, execute = FALSE, uuid, plot = TRUE,
-  verbose = get_opts("verbose"), dump = TRUE, .start_jid = 1, ...)
+\method{submit_flow}{flow}(x, verbose = get_opts("verbose"),
+  execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1, ...)
 }
 \arguments{
 \item{x}{a \code{object} of class \code{flow}.}
+
+\item{verbose}{logical.}
 
 \item{...}{Advanced use. Any additional parameters are passed on to \link{submit_job} function.}
 
@@ -24,8 +26,6 @@ submit_flow(x, ...)
 Especially useful in case of re-running a flow.}
 
 \item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
-
-\item{verbose}{logical.}
 
 \item{dump}{dump all the flow details to the flow path}
 }

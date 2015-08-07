@@ -1,0 +1,83 @@
+---
+title: "Generating Example Data"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Generating Example Dat}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  error = FALSE,
+  tidy = FALSE
+)
+library(flowr)
+library(knitr)
+```
+
+# Example1
+
+```{r example1, cache = FALSE}
+read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
+```
+
+
+## Define modules
+```{r define_modules}
+
+```
+
+## Define the pipeline
+```{r define_pipeline}
+
+```
+
+## Generate flowmat
+```{r}
+out = sleep_pipe(x = 3, "sample1")
+flowmat = out$flowmat
+
+kable(flowmat)
+```
+
+## Create flow definition
+### We have a helper function which generates a skeleton flow_def
+```{r}
+def = to_flowdef(flowmat)
+kable(def)
+```
+
+## Default flowdef
+```{r message=FALSE}
+plot_flow(to_flow(flowmat, def))
+```
+
+By default the flowdef seems quite conservative.
+
+### Change the dependency type for merge step into gather
+It might be easier to do such, by hand. In this example let do this in R itself.
+```{r message=FALSE}
+def$sub_type = c("scatter", "scatter", "serial", "serial")
+def$dep_type = c("none", "serial", "gather", "serial")
+kable(def)
+```
+
+### Plot flow
+
+Now this looke better. 
+
+- multiple sleep commands would run in parallel
+- For each sleep, create_tmp creates a file
+- All tmp files are merged; when all are complete: gather
+- Then we get size on the resulting file
+
+```{r message=FALSE}
+plot_flow(to_flow(flowmat, def))
+```
+
+
+
+

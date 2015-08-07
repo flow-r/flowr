@@ -50,7 +50,9 @@ test_rerun <- function(){
 
 
 if(FALSE){
+	require(flowr)
 	run("sleep_pipe", platform = "lsf", execute = TRUE)
+
 }
 # source("~/Dropbox/public/github_flow/inst/extdata/test-rerun.R");test_rerun()
 

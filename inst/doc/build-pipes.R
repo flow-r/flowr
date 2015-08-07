@@ -29,19 +29,19 @@ kable(head(flow_def))
 ## ----build_pipe_exmat, echo=FALSE----------------------------------------
 kable(subset(flow_mat, samplename == "sample1"))
 
-## ----getqobj-------------------------------------------------------------
-qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
+## ----getqobj, eval=FALSE-------------------------------------------------
+#  qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 
-## ----plot_simpleflow-----------------------------------------------------
-job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
-job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
-plot_flow(fobj)
+## ----plot_simpleflow, eval=FALSE-----------------------------------------
+#  job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
+#  job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
+#  job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
+#  fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
+#  plot_flow(fobj)
 
-## ------------------------------------------------------------------------
-dat <- flowr:::create_jobs_mat(fobj)
-knitr:::kable(dat)
+## ---- eval=FALSE---------------------------------------------------------
+#  dat <- flowr:::create_jobs_mat(fobj)
+#  knitr:::kable(dat)
 
 ## ----build_pipe_plt_ab, echo=FALSE, message=FALSE, eval=FALSE------------
 #  qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
@@ -88,6 +88,6 @@ plot_flow(fobj)
 
 ## ----build_pipe_flow_def_cols, echo=FALSE, message=FALSE-----------------
 extdata = file.path(system.file(package = "flowr"), "extdata")
-mat = read_sheet(file.path(extdata, "flow_def_columns.txt"))
+mat = params::read_sheet(file.path(extdata, "flow_def_columns.txt"))
 kable(mat)
 

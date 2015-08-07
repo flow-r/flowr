@@ -7,13 +7,13 @@
 \format{\preformatted{List of 3
  $ get :function (x)  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 7 14 9 2 21 9 210 212
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' <environment: 0x7ffc48747f18> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' <environment: 0x12a78d550> 
  $ set :function (..., .dots)  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 13 14 15 2 21 9 216 218
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' <environment: 0x7ffc48747f18> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' <environment: 0x12a78d550> 
  $ load:function (...)  
   ..- attr(*, "srcref")=Class 'srcref'  atomic [1:8] 19 15 21 2 22 9 222 224
-  .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' <environment: 0x7ffc48747f18> 
+  .. .. ..- attr(*, "srcfile")=Classes 'srcfilealias', 'srcfile' <environment: 0x12a78d550> 
 }}
 \usage{
 opts_flow

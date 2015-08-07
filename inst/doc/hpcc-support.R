@@ -11,7 +11,7 @@ library(flowr)
 
 ## ----echo=FALSE----------------------------------------------------------
 exdata = file.path(system.file(package = "flowr"), "extdata")
-plat <- read_sheet(file.path(exdata, "platforms_supported.txt"), 
+plat <- params::read_sheet(file.path(exdata, "platforms_supported.txt"), 
 									 id_column = "Platform")
 kable(plat)
 

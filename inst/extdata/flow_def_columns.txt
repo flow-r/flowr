@@ -1,0 +1,17 @@
+## --- Variables passed onto HPCC scripts
+flow_def_column	hpc_script_variable
+nodes	NODES
+cpu_reserved	CPU
+memory_reserved	MEMORY
+email	EMAIL
+walltime	WALLTIME
+extra_opts	EXTRA_OPTS
+*	JOBNAME
+*	STDOUT
+*	CWD
+*	DEPENDENCY
+*	TRIGGER
+**	CMD
+
+## *: These are generated on the fly
+## **: This is gathered from flow_mat

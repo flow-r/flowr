@@ -22,8 +22,8 @@
 #' @examples
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
-submit_flow <- function(x, ...) {
-	if(get_opts("verbose")) message("input x is ", class(x))
+submit_flow <- function(x, verbose = get_opts("verbose"), ...) {
+	if(verbose) message("input x is ", class(x))
 	UseMethod("submit_flow")
 }
 
@@ -31,7 +31,7 @@ submit_flow <- function(x, ...) {
 
 #' @rdname submit_flow
 #' @export
-submit_flow.list <- function(x, ...){
+submit_flow.list <- function(x, verbose = get_opts("verbose"), ...){
 	fobjs = lapply(x, function(y)
 		submit_flow(y, ...)
 	)
@@ -48,12 +48,13 @@ parse_prevjobids <- function(x){
 #' @importFrom tools file_path_as_absolute
 #' @export
 submit_flow.flow <- function(x,
-	execute = FALSE, uuid,
-	plot = TRUE,
-	verbose = get_opts("verbose"),
-	dump = TRUE,
-	.start_jid = 1,
-	...){
+														 verbose = get_opts("verbose"),
+														 execute = FALSE,
+														 uuid,
+														 plot = TRUE,
+														 dump = TRUE,
+														 .start_jid = 1,
+														 ...){
 
 	## -- store, for use later
 	x@execute=execute
@@ -78,10 +79,10 @@ submit_flow.flow <- function(x,
 	### ---------- Error handling
 	if(execute)
 		message("\nFlow is being processed.",
-			sprintf(" Track it from R/Terminal using:\nflowr status x=%s\n",
-				x@flow_path),
-			sprintf("OR from R using:\nstatus(x='%s')\n\n\n",
-				x@flow_path))
+						sprintf(" Track it from R/Terminal using:\nflowr status x=%s\n",
+										x@flow_path),
+						sprintf("OR from R using:\nstatus(x='%s')\n\n\n",
+										x@flow_path))
 
 	## should be included in check flow_def
 	if(length(x@jobs[[1]]@dependency_type) > 0 & x@jobs[[1]]@dependency_type !="none")
@@ -90,7 +91,7 @@ submit_flow.flow <- function(x,
 	## ------   create CWD
 	if(!file.exists(file.path(x@flow_path,"tmp")))
 		dir.create(file.path(x@flow_path,"tmp"),
-			showWarnings=FALSE, recursive=TRUE)
+							 showWarnings=FALSE, recursive=TRUE)
 
 	## -----   loop on jobs
 	## parse dependency from the previous
@@ -114,10 +115,10 @@ submit_flow.flow <- function(x,
 
 		## ------ submit the job
 		x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
-			fobj = x,
-			execute=execute,
-			job_id=i,
-			verbose = verbose, ...)
+															fobj = x,
+															execute=execute,
+															job_id=i,
+															verbose = verbose, ...)
 	}
 
 	x@status <- "dry-run"
@@ -125,9 +126,9 @@ submit_flow.flow <- function(x,
 		x@status <- "submitted"
 	}else{
 		message("Test Successful!\n",
-			"You may check this folder for consistency. ",
-			"Also you may submit again with execute=TRUE\n",
-			x@flow_path)
+						"You may check this folder for consistency. ",
+						"Also you may submit again with execute=TRUE\n",
+						x@flow_path)
 	}
 
 	if(dump){
