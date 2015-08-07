@@ -43,7 +43,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param jobname_col column name with job names. Default: `jobname`
 #' @param cmd_col column name with commands. Default: `cmd`
 #' @param flowname name of the flow
-#' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `getOption("flow_run_path")`.
+#' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.
 #' @param desc Advanced Use. final flow name. don't change.
 #'
 #' @param ... Supplied to specific functions like \link{to_flow.data.frame}
@@ -123,7 +123,7 @@ to_flow.data.frame <- function(x, def,
 		message("Using flowname default: ", flowname);
 	}
 	if (missing(flow_run_path)) {
-		flow_run_path = getOption("flow_run_path")
+		flow_run_path = get_opts("flow_run_path")
 		message("Using flow_run_path default: ", flow_run_path);
 	}
 
@@ -207,7 +207,7 @@ to_flow.data.frame <- function(x, def,
 
 #' @rdname to_flow
 #' @export
-to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
+to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 	## --- qobj, missing only works for arguments
 	## x is a list of flow_mat, split by jobname
 
@@ -228,6 +228,7 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		d_dep_type = unlist(def2$dep_type)
 		d_sub_type = unlist(def2$sub_type)
 		d_nodes = unlist(def2$nodes)
+		d_jobid = unlist(def2$jobid)
 
 		if (missing(qobj))
 			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
@@ -242,7 +243,9 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 		## if starts from . echo
 		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
 
-		jobj = job(q_obj = qobj, name = jobnm,
+		jobj = job(q_obj = qobj,
+			name = jobnm,
+			jobname = sprintf("%03d.%s", d_jobid, jobnm),
 			previous_job = prev_job,
 			cmds = cmds,
 			dependency_type = d_dep_type,
@@ -257,6 +260,7 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc,...){
 	fobj <- flow(jobs = jobs,
 		desc = desc, name = flowname,
 		mode = "scheduler",
+		version = as.character(packageVersion("flowr")),
 		flow_run_path = flow_run_path)
 
 	## --- check if submission or depedency types were guessed

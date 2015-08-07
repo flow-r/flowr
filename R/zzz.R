@@ -1,15 +1,18 @@
-.onAttach <- function(lib, pkg){
+
+.onLoad <- function(lib, pkg){
 	packageStartupMessage("Flowr: streamlining workflows")
 }
 
-.onDeatch <- function(lib, pkg) {
-	ops <- options()
-	#ops <- ops[grep("SaturnV_", names(ops))]
-	options(ops)
+.onAttach <- function(lib, pkg){
+	#print(search())
+	#print(set_opts)
+	fls = fetch_conf("flowr.conf")
+	suppressMessages(load_conf(fls, check = FALSE))
+	#get_opts()
 }
 
 
-.onLoad <- function(lib, pkg){
-	fls = fetch_conf("flowr.conf")
-	suppressMessages(params::load_conf(fls, check = FALSE))
+.onDeatch <- function(lib, pkg) {
+	#ops <- options()
+	#options(ops)
 }

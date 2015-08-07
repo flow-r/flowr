@@ -1,13 +1,30 @@
 
 
-flow_opts = new.env()
+flowopts = new.env()
 
-#' @importFrom params get_opts
-get_opts <- function(x){
-	params::get_opts(x, flow_opts)
+#' @rdname flow_opts
+#' @title
+#' options manager for flowr and ngsflows.
+#' @export
+#' @importFrom params new_opts
+opts_flow = new_opts(flowopts)
+
+
+## override package defaults
+
+#' @export
+get_opts <- function(...){
+	opts_flow$get(...)
 }
 
-#' @importFrom params set_opts
-set_opts <- function(x){
-	params::set_opts(x, flow_opts)
+#' @export
+set_opts <- function(...){
+	opts_flow$set(...)
 }
+
+#' @export
+load_conf <- function(...){
+	opts_flow$load(...)
+}
+
+#devtools::install("~/Dropbox/public/github_params")

@@ -24,7 +24,8 @@ if(FALSE){
 #' }
 #'  @export
 rerun <- function(x, ...) {
-	message("input x is ", class(x))
+	if(get_opts("verbose"))
+		message("rerun: input x is ", class(x))
 	UseMethod("rerun")
 }
 
@@ -32,11 +33,12 @@ rerun <- function(x, ...) {
 #' @rdname rerun
 #' @export
 rerun.character <- function(x, ...){
-	message("x looks like a path")
+	message("x looks like a path, reading flow_details.rds")
 	fobj <- read_fobj(x)
 
 	if(is.character(fobj))
-		stop("x does not seems to be a correct path to the flow submission")
+		stop("x does not seems to be a correct path to the flow submission, missing flow_details.rds")
+
 	rerun(fobj, ...)
 
 }
@@ -49,43 +51,56 @@ rerun.flow <- function(x, mat, def, start_from,
 	fobj = x
 	wd = fobj@flow_path
 
+	assert_version(fobj, '0.9.7.3')
+
 	if(missing(start_from)){
 		stop(error("no.start_from"))
 		#start_from = detect_redo()
 	}
+
 	if(missing(def)){
 		#stop("Please metion where to start from. Detection currently no supported")
-		message("Extracting flow definition from previous run.")
+		message("\nExtracting flow definition from previous run.")
 		def = to_flowdef(fobj)
+	}else{
+		def = as.flowdef(def) ## as jobids now !
 	}
+
 	if(missing(mat)){
-		message("Extracting commands from previous run.")
+		message("Extracting flow mat (shell cmds) from previous run.")
 		message("Hope the reason for previous failure was fixed...")
 		mat = to_flowmat(fobj)
+	}else{
+		mat = as.flowmat(mat)
 	}
 
 	## kill the flow
 	if(kill)
-		capture.output(try(kill_flow(wd = wd)),
-									 file = file.path(wd, "kill_jobs.out"))
+		capture.output(try(kill(wd)),
+			file = file.path(wd, "kill_jobs.out"))
 
-	message("Subsetting... get stuff to run starting ", start_from)
+	message("\nSubsetting... get stuff to run starting, ", start_from, ":\n")
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from)
 	def = subset_fdef(fobj = fobj, def = def, start_from = start_from)
+	message(paste(def$jobname, collapse = "\n"))
 
-	fobj2 <- to_flow(x = mat, def = def)
+	## jobname, has ids as well.
+	fobj2 <- to_flow(x = mat, def = def, flowname = fobj@name, flow_run_path = fobj@flow_run_path)
+
   #knitr::kable(rerun)
 	fobj2@status = "rerun"
-  fobj2 <- submit_flow(fobj2, uuid = fobj@flow_path,
-  										 execute = execute, dump = FALSE)
+	fobj2 <- submit_flow(fobj2,
+		uuid = fobj@flow_path,
+		execute = execute,
+		dump = FALSE)
 
-  ## -- need a function to read and update the old flow object with new ids
+  ## -- need a function to read and update the old flow object with new job submission ids
   fobj = update.flow(fobj, child = fobj2)
 
   flowdet = to_flowdet(fobj)
   write_flow_details(wd, fobj, flow_det = flowdet)
 
-  return("Done !")
+  return(fobj)
 }
 
 
@@ -147,6 +162,7 @@ subset_fmat <- function(fobj, mat, start_from){
 #' @param start_from where to start from
 #'
 subset_fdef <- function(fobj, def, start_from){
+
 	if(missing(def))
 		stop("Please supply a flow def file")
 	mods = names(fobj@jobs)
@@ -155,6 +171,7 @@ subset_fdef <- function(fobj, def, start_from){
 	def = subset(def, def$jobname %in% mods)
 	def$prev_jobs = ifelse(def$prev_jobs %in% mods, def$prev_jobs, "none")
 	def$dep_type = ifelse(def$prev_jobs %in% mods, def$dep_type, "none")
+
 	return(def)
 }
 

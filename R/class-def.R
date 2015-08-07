@@ -62,8 +62,8 @@ setClass("flow", representation(jobs = "list",
 	status = "character", ## status
 	mode = "character", ## what kind of flow this is
 	name = "character",
+	version = "character",
 	execute = "logical"))
-
 
 #### ---------------------- Functions to create new classes
 #' Create a \code{queue} object which containg details about how a job is submitted.
@@ -281,10 +281,7 @@ job <- function(cmds = "",
 	}
 	submission_type <- match.arg(submission_type)
 	dependency_type <- match.arg(dependency_type)
-	if (previous_job[1] %in% c("", NA, NULL, ".", "NA", "NULL"))
-		previous_job = ''
-	#cat("\nPrevious job check\n", previous_job[1], "\t", dependency_type, "\n")
-	if (!previous_job[1] == "" & dependency_type == 'none') ## add [1] since at times we specify two jobs
+	if (prevjob_exists(previous_job) & dependency_type == 'none')
 		stop("Previous job specified, but you have not specified dependency_type")
 	object <- new(q_obj@platform,
 		cmds = cmds,
@@ -347,9 +344,10 @@ flow <- function(
 	name = "newflow",
 	desc = "my_super_flow",
 	mode = c("scheduler","trigger","R"),
-	flow_run_path = getOption("flow_run_path"),
+	flow_run_path = get_opts("flow_run_path"),
 	trigger_path = "",
 	flow_path = "",
+	version = '0.0',
 	status="",
 	execute = ""){
 	mode <- match.arg(mode)
@@ -363,6 +361,7 @@ flow <- function(
 		trigger_path = trigger_path,
 		flow_path=flow_path,
 		desc=desc,
+		version = version,
 		status=status)
 	return(object)
 }
