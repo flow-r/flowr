@@ -23,7 +23,7 @@
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
 submit_flow <- function(x, ...) {
-	message("input x is ", class(x))
+	if(get_opts("verbose")) message("input x is ", class(x))
 	UseMethod("submit_flow")
 }
 
@@ -49,8 +49,11 @@ parse_prevjobids <- function(x){
 #' @export
 submit_flow.flow <- function(x,
 	execute = FALSE, uuid,
-	plot = TRUE, verbose = FALSE,
-	dump = TRUE, ...){
+	plot = TRUE,
+	verbose = get_opts("verbose"),
+	dump = TRUE,
+	.start_jid = 1,
+	...){
 
 	## -- store, for use later
 	x@execute=execute
@@ -80,7 +83,7 @@ submit_flow.flow <- function(x,
 			sprintf("OR from R using:\nstatus(x='%s')\n\n\n",
 				x@flow_path))
 
-	## should be included in flow_def
+	## should be included in check flow_def
 	if(length(x@jobs[[1]]@dependency_type) > 0 & x@jobs[[1]]@dependency_type !="none")
 		stop("Seems like the first job has a dependency, please check")
 
@@ -95,7 +98,7 @@ submit_flow.flow <- function(x,
 	## prevjob is null but dep_type exists --- > problem, check should detect.
 	## split dependency, if multiple previous jobs
 
-	for(i in 1:length(x@jobs)){
+	for(i in .start_jid:length(x@jobs)){
 		## ------ check if there are any dependencies
 		previous_job <- x@jobs[[i]]@previous_job
 		## if there is a previous job
@@ -107,12 +110,14 @@ submit_flow.flow <- function(x,
 				x@jobs[[y]]@id))
 			## split the MATRIX by rowindex, into a LIST
 			x@jobs[[i]]@dependency <- split(previds, row(previds))
-
-
 		}
+
 		## ------ submit the job
-		x@jobs[[i]] <- submit_job(x@jobs[[i]], x, execute=execute,
-			job_id=i, verbose = verbose, ...)
+		x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
+			fobj = x,
+			execute=execute,
+			job_id=i,
+			verbose = verbose, ...)
 	}
 
 	x@status <- "dry-run"
@@ -120,8 +125,8 @@ submit_flow.flow <- function(x,
 		x@status <- "submitted"
 	}else{
 		message("Test Successful!\n",
-			"You may check this folder for consistency.",
-			"Also you may re-run submit with execute=TRUE\n",
+			"You may check this folder for consistency. ",
+			"Also you may submit again with execute=TRUE\n",
 			x@flow_path)
 	}
 
@@ -136,7 +141,7 @@ submit_flow.flow <- function(x,
 prevjob_exists <- function(x){
 	if(length(x)!=0){
 		## prev job should not be of length 0. need ., NA, "" for missing
-		if(!is.na(x[1]) & !is.null(x[1]) & !x[1] %in% c("", "NA", ".")){
+		if(!is.na(x[1]) & !is.null(x[1]) & !x[1] %in% c("", "NA", ".", "none", "NULL")){
 			return(TRUE)
 		}else{
 			return(FALSE)
