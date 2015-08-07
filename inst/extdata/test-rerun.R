@@ -29,7 +29,9 @@ test_submit <- function(){
 	fobj = to_flow(out$flowmat, def, platform = "lsf", flowname = "sleep_pipe")
 
 	plot_flow(fobj)
+	fobj = submit_flow(fobj, execute = FALSE)
 	fobj = submit_flow(fobj, execute = TRUE)
+
 }
 
 
@@ -47,6 +49,9 @@ test_rerun <- function(){
 }
 
 
+if(FALSE){
+	run("sleep_pipe", platform = "lsf", execute = TRUE)
+}
 # source("~/Dropbox/public/github_flow/inst/extdata/test-rerun.R");test_rerun()
 
 

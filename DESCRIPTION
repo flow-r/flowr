@@ -4,16 +4,16 @@ Title: Streamlining Design and Deployment of Complex Workflows
 Description: An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.
 Version: 0.9.7.1
 Date: 2015-07-25
-Depends: 
+Depends:
     methods,
-    utils,
+    utils
+Imports:
     diagram,
     whisker,
-    params
-Imports: 
+    params,
     tools,
     knitr
-Suggests: 
+Suggests:
     reshape2,
     ggplot2,
     openxlsx,
