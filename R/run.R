@@ -31,13 +31,14 @@ run <- function(x,
 	## find a Rscript with name {{x}}.R
 
 	message("\n##--- fetching pipeline... ")
-	pip = fetch_pipes(x)
-	pip = fetch_pipes(x)
-	class(pip) = c("opts", "list");print(pip)
+	pip = fetch_pipes(x, last_only = TRUE)
+
+	if(missing(x))
+		stop("Please choose a pipeline to run, from the above list.")
 
 
 	## --- source the file and get the main function from it
-	source(pip$pipe)
+	source(pip$location, TRUE)
 	func = get(x) ## find function of the original name
 
 

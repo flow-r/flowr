@@ -30,9 +30,12 @@ fetch <- function(x, places, urls, verbose = FALSE){
 #' @description
 #' fetch_pipes(): Looks at: github repo: ngsflows/pipelines
 #' @param silent applicable to fetch_pipes() only. Throw if no such pipe is available
+#'
+#' @importFrom tools file_path_sans_ext
 #' @export
 fetch_pipes <- function(x,
 												places,
+												last_only = FALSE,
 												urls = get_opts("flowr_pipe_urls"),
 												silent = FALSE,
 												ask = TRUE){
@@ -43,21 +46,41 @@ fetch_pipes <- function(x,
 			get_opts("flow_pipe_paths"),
 			getwd())
 	}
-	# 	if(missing(x))
-	# 		avail_pipes(places)
+
+	if(missing(x)){
+		message("Please supply a name of the pipline to run, here are the options")
+		x = ".*"
+	}
 
 	## in case of multiple files, use the last one
-	r = fetch(paste0("^", x, ".R$"), places)
-	r = tail(r, 1)
+	r = fetch(paste0("^", x, ".R$"), places = places, urls = urls)
+	#r = tail(r, 1)
 	def = gsub("R$", "def", r)
 	conf = gsub("R$", "conf", r)
+	pipes = data.frame(name = file_path_sans_ext(basename(r)), def = def, conf = conf, location = r)
+
+	pipe_print = pipes;
+	pipe_print$def = basename(pipe_print$def)
+	pipe_print$conf = basename(pipe_print$conf)
+	print(kable(pipe_print))
+
+	if(last_only){
+		if(nrow(pipes) > 1)
+			message("\nFound multiple pipelines with the same name, will use the last from above list")
+		pipes = tail(pipes, 1)
+	}
 
 	if(!silent)
 		if(length(r) == 0)
-			stop(error("no.pipe"), x)
-	return(list(pipe = r, def = def, conf = conf))
+			warning(error("no.pipe"), x)
+	invisible(pipes)
+
 }
 
+
+load_pipe <- function(x){
+	aln_bwa_merge
+}
 
 
 #' @rdname fetch
