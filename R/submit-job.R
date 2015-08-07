@@ -17,7 +17,7 @@
 #' submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
 #' verbose = TRUE, wd = wd, job_id = job_id)
 #' }
-submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id,...){
+submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ...){
 
 	## --- get the trigger path
 	## --- comes from the flow
@@ -25,10 +25,10 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 	if(!file.exists(trigger_path))
 		dir.create(trigger_path, showWarnings=FALSE)
 
-	## --- create the name of the job with its index in the supplied flow
-	if(!fobj@status %in% c("processed", "rerun", "submitted"))
-		if(!jobj@status %in% c("processed", "rerun", "submitted","running","completed","error"))
-			jobj@jobname <- sprintf("%03d.%s", job_id, jobj@name)
+# 	## --- create the name of the job with its index in the supplied flow
+# 	if(!fobj@status %in% c("processed", "rerun", "submitted"))
+# 		if(!jobj@status %in% c("processed", "rerun", "submitted", "running","completed", "error"))
+# 			jobj@jobname <- sprintf("%03d.%s", job_id, jobj@name)
 
 	## --- get the working dir for these job(s)
 	## jobj@name: is indexed
@@ -103,7 +103,6 @@ submit_job <- function (jobj, fobj, execute = FALSE, verbose = FALSE, wd, job_id
 #' @param index If more than one, which command to focus on. Can be from \code{1:length(cmds)}
 #' @param fobj flow object
 #'
-#' @import whisker
 render_queue_cmd <- function(jobj, file, index, fobj){
 
 	## --- get platform of previous job
@@ -179,7 +178,7 @@ create_queue_cmd=render_queue_cmd
 #' @description This is a wrapper around \link{whisker.render}
 #' @param template template used
 #' @param data a list with variables to be used to fill in the template.
-#'
+#' @importFrom whisker whisker.render
 #'
 #' @export
 whisker_render <- function(template, data) {

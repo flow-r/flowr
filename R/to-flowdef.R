@@ -9,6 +9,8 @@
 #' @export
 as.flowdef <- function(x){
 	## ---- assuming x is a file
+	if(is.flowdef(x))
+		return(check(x))
 	if(is.data.frame(x))
 		y = x
 	if(is.character(x)){
@@ -17,6 +19,7 @@ as.flowdef <- function(x){
 		message("def seems to be a file, reading it...")
 		y <- read_sheet(x, id_column = "jobname")
 	}
+	y$jobid <- 1:nrow(y)
 	class(y) <- c("flowdef", "data.frame")
 	y = check(y)
 	return(y)
