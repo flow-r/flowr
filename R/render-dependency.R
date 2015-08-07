@@ -20,6 +20,7 @@ render_dependency.local <- function(...){
 
 render_dependency.torque <- function(x, index, ...){
 	dep_type = x@dependency_type
+
 	if(dep_type == 'gather'){
 		dep = sprintf("-W depend=afterok:%s",
 									paste(unlist(x@dependency), collapse = ":"))

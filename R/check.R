@@ -50,24 +50,30 @@ check.flowdef <- function(x, ...){
 				 ".\nAnd they can be one of  ", paste(sub_types, collapse = " "))
 
 	## check if some jobs are put as dependencies but not properly defined
-	x$prev_jobs = gsub("\\.|none", NA, x$prev_jobs)
-	prev_jobs = unlist(strsplit(x$prev_jobs[!is.na(x$prev_jobs)], ","))
+	## prevjob_exists()
+	x$prev_jobs = gsub("\\.|NA", "none", x$prev_jobs)
+	x$prev_jobs = ifelse(x$prev_jobs=="", "none", x$prev_jobs)
+	x$prev_jobs = ifelse(is.na(x$prev_jobs), "none", x$prev_jobs)
+
+	prev_jobs = unlist(strsplit(x$prev_jobs[!(x$prev_jobs == "none")], ","))
+
 	miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
-	if (length(miss_jobs) > 0)
-		stop("Some jobs do not exist: ", miss_jobs, "\n", kable(x))
+	if (length(miss_jobs) > 0){
+		print(kable(x))
+		stop("Some jobs do not exist, but are present in prev_jobs: ", miss_jobs, "\n")
+	}
 	## check if dep is none, but prev jobs defined
-	x$prev_jobs = ifelse(x$prev_jobs=="", NA, x$prev_jobs)
 
 	## --- check if there are rows where prev_job specied but dep NOT specified
-	extra_rows = x$dep_type == "none" & !is.na(x$prev_jobs)
+	extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")
 	if (sum(extra_rows) > 0){
 		print(kable(x[extra_rows,]))
 		stop(error("prev_job.wo.dep_type"))
 	}
 
-	rows = x$dep_type != "none" & is.na(x$prev_jobs)
-	if (sum(rows)){
-		print(kable(x[rows,]))
+	extra_rows = (x$dep_type != "none" & x$prev_jobs == "none")
+	if (sum(extra_rows)){
+		print(kable(x[extra_rows,]))
 		stop(error("dep_type.wo.prev_job"))
 	}
 

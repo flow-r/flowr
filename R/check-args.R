@@ -46,18 +46,42 @@ assert_not_null <- function(x, .varname){
 }
 
 
-assertFlowdef <- function(x){
+assert_flowdef <- function(x){
 	varname = deparse(substitute(x))
 	if (!is.flowdef(x)) {
 		stop("Variable ", varname, " should be of class flowdef. Use as.flowdef() which performs important checks on the input data.frame")
 	}
 }
 
-assertFlowmat <- function(x){
+assert_flowmat <- function(x){
 	varname = deparse(substitute(x))
 	if (!is.flowmat(x)) {
 		stop("Variable ", varname, " should be of class flowmat. Use as.flowmat() which performs important checks on the input data.frame")
 	}
 }
 
+assert_character <- function(x, len){
+	varname = deparse(substitute(x))
+	if (!is.character(x)) {
+		stop("Variable ", varname, " should be of class character.")
+	}
+	if (!missing(len)) {
+		if (length(x) != len) {
+			stop("Variable ", varname, " should be of length, ", len)
+		}
+	}
+
+}
+
+assert_version <- function(fobj, min_ver){
+	msg = c("This feature is only supported for flows submitted using flowr version: ", min_ver, " and up.")
+	ver = try(fobj@version, silent = TRUE)
+
+	if(class(ver) == "try-error" | length(ver) == 0)
+		stop(msg)
+
+	if(compareVersion(ver, min_ver) == -1)
+		stop(msg)
+
+}
 
