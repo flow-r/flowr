@@ -38,7 +38,7 @@ run <- function(x,
 
 
 	## --- source the file and get the main function from it
-	source(pip$location, TRUE)
+	source(pip$pipe, TRUE)
 	func = get(x) ## find function of the original name
 
 

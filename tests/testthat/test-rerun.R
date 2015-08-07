@@ -4,8 +4,8 @@ context("Test sleep pipe")
 pip = fetch_pipes("sleep_pipe")
 
 test_that("test fetching of sleep pipe", {
-	expect_equal(length(pip), 3)
-	expect_identical(class(pip), "list")
+	expect_equal(length(pip), 4)
+	expect_identical(class(pip), "data.frame")
 })
 
 source(pip$pipe)

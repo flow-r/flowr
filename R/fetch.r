@@ -57,7 +57,7 @@ fetch_pipes <- function(x,
 	#r = tail(r, 1)
 	def = gsub("R$", "def", r)
 	conf = gsub("R$", "conf", r)
-	pipes = data.frame(name = file_path_sans_ext(basename(r)), def = def, conf = conf, location = r)
+	pipes = data.frame(name = file_path_sans_ext(basename(r)), def = def, conf = conf, pipe = r)
 
 	pipe_print = pipes;
 	pipe_print$def = basename(pipe_print$def)
