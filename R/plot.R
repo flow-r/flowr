@@ -42,7 +42,7 @@
 #'
 plot_flow <- function(x, ...) {
 	#message("input x is ", class(x))
-	UseMethod("plot_flow")
+	UseMethod("plot_flow") # nocov
 }
 
 ## ------------- make a flowchart using the object
@@ -51,8 +51,8 @@ plot_flow <- function(x, ...) {
 #' @export
 plot_flow.flow <- function(x, ...){
 	#dat <- create_jobs_mat(x)
-	x = to_flowdef(x)
-	plot_flow(x, ...)
+	x = to_flowdef(x) # nocov
+	plot_flow(x, ...) # nocov
 }
 
 
@@ -61,11 +61,11 @@ plot_flow.flow <- function(x, ...){
 #' @rdname plot_flow
 #' @method plot_flow list
 #' @export
-plot_flow.list <- function(x, ...){
+plot_flow.list <- function(x, ...){ # nocov start
 	tmp <- lapply(x, function(y)
 		plot_flow(y, ...))
 	invisible(tmp)
-}
+} # nocov end
 
 #' @rdname plot_flow
 #' @description plot_flow.character: works on a flowdef file.
@@ -136,7 +136,6 @@ arrange_flowdef <- function(x, n = 4){
 		x <- x[order(x$prev_jobid, x$jobid, na.last=FALSE, decreasing=FALSE),]
 	}
 	return(x)
-
 }
 
 display_mat <- function(x){

@@ -1,3 +1,4 @@
+# nocov start
 
 
 
@@ -16,4 +17,4 @@
 	invisible(fobj)
 }
 
-
+# nocov end

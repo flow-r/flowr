@@ -2,6 +2,7 @@
 ## in future if output of this is made similar to flowdef,
 ## plot_flow could direclty work on flowdef.
 
+# nocov start
 
 ## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
@@ -59,4 +60,4 @@ create_jobs_mat <- function(x){
 	create_jobs_mat(...)
 }
 
-
+# nocov end
