@@ -47,13 +47,24 @@ kill.flow <- function(x,
 	cmds <- sprintf("%s %s", kill_cmd, flow_det[,jobid_col])
 	tmp <- sapply(cmds, function(cmd){
 		message(cmd, "\n")
-		system(cmd, intern = TRUE)
+		return(system(cmd, intern = TRUE))
 	})
 	invisible(tmp)
 }
 
 
 
+detect_stat_cmd <- function(fobj){
+	## --- at time first jobs might be local, so fetching from the last
+	plat = tail(fobj@jobs, 1)[[1]]@platform
+	switch(plat,
+		moab = "qstat",
+		lsf = "bjobs",
+		torque = "qstat",
+		sge = "qstat",
+		slurm = "")
+
+}
 
 detect_kill_cmd <- function(fobj){
 	## --- at time first jobs might be local, so fetching from the last

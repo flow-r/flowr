@@ -53,6 +53,11 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
 	}
 
+	## check col are single length column
+	assert_character(grp_col, 1)
+	assert_character(jobname_col, 1)
+	assert_character(cmd_col, 1)
+
 	## ---- renaming columns to make it easier for subsequent.
 	x[, "jobname"] = x[, jobname_col]
 	x[, "cmd"] = x[, cmd_col]

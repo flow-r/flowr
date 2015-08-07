@@ -24,7 +24,7 @@ to_flowdet.rootdir <- function(x, ...){
 																							"\\1,\\2,\\3", files_cmd), split = ",")),
 												file = files_cmd,
 												stringsAsFactors = FALSE)
-	colnames(cmd_mat) = c("jobname", "jobnm", "num", "file")
+	colnames(cmd_mat) = c("jobname", "jobnm", "num", "cmd")
 	cmd_mat$trigger = sprintf("%s/trigger/trigger_%s_%s.txt",
 														 dirname(dirname(files_cmd)),
 														 cmd_mat$jobname, cmd_mat$num)
@@ -57,7 +57,7 @@ to_flowdet.flow <- function(x, ...){
 
 to_flowdet.job <- function(x){
 	cmds = x@script
-	triggers = x@trigger
+	triggers = try(x@trigger)
 	deps = x@dependency
 	deps = sapply(deps, paste, collapse = ";")
 	prev = x@previous_job ## works for single type jobs
