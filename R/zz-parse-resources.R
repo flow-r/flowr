@@ -1,15 +1,41 @@
+# nocov start
+
+
 get_flow_memory <- function(){
-	
+
 }
 
-# n= number of lines to read
-parse_lsf_out <- function(x, scale_time = 1/3600, n = 100){
-	text <- scan(x, what = "character", sep = "\t", n = n)
-	cpu_time = gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2])
-	avg_mem = gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2])
-	max_mem = gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2])
-	max_swap = gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2])
-	return(list(cpu_time = as.numeric(cpu_time) * scale_time, avg_mem = avg_mem, max_mem = max_mem, max_swap = max_swap))
+
+
+
+set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
+
+#' parse LSF output files
+#' @param x file
+#' @param scale_time time is usually in seconds, scale of 1/60 shows minutes, 1/3600 shows in hours
+#' @param n how many lines to read; usually resources details are on top. 100 works well. .Depreciated
+parse_lsf_out <- function(x,
+	scale_time = 1/3600,
+	n = 100,
+	time_format = get_opts("time_format")){
+	text <- scan(x, what = "character", sep = "\n")
+
+	cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
+	bgn_time = try(gsub("BGN at ", "", grep("^BGN at", text, value = TRUE)))
+	bgn_time = try(as.character(strptime(bgn_time, format = time_format)))
+	end_time = try(gsub("END at ", "", grep("^END at", text, value = TRUE)))
+	end_time = try(as.character(strptime(end_time, format = time_format)))
+
+	avg_mem = try(gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2]))
+	max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]))
+	max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]))
+
+	return(list(cpu_time = as.numeric(cpu_time) * scale_time,
+		bgn_time = bgn_time,
+		end_time = end_time,
+		avg_mem = avg_mem,
+		max_mem = max_mem,
+		max_swap = max_swap))
 }
 
 #' @title get_resources
@@ -27,13 +53,15 @@ get_resources <- function(x, odir, ...){
 		stop("ggpplot2 needed for this function to work. Please install it.",
 			call. = FALSE)
 	}
-	
+
 	wds = get_wds(x)
 	for(wd in wds){
 		if(missing(odir)) odir = wd
 		try(get_resources_lsf(wd, ...))
 	}# for loop
 }# function
+
+
 
 #' @title get_resources_lsf
 #' @description get_resources_lsf
@@ -42,12 +70,13 @@ get_resources <- function(x, odir, ...){
 #' @param cores Number of cores to use. [Numeric]
 #' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
 #' @importFrom tools file_path_sans_ext
+#' @importFrom parallel mclapply
 #' @keywords internal
 #' @examples \dontrun{
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }
-get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
-	
+get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
+
 	if (!requireNamespace("reshape2", quietly = TRUE)) {
 		stop("reshape2 needed for this function to work. Please install it.",
 			call. = FALSE)
@@ -57,30 +86,34 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$"){
 			call. = FALSE)
 	}
 
-	flow_mat = read_flow_detail_fl(wd)
-	rownames(flow_mat) = flow_mat$jobid
-	#files_cmd <- list.files(wd, pattern = "sh$", full.names = TRUE, recursive = TRUE)
-	files_out <- list.files(wd, pattern = pattern, full.names = TRUE, recursive = TRUE)
-	jobid = file_path_sans_ext(basename(files_out))
-	names(files_out) = jobid
-	#     mat_cmd <- data.frame(do.call(rbind,
-	#                                   strsplit(gsub(".*/(.*)/.*/(.*)\\.([0-9]*)\\.([0-9]*)\\.output",
-	#                                                 "\\1,\\2,\\3", files_out), split = ",")),
-	#                           stringsAsFactors = FALSE)
-	#colnames(mat_cmd) = c('oprefix', 'jobname', 'num')
-	#mat_cmd <- cbind(mat_cmd, outfile = files_out)
-	flow_mat$outfile = files_out[as.c(flow_mat$jobid)]
-	tmp = mclapply(as.c(flow_mat$outfile), function(i) try(parse_lsf_out(i)), mc.cores = cores)
+	#fobj = read_fobj(wd)
+	flowdet = to_flowdet(wd)
+	flowdet$out = gsub("sh$", "out", flowdet$cmd)
+
+	tmp = mclapply(as.c(flowdet$out), function(x) try(parse_lsf_out(x)), mc.cores = cores)
 	resources <- do.call(rbind, tmp)
-	mat_res <- cbind(flow_mat, resources);dim(mat_res)
+	mat_res <- cbind(flowdet, resources);dim(mat_res)
 	## restructure for plotting:
 	mat_res$avg_mem = as.numeric(mat_res$avg_mem)
 	mat_res$max_mem = as.numeric(mat_res$max_mem)
 	mat_res$max_swap = as.numeric(mat_res$max_swap)
 	mat_res$cpu = as.numeric(mat_res$cpu)
-	mytheme <- theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
-	dat = melt(mat_res, measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu"))
-	p <- with(dat, {ggplot(dat, aes(x = jobname, y = value)) + geom_boxplot() + geom_jitter(col = "grey", alpha = 0.3) + mytheme})
-	p <- p + facet_wrap(~variable, scales = "free_y")
-	ggsave(sprintf("%s/resources_utilized.pdf", wd), p)
+	mat_res$bgn_time = unlist(mat_res$bgn_time)
+	mat_res$end_time = unlist(mat_res$end_time)
+	mat_res$wd = basename(wd)
+
+	dat = reshape2::melt(mat_res,
+						 measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu", "bgn_time", "end_time"))
+	if(plot){
+		mytheme <- ggplot2::theme_bw() +
+			ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
+		p <- with(dat, {ggplot2::ggplot(dat, ggplot2::aes(x = jobname, y = value)) +
+				ggplot2::geom_boxplot() + ggplot2::geom_jitter(col = "grey", alpha = 0.3) + mytheme})
+		p <- p + ggplot2::facet_wrap(~variable, scales = "free_y")
+		ggplot2::ggsave(sprintf("%s/resources_utilized.pdf", wd), p)
+	}
+	return(dat)
 }
+
+
+# nocov end
