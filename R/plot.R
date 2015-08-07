@@ -86,6 +86,9 @@ plot_flow.flowdef <- function(x,
 															...){
 
 	type = match.arg(type)
+
+	##--- plotting needs prev_jobs to be NA and not none
+	x$prev_jobs = ifelse(x$prev_jobs == "none", NA, x$prev_jobs)
 	p <- switch(type,
 							'1' = .plot_flow_dat_type1(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...),
 							'2' = .plot_flow_dat_type2(x=x, detailed = detailed, pdf = pdf, pdffile=pdffile, ...))
@@ -170,6 +173,8 @@ display_mat <- function(x){
 
 	jobnames=unique(as.c(x$jobname))
 	dat_dep <- x[complete.cases(x),] ## remove first two
+
+	## Get the first row for every job
 	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
 
 	## -------- get positions
