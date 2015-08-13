@@ -28,6 +28,8 @@ Especially useful in case of re-running a flow.}
 \item{plot}{\code{logical} whether to make a pdf flow plot (saves it in the flow working directory).}
 
 \item{dump}{dump all the flow details to the flow path}
+
+\item{.start_jid}{Job to start this submission from. Advanced use, should be 1 by default.}
 }
 \description{
 submit_flow

@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-08-07" />
+<meta name="date" content="2015-08-13" />
 
 <title>Quick Start Example</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <div id="header">
 <h1 class="title">Quick Start Example</h1>
-<h4 class="date"><em>2015-08-07</em></h4>
+<h4 class="date"><em>2015-08-13</em></h4>
 </div>
 
 
@@ -63,6 +63,9 @@ devtools::<span class="kw">install_github</span>(<span class="st">&quot;sahilset
 <p>Run a setup function which copies ‘flowr’ helper script to enable using flow from shell terminal itself. A few examples <a href="https://github.com/sahilseth/rfun">here</a>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(flowr)
 <span class="kw">setup</span>()</code></pre>
+<pre><code>#&gt; Warning in file.symlink(system.file(package = pkg, &quot;scripts/flowr&quot;), bin):
+#&gt; cannot symlink '/Users/sahilseth/Dropbox2/Dropbox/public/github_flow/inst/
+#&gt; scripts/flowr' to '/Users/sahilseth/bin/flowr', reason 'File exists'</code></pre>
 </div>
 <div id="toy-example" class="section level1">
 <h1>Toy example</h1>

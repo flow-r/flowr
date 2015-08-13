@@ -31,6 +31,8 @@ Defaults to \code{~/flows/trigger}. Best practice to ignore it.}
 
 \item{flow_path}{\code{character}}
 
+\item{version}{version of flowr used to create and execute this flow.}
+
 \item{status}{\code{character} Not used at this time}
 
 \item{execute}{executtion status of flow object.}

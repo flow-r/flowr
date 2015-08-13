@@ -42,7 +42,7 @@ assert_not_null <- function(x, .varname){
   if (missing(.varname))
     .varname = deparse(substitute(x))
   if (is.null(x))
-    stop("Variable ", .varname, " should not be null. You may directly supply it to the function OR add these to ngsflows.conf OR a seperate conf file and use load_conf()")
+    stop("Variable ", .varname, " should not be null. You may directly supply it to the function OR add these to ngsflows.conf OR a seperate conf file and use load_opts()")
 }
 
 

@@ -45,6 +45,7 @@ parse_prevjobids <- function(x){
 
 
 #' @rdname submit_flow
+#' @param .start_jid Job to start this submission from. Advanced use, should be 1 by default.
 #' @importFrom tools file_path_as_absolute
 #' @export
 submit_flow.flow <- function(x,

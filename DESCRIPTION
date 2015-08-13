@@ -3,7 +3,7 @@ Type: Package
 Title: Streamlining Design and Deployment of Complex Workflows
 Description: An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.
 Version: 0.9.7.3
-Date: 2015-08-07
+Date: 2015-08-13
 Depends:
     methods,
     utils

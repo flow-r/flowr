@@ -1,6 +1,8 @@
 ---
 output: html_document
 ---
+
+
 flowr 0.9.7.1 2015-07-26
 ----------------------------------------------
 
@@ -44,12 +46,14 @@ flowr 0.9.6.13
 
 flowr 0.9.6.10
 ----------------------------------------------
-- Now to_flow is a S3 function and accepts multiple input types
-- Add function: kill_flow(), rerun_flow()
+- add to_flow()
+- kill_flow()
 - supports moab
 - burst as dependency type
 - node can be character
-
+- final job names changed to: sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
+- Using PBS/LSF script instead of one line commands
+- Format now a script, parsed using whisker
 
 flowr 0.9.6.7
 ----------------------------------------------

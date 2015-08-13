@@ -44,13 +44,13 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param cmd_col column name with commands. Default: `cmd`
 #' @param flowname name of the flow
 #' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.
-#' @param desc Advanced Use. final flow name. don't change.
+#' @param desc Advanced Use. final flow name, please don't change.
 #'
 #' @param ... Supplied to specific functions like \link{to_flow.data.frame}
 #'
 #' @param submit Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE
 #' @param execute Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()
-#' @param qobj Depreciated. A object of class \link{queue}.
+#' @param qobj Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.
 #'
 #' @examples
 #' ex = file.path(system.file(package = "flowr"), "pipelines")
@@ -69,12 +69,14 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' the flow was executed. It would include details like jobids, path to exact scripts run etc.
 #' To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 #'
-#' ## Behaviour, in terms of submit and execute
+#' \subsection{Behaviour:}{
+#' What goes in, and what to expect in return?
 #' \itemize{
 #' \item submit=FALSE & execute=FALSE: Create and return a flow object
 #' \item submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
 #' \item submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
-#'}
+#' }
+#' }
 #'
 #' @export
 to_flow <- function(x, ...) {

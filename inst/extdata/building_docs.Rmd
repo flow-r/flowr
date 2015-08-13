@@ -6,7 +6,7 @@ output: html_document
 
 ```{r}
 #devtools::install("~/Dropbox/public/github_restr")
-require(restr)
+library(restr)
 #mypack:::reload('restr')
 require(flowr)
 require(knitr)

@@ -8,7 +8,6 @@
 #' @param fobj Object of calls \link{flow}
 #' @param execute A \code{logical} vector suggesting whether to submit this job
 #' @param verbose logical
-#' @param wd working direcotry
 #' @param job_id job id
 #' @param ... not used
 #'

@@ -22,21 +22,32 @@ fetch_conf(x = "flowr.conf", places, ...)
 
 \item{verbose}{be chatty?}
 
-\item{silent}{applicable to fetch_pipes() only. Throw if no such pipe is available}
+\item{last_only}{[fetch_pipes only]. If multiple pipelines match the pattern, return the last one.}
+
+\item{silent}{[fetch_pipes() only]. logical, be silent even if no such pipeline is available.}
 
 \item{ask}{ask before downloading or copying, not used !}
 
 \item{...}{not used}
 }
 \description{
-These functions help in searching for specific files in the user space.
+These functions help in searching for specific files in the user's space.
 
-MYRLIB/flowr/conf folder           ## flowr/ngsflows internal default configurations
-~/flowr/conf                       ## flowr default home
+fetch_pipes(): Fetches pipelines in the following places,
+\itemize{
+\item - available in 'pipelines' folders in flowr and ngsflows packages.
+\item - ~/flowr/pipelines
+\item - github repos (currently not supported)
+}
 
-fetch_pipes(): Looks at: github repo: ngsflows/pipelines
+fetch_conf(): Fetches configuration files in the following places,
 
-fetch_conf(): Searching for .conf files in various places
+\itemize{
+\item - available in 'conf' folders in flowr and ngsflows packages.
+\item - ~/flowr/conf folder
+}
+
+By default flowr loads, ~/flowr/conf/flowr.conf and ~/flowr/conf/ngsflows.conf
 }
 \examples{
 {

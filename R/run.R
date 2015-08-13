@@ -18,7 +18,7 @@
 #'
 #' @export
 #'
-#' @importFrom params load_conf read_sheet write_sheet
+#' @importFrom params load_opts read_sheet write_sheet
 #'
 #' @aliases run_flow
 run <- function(x,
@@ -48,7 +48,7 @@ run <- function(x,
 		fetch_conf("ngsflows.conf"),
 		pip$conf)
 	print(kable(as.data.frame(confs)))
-	load_conf(confs, verbose = FALSE, check = FALSE)
+	load_opts(confs, verbose = FALSE, check = FALSE)
 
 	message("\n##--- creating flowmat....")
 	## crate a flowmat

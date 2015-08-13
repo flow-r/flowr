@@ -18,8 +18,6 @@ submit_job(jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ...)
 \item{verbose}{logical}
 
 \item{...}{not used}
-
-\item{wd}{working direcotry}
 }
 \description{
 submit_job

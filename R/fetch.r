@@ -1,9 +1,11 @@
-#' A generic functions to search for files
-#' @description
-#' These functions help in searching for specific files in the user space.
+#' @rdname fetch
 #'
-#' MYRLIB/flowr/conf folder           ## flowr/ngsflows internal default configurations
-#' ~/flowr/conf                       ## flowr default home
+#' @title  A generic functions to search for files
+#'
+#' @description
+#' These functions help in searching for specific files in the user's space.
+#'
+#'
 #' @param x name of the file to search for
 #' @param places places (paths) to look for it. Its best to use the defaults
 #' @param urls urls to look for, works well for pipelines.
@@ -27,11 +29,21 @@ fetch <- function(x, places, urls, verbose = FALSE){
 }
 
 #' @rdname fetch
+#'
 #' @description
-#' fetch_pipes(): Looks at: github repo: ngsflows/pipelines
-#' @param silent applicable to fetch_pipes() only. Throw if no such pipe is available
+#'
+#' fetch_pipes(): Fetches pipelines in the following places,
+#' \itemize{
+#' \item - available in 'pipelines' folders in flowr and ngsflows packages.
+#' \item - ~/flowr/pipelines
+#' \item - github repos (currently not supported)
+#' }
+#'
+#' @param silent [fetch_pipes() only]. logical, be silent even if no such pipeline is available.
+#' @param last_only [fetch_pipes only]. If multiple pipelines match the pattern, return the last one.
 #'
 #' @importFrom tools file_path_sans_ext
+#'
 #' @export
 fetch_pipes <- function(x,
 												places,
@@ -79,12 +91,20 @@ fetch_pipes <- function(x,
 
 
 load_pipe <- function(x){
-	aln_bwa_merge
+	#aln_bwa_merge
 }
 
 
 #' @rdname fetch
-#' @description fetch_conf(): Searching for .conf files in various places
+#'
+#' @description fetch_conf(): Fetches configuration files in the following places,
+#'
+#' \itemize{
+#' \item - available in 'conf' folders in flowr and ngsflows packages.
+#' \item - ~/flowr/conf folder
+#' }
+#'
+#' By default flowr loads, ~/flowr/conf/flowr.conf and ~/flowr/conf/ngsflows.conf
 #' @export
 fetch_conf <- function(x = "flowr.conf", places, ...){
 	if(missing(places)){

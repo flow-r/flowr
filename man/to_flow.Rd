@@ -40,20 +40,22 @@ This over-rides the platform column in flowdef.}
 
 \item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
 
-\item{qobj}{Depreciated. A object of class \link{queue}.}
+\item{qobj}{Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.}
 
-\item{desc}{Advanced Use. final flow name. don't change.}
+\item{desc}{Advanced Use. final flow name, please don't change.}
 }
 \value{
 Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
 the flow was executed. It would include details like jobids, path to exact scripts run etc.
 To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 
-## Behaviour, in terms of submit and execute
+\subsection{Behaviour:}{
+What goes in, and what to expect in return?
 \itemize{
 \item submit=FALSE & execute=FALSE: Create and return a flow object
 \item submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
 \item submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
+}
 }
 }
 \description{

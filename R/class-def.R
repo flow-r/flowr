@@ -310,6 +310,7 @@ job <- function(cmds = "",
 #' Defaults to \code{~/flows/trigger}. Best practice to ignore it.
 #' @param flow_path \code{character}
 #' @param status \code{character} Not used at this time
+#' @param version version of flowr used to create and execute this flow.
 #' @param execute executtion status of flow object.
 #' @export
 #' @examples

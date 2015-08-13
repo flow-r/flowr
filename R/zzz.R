@@ -1,13 +1,13 @@
 
 .onLoad <- function(lib, pkg){
-	packageStartupMessage("Flowr: streamlining workflows")
+	fls = fetch_conf("flowr.conf")
+	suppressMessages(load_opts(fls, check = FALSE))
 }
 
 .onAttach <- function(lib, pkg){
 	#print(search())
 	#print(set_opts)
-	fls = fetch_conf("flowr.conf")
-	suppressMessages(load_conf(fls, check = FALSE))
+	packageStartupMessage("Flowr: streamlining workflows")
 	#get_opts()
 }
 
