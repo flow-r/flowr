@@ -53,7 +53,7 @@ kill.flow <- function(x,
 }
 
 
-
+#' @importFrom utils tail
 detect_stat_cmd <- function(fobj){
 	## --- at time first jobs might be local, so fetching from the last
 	plat = tail(fobj@jobs, 1)[[1]]@platform
@@ -66,6 +66,7 @@ detect_stat_cmd <- function(fobj){
 
 }
 
+#' @importFrom utils tail
 detect_kill_cmd <- function(fobj){
 	## --- at time first jobs might be local, so fetching from the last
 	plat = tail(fobj@jobs, 1)[[1]]@platform

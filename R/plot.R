@@ -98,6 +98,7 @@ plot_flow.flowdef <- function(x,
 #' split_multi_dep
 #' Split rows with multiple dependencies
 #' @param x this is a flow def
+#' @importFrom utils head
 split_multi_dep <- function(x){
 	## --- handle cases where we have multiple dependencies
 	multi_rows <- grep(",", x$prev_jobs)
@@ -156,7 +157,9 @@ display_mat <- function(x){
 }
 
 
-
+#' @importFrom grDevices dev.off
+#' @importFrom graphics par
+#' @importFrom stats complete.cases
 .plot_flow_dat_type1 <- function(x,
 																 detailed = FALSE,
 																 pdf = FALSE,
@@ -237,6 +240,8 @@ display_mat <- function(x){
 	if (pdf) dev.off()
 }
 
+#' @importFrom grDevices dev.off
+#' @importFrom stats complete.cases
 .plot_flow_dat_type2 <- function(x,
 																 detailed = FALSE,
 																 pdf = FALSE,

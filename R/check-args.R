@@ -73,6 +73,7 @@ assert_character <- function(x, len){
 
 }
 
+#' @importFrom utils compareVersion
 assert_version <- function(fobj, min_ver){
 	msg = c("This feature is only supported for flows submitted using flowr version: ", min_ver, " and up.")
 	ver = try(fobj@version, silent = TRUE)

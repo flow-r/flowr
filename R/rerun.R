@@ -45,6 +45,7 @@ rerun.character <- function(x, ...){
 
 
 #' @rdname rerun
+#' @importFrom utils capture.output
 #' @export
 rerun.flow <- function(x, mat, def, start_from,
 											 execute = TRUE, kill = TRUE, ...){
@@ -116,13 +117,13 @@ update.flow <- function(x, child){
 
 }
 
-
+#' @importFrom params read_sheet
 detect_redo <- function(fobj, wd){
 	## get detail file
 	det_file = to_flowdet(wd)
 	get_status(x = wd)
 	## subset those which need to be rerun
-	flow_status = read.table(det_file, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+	flow_status = read_sheet(det_file)
 	#plot_flow(x = fobj, pdf = TRUE)
 	## ingest everything in the fobj !
 	#head(flow_status)

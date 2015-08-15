@@ -208,6 +208,7 @@ to_flow.data.frame <- function(x, def,
 
 
 #' @rdname to_flow
+#' @importFrom utils packageVersion
 #' @export
 to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 	## --- qobj, missing only works for arguments

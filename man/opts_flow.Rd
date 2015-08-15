@@ -41,8 +41,28 @@ By default flowr loads, \code{~/flowr/conf/flowr.conf} and \code{~/flowr/conf/ng
 Below is a list of default flowr options, retrieved via
 
 \code{opts_flow$get()}:
-
-\Sexpr[results=verbatim]{flowr::opts_flow$get()}
+\preformatted{
+	|name              |value                    |
+	|:-----------------|:------------------------|
+	|default_regex     |(.*)                     |
+	|flow_base_path    |~/flowr                  |
+	|flow_conf_path    |~/flowr/conf             |
+	|flow_parse_lsf    |.*(\<[0-9]*\>).*         |
+	|flow_parse_moab   |(.*)                     |
+	|flow_parse_sge    |(.*)                     |
+	|flow_parse_slurm  |(.*)                     |
+	|flow_parse_torque |(.?)\..*                 |
+	|flow_pipe_paths   |~/flowr/pipelines        |
+	|flow_pipe_urls    |~/flowr/pipelines        |
+	|flow_platform     |local                    |
+	|flow_run_path     |~/flowr/runs             |
+	|my_conf_path      |~/flowr/conf             |
+	|my_dir            |path/to/a/folder         |
+	|my_path           |~/flowr                  |
+	|my_tool_exe       |/usr/bin/ls              |
+	|time_format       | \%a \%b \%e \%H:\%M:\%S CDT \%Y |
+	|verbose           |FALSE                    |
+	}
 }
 \examples{
 ## Set options: set_opts()

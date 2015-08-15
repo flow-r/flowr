@@ -187,7 +187,7 @@ update_flow_det <- function(wd, mat_cmd){
 }
 
 
-
+#' @importFrom utils write.table
 create_flow_det <- function(fobj){
 	.Deprecated("to_flowdet")
 	ret <- lapply(1:length(fobj@jobs), function(i){

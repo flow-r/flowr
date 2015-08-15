@@ -153,6 +153,7 @@ to_flowdef.flow <- function(x, ...){
 
 #' @rdname to_flowdef
 #' @description to_flowdef.character: x is a flowmat file.
+#' @importFrom utils write.table
 #' @export
 to_flowdef.character <- function(x, ...){
 	if(!missing(x)){

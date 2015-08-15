@@ -43,6 +43,7 @@ fetch <- function(x, places, urls, verbose = FALSE){
 #' @param last_only [fetch_pipes only]. If multiple pipelines match the pattern, return the last one.
 #'
 #' @importFrom tools file_path_sans_ext
+#' @importFrom utils tail
 #'
 #' @export
 fetch_pipes <- function(x,

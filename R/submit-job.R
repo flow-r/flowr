@@ -101,6 +101,7 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 #' @param jobj job object
 #' @param index If more than one, which command to focus on. Can be from \code{1:length(cmds)}
 #' @param fobj flow object
+#' @importFrom utils tail
 #'
 render_queue_cmd <- function(jobj, file, index, fobj){
 

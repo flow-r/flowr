@@ -24,7 +24,7 @@ if(FALSE){
 
 
 if(FALSE){
-  x = read.table("/rsrch2/iacs/ngs_runs/1412_tcga_normals/KIRC/logs/kirc-20150318-12-00-50-f27qz3ZL/flow_details.txt", "\t", header = TRUE)
+  x = read_sheet("/rsrch2/iacs/ngs_runs/1412_tcga_normals/KIRC/logs/kirc-20150318-12-00-50-f27qz3ZL/flow_details.txt")
   #dbWriteTable(conn = db, name = "tracker", value = x)
   tmp <- dbReadTable(conn = db, name = "tracker")
 }
