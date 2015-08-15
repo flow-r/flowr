@@ -10,7 +10,7 @@ Depends:
 Imports:
     diagram,
     whisker,
-    params,
+    params  (>= 0.2.3),
     tools,
     knitr
 Suggests:

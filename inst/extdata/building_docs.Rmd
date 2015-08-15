@@ -5,9 +5,8 @@ output: html_document
 
 
 ```{r}
-#devtools::install("~/Dropbox/public/github_restr")
-library(restr)
-#mypack:::reload('restr')
+devtools::install("~/Dropbox/public/github_readthedocs")
+library(readthedocs)
 require(flowr)
 require(knitr)
 
@@ -31,7 +30,7 @@ topics = topics = c(
 	"kill_flow", 
 	"rerun_flow",
 	"queue", 
-	"job",
+	"git",
 	"flow"
 	)
 
