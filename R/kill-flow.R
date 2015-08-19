@@ -24,7 +24,14 @@ kill <- function(x, ...) {
 #' @rdname kill
 #' @description works on flow_path. Reads flow object and calls kill.flow()
 #' @export
-kill.character <- function(x, ...){
+kill.character <- function(x, force = FALSE, ...){
+	x = get_wds(x)
+	if(length(x) > 1 & !force){
+		message("found multiple wds, ", 
+						params::kable(x), 
+						"If you want to kill all of them, kill again with force=TRUE")
+		invisible("multi wds")
+	}
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
 		kill.flow(fobj, ...)
