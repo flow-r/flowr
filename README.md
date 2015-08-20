@@ -15,23 +15,16 @@ Please visit [docs.flowr.space](http://docs.flowr.space) for more information an
 
 Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your flow.
 
-Here are some useful questions:
-https://github.com/sahilseth/flowr/issues?q=label%3Aquestion
+We (re)-use some of the [github issues](https://github.com/sahilseth/flowr/issues?q=label%3Aquestion) as frequently asked questions.
 
 
 ```
-## for the latest stable build, recommended:
-install.packages("drat")
-drat::addRepo("sahilseth")
-install.packages("flowr")
-
 ## From the official R repository (may be a few versions behind)
-install.packages('flowr')
+install.packages("flowr")
 
 ## for a latest and greatest, dev version.
 install.packages('devtools')
 devtools::install_github("sahilseth/flowr")
-
 ```
 
 ## Example:
