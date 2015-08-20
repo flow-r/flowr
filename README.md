@@ -1,5 +1,6 @@
 <!--[![DOI](https://zenodo.org/badge/11075/sahilseth/flowr.svg)](http://dx.doi.org/10.5281/zenodo.16170)-->
 [![Build Status](https://travis-ci.org/sahilseth/flowr.png)](https://travis-ci.org/sahilseth/flowr)
+[![](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 ![](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
 <!--[![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=master)](http://codecov.io/github/sahilseth/flowr?branch=master)-->
