@@ -8,7 +8,7 @@
 \usage{
 kill(x, ...)
 
-\method{kill}{character}(x, ...)
+\method{kill}{character}(x, force = FALSE, ...)
 
 \method{kill}{flow}(x, kill_cmd, jobid_col = "job_sub_id", ...)
 }

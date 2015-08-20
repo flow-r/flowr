@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="date" content="2015-08-13" />
+<meta name="date" content="2015-08-20" />
 
 <title>flowr simple pipelines</title>
 
@@ -62,7 +62,7 @@ img {
 
 <div id="header">
 <h1 class="title">flowr simple pipelines</h1>
-<h4 class="date"><em>2015-08-13</em></h4>
+<h4 class="date"><em>2015-08-20</em></h4>
 </div>
 
 
@@ -189,7 +189,7 @@ Its best to have this as a tab seperated file (with no row.names). -->
 <li><code>jobname</code>: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table defined above.</li>
 <li><code>cmd</code>: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a <code>;</code> or <code>&amp;&amp;</code>, more on this <a href="http://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls">here</a>. Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.</li>
 </ul>
-<p>Here is an example <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/extdata/sleep_pipe.tsv">flow_mat</a>.</p>
+<p>Here is an example <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.tsv">flow_mat</a>.</p>
 <table>
 <thead>
 <tr class="header">

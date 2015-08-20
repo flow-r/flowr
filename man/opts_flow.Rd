@@ -60,7 +60,7 @@ Below is a list of default flowr options, retrieved via
 	|my_dir            |path/to/a/folder         |
 	|my_path           |~/flowr                  |
 	|my_tool_exe       |/usr/bin/ls              |
-	|time_format       | \%a \%b \%e \%H:\%M:\%S CDT \%Y |
+	|time_format       |\%a \%b \%e \%H:\%M:\%S CDT \%Y |
 	|verbose           |FALSE                    |
 	}
 }
