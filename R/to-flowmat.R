@@ -107,7 +107,7 @@ to_flowmat.list <- function(x, samplename, ...){
 		data.frame(jobname, cmd, stringsAsFactors = FALSE)
 	})
 	ret = do.call(rbind, ret)
-	ret = data.frame(samplename = samplename, ret, row.names = NULL)
+	ret = cbind(samplename = samplename, ret)
 	attr(ret, "class") <- c("flowmat", "data.frame")
 	return(ret)
 
