@@ -14,7 +14,6 @@ R pacakge to design (and deploy) complex workflows, in a effective and efficient
 Please visit [docs.flowr.space](http://docs.flowr.space) for more information and here is a slide deck providing a quick overview: [sahilseth.github.io/slides/flowrintro](http://sahilseth.github.io/slides/flowrintro)
 
 Here is a shiny app, [flow_creator](https://sseth.shinyapps.io/flow_creator/) for you to start building your flow.
-[`guest; guestpass`]
 
 Here are some useful questions:
 https://github.com/sahilseth/flowr/issues?q=label%3Aquestion
