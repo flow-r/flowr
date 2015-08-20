@@ -6,7 +6,7 @@
 <!--[![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=master)](http://codecov.io/github/sahilseth/flowr?branch=master)-->
 
 
-flow
+flowr
 ======
 
 R pacakge to design (and deploy) complex workflows, in a effective and efficient manner on High Perfomance computing clusters.
