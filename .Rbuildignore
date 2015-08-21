@@ -3,5 +3,7 @@
 ^\.travis\.yml$
 ^\.git/*
 #.*
-misc/*
+misc
+inst/extdata/*
+inst/staticdocs
 cran-comment.md

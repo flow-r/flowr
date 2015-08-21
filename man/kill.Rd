@@ -17,6 +17,8 @@ kill(x, ...)
 
 \item{...}{not used}
 
+\item{force}{When killing multiple flows, force is neccesary. This makes sure multiple flows are killed by accident.}
+
 \item{kill_cmd}{The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.}
 
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}

@@ -6,6 +6,7 @@
 #' @param x either path to flow [character] or fobj object of class \link{flow}
 #' @param kill_cmd The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.
 #' @param jobid_col Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill
+#' @param force When killing multiple flows, force is neccesary. This makes sure multiple flows are killed by accident.
 #' @param ... not used
 #'
 #'

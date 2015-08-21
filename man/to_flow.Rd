@@ -19,7 +19,7 @@ to_flow(x, ...)
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
 
-\item{...}{Supplied to specific functions like \link{to_flow.data.frame}}
+\item{...}{Supplied to specific functions like \code{to_flow.data.frame}}
 
 \item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
 

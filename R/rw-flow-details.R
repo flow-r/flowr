@@ -16,8 +16,8 @@ read_fobj <- function(x){
 	if(file.exists(rda)){
 		message("Status on these functions, may not work with later versions.")
 		## attach it:
-		tmp <- attach(rda)
-		fobj <- get(ls(tmp), tmp)
+		#tmp <- attach(rda)
+		#fobj <- get(ls(tmp), tmp)
 	}else if(file.exists(rds))
 		fobj = readRDS(rds)
 	else

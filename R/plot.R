@@ -163,8 +163,10 @@ display_mat <- function(x){
 	table(x$level)
 }
 
-
+#' calc_boxdim
 #' @param x number of jobs
+#' @param detailed detailed
+#' @param pdf pdf
 calc_boxdim <- function(x, detailed, pdf){
 	if(x > 15)
 		message("Plotting may not be pretty with big flows",

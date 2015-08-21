@@ -10,12 +10,14 @@ check(x, ...)
 
 \method{check}{flowmat}(x, ...)
 
-\method{check}{flowdef}(x, ...)
+\method{check}{flowdef}(x, verbose = get_opts("verbose"), ...)
 }
 \arguments{
 \item{x}{a flowdef or flowmat object}
 
 \item{...}{suppled to \code{check.classname} function}
+
+\item{verbose}{be chatty}
 }
 \description{
 check consistency of objects

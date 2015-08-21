@@ -10,8 +10,7 @@ library(flowr)
 
 
 ## ----echo=FALSE----------------------------------------------------------
-exdata = file.path(system.file(package = "flowr"), "extdata")
-plat <- params::read_sheet(file.path(exdata, "platforms_supported.txt"), 
-									 id_column = "Platform")
+#exdata = file.path(system.file(package = "flowr"), "extdata")
+plat <- params::read_sheet("imgs/platforms_supported.txt", id_column = "Platform")
 kable(plat)
 

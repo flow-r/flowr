@@ -87,7 +87,7 @@ kable(ex2def[, 1:4])
 plot_flow(fobj)
 
 ## ----build_pipe_flow_def_cols, echo=FALSE, message=FALSE-----------------
-extdata = file.path(system.file(package = "flowr"), "extdata")
-mat = params::read_sheet(file.path(extdata, "flow_def_columns.txt"))
+#extdata = file.path(system.file(package = "flowr"), "extdata")
+mat = params::read_sheet("imgs/flow_def_columns.txt")
 kable(mat)
 

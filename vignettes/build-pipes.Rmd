@@ -281,8 +281,8 @@ The resource requirement columns of flow definition are passed along to the fina
 The following table provides a mapping between the flow definition columns and variables in the submission template ([pipelines below](#flow-def-columns)).
 
 ```{r build_pipe_flow_def_cols, echo=FALSE, message=FALSE}
-extdata = file.path(system.file(package = "flowr"), "extdata")
-mat = params::read_sheet(file.path(extdata, "flow_def_columns.txt"))
+#extdata = file.path(system.file(package = "flowr"), "extdata")
+mat = params::read_sheet("imgs/flow_def_columns.txt")
 kable(mat)
 ```
 

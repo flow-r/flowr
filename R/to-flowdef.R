@@ -6,6 +6,7 @@
 #' @title flow definition
 #' @description  Reeading a flow definition file and checking it.
 #' @param x can be a data.frame or a path for a flow definition file
+#' @param ... passed onto check.flowdef
 #' @export
 as.flowdef <- function(x, ...){
 	## ---- assuming x is a file

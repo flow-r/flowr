@@ -5,6 +5,7 @@
 #' Currently checks objects S3 flowdef, flowmat
 #'
 #' @param x a flowdef or flowmat object
+#' @param verbose be chatty
 #' @param ... suppled to \code{check.classname} function
 #'
 #' @export

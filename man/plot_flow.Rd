@@ -17,7 +17,7 @@ plot_flow(x, ...)
 \method{plot_flow}{character}(x, ...)
 
 \method{plot_flow}{flowdef}(x, detailed = TRUE, type = c("1", "2"),
-  pdf = FALSE, pdffile = sprintf("\%s.pdf", x@name), ...)
+  pdf = FALSE, pdffile, ...)
 }
 \arguments{
 \item{x}{Object of class \code{flow}, or a list of flow objects or a flowdef}

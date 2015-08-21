@@ -5,12 +5,14 @@
 \alias{is.flowdef}
 \title{flow definition}
 \usage{
-as.flowdef(x)
+as.flowdef(x, ...)
 
 is.flowdef(x)
 }
 \arguments{
 \item{x}{can be a data.frame or a path for a flow definition file}
+
+\item{...}{passed onto check.flowdef}
 }
 \description{
 Reeading a flow definition file and checking it.

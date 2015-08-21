@@ -46,7 +46,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.
 #' @param desc Advanced Use. final flow name, please don't change.
 #'
-#' @param ... Supplied to specific functions like \link{to_flow.data.frame}
+#' @param ... Supplied to specific functions like \code{to_flow.data.frame}
 #'
 #' @param submit Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE
 #' @param execute Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()

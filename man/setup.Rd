@@ -4,10 +4,12 @@
 \alias{setup}
 \title{Setup and initialize some scripts.}
 \usage{
-setup(bin = "~/bin")
+setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"))
 }
 \arguments{
 \item{bin}{path to bin folder}
+
+\item{flow_base_path}{the root folder for all flowr operations}
 }
 \description{
 Setup and initialize some scripts.
