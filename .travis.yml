@@ -15,6 +15,9 @@ r_check_args: --no-build-vignettes --no-manual --as-cran rpack
 r_packages:
   - rmarkdown
 
+r_binary_packages:
+  stringi
+
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
   - sahilseth/params
