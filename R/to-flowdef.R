@@ -7,7 +7,7 @@
 #' @description  Reeading a flow definition file and checking it.
 #' @param x can be a data.frame or a path for a flow definition file
 #' @export
-as.flowdef <- function(x){
+as.flowdef <- function(x, ...){
 	## ---- assuming x is a file
 	if(is.flowdef(x))
 		return(check(x))
@@ -21,7 +21,7 @@ as.flowdef <- function(x){
 	}
 	y$jobid <- 1:nrow(y)
 	class(y) <- c("flowdef", "data.frame")
-	y = check(y)
+	y = check(y, ...)
 	return(y)
 }
 
