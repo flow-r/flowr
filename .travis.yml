@@ -16,7 +16,18 @@ r_packages:
   - rmarkdown
 
 r_binary_packages:
-  stringi
+  - stringi
+  - digest
+  - yaml
+  - bitops
+  - markdown
+  - caTools
+  - lazyeval
+  - openxlsx
+  - plyr
+  - testthat
+  - reshape2
+  - scales
 
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
