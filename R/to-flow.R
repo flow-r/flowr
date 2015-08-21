@@ -94,7 +94,10 @@ to_flow.vector <- function(x, def,
 	cmd_col,
 	...){
 
-	x = as.flowmat(x, grp_col, jobname_col, cmd_col)
+	x = as.flowmat(x, 
+								 grp_col = grp_col, 
+								 jobname_col = jobname_col, 
+								 cmd_col = cmd_col)
 	to_flow(x, def, ...)
 
 }

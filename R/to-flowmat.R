@@ -31,6 +31,10 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 		x <- read_sheet(x, id_column = "jobname")
 	}
 
+	if(is.list(x)){
+		x = do.call(rbind, x)
+	}
+	
 	if(missing(grp_col)){
 		grp_col = "samplename"
 		if(grp_col %in% colnames(x))
