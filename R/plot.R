@@ -157,6 +157,23 @@ display_mat <- function(x){
 }
 
 
+#' @param x number of jobs
+calc_boxdim <- function(x, detailed, pdf){
+	
+	## eq from eureka
+	ht = 0.041751221004381 - 0.000583347999406836*x
+	
+	if(!detailed)
+		ht = ht - 0.01
+	
+	if(pdf)
+		ht = ht - 0.01
+	
+	wd = ht + 0.02
+	detail.offset = c(0, ht*0.5)
+	list(wd = wd, ht = ht, detail.offset = detail.offset)
+}
+
 #' @importFrom grDevices dev.off
 #' @importFrom graphics par
 #' @importFrom stats complete.cases
@@ -186,18 +203,18 @@ display_mat <- function(x){
 	elpos <- coordinates(disp_mat)
 
 	## -------- graphic params:
-	shadow.col <- "lightskyblue4";boxwd=0.08;boxht=0.04;box.lcol = "gray26"
-	if (detailed) boxht=0.06
-	shadow.sizes.scatter=seq(from=0.001, by=0.003, length.out=4);shadow.sizes.serial=c(0.004)
+	shadow.col <- "lightskyblue4";
+	tmp = calc_boxdim(nrow(x), detailed, pdf)
+	boxwd=tmp$wd;boxht=tmp$ht;
+	
+	box.lcol = "gray26"
+	shadow.sizes.scatter = seq(from=0.001, by=0.003, length.out = 4);
+	shadow.sizes.serial=c(0.001)
 	arr.col="gray26";arr.lwd=3;arr.len=0.6; arr.pos=0.55
 	curves=c(-0.2,0.2);arr.lwd.curve=2;
-	textsize=1.1;textcol="gray30"
-	detail.cex=0.8; detail.offset=c(0,0.04)
-	## ---- change params for pdf
-	if (pdf){
-		boxht=0.03;
-		if (detailed) boxht=0.05
-	}
+	textsize = 1.1;textcol = "gray30"
+	detail.cex = 0.8; detail.offset = tmp$detail.offset
+
 	#detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
 	detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
 	detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
