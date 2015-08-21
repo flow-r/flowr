@@ -22,6 +22,10 @@ We (re)-use some of the [github issues](https://github.com/sahilseth/flowr/issue
 ## From the official R repository (may be a few versions behind)
 install.packages("flowr")
 
+## flowr previews, stable and recent
+drat::addRepo("sahilseth")		
+install.packages("flowr")
+
 ## for a latest and greatest, dev version.
 install.packages('devtools')
 devtools::install_github("sahilseth/flowr")
