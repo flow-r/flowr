@@ -85,6 +85,7 @@ to_flow <- function(x, ...) {
 	warnings()
 }
 
+#' @description vector: a file with flowmat table
 #' @rdname to_flow
 #' @export
 to_flow.vector <- function(x, def,
@@ -100,7 +101,7 @@ to_flow.vector <- function(x, def,
 
 #' @rdname to_flow
 #' @export
-to_flow.data.frame <- function(x, def,
+to_flow.flowmat <- function(x, def,
 	grp_col,
 	jobname_col,
 	cmd_col,
@@ -206,14 +207,22 @@ to_flow.data.frame <- function(x, def,
 }
 
 
-
+#' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
 #' @importFrom utils packageVersion
-#' @export
 to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 	## --- qobj, missing only works for arguments
+# 	if(is.flowmat(x[[1]])){
+# 		warning("to_flow supports a list of commands as a input not list of flowmats.")
+# 		x = do.call(rbind, x)
+# 		fobj = to_flow(x, def, flowname = flowname, 
+# 						flow_run_path = flow_run_path, ...)
+# 		return(fobj)
+# 	}
+	
 	## x is a list of flow_mat, split by jobname
-
+	## this list should have three elements
+	
 	jobs <- lapply(1:nrow(def), function(i, qobj){
 		message(".", appendLF = FALSE)
 		jobnm = def[i, "jobname"]

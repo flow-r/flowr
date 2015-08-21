@@ -2,7 +2,7 @@
 % Please edit documentation in R/to-flow.R
 \name{to_flow}
 \alias{to_flow}
-\alias{to_flow.data.frame}
+\alias{to_flow.flowmat}
 \alias{to_flow.list}
 \alias{to_flow.vector}
 \title{Create flow objects}
@@ -11,7 +11,7 @@ to_flow(x, ...)
 
 \method{to_flow}{vector}(x, def, grp_col, jobname_col, cmd_col, ...)
 
-\method{to_flow}{data.frame}(x, def, grp_col, jobname_col, cmd_col, flowname,
+\method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
   flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
 
 \method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj, ...)
@@ -60,6 +60,10 @@ What goes in, and what to expect in return?
 }
 \description{
 Use a set of shell commands and flow definiton to create \link{flow} object.
+
+vector: a file with flowmat table
+
+a named list of commands for a sample. Its best to supply a flowmat instead.
 }
 \details{
 The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
