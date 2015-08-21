@@ -19,6 +19,11 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	if(is.flowmat(x))
 		return(check(x))
 
+	if(is.list(x)){
+		message("x seems to be a list, binding all by rows")
+		x = do.call(rbind, x)
+	}
+
 	if(is.data.frame(x)){
 		## prevent issues with factors
 		x[] <- lapply(x, as.character)
@@ -31,10 +36,6 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 		x <- read_sheet(x, id_column = "jobname")
 	}
 
-	if(is.list(x)){
-		message("x seems to be a list, binding all by rows")
-		x = do.call(rbind, x)
-	}
 	
 	if(missing(grp_col)){
 		grp_col = "samplename"

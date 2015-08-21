@@ -82,11 +82,18 @@ plot_flow.flowdef <- function(x,
 															detailed = TRUE,
 															type = c('1','2'),
 															pdf = FALSE,
-															pdffile = sprintf("%s.pdf", x@name),
+															pdffile,
 															...){
 
 	type = match.arg(type)
 
+	## if pdffile is provide and pdf is FALSE
+	if(!missing(pdffile))
+		pdf = TRUE
+	if(missing(pdffile) & pdf)
+		pdffile = sprintf("%s.pdf", x@name)
+	
+	
 	##--- plotting needs prev_jobs to be NA and not none
 	x$prev_jobs = ifelse(x$prev_jobs == "none", NA, x$prev_jobs)
 	p <- switch(type,
@@ -159,6 +166,10 @@ display_mat <- function(x){
 
 #' @param x number of jobs
 calc_boxdim <- function(x, detailed, pdf){
+	if(x > 15)
+		message("Plotting may not be pretty with big flows",
+						"try with detailed = FALSE OR",
+						"")
 	
 	## eq from eureka
 	ht = 0.041751221004381 - 0.000583347999406836*x
