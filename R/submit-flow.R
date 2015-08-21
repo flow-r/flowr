@@ -103,9 +103,10 @@ submit_flow.flow <- function(x,
 	for(i in .start_jid:length(x@jobs)){
 		## ------ check if there are any dependencies
 		previous_job <- x@jobs[[i]]@previous_job
+		if(verbose) message("Working on, ", i, "with prev: ", previous_job)
+
 		## if there is a previous job
 		if(prevjob_exists(previous_job)){
-
 			## --- split multiple dependencies as a list
 			## get say a multi column matrix. JOBIDS X PREV JOBS
 			previds <- do.call(cbind, lapply(previous_job, function(y)
@@ -113,8 +114,8 @@ submit_flow.flow <- function(x,
 			## split the MATRIX by rowindex, into a LIST
 			x@jobs[[i]]@dependency <- split(previds, row(previds))
 		}
-
-		## ------ submit the job
+	
+		## ------ submit the job, get updates job object
 		x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
 															fobj = x,
 															execute=execute,

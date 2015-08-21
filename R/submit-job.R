@@ -104,7 +104,9 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 #' @importFrom utils tail
 #'
 render_queue_cmd <- function(jobj, file, index, fobj){
-
+	if(get_opts("verbose"))
+		message("Working on ", jobj@name, " with index ", index)
+	
 	## --- get platform of previous job
 	prev_plat = try(fobj@jobs[[jobj@previous_job]]@platform, silent = TRUE)
 	prev_plat = ifelse(class(prev_plat) == "try-error", "", prev_plat)
