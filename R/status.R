@@ -119,6 +119,33 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 	invisible(flow_det)
 }
 
+## depreciated
+.summarize_flow_det <- function(x, out_format){
+	## summarize
+	nm <- tapply(x$jobnm, INDEX = x$jobname, unique)
+	jobs_total <- tapply(x$jobname, INDEX = x$jobname, length)
+	jobs_compl <- tapply(x$exit_code, INDEX = x$jobname,
+											 function(z) sum(z > -1, na.rm = TRUE)) ## counts no. more than -1
+	jobs_status <- tapply(x$exit_code, INDEX = x$jobname, function(z) sum(ifelse(z>0, 1, 0), na.rm = TRUE))
+	jobs_started <- tapply(x$started, INDEX = x$jobname, function(z) sum(z))
+	summ = data.frame(total = jobs_total, started = jobs_started,
+										completed = jobs_compl, exit_status = jobs_status, stringsAsFactors = FALSE)
+	status = sapply(1:nrow(summ), function(i){
+		diff = summ$total[i] - summ$completed[i]
+		if(diff == 0){
+			return("completed")
+		}else if(diff < "summ$total[i]"){
+			return("processing")
+		}else{
+			return("waiting")
+		}
+	})
+	summ$status = status
+	tmp <- knitr::kable(summ, out_format, output = FALSE)
+	print(tmp)
+	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
+	return(summ)
+}
 
 summarize_flow_det <- function(x, out_format){
 	## summarize
@@ -132,7 +159,9 @@ summarize_flow_det <- function(x, out_format){
 		completed = jobs_compl, exit_status = jobs_status, stringsAsFactors = FALSE)
 	status = sapply(1:nrow(summ), function(i){
 		diff = summ$total[i] - summ$completed[i]
-		if(diff == 0){
+		if(summ$exit_status[i] > 0){
+			return("errored")
+		}else if(diff == 0){
 			return("completed")
 		}else if (summ$started[i] == 0){
 			return("pending")
