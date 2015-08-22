@@ -3,19 +3,8 @@ output: html_document
 ---
 
 
-flowr 0.9.7.1 2015-07-26
-----------------------------------------------
 
-- Now supports new column of status (completed/processing/errored...):
-
-|                | total| started| completed| exit_status|status     |
-|:---------------|-----:|-------:|---------:|-----------:|:----------|
-|001.alnCmd1     |   109|     109|       109|           0|completed  |
-|007.markCmd     |     3|       3|         0|           0|processing |
-
-
-
-flowr 0.9.7.0 2015-07-23
+flowr 0.9.7 2015-08-22
 ----------------------------------------------
 - run(): runs a complete pipeline:
 	- create flowmat, my_pipeline()
@@ -34,6 +23,15 @@ flowr 0.9.7.0 2015-07-23
 	- moved get_opts(), set_opts()
 	- moved .load_conf() load_conf()
 	- Here is a link to [params](https://github.com/sahilseth/params) package
+	- includes kable as part of params
+- [0.9.7.10] Now supports new column of status (completed/processing/errored...)
+|                | total| started| completed| exit_status|status     |
+|:---------------|-----:|-------:|---------:|-----------:|:----------|
+|001.alnCmd1     |   109|     109|       109|           0|completed  |
+|007.markCmd     |     3|       3|         0|           0|processing |
+
+
+
 
 
 flowr 0.9.6.13

@@ -44,6 +44,7 @@ fetch <- function(x, places, urls, verbose = FALSE){
 #'
 #' @importFrom tools file_path_sans_ext
 #' @importFrom utils tail
+#' @importFrom knitr kable
 #'
 #' @export
 fetch_pipes <- function(x,

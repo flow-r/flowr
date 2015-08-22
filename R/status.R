@@ -121,6 +121,7 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 
 ## depreciated
 .summarize_flow_det <- function(x, out_format){
+	.Deprecated("summarize_flow_det")
 	## summarize
 	nm <- tapply(x$jobnm, INDEX = x$jobname, unique)
 	jobs_total <- tapply(x$jobname, INDEX = x$jobname, length)

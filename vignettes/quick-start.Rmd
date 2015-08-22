@@ -33,8 +33,10 @@ A few examples [here](https://github.com/sahilseth/rfun).
 
 ```{r, message=FALSE}
 library(flowr)
-extdata = file.path(system.file(package = "flowr"), "extdata")
-setup(bin = extdata, flow_base_path = extdata)
+```
+
+```{r, message=FALSE, eval=FALSE}
+setup()
 ```
 
 

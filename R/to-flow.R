@@ -94,9 +94,9 @@ to_flow.vector <- function(x, def,
 	cmd_col,
 	...){
 
-	x = as.flowmat(x, 
-								 grp_col = grp_col, 
-								 jobname_col = jobname_col, 
+	x = as.flowmat(x,
+								 grp_col = grp_col,
+								 jobname_col = jobname_col,
 								 cmd_col = cmd_col)
 	to_flow(x, def, ...)
 
@@ -213,19 +213,20 @@ to_flow.flowmat <- function(x, def,
 #' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
 #' @importFrom utils packageVersion
+#' @importFrom knitr kable
 to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 	## --- qobj, missing only works for arguments
 # 	if(is.flowmat(x[[1]])){
 # 		warning("to_flow supports a list of commands as a input not list of flowmats.")
 # 		x = do.call(rbind, x)
-# 		fobj = to_flow(x, def, flowname = flowname, 
+# 		fobj = to_flow(x, def, flowname = flowname,
 # 						flow_run_path = flow_run_path, ...)
 # 		return(fobj)
 # 	}
-	
+
 	## x is a list of flow_mat, split by jobname
 	## this list should have three elements
-	
+
 	jobs <- lapply(1:nrow(def), function(i, qobj){
 		message(".", appendLF = FALSE)
 		jobnm = def[i, "jobname"]
@@ -286,7 +287,7 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 			"\nIncase of issues please re-submit specifying them explicitly.")
 		mydef = create_jobs_mat(fobj)
 		cols = c("jobname",  'prev_jobs',  'dep_type', 'sub_type')
-		print(knitr::kable(mydef[, cols], col.names=FALSE))
+		print(kable(mydef[, cols], col.names=FALSE))
 	}
 
 	invisible(fobj)
