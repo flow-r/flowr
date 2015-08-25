@@ -2,11 +2,18 @@ library(readthedocs)
 require(flowr)
 require(knitr)
 
-#pkg = "."
+if(Sys.info()['sysname'] == "Darwin"){
+	outwd = "../github_flowrdocs/source/rd"
+}else{
+	outwd = "flowrdocs/source/rd"
+}
+
+if(!file.exists(outwd))
+	dir.create(outwd, recursive = TRUE)
 
 #undebug(staticdocs:::as.sd_package)
 pkg = staticdocs::as.sd_package(pkg = ".",
-                                site_path = "inst/staticdocs/source/rd",
+                                site_path = outwd,
                                 templates_path = system.file("templates", package = "readthedocs"))
 
 
