@@ -22,11 +22,18 @@ assert_args_not_null <- function(...,
 #' checks all the arguments in the parent frame.
 #' None of them should be null.
 #' @export
-check_args <- function(){
+check_args <- function(ignore, select){
   fn = sys.call(sys.parent())[1]
   env = parent.frame()
   args = ls(env)
-  needtoexit = FALSE
+  
+  if(!missing(ignore))
+  	args = args[!args %in% ignore]
+  
+  if(!missing(select))
+  	args = args[args %in% select]
+
+   needtoexit = FALSE
   for (i in 1:length(args)) {
     var = args[[i]]
     val = get(var, env)
