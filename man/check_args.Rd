@@ -5,7 +5,12 @@
 \title{checks all the arguments in the parent frame.
 None of them should be null.}
 \usage{
-check_args()
+check_args(ignore, select)
+}
+\arguments{
+\item{ignore}{optionally ignore a few variables for checking.}
+
+\item{select}{optionally only check a few variables of the function.}
 }
 \description{
 checks all the arguments in the parent frame.

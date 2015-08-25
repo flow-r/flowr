@@ -21,6 +21,13 @@ assert_args_not_null <- function(...,
 
 #' checks all the arguments in the parent frame.
 #' None of them should be null.
+#' 
+#' @description 
+#' 
+#' This function may be optionally moved to a more generic package.
+#' 
+#' @param ignore optionally ignore a few variables for checking.
+#' @param select optionally only check a few variables of the function.
 #' @export
 check_args <- function(ignore, select){
   fn = sys.call(sys.parent())[1]

@@ -72,12 +72,17 @@ fetch_pipes <- function(x,
 	r = fetch(paste0("^", x, ".R$"), places = places, urls = urls)
 	#r = tail(r, 1)
 	def = gsub("R$", "def", r)
+	def = ifelse(file.exists(def), def, NA)
+	
 	conf = gsub("R$", "conf", r)
+	conf = ifelse(file.exists(conf), def, NA)
+	
+	
 	pipes = data.frame(name = file_path_sans_ext(basename(r)), def = def, conf = conf, pipe = r)
 
 	pipe_print = pipes;
-	pipe_print$def = basename(pipe_print$def)
-	pipe_print$conf = basename(pipe_print$conf)
+	pipe_print$def = basename(as.character(pipe_print$def))
+	pipe_print$conf = basename(as.character(pipe_print$conf))
 	if(!silent) print(kable(pipe_print))
 
 	if(last_only){
