@@ -52,6 +52,12 @@ setClass("moab", contains = "job")
 setClass("slurm", contains = "job")
 
 
+#' @rdname flow
+#' @export
+is.flow <- function(x){
+	class(x)[1] == "flow"
+}
+
 #' flow defines the class
 #' @exportClass flow
 setClass("flow", representation(jobs = "list",

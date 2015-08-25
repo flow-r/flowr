@@ -13,7 +13,6 @@ check_args(ignore, select)
 \item{select}{optionally only check a few variables of the function.}
 }
 \description{
-checks all the arguments in the parent frame.
-None of them should be null.
+This function may be optionally moved to a more generic package.
 }
 

@@ -43,6 +43,10 @@ get_wds <- function(x){
 status <- function(x, out_format = "markdown"){
 	## get the total jobs
 	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
+	
+	if(is.flow(x))
+		get_status(x)
+
 	wds = get_wds(x)
 	for(wd in wds){
 		x = read_fobj(wd)
