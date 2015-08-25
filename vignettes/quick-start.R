@@ -14,8 +14,9 @@ knitr::opts_chunk$set(
 
 ## ---- message=FALSE------------------------------------------------------
 library(flowr)
-extdata = file.path(system.file(package = "flowr"), "extdata")
-setup(bin = extdata, flow_base_path = extdata)
+
+## ---- message=FALSE, eval=FALSE------------------------------------------
+#  setup()
 
 ## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE----
 #  library(DiagrammeR)

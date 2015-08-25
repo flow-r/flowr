@@ -3,3 +3,7 @@
 .RData
 site
 *_cache
+
+vignettes/.DS_Store
+
+.DS_Store
