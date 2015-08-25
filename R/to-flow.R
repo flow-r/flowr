@@ -334,7 +334,6 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 #' @param execute TRUE/FALSE
 #' @param flow_run_path outpath
 #'
-#' @export
 cmds_to_flow <- function(cmd.list,
 	samplename = "",
 	infomat,

@@ -58,7 +58,9 @@ fetch_pipes <- function(x,
 	if(missing(places)){
 		places = c(
 			system.file(package = "flowr", "pipelines"),
+			system.file(package = "flowr", "inst/pipelines"),
 			system.file(package = "ngsflows", "pipelines"),
+			system.file(package = "ngsflows", "inst/pipelines"),
 			get_opts("flow_pipe_paths"),
 			getwd())
 	}
@@ -119,7 +121,9 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
 	if(missing(places)){
 		places = c(
 			system.file(package = "flowr", "conf"),
+			system.file(package = "flowr", "inst/conf"),
 			system.file(package = "ngsflows", "conf"),
+			system.file(package = "ngsflows", "inst/conf"),
 			get_opts("flow_conf_path"), getwd())
 	}
 

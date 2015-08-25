@@ -2,20 +2,20 @@
 ## Adapted from adv- R; hadley wikham
 ## http://adv-r.had.co.nz/Computing-on-the-language.html
 dots <- function(..., .env){
-  args = eval(substitute(alist(...)))
-  #deparse2 <- function(x) paste(deparse(x, 500L), collapse = "")
-  args2 = lapply(as.character(args), get, .env)
-  names(args2) = args
-  return(args2)
+	args = eval(substitute(alist(...)))
+	#deparse2 <- function(x) paste(deparse(x, 500L), collapse = "")
+	args2 = lapply(as.character(args), get, .env)
+	names(args2) = args
+	return(args2)
 }
 
 assert_args_not_null <- function(...,
-  .env = environment()){
-
-  args = dots(..., .env = .env)
-  lapply(seq_along(args), function(i){
-    assert_not_null(args[[i]], names(args)[[i]])
-  })
+																 .env = environment()){
+	
+	args = dots(..., .env = .env)
+	lapply(seq_along(args), function(i){
+		assert_not_null(args[[i]], names(args)[[i]])
+	})
 }
 
 
@@ -30,34 +30,39 @@ assert_args_not_null <- function(...,
 #' @param select optionally only check a few variables of the function.
 #' @export
 check_args <- function(ignore, select){
-  fn = sys.call(sys.parent())[1]
-  env = parent.frame()
-  args = ls(env)
-  
-  if(!missing(ignore))
-  	args = args[!args %in% ignore]
-  
-  if(!missing(select))
-  	args = args[args %in% select]
-
-   needtoexit = FALSE
-  for (i in 1:length(args)) {
-    var = args[[i]]
-    val = get(var, env)
-    if (is.null(val)) {
-      message("Checking arguments for function: ", fn, ", value of '", var, "' is null.")
-      needtoexit = TRUE
-    }
-  }
-  if (needtoexit) stop("Add these parameters to ngsflows.conf.")
+	fn = sys.call(sys.parent())[1]
+	env = parent.frame()
+	args = ls(env)
+	
+	if(!missing(ignore))
+		args = args[!args %in% ignore]
+	
+	if(!missing(select))
+		args = args[args %in% select]
+	
+	needtoexit = FALSE
+	for (i in 1:length(args)) {
+		var = args[[i]]
+		val = get(var, env)
+		if (is.null(val)) {
+			message("Checking arguments for function: ", fn, ", value of '", var, "' is null.")
+			needtoexit = TRUE
+		}
+	}
+	if (needtoexit) 
+		stop("Add these parameters to ngsflows.conf OR flowr.conf OR <mypipeline>.conf ",
+				 "based one what they pertain to. One approach is having all generic options in flowr.conf, ",
+				 "generic ngs related options in ngsflows.conf. And options very specific to a single pipeline in,",
+				 "<mypipeline.conf>. The file <mypipeline.conf> sits in the same place as pipeline flow definition ",
+				 "and its respective R file. Try fetch_pipe() for examples and help(fetch_pipes) for more details.")
 }
 
 
 assert_not_null <- function(x, .varname){
-  if (missing(.varname))
-    .varname = deparse(substitute(x))
-  if (is.null(x))
-    stop("Variable ", .varname, " should not be null. You may directly supply it to the function OR add these to ngsflows.conf OR a seperate conf file and use load_opts()")
+	if (missing(.varname))
+		.varname = deparse(substitute(x))
+	if (is.null(x))
+		stop("Variable ", .varname, " should not be null. You may directly supply it to the function OR add these to ngsflows.conf OR a seperate conf file and use load_opts()")
 }
 
 
@@ -85,19 +90,19 @@ assert_character <- function(x, len){
 			stop("Variable ", varname, " should be of length, ", len)
 		}
 	}
-
+	
 }
 
 #' @importFrom utils compareVersion
 assert_version <- function(fobj, min_ver){
 	msg = c("This feature is only supported for flows submitted using flowr version: ", min_ver, " and up.")
 	ver = try(fobj@version, silent = TRUE)
-
+	
 	if(class(ver) == "try-error" | length(ver) == 0)
 		stop(msg)
-
+	
 	if(compareVersion(ver, min_ver) == -1)
 		stop(msg)
-
+	
 }
 
