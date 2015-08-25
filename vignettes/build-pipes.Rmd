@@ -21,11 +21,15 @@ library(flowr)
 
 ```
 
+
+Building Pipelines
+-------------
+
 An easy and quick way to build a workflow is create two separate files. First is a table with commands to run, second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively.
 
 Both these files have a `jobname` column which is used as a ID to connect them to each other.
 
-## Ingredients
+# Ingredients
 
 ```{r build_pipe_exdata, message=FALSE}
 ## ------ load some example data
@@ -42,7 +46,7 @@ fobj@jobs[[1]]@nodes
 fobj = submit_flow(fobj)
 ```
 
-### 1. Flow Definition
+## 1. Flow Definition
 
 Each row in this table refers to one step of the pipeline. It describes the resources used by this step and also its relationship with other steps.
 Especially, the step immediately prior to it.
@@ -98,7 +102,7 @@ kable(head(flow_def))
 Its best to have this as a tab seperated file (with no row.names). -->
 
 
-### 2. Flow mat: A table with shell commands to run
+## 2. Flow mat: A table with shell commands to run
 
 This is also a tab separated table, with a minimum of three columns as defined below:
 
@@ -151,7 +155,7 @@ knitr:::kable(dat)
 ```
 --->
 
-### Example:
+## Example:
 
 A   ----> B  -----> C -----> D
 
@@ -168,7 +172,7 @@ Consider another step D (with D1-D3), which comes after C.
 - `serial`: run these commands sequentially one after the other. 
 	- *Wrap A1 through A10, into a single job.*
 
-## Dependency types
+# Dependency types
 
 > *This refers to the dep_type column in flow definition.*
 
@@ -182,12 +186,12 @@ Consider another step D (with D1-D3), which comes after C.
 	- *D1 to D3 are started as soon as C1 finishes.*
 
 
-## Relationships
+# Relationships
 
 Using the above submission and dependency types one can create several types of relationships between former and later jobs. Here are a few pipelines of relationships one may typically use.
 
 
-### Serial: one to one relationship
+## Serial: one to one relationship
 
 [scatter] ---serial---> [scatter]
 
@@ -212,7 +216,7 @@ D <- job(name = "D", cmds = "sleep2", q_obj = qobj,
 pab <- plot_flow(flow(jobs = list(A, B)))
 ```
 
-### Gather: many to one relationship
+## Gather: many to one relationship
 
 [scatter] ---gather---> [serial]
 
@@ -234,7 +238,7 @@ plot_flow(fobj)
 ```
 --->
 
-### Burst: one to many relationship
+## Burst: one to many relationship
 
 [serial] ---burst---> [scatter]
 
@@ -274,7 +278,7 @@ plot_flow(fobj)
 	scatter steps.
 
 
-## Passing of flow definition resource columns
+# Passing of flow definition resource columns
 
 The resource requirement columns of flow definition are passed along to the final (cluster) submission script.
 
@@ -286,7 +290,7 @@ mat = params::read_sheet("imgs/flow_def_columns.txt")
 kable(mat)
 ```
 
-## Cluster interface
+# Cluster interface
 
 Support for several popular cluster platforms are built-in. There is a template, each specific for a platform. These templates should would out of the box.
 You may copy and edit these (and save to ~/flowr/conf) in case some changes are required. Templates from this folder (~/flowr/conf), would override the defaults.
