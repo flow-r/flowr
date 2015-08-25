@@ -16,11 +16,12 @@ pkg = staticdocs::as.sd_package(pkg = ".",
                                 site_path = outwd,
                                 templates_path = system.file("templates", package = "readthedocs"))
 
+## https://github.com/tripit/slate
 
 #debug(rtd:::to_rst)
 #debug(rtd:::to_rst.character)
 #build_site(pkg = "~/Dropbox/public/github_flow/", topics)
-topics = topics = c(
+topics = c(
   "setup", 
   "to_flowmat",
   "to_flowdef",
@@ -34,7 +35,8 @@ topics = topics = c(
   "flow"
 )
 
-tmp <- build_topics(pkg = pkg, topics = topics)
+#tmp <- build_topics(pkg = pkg, topics = topics)
+tmp <- build_topics(pkg = pkg)
 #undebug(build_vignettes)
 require(tools)
 tmp <- build_vignettes(pkg = pkg)

@@ -91,3 +91,11 @@ plot_flow(fobj)
 mat = params::read_sheet("imgs/flow_def_columns.txt")
 kable(mat)
 
+## ----echo=FALSE, results='asis'------------------------------------------
+fetch_pipes()
+
+## ----echo=FALSE----------------------------------------------------------
+#exdata = file.path(system.file(package = "flowr"), "extdata")
+plat <- params::read_sheet("imgs/platforms_supported.txt", id_column = "Platform")
+kable(plat)
+

@@ -293,10 +293,21 @@ kable(mat)
 \**: This is gathered from flow_mat
 
 
-## Cluster interface
+# Available Pipelines
 
-Support for several popular cluster platforms are built-in. There is a template, each specific for a platform. These templates should would out of the box.
-You may copy and edit these (and save to ~/flowr/conf) in case some changes are required. Templates from this folder (~/flowr/conf), would override the defaults.
+Here are some of the available piplines along with their respective locations
+
+```{r echo=FALSE, results='asis'}
+fetch_pipes()
+```
+
+
+# Cluster Support
+
+Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box.
+Further, one may copy and edit them (and save to `~/flowr/conf`) in case some changes are required. Templates from this folder (`~/flowr/conf`), would override defaults.
+
+Here are links to latest templates on github:
 
 - [torque](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh)
 - [lsf](https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh)
@@ -305,24 +316,54 @@ You may copy and edit these (and save to ~/flowr/conf) in case some changes are 
 - [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
 
 
-Here are a few details on adding a new platform:
-[github.com/sahilseth/flowr/issues/7](https://github.com/sahilseth/flowr/issues/7)
+Adding a new plaform involves [a few steps](https://github.com/sahilseth/flowr/issues/7) including support for:
+
+1. submission: Template used for submission:
+https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh
+2. [parse_jobids()](https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R): The job ids should parse using regular expression as provided by:
+https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf
+3. parse_dependency(): These are then parsed to create a dependency string, as seen here:
+https://github.com/sahilseth/flowr/blob/master/R/parse-dependency.R
+4. job(): Add a new class using the platform name. This is essentially a wrapper around job class.
+https://github.com/sahilseth/flowr/blob/master/R/class-def.R
+A one line like: `setClass("torque", contains = "job")` would suffice.
+5. Killing jobs: making sure that the correct job killing command is identified by detect_kill_cmd().
 
 .. note:: 
- 	My HPCC is not supported, how to make it work? Take a look at: 
- 	[adding platforms](https://github.com/sahilseth/flowr/issues/7) 
- 	and send a message to: sahil.seth [at] me.com
+ 	My HPCC is not supported, how to make it work? re-open this issue, with details on the platform.
+ 	[adding platforms](https://github.com/sahilseth/flowr/issues/7)
+ 	
 
+As of now we have tested this on the following clusters:
 
-# Available Pipelines
-
-Here are some of the available piplines along with their respective locations
-
-```{r}
-fetch_pipes()
+```{r echo=FALSE}
+#exdata = file.path(system.file(package = "flowr"), "extdata")
+plat <- params::read_sheet("imgs/platforms_supported.txt", id_column = "Platform")
+kable(plat)
 ```
 
+\*queue short-name used in [flow](https://github.com/sahilseth/flow)
 
+There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems
+available and we try to support the major players. Adding support is
+quite easy if we have access to them. Your favourite not in the list?
+Send a [message](mailto:sahil.seth@me.com)
+
+- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System)
+- Torque: [wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
+	- MD Anderson
+	- [University of Houston](http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html)
+- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF):
+	- Harvard Medicla School uses: [LSF HPC 7](https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF)
+	- Also Used at [Broad](https://www.broadinstitute.org/gatk/guide/article?id=1311)
+- SGE [wiki](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
+	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
+	- Another from [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html)
+	- Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
+
+
+
+[Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
 
 
 
