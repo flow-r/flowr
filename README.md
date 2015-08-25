@@ -17,21 +17,18 @@ Highlights
 
 -   Effectively process a pipeline multi-step pipeline, spawning it
     across the computing cluster
--   
+- Example:
 
-    Example:
-
-    :   -   A typical case with next-generation sequencing, a sample
-            with tens of
-            [fastq](http://en.wikipedia.org/wiki/FASTQ_format) files)
-        -   Each file can be processed
-            ([aligned](http://en.wikipedia.org/wiki/Sequence_alignment))
-            individually, each using multiple cores
-        -   Say 50 files using 10 cores each, totalling 500 cores across
-            several machines, for one sample
-        -   flowr further supports processing multiple samples in
-            parrellel, spawning thousands of cores.
-
+    -   A typical case with next-generation sequencing, a sample
+        with tens of
+        [fastq](http://en.wikipedia.org/wiki/FASTQ_format) files)
+    -   Each file can be processed
+        ([aligned](http://en.wikipedia.org/wiki/Sequence_alignment))
+        individually, each using multiple cores
+    -   Say 50 files using 10 cores each, totalling 500 cores across
+        several machines, for one sample
+    -   flowr further supports processing multiple samples in
+        parrellel, spawning thousands of cores.
 -   Reproducible, with cleanly structured execution logs
 -   Track and re-run flows
 -   Lean and Portable, with easy installation
