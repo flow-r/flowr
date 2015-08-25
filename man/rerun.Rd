@@ -4,7 +4,7 @@
 \alias{rerun}
 \alias{rerun.character}
 \alias{rerun.flow}
-\title{rerun}
+\title{Re-run a pipeline in case of hardware or software failures.}
 \usage{
 rerun(x, ...)
 
@@ -14,25 +14,40 @@ rerun(x, ...)
   ...)
 }
 \arguments{
-\item{x}{Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.}
+\item{x}{flow working directory}
 
 \item{...}{not used}
 
-\item{mat}{path to flow_mat. should fetch on the fly}
+\item{mat}{(optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}}
 
-\item{def}{path to should fetch on the fly}
+\item{def}{(optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}}
 
 \item{start_from}{which job to start from}
 
 \item{execute}{[logical] whether to execute or not}
 
-\item{kill}{logical indicating whether to kill the jobs from old flow}
+\item{kill}{(optional) logical indicating whether to kill the jobs from old flow}
 }
 \description{
-rerun
+\itemize{
+\item \strong{hardware} no change required, simple rerun: \code{rerun(x=flow_wd)}
+\item \strong{software} either a change to flowmat or flowdef has been made: \code{rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef)}
+}
+
+\strong{NOTE:}
+
+
+\emph{flow_wd}: flow working directory, the input used for \link{status}
 }
 \details{
-We need path to the flow folder (\code{wd}). The \link{flow} object needs to have upate 'base_path' slow with wd (the path to the flow folder). Also its important to know that we need details regarding the previous submission from flow_details.txt file. Which should typically be in \code{wd}
+This function fetches details regarding the previous execution from the flow working directory (flow_wd).
+
+It reads the flow \link{flow} from the flow_details.rds file, and exteacts flowdef and flowmat for this \link{flow}
+object using \link{to_flowmat} and \link{to_flowdef} functions.
+Optionally if either of these (flowmat or flowdef) are supplied, they are used instead for the new submission.
+
+This functions efficiently updates job details of the latest submission into previous file; thus information
+regarding previous job ids and their status is not lost.
 }
 \examples{
 \dontrun{

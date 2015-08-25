@@ -4,20 +4,41 @@ if(FALSE){
   wd = "/rsrch2/iacs/ngs_runs/1412_tcga_normals/BRCA/logs/brca-2015-02-17-12-42-32-MCscE2AW"
 }
 
-#' @title rerun
-#' @description rerun
+
+#' @title Re-run a pipeline in case of hardware or software failures.
+#' @description 
+#' 
+#' \itemize{
+#' \item \strong{hardware} no change required, simple rerun: \code{rerun(x=flow_wd)}
+#' \item \strong{software} either a change to flowmat or flowdef has been made: \code{rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef)}
+#' }
 #'
+#' \strong{NOTE:}
 #'
-#' @param x Either path to flow folder or the \link{flow} object which has been 'returned' from \link{submit_flow}.
+#' 
+#' \emph{flow_wd}: flow working directory, the input used for \link{status}
+#'
+#' @param x flow working directory
 #' @param execute [logical] whether to execute or not
-#' @param kill logical indicating whether to kill the jobs from old flow
 #' @param start_from which job to start from
-#' @param mat path to flow_mat. should fetch on the fly
-#' @param def path to should fetch on the fly
+#' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
+#' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
+#' @param kill (optional) logical indicating whether to kill the jobs from old flow
 #' @param ... not used
 #'
 #'
-#' @details We need path to the flow folder (\code{wd}). The \link{flow} object needs to have upate 'base_path' slow with wd (the path to the flow folder). Also its important to know that we need details regarding the previous submission from flow_details.txt file. Which should typically be in \code{wd}
+#' @details 
+#' This function fetches details regarding the previous execution from the flow working directory (flow_wd). 
+#' 
+#' It reads the flow \link{flow} from the flow_details.rds file, and exteacts flowdef and flowmat for this \link{flow}
+#' object using \link{to_flowmat} and \link{to_flowdef} functions. 
+#' Optionally if either of these (flowmat or flowdef) are supplied, they are used instead for the new submission.
+#' 
+#' This functions efficiently updates job details of the latest submission into previous file; thus information
+#' regarding previous job ids and their status is not lost.
+#' 
+#' 
+#' 
 #' @export
 #' @examples \dontrun{
 #' rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
@@ -47,7 +68,6 @@ rerun.character <- function(x, ...){
 #' @rdname rerun
 #' @importFrom utils capture.output
 #' @importFrom knitr kable
-#' @export
 rerun.flow <- function(x, mat, def, start_from,
 											 execute = TRUE, kill = TRUE, ...){
 	fobj = x
