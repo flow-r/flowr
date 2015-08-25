@@ -6,7 +6,7 @@
 \alias{fetch_pipes}
 \title{A generic functions to search for files}
 \usage{
-fetch(x, places, urls, verbose = FALSE)
+fetch(x, places, urls, verbose = get_opts("verbose"))
 
 fetch_pipes(x, places, last_only = FALSE,
   urls = get_opts("flowr_pipe_urls"), silent = FALSE, ask = TRUE)
