@@ -18,7 +18,9 @@
 #' @examples {
 #' fetch_conf("torque.sh")
 #' }
-fetch <- function(x, places, urls, verbose = FALSE){
+fetch <- function(x, places, urls, verbose = get_opts("verbose")){
+	if(is.null(verbose))
+		verbose = FALSE
 	y = sapply(places, list.files, pattern = paste0(x, "$"),
 		full.names = TRUE)
 	y = as.character(unlist(y))
@@ -76,7 +78,7 @@ fetch_pipes <- function(x,
 	pipe_print = pipes;
 	pipe_print$def = basename(pipe_print$def)
 	pipe_print$conf = basename(pipe_print$conf)
-	print(kable(pipe_print))
+	if(!silent) print(kable(pipe_print))
 
 	if(last_only){
 		if(nrow(pipes) > 1)
