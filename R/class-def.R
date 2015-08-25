@@ -52,11 +52,6 @@ setClass("moab", contains = "job")
 setClass("slurm", contains = "job")
 
 
-#' @rdname flow
-#' @export
-is.flow <- function(x){
-	class(x)[1] == "flow"
-}
 
 #' flow defines the class
 #' @exportClass flow
@@ -372,6 +367,13 @@ flow <- function(
 		status=status)
 	return(object)
 }
+
+#' @rdname flow
+#' @export
+is.flow <- function(x){
+	class(x)[1] == "flow"
+}
+
 
 if (FALSE){
 

@@ -2,7 +2,7 @@
 #setClass("flowdef", contains = "data.frame")
 #http://www.carlboettiger.info/2013/09/11/extending-data-frame-class.html
 
-#' @rdname as.flowdef
+#' @rdname to_flowdef
 #' @title flow definition
 #' @description  Reeading a flow definition file and checking it.
 #' @param x can be a data.frame or a path for a flow definition file
@@ -27,7 +27,7 @@ as.flowdef <- function(x, ...){
 }
 
 
-#' @rdname as.flowdef
+#' @rdname to_flowdef
 #' @export
 is.flowdef <- function(x){
 	class(x)[1] == "flowdef"

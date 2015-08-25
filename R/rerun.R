@@ -116,11 +116,15 @@ rerun.flow <- function(x, mat, def, start_from,
 		execute = execute,
 		dump = FALSE)
 
+  flowdet = to_flowdet(fobj)
   ## -- need a function to read and update the old flow object with new job submission ids
   fobj = update.flow(fobj, child = fobj2)
 
-  flowdet = to_flowdet(fobj)
   write_flow_details(wd, fobj, flow_det = flowdet)
+  
+  ## get trigger files
+  newdet = subset_fdet(fobj, flowdet, start_from = start_from)
+  if(execute) newdet = file.remove(newdet$trigger)
 
   return(fobj)
 }
@@ -197,6 +201,22 @@ subset_fdef <- function(fobj, def, start_from){
 	return(def)
 }
 
+#' subset flow details file
+#' @param fobj flow object
+#' @param det flowdet
+#' @param start_from where to start from
+#'
+subset_fdet <- function(fobj, det, start_from){
+	
+	if(missing(det))
+		stop("Please supply a flow det file")
+	mods = names(fobj@jobs)
+	mods = mods[which(grepl(start_from, mods)):length(mods)]
+	## get mat
+	det = subset(det, det$jobname %in% mods)
+
+	return(det)
+}
 
 
 

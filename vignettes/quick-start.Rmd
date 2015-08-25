@@ -19,8 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Get started
--------------
+# Get started
 
 
 ```{r eval=FALSE}
@@ -40,7 +39,7 @@ setup()
 ```
 
 
-# Toy example
+## Toy example
 
 
 ```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
@@ -80,20 +79,22 @@ kable(flow_def)
 ```
 
 
-# Stitch
+## Stitch
 
 ```{r, message=FALSE}
 fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
 	flowname = "example1", platform = "lsf")
 ```
 
-# Plot
+## Plot
+
 ```{r plot_example1, fig.cap="Flow chart describing process for example 1", fig.height=5, fig.width=5, message=FALSE}
 plot_flow(fobj)
 ```
 
 
-# Test it
+## Test it
+
 > Dry run (submit)
 
 ```{r eval=FALSE}
@@ -106,7 +107,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
  ~/flowr/type1-20150520-15-18-27-5mSd32G0
 ```
 
-# Submit it !
+## Submit it !
 
 > Submit to the cluster
 
@@ -122,7 +123,7 @@ flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 ```
 
 
-# Check the status
+## Check the status
 
 ```
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE

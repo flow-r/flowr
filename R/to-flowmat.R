@@ -1,6 +1,6 @@
 
 
-#' @rdname as.flowmat
+#' @rdname to_flowmat
 #' @title flow mat
 #'
 #' @description
@@ -76,7 +76,7 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 }
 
 
-#' @rdname as.flowmat
+#' @rdname to_flowmat
 #' @export
 is.flowmat <- function(x){
 	class(x)[1] == "flowmat"
