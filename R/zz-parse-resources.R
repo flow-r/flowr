@@ -1,11 +1,6 @@
 # nocov start
 
 
-get_flow_memory <- function(){
-
-}
-
-
 
 
 set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
@@ -41,7 +36,7 @@ parse_lsf_out <- function(x,
 		avg_mem = avg_mem,
 		max_mem = max_mem,
 		max_swap = max_swap,
-		host = hose,
+		host = host,
 		cores = cores))
 }
 
@@ -96,8 +91,12 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
 	#fobj = read_fobj(wd)
 	flowdet = to_flowdet(wd)
 	flowdet$out = gsub("sh$", "out", flowdet$cmd)
-
-	tmp = mclapply(as.c(flowdet$out), function(x) try(parse_lsf_out(x)), mc.cores = cores)
+	
+	## create new out files in case logs have moved.
+	flowdet$out2 = file.path(wd, basename(dirname(flowdet$cmd)), 
+	                         gsub("sh$", "out", basename(flowdet$cmd)))
+	
+	tmp = mclapply(as.c(flowdet$out2), function(x) try(parse_lsf_out(x)), mc.cores = cores)
 	resources <- do.call(rbind, tmp)
 	mat_res <- cbind(flowdet, resources);dim(mat_res)
 	## restructure for plotting:

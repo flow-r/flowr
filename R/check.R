@@ -1,8 +1,8 @@
 
 #' @rdname check
 #' @title Check consistency of flowdef and flowmat
-#' @description check consistency of objects
-#' Currently checks objects S3 flowdef, flowmat
+#' @description 
+#' Currently checks S3 flowdef & flowmat for consistency.
 #'
 #' @param x a flowdef or flowmat object
 #' @param verbose be chatty

@@ -72,6 +72,11 @@ fetch_pipes <- function(x,
 
 	## in case of multiple files, use the last one
 	r = fetch(paste0("^", x, ".R$"), places = places, urls = urls)
+	
+	## seemed travis was repeating some of them
+	## seen here: http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#available-pipelines
+	r = unique(r)
+	
 	#r = tail(r, 1)
 	def = gsub("R$", "def", r)
 	def = ifelse(file.exists(def), def, NA)
