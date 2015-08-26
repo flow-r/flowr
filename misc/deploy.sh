@@ -12,8 +12,6 @@ rev=$(git rev-parse --short HEAD)
 #rm -rf inst/staticdocs
 git clone "https://$GH_TOKEN@github.com/sahilseth/flowrdocs.git" flowrdocs
 
-git config user.name "Sahil Seth"
-git config user.email "me@sahilseth.com"
 
 ## make relevent changes
 echo `pwd`
@@ -22,6 +20,10 @@ Rscript misc/deploy.R
 
 #touch .
 cd flowrdocs
+
+git config user.name "Sahil Seth"
+git config user.email "me@sahilseth.com"
+
 git add -A .
 git commit -m "rebuild pages at ${rev}"
 git push
