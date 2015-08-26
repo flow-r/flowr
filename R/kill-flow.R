@@ -1,7 +1,12 @@
 
 
 
-#' kill
+#' Killing a pipline requires files which are created at the END of the submit_flow commands.
+#' 
+#' @description 
+#' Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd). 
+#' If submit_flow is interrupted, flow detail files etc are not created, thus flowr can't associate submitted jobs with flow instance.
+#' 
 #'
 #' @param x either path to flow [character] or fobj object of class \link{flow}
 #' @param kill_cmd The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.
@@ -14,8 +19,19 @@
 #' @examples
 #'
 #' \dontrun{
+#' 
 #' ## example for terminal
-#' ## flowr kill_flow x=path_to_flow_directory
+#'## flowr kill_flow x=path_to_flow_directory
+#'## In case path matches multiple folders, flowr asks before killing
+#'kill(x='fastq_haplotyper*')
+#'  Flowr: streamlining workflows
+#'  found multiple wds:
+#'  /fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
+#'  /fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+#'  Really kill all of them ? kill again with force=TRUE
+#'
+#'## submitting again with force=TRUE will kill them:
+#'kill(x='fastq_haplotyper*', force = TRUE)
 #' }
 kill <- function(x, ...) {
 	UseMethod("kill")
@@ -23,7 +39,6 @@ kill <- function(x, ...) {
 
 
 #' @rdname kill
-#' @description works on flow_path. Reads flow object and calls kill.flow()
 #' @importFrom knitr kable
 #' @export
 kill.character <- function(x, force = FALSE, ...){
@@ -41,7 +56,6 @@ kill.character <- function(x, force = FALSE, ...){
 }
 
 #' @rdname kill
-#' @description works on flow object
 #' @export
 kill.flow <- function(x,
 	kill_cmd,

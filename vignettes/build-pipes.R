@@ -10,6 +10,49 @@ knitr::opts_chunk$set(
 library(flowr)
 
 
+## ----eval=FALSE----------------------------------------------------------
+#  install.packages('devtools')
+#  devtools::install_github("sahilseth/flowr")
+
+## ---- message=FALSE------------------------------------------------------
+library(flowr)
+
+## ---- message=FALSE, eval=FALSE------------------------------------------
+#  setup()
+
+## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE----
+#  library(DiagrammeR)
+#  mermaid("
+#  graph LR
+#  A(sleep)-->B(create_few_files)
+#  B-->C{merge them}
+#  C-->D[get size]
+#  ")
+
+## ----echo=FALSE, message=FALSE-------------------------------------------
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
+
+## ----echo=FALSE----------------------------------------------------------
+kable(flow_mat)
+
+## ---- message=FALSE, echo=FALSE------------------------------------------
+kable(flow_def)
+
+## ---- message=FALSE------------------------------------------------------
+fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
+	flowname = "example1", platform = "lsf")
+
+## ----plot_example1, fig.cap="Flow chart describing process for example 1", fig.height=5, fig.width=5, message=FALSE----
+plot_flow(fobj)
+
+## ----eval=FALSE----------------------------------------------------------
+#  submit_flow(fobj)
+
+## ----eval=FALSE----------------------------------------------------------
+#  submit_flow(fobj, execute = TRUE)
+
 ## ----build_pipe_exdata, message=FALSE------------------------------------
 ## ------ load some example data
 ex = file.path(system.file(package = "flowr"), "pipelines")
@@ -98,4 +141,81 @@ fetch_pipes()
 #exdata = file.path(system.file(package = "flowr"), "extdata")
 plat <- params::read_sheet("imgs/platforms_supported.txt", id_column = "Platform")
 kable(plat)
+
+## ----example1, cache = FALSE---------------------------------------------
+read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
+
+## ----define_modules------------------------------------------------------
+#' @param x number of sleep commands
+sleep <- function(x, samplename){
+	cmd = list(sleep = sprintf("sleep %s && sleep %s;echo 'hello'",
+		abs(round(rnorm(x)*10, 0)),
+		abs(round(rnorm(x)*10, 0))))
+	flowmat = to_flowmat(cmd, samplename)
+	return(list(flowmat = flowmat))
+}
+
+#' @param x number of tmp commands
+create_tmp <- function(x, samplename){
+	## Create 100 temporary files
+	tmp = sprintf("%s_tmp_%s", samplename, 1:x)
+	cmd = list(create_tmp = sprintf("head -c 100000 /dev/urandom > %s", tmp))
+	## --- convert the list into a data.frame
+	flowmat = to_flowmat(cmd, samplename)
+	return(list(flowmat = flowmat, outfiles = tmp))
+}
+
+#' @param x vector of files to merge
+merge_size <- function(x, samplename){
+	## Merge them according to samples, 10 each
+	mergedfile = paste0(samplename, "_merged")
+	cmd_merge <- sprintf("cat %s > %s",
+		paste(x, collapse = " "), ## input files
+		mergedfile)
+	## get the size of merged files
+	cmd_size = sprintf("du -sh %s; echo 'MY shell:' $SHELL", mergedfile)
+
+	cmd = list(merge = cmd_merge, size = cmd_size)
+	## --- convert the list into a data.frame
+	flowmat = to_flowmat(cmd, samplename)
+	return(list(flowmat = flowmat, outfiles = mergedfile))
+}
+
+## ----define_pipeline-----------------------------------------------------
+#' @param x number of files to make
+sleep_pipe <- function(x = 3, samplename = "samp1"){
+
+	## call the modules one by one...
+	out_sleep = sleep(x, samplename)
+	out_create_tmp = create_tmp(x, samplename)
+	out_merge_size = merge_size(out_create_tmp$outfiles, samplename)
+
+	## row bind all the commands
+	flowmat = rbind(out_sleep$flowmat,
+		out_create_tmp$flowmat,
+		out_merge_size$flowmat)
+
+	return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
+}
+
+## ------------------------------------------------------------------------
+out = sleep_pipe(x = 3, "sample1")
+flowmat = out$flowmat
+
+kable(flowmat)
+
+## ------------------------------------------------------------------------
+def = to_flowdef(flowmat)
+kable(def)
+
+## ----message=FALSE-------------------------------------------------------
+plot_flow(to_flow(flowmat, def))
+
+## ----message=FALSE-------------------------------------------------------
+def$sub_type = c("scatter", "scatter", "serial", "serial")
+def$dep_type = c("none", "serial", "gather", "serial")
+kable(def)
+
+## ----message=FALSE-------------------------------------------------------
+plot_flow(to_flow(flowmat, def))
 

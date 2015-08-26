@@ -4,7 +4,7 @@
 \alias{kill}
 \alias{kill.character}
 \alias{kill.flow}
-\title{kill}
+\title{Killing a pipline requires files which are created at the END of the submit_flow commands.}
 \usage{
 kill(x, ...)
 
@@ -24,16 +24,24 @@ kill(x, ...)
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
 }
 \description{
-kill
-
-works on flow_path. Reads flow object and calls kill.flow()
-
-works on flow object
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd).
+If submit_flow is interrupted, flow detail files etc are not created, thus flowr can't associate submitted jobs with flow instance.
 }
 \examples{
 \dontrun{
+
 ## example for terminal
 ## flowr kill_flow x=path_to_flow_directory
+## In case path matches multiple folders, flowr asks before killing
+kill(x='fastq_haplotyper*')
+ Flowr: streamlining workflows
+ found multiple wds:
+ /fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
+ /fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+ Really kill all of them ? kill again with force=TRUE
+
+## submitting again with force=TRUE will kill them:
+kill(x='fastq_haplotyper*', force = TRUE)
 }
 }
 

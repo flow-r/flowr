@@ -21,6 +21,157 @@ library(flowr)
 
 ```
 
+# Get started
+
+
+```{r eval=FALSE}
+install.packages('devtools')
+devtools::install_github("sahilseth/flowr")
+```
+
+Run a setup function which copies 'flowr' helper script to enable using flow from shell terminal itself.
+A few examples [here](https://github.com/sahilseth/rfun).
+
+```{r, message=FALSE}
+library(flowr)
+```
+
+```{r, message=FALSE, eval=FALSE}
+setup()
+```
+
+
+## Toy example
+
+
+```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
+library(DiagrammeR)
+mermaid("
+graph LR
+A(sleep)-->B(create_few_files) 
+B-->C{merge them}
+C-->D[get size]
+")
+```
+
+![](imgs/toy.png)
+
+
+```{r echo=FALSE, message=FALSE}
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
+```
+
+A simple example where we have three instances of sleep (wait for few seconds), after completion three tmp jobs are started which create files with some random data. After all these are complete, a merge step follows, which combines them into one big file. Next we use `du` to calculate the size of the resulting file. 
+
+.. note:: 
+This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
+
+The table below is referred to as [flow_mat](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-mat-a-table-with-shell-commands-to-run).
+
+```{r echo=FALSE}
+kable(flow_mat)
+```
+
+We use an additional file specifying relationship between the steps, and also other resource requirements [flow_def](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition).
+
+```{r, message=FALSE, echo=FALSE}
+kable(flow_def)
+```
+
+
+## Stitch
+
+```{r, message=FALSE}
+fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
+	flowname = "example1", platform = "lsf")
+```
+
+## Plot
+
+```{r plot_example1, fig.cap="Flow chart describing process for example 1", fig.height=5, fig.width=5, message=FALSE}
+plot_flow(fobj)
+```
+
+
+## Test it
+
+> Dry run (submit)
+
+```{r eval=FALSE}
+submit_flow(fobj)
+```
+
+```
+Test Successful!
+You may check this folder for consistency. Also you may re-run submit with execute=TRUE
+ ~/flowr/type1-20150520-15-18-27-5mSd32G0
+```
+
+## Submit it !
+
+> Submit to the cluster
+
+```{r eval=FALSE}
+submit_flow(fobj, execute = TRUE)
+```
+
+```
+Flow has been submitted. Track it from terminal using:
+flowr::status(x="~/flowr/type1-20150520-15-18-46-sySOzZnE")
+OR
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+```
+
+
+## Check the status
+
+```
+flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+```
+
+```
+Loading required package: shape
+Flowr: streamlining workflows
+Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
+
+
+|          | total| started| completed| exit_status|
+|:---------|-----:|-------:|---------:|-----------:|
+|001.sleep |    10|      10|        10|           0|
+|002.tmp   |    10|      10|        10|           0|
+|003.merge |     1|       1|         1|           0|
+|004.size  |     1|       1|         1|           0|
+```
+
+## Killing a flow
+
+```
+
+## kill one flow
+## flowr kill_flow x=flow_wd
+
+## In case path matches multiple folders, flowr asks before killing
+kill(x='fastq_haplotyper*')
+##	Flowr: streamlining workflows
+##	found multiple wds:
+##	./fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
+##	/fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+
+##	Really kill all of them ? kill again with force=TRUE
+
+## submitting again with force=TRUE will kill them:
+kill(x='fastq_haplotyper*', force = TRUE)
+```
+
+.. note::
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd). If submit_flow is interrupted, flow detail files etc are not created, thus flowr can't associate submitted jobs with flow instance.
+
+
+.. note::
+Interested? Here are some details on [building pipelines](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html)
+
 
 # Building Pipelines
 
@@ -366,6 +517,65 @@ Send a [message](mailto:sahil.seth@me.com)
 [Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
 
 
+# Building a pipeline, by example
+
+```{r example1, cache = FALSE}
+read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
+```
+
+
+## Define modules
+```{r define_modules}
+
+```
+
+## Define the pipeline
+```{r define_pipeline}
+
+```
+
+## Generate flowmat
+```{r}
+out = sleep_pipe(x = 3, "sample1")
+flowmat = out$flowmat
+
+kable(flowmat)
+```
+
+## Create flow definition
+### We have a helper function which generates a skeleton flow_def
+```{r}
+def = to_flowdef(flowmat)
+kable(def)
+```
+
+## Default flowdef
+```{r message=FALSE}
+plot_flow(to_flow(flowmat, def))
+```
+
+By default the flowdef seems quite conservative.
+
+### Change the dependency type for merge step into gather
+It might be easier to do such, by hand. In this example let do this in R itself.
+```{r message=FALSE}
+def$sub_type = c("scatter", "scatter", "serial", "serial")
+def$dep_type = c("none", "serial", "gather", "serial")
+kable(def)
+```
+
+### Plot flow
+
+Now this looks better. 
+
+- multiple sleep commands would run in parallel
+- For each sleep, create_tmp creates a file
+- All tmp files are merged; when all are complete: gather
+- Then we get size on the resulting file
+
+```{r message=FALSE}
+plot_flow(to_flow(flowmat, def))
+```
 
 
 
