@@ -11,9 +11,9 @@ flowopts = new.env()
 #' @description
 #' There are three helper functions which attempt to manage params used by flowr and ngsflows:
 #' \itemize{
-#' \item \link{get_opts} OR \code{opts_flow$get}: show all default options
-#' \item \link{set_opts} OR \code{opts_flow$set}: set default options
-#' \item \link{load_opts} OR \code{opts_flow$load}: load options specified in a tab seperated text file
+#' \item \link{get_opts} OR \code{opts_flow\$get()}: show all default options
+#' \item \link{set_opts} OR \code{opts_flow\$set()}: set default options
+#' \item \link{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
 #' }
 #' For more details regarding these funtions refer to \link{params}.
 #'
@@ -67,23 +67,21 @@ flowopts = new.env()
 #'
 #' @export
 #' @importFrom params new_opts
+
 opts_flow = new_opts(flowopts)
 
 
 
-#' @rdname opts_flow
 #' @export
 get_opts <- function(...){
 	opts_flow$get(...)
 }
 
-#' @rdname opts_flow
 #' @export
 set_opts <- function(...){
 	opts_flow$set(...)
 }
 
-#' @rdname opts_flow
 #' @export
 load_opts <- function(...){
 	opts_flow$load(...)

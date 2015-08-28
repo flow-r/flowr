@@ -69,7 +69,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' the flow was executed. It would include details like jobids, path to exact scripts run etc.
 #' To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 #'
-#' \subsection{Behaviour:}{
+#' \strong{Behaviour:}{
 #' What goes in, and what to expect in return?
 #' \itemize{
 #' \item submit=FALSE & execute=FALSE: Create and return a flow object
@@ -208,6 +208,14 @@ to_flow.flowmat <- function(x, def,
 
 	invisible(fobjs)
 }
+
+#' @rdname to_flow
+#' @export
+to_flow.data.frame = function(x, ...){
+	## if a data.frame is supplied instead of a flowmat class
+	to_flow(as.flowmat(x))
+}
+	
 
 
 #' @description a named list of commands for a sample. Its best to supply a flowmat instead.
