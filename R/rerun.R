@@ -16,28 +16,29 @@ if(FALSE){
 #' \strong{NOTE:}
 #'
 #' 
-#' \emph{flow_wd}: flow working directory, the input used for \link{status}
+#' \emph{flow_wd}: flow working directory, same input as used for \link{status}
 #'
 #' @param x flow working directory
 #' @param execute [logical] whether to execute or not
-#' @param start_from which job to start from
+#' @param start_from which job to start from, this is a job name.
 #' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
-#' @param kill (optional) logical indicating whether to kill the jobs from old flow
+#' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
 #' @param ... not used
 #'
 #'
 #' @details 
 #' This function fetches details regarding the previous execution from the flow working directory (flow_wd). 
 #' 
-#' It reads the flow \link{flow} from the flow_details.rds file, and exteacts flowdef and flowmat for this \link{flow}
-#' object using \link{to_flowmat} and \link{to_flowdef} functions. 
-#' Optionally if either of these (flowmat or flowdef) are supplied, they are used instead for the new submission.
+#' It reads the \link{flow} object from the flow_details.rds file, and extracts flowdef and flowmat from it 
+#' using \link{to_flowmat} and \link{to_flowdef} functions.
 #' 
-#' This functions efficiently updates job details of the latest submission into previous file; thus information
+#' \strong{New flowmat / flowdef} for re-run:
+#' 
+#' Optionally, if either of these (flowmat or flowdef) are supplied, supplied ones are used instead for the new submission.
+#' 
+#' This functions efficiently updates job details of the latest submission into the previous file; thus information
 #' regarding previous job ids and their status is not lost.
-#' 
-#' 
 #' 
 #' @export
 #' @examples \dontrun{
