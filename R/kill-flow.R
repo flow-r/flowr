@@ -1,17 +1,22 @@
 
 
 
-#' Killing a pipline requires files which are created at the END of the submit_flow commands.
+#' Kill all jobs submitted to the computing platform, for one or multiple flows
+#' 
 #' 
 #' @description 
+#' \strong{A pipeline requires files which are created at the end of the submit_flow command}.
+#' 
 #' Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd). 
-#' If submit_flow is interrupted, flow detail files etc are not created, thus flowr can't associate submitted jobs with flow instance.
+#' If submit_flow is interrupted, flow_details etc files are not created, thus flowr looses the association 
+#' of jobs with flow instance.
 #' 
 #'
-#' @param x either path to flow [character] or fobj object of class \link{flow}
-#' @param kill_cmd The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.
+#' @param x either path to flow wd or object of class \link{flow}
 #' @param jobid_col Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill
-#' @param force When killing multiple flows, force is neccesary. This makes sure multiple flows are killed by accident.
+#' @param kill_cmd The command used to kill. flowr tries to guess this commands, as defined in the detect_kill_cmd(). Supplying
+#' it here; fot custom platoforms.
+#' @param force You need to set force=TRUE, to kill multiple flows. This makes sure multiple flows are NOT killed by accident.
 #' @param ... not used
 #'
 #'
