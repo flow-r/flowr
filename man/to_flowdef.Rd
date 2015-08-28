@@ -49,12 +49,9 @@ is.flowdef(x)
 \item{...}{passed onto check.flowdef}
 }
 \description{
-Creation of a skeleton flow definition with several default values.
-
-All params may be of length one, or same as the number of jobnames
-
-to_flowdef.character: x is a flowmat file.
-
-Reeading a flow definition file and checking it.
+This function enables creation of a skeleton flow definition with several default values, using a
+flowmat.
+To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront.
+As such, these params must be of the same length as number of unique jobs using in the flowmat.
 }
 
