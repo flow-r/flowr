@@ -168,13 +168,16 @@ display_mat <- function(x){
 #' @param detailed detailed
 #' @param pdf pdf
 calc_boxdim <- function(x, detailed, pdf){
+	
+	h = dev.size("cm")[2] ## height
+	
 	if(x > 15)
 		message("Plotting may not be pretty with big flows",
 						"try with detailed = FALSE OR",
 						"")
 	
 	## eq from eureka
-	ht = 0.041751221004381 - 0.000583347999406836*x
+	ht = round(0.05 - 0.0013*x, 3)
 	
 	if(!detailed)
 		ht = ht - 0.01
@@ -182,10 +185,40 @@ calc_boxdim <- function(x, detailed, pdf){
 	if(pdf)
 		ht = ht - 0.01
 	
-	wd = ht + 0.02
-	detail.offset = c(0, ht*0.5)
+	wd = ht * 1.3
+	
+	detail.offset = c(0, ht*0.6) ## tweak the offset a little
 	list(wd = wd, ht = ht, detail.offset = detail.offset)
 }
+
+#' Calculate font size based on the size of the window
+#' @param x box height
+calc_fontsize <- function(x){
+	## get height of the window
+	h = dev.size("px")[2]
+	cex =  0.2 + 0.001*h + 3*x
+	cex_detail = 0.6*cex
+	list(cex = cex, cex_detail = cex_detail)
+}
+
+#' uses height of the box
+calc_shadowsize <- function(x){
+	## get height of the window
+	sz = x * 0.013
+	by = sz * 3
+	seq(from=sz, by=by, length.out = 4)
+}
+
+
+calc_arrows <- function(x){
+
+	lwd=x*40;
+	len=lwd * 0.2;
+	pos=0.55
+	
+	list(lwd = lwd, len = len, pos = pos)
+}
+
 
 #' @importFrom grDevices dev.off
 #' @importFrom graphics par
@@ -195,7 +228,9 @@ calc_boxdim <- function(x, detailed, pdf){
 																 pdf = FALSE,
 																 ## vector of columns to be used in plotting
 																 pdffile = sprintf("flow_details.pdf"),
-																 width, height, ...){
+																 width, height, 
+																 verbose = get_opts("verbose"), 
+																 ...){
 
 	if (missing(height))  height = 2.5 * nrow(x)
 	if (missing(width)) width = 2 * nrow(x)
@@ -221,18 +256,34 @@ calc_boxdim <- function(x, detailed, pdf){
 	boxwd=tmp$wd;boxht=tmp$ht;
 	
 	box.lcol = "gray26"
-	shadow.sizes.scatter = seq(from=0.001, by=0.003, length.out = 4);
-	shadow.sizes.serial=c(0.001)
-	arr.col="gray26";arr.lwd=3;arr.len=0.6; arr.pos=0.55
-	curves=c(-0.2,0.2);arr.lwd.curve=2;
-	textsize = 1.1;textcol = "gray30"
-	detail.cex = 0.8; detail.offset = tmp$detail.offset
+	shadow.sizes.scatter = calc_shadowsize(boxht)
+	shadow.sizes.serial=shadow.sizes.scatter[1]
+	
+	fontsize = calc_fontsize(boxht)
+	cex = fontsize$cex
+	cex_detail = fontsize$cex_detail
+	textcol = "gray30"
+	detail.offset = tmp$detail.offset
+	
+	## arrows
+	arr.col="gray26";
+	arr = calc_arrows(boxht)
+	arr.lwd = arr$lwd
+	arr.len = arr$len
+	arr.pos = arr$pos
+	curves=c(-0.2,0.2);
+
+	## final params:
+	message("using size: ", cex, " ", cex_detail, 
+					"\nbox: H X W ", boxht, " X ", boxwd,
+					"\narr: lwd, len, pos: ", arr.lwd, " ", arr.len, " ", arr.pos)
+	
 
 	#detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
 	detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
 	detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
 	## --------------- start plotting
-	par(mar = c(1, 1, 1, 1)) ## how much margin to leave around...
+	par(mar = c(0, 0, 0, 0)) ## how much margin to leave around...
 	if (pdf) pdf(file=pdffile, width = width, height = height)
 	openplotmat()
 
@@ -243,7 +294,7 @@ calc_boxdim <- function(x, detailed, pdf){
 			from = elpos[dat_dep$prev_jobid[i], ]
 			if (dat_dep$dep_type[i]=="gather"){
 				for(curve in curves)
-					curvedarrow (to = to, from = from, lwd = arr.lwd.curve, arr.pos = arr.pos,
+					curvedarrow (to = to, from = from, lwd = arr.lwd, arr.pos = arr.pos,
 											 arr.length = arr.len,
 											 segment=c(0.2,0.8), curve=curve, arr.col=arr.col, lcol=arr.col)
 			}
@@ -259,12 +310,12 @@ calc_boxdim <- function(x, detailed, pdf){
 		}else{shadow.sizes=shadow.sizes.serial}
 		for(shadow in shadow.sizes)
 			textrect(elpos[i,], radx=boxwd, rady=boxht, lab = lab, shadow.col = shadow.col,
-							 shadow.size = shadow, lcol=box.lcol,cex = textsize, col=textcol)
+							 shadow.size = shadow, lcol=box.lcol,cex = cex, col=textcol)
 		if (detailed){
 			textplain(elpos[i,] + detail.offset, boxht, lab = detailed.labs.dep[i],
-								cex=detail.cex, col=textcol)
+								cex=cex_detail, col=textcol)
 			textplain(elpos[i,] - detail.offset, boxht, lab = detailed.labs.sub[i],
-								cex=detail.cex, col=textcol)
+								cex=cex_detail, col=textcol)
 		}
 	}
 	if (pdf) dev.off()
