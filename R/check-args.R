@@ -40,21 +40,25 @@ check_args <- function(ignore, select){
 	if(!missing(select))
 		args = args[args %in% select]
 	
-	needtoexit = FALSE
-	for (i in 1:length(args)) {
-		var = args[[i]]
+	miss = sapply(args, function(var){
 		val = get(var, env)
-		if (is.null(val)) {
-			message("Checking arguments for function: ", fn, ", value of '", var, "' is null.")
-			needtoexit = TRUE
-		}
+		return(var)
+	})
+	miss = unlist(miss) ## vars which are missing
+	
+	if ( !is.null(miss) ){
+		message("Checking arguments for function: ", fn, "\n")
+		message("value of following variables is null: '", paste(miss, collapse = ", "))
+		stop("There are several options to fix this:
+				 1. Use set_opts(variable1 = 'value', var1 = 'value') format to define these variables.
+				 2. If this function was called directly, you may simply supply these arguments to this function.
+				 3. Add these parameters to configuration files.
+				 Two such examples are: ngsflows.conf and flowr.conf which reside in ~/flowr/conf folder < or equivalent >. ",
+				 "Typically one would add generic options in flowr.conf and ngs specific options in ngsflows.conf. ", 
+				 "Additionally, options very specific to a single pipeline in may be put in <mypipeline>.conf. ",
+				 "The file <mypipeline>.conf sits in the same place as the pipeline itself. ",
+				 "Try fetch_pipes() for examples and help(fetch_pipes) for more details.")
 	}
-	if (needtoexit) 
-		stop("Add these parameters to ngsflows.conf OR flowr.conf OR <mypipeline>.conf ",
-				 "based one what they pertain to. One approach is having all generic options in flowr.conf, ",
-				 "generic ngs related options in ngsflows.conf. And options very specific to a single pipeline in,",
-				 "<mypipeline.conf>. The file <mypipeline.conf> sits in the same place as pipeline flow definition ",
-				 "and its respective R file. Try fetch_pipe() for examples and help(fetch_pipes) for more details.")
 }
 
 
