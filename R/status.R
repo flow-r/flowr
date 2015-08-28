@@ -44,6 +44,10 @@ status <- function(x, out_format = "markdown"){
 	## get the total jobs
 	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
 	
+	if(missing(x))
+		stop("Please provide a path to a flow wd. x='my-awesome-flowpath'")
+		
+	## if a flow object it specified
 	if(is.flow(x))
 		get_status(x)
 
