@@ -274,7 +274,7 @@ calc_arrows <- function(x){
 	curves=c(-0.2,0.2);
 
 	## final params:
-	message("using size: ", cex, " ", cex_detail, 
+	if(verbose) message("using size: ", cex, " ", cex_detail, 
 					"\nbox: H X W ", boxht, " X ", boxwd,
 					"\narr: lwd, len, pos: ", arr.lwd, " ", arr.len, " ", arr.pos)
 	
