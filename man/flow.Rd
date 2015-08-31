@@ -8,7 +8,7 @@
 flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
   mode = c("scheduler", "trigger", "R"),
   flow_run_path = get_opts("flow_run_path"), trigger_path = "",
-  flow_path = "", version = "0.0", status = "", execute = "")
+  flow_path = "", version = "0.0", status = "created", execute = "")
 
 is.flow(x)
 }
@@ -57,7 +57,7 @@ jobj2 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial",
 ## As soon as first job on 'job1' is complete
 ## One-To-One
 jobj3 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter",
- dependency_type = "serial", previous_job = "job1", name = "job3")
+ dependency_type = "burst", previous_job = "job1", name = "job3")
 
 fobj <- flow(jobs = list(jobj1, jobj2, jobj3))
 

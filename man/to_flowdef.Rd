@@ -43,10 +43,6 @@ is.flowdef(x)
 \item{cpu_reserved}{number of cpu's required}
 
 \item{walltime}{amount of walltime required}
-
-\item{x}{can be a data.frame or a path for a flow definition file}
-
-\item{...}{passed onto check.flowdef}
 }
 \description{
 This function enables creation of a skeleton flow definition with several default values, using a

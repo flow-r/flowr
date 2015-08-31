@@ -33,10 +33,6 @@ is.flowmat(x)
 \item{jobname_col}{column specifying jobname, default jobname}
 
 \item{cmd_col}{column specifying commands to run, default cmd}
-
-\item{x}{a data.frame or path to file with flow details in it.}
-
-\item{...}{not used}
 }
 \description{
 Taking in a named list and returns a two columns data.frame

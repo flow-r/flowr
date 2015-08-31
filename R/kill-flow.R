@@ -56,6 +56,11 @@ kill.character <- function(x, force = FALSE, ...){
 	}
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
+		if(!is.flow(fobj))
+			message("\n\nflowr can only kill flows, where the jobs ids are available. ",
+						 "Please check and confirm that the path supplied is correct, ", 
+						 "and that it has a flow_details.rds file. \n ls -l ", x[i])
+		stop("")
 		kill.flow(fobj, ...)
 	}
 }

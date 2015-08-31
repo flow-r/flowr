@@ -65,11 +65,9 @@ to_flowmat.flow <- function(x, ...){
 #' @description
 #' as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.
 #'
-#' @param x a data.frame or path to file with flow details in it.
 #' @param grp_col column used for grouping, default samplename.
 #' @param jobname_col column specifying jobname, default jobname
 #' @param cmd_col column specifying commands to run, default cmd
-#' @param ... not used
 #'
 #' @export
 as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){

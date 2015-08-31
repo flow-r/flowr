@@ -202,6 +202,8 @@ calc_fontsize <- function(x){
 }
 
 #' uses height of the box
+#'
+#' @param x boxht
 calc_shadowsize <- function(x){
 	## get height of the window
 	sz = x * 0.013
@@ -210,6 +212,9 @@ calc_shadowsize <- function(x){
 }
 
 
+#' Title
+#'
+#' @param x boxht
 calc_arrows <- function(x){
 
 	lwd=x*40;
