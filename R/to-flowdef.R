@@ -2,54 +2,17 @@
 #setClass("flowdef", contains = "data.frame")
 #http://www.carlboettiger.info/2013/09/11/extending-data-frame-class.html
 
-#' @rdname to_flowdef
-#' @title flow definition
-#' @description  Reeading a flow definition file and checking it.
-#' @param x can be a data.frame or a path for a flow definition file
-#' @param ... passed onto check.flowdef
-#' @export
-as.flowdef <- function(x, ...){
-	## ---- assuming x is a file
-	if(is.flowdef(x))
-		return(check(x))
-	if(is.data.frame(x))
-		y = x
-	if(is.character(x)){
-		if(!file.exists(x))
-			stop(error("no.def"), x)
-		message("def seems to be a file, reading it...")
-		y <- read_sheet(x, id_column = "jobname")
-	}
-	y$jobid <- 1:nrow(y)
-	class(y) <- c("flowdef", "data.frame")
-	y = check(y, ...)
-	return(y)
-}
-
-
-#' @rdname to_flowdef
-#' @export
-is.flowdef <- function(x){
-	class(x)[1] == "flowdef"
-}
-
-
-## needs two new functions:
-## check resources
-## check relationships
-
-
-
-## -----------   this section deals with making a skeleton flowdef
 
 
 #' @rdname to_flowdef
 #' @title
 #' Create a skeleton flow definition using a flowmat.
 #'
-#' @description Creation of a skeleton flow definition with several default values.
-#'
-#' All params may be of length one, or same as the number of jobnames
+#' @description 
+#' This function enables creation of a skeleton flow definition with several default values, using a 
+#' flowmat.
+#' To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront.
+#' As such, these params must be of the same length as number of unique jobs using in the flowmat.
 #'
 #' @param x can a path to a flowmat, flomat or flow object.
 #' @param sub_type submission type, one of: scatter, serial. Character, of length one or same as the number of jobnames
@@ -153,7 +116,6 @@ to_flowdef.flow <- function(x, ...){
 
 
 #' @rdname to_flowdef
-#' @description to_flowdef.character: x is a flowmat file.
 #' @importFrom utils write.table
 #' @export
 to_flowdef.character <- function(x, ...){
@@ -167,6 +129,42 @@ to_flowdef.character <- function(x, ...){
 	invisible(def)
 }
 
+
+#' @rdname to_flowdef
+#' @export
+as.flowdef <- function(x, ...){
+	## ---- assuming x is a file
+	if(is.flowdef(x))
+		return(check(x))
+	if(is.data.frame(x))
+		y = x
+	if(is.character(x)){
+		if(!file.exists(x))
+			stop(error("no.def"), x)
+		message("def seems to be a file, reading it...")
+		y <- read_sheet(x, id_column = "jobname")
+	}
+	y$jobid <- 1:nrow(y)
+	class(y) <- c("flowdef", "data.frame")
+	y = check(y, ...)
+	return(y)
+}
+
+
+#' @rdname to_flowdef
+#' @export
+is.flowdef <- function(x){
+	class(x)[1] == "flowdef"
+}
+
+
+## needs two new functions:
+## check resources
+## check relationships
+
+
+
+## -----------   this section deals with making a skeleton flowdef
 
 
 ## examples

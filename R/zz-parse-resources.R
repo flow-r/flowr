@@ -1,11 +1,6 @@
 # nocov start
 
 
-get_flow_memory <- function(){
-
-}
-
-
 
 
 set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
@@ -19,6 +14,7 @@ parse_lsf_out <- function(x,
 	scale_time = 1/3600,
 	n = 100,
 	time_format = get_opts("time_format")){
+	
 	text <- scan(x, what = "character", sep = "\n")
 
 	cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
@@ -31,12 +27,17 @@ parse_lsf_out <- function(x,
 	max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]))
 	max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]))
 
+	host = gsub(".*host <([a-z0-9]*)>.*", "\\1", grep("host <.*>", text, value = TRUE))
+	cores = gsub(".*ptile=(.*)\\].*", "\\1", grep("ptile=", text, value = TRUE))
+	
 	return(list(cpu_time = as.numeric(cpu_time) * scale_time,
 		bgn_time = bgn_time,
 		end_time = end_time,
 		avg_mem = avg_mem,
 		max_mem = max_mem,
-		max_swap = max_swap))
+		max_swap = max_swap,
+		host = host,
+		cores = cores))
 }
 
 #' @title get_resources
@@ -90,8 +91,12 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
 	#fobj = read_fobj(wd)
 	flowdet = to_flowdet(wd)
 	flowdet$out = gsub("sh$", "out", flowdet$cmd)
-
-	tmp = mclapply(as.c(flowdet$out), function(x) try(parse_lsf_out(x)), mc.cores = cores)
+	
+	## create new out files in case logs have moved.
+	flowdet$out2 = file.path(wd, basename(dirname(flowdet$cmd)), 
+	                         gsub("sh$", "out", basename(flowdet$cmd)))
+	
+	tmp = mclapply(as.c(flowdet$out2), function(x) try(parse_lsf_out(x)), mc.cores = cores)
 	resources <- do.call(rbind, tmp)
 	mat_res <- cbind(flowdet, resources);dim(mat_res)
 	## restructure for plotting:
@@ -102,6 +107,7 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
 	mat_res$bgn_time = unlist(mat_res$bgn_time)
 	mat_res$end_time = unlist(mat_res$end_time)
 	mat_res$wd = basename(wd)
+	#mat_res$node = 
 
 	dat = reshape2::melt(mat_res,
 						 measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu", "bgn_time", "end_time"))

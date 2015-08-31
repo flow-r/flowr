@@ -4,7 +4,7 @@
 \alias{kill}
 \alias{kill.character}
 \alias{kill.flow}
-\title{kill}
+\title{Kill all jobs submitted to the computing platform, for one or multiple flows}
 \usage{
 kill(x, ...)
 
@@ -13,27 +13,39 @@ kill(x, ...)
 \method{kill}{flow}(x, kill_cmd, jobid_col = "job_sub_id", ...)
 }
 \arguments{
-\item{x}{either path to flow [character] or fobj object of class \link{flow}}
+\item{x}{either path to flow wd or object of class \link{flow}}
 
 \item{...}{not used}
 
-\item{force}{When killing multiple flows, force is neccesary. This makes sure multiple flows are killed by accident.}
+\item{force}{You need to set force=TRUE, to kill multiple flows. This makes sure multiple flows are NOT killed by accident.}
 
-\item{kill_cmd}{The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.}
+\item{kill_cmd}{The command used to kill. flowr tries to guess this commands, as defined in the detect_kill_cmd(). Supplying
+it here; fot custom platoforms.}
 
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
 }
 \description{
-kill
+\strong{A pipeline requires files which are created at the end of the submit_flow command}.
 
-works on flow_path. Reads flow object and calls kill.flow()
-
-works on flow object
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd).
+If submit_flow is interrupted, flow_details etc files are not created, thus flowr looses the association
+of jobs with flow instance.
 }
 \examples{
 \dontrun{
+
 ## example for terminal
 ## flowr kill_flow x=path_to_flow_directory
+## In case path matches multiple folders, flowr asks before killing
+kill(x='fastq_haplotyper*')
+ Flowr: streamlining workflows
+ found multiple wds:
+ /fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
+ /fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+ Really kill all of them ? kill again with force=TRUE
+
+## submitting again with force=TRUE will kill them:
+kill(x='fastq_haplotyper*', force = TRUE)
 }
 }
 

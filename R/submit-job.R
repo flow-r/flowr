@@ -139,6 +139,9 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	l$TRIGGER = jobj@trigger[index]
 
 	## --- apply whisker.render on {{CMD}}
+	## render user CMD, if it has {{{CPU}}} etc...
+	l$CMD = gsub("%>", "}}}", gsub("<%", "{{{", l$CMD, fixed = TRUE))
+	l$CMD = whisker_render(l$CMD, data = l)$out
 
 
 	## --- find the relevent conf file(s)
@@ -148,8 +151,6 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	template <- paste(readLines(plat_conf), collapse = "\n")
 	#out = whisker.render(template = template, data = l)
 
-	## render user CMD, if it has {{{CPU}}} etc...
-	l$CMD = whisker_render(l$CMD, data = l)$out
 	## render HPCC script, if it has {{{CPU}}} etc...
 	out = whisker_render(template, data = l)$out
 

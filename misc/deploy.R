@@ -1,6 +1,17 @@
+
+install.packages("drat", repos = "http://cran.rstudio.com")
+library(drat)
+addRepo("sahilseth")
+
+install.packages("ngsflows", repos = "http://cran.rstudio.com")
+#library(ngsflows)
+
+
 library(readthedocs)
 require(flowr)
 require(knitr)
+
+
 
 if(Sys.info()['sysname'] == "Darwin"){
 	outwd = "../github_flowrdocs/source/rd"

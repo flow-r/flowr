@@ -1,12 +1,22 @@
 
 
 
-#' kill
+#' Kill all jobs submitted to the computing platform, for one or multiple flows
+#' 
+#' 
+#' @description 
+#' \strong{A pipeline requires files which are created at the end of the submit_flow command}.
+#' 
+#' Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd). 
+#' If submit_flow is interrupted, flow_details etc files are not created, thus flowr looses the association 
+#' of jobs with flow instance.
+#' 
 #'
-#' @param x either path to flow [character] or fobj object of class \link{flow}
-#' @param kill_cmd The command used to kill. Default is 'bkill' (LSF). One can used qdel for 'torque', 'sge' etc.
+#' @param x either path to flow wd or object of class \link{flow}
 #' @param jobid_col Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill
-#' @param force When killing multiple flows, force is neccesary. This makes sure multiple flows are killed by accident.
+#' @param kill_cmd The command used to kill. flowr tries to guess this commands, as defined in the detect_kill_cmd(). Supplying
+#' it here; fot custom platoforms.
+#' @param force You need to set force=TRUE, to kill multiple flows. This makes sure multiple flows are NOT killed by accident.
 #' @param ... not used
 #'
 #'
@@ -14,8 +24,19 @@
 #' @examples
 #'
 #' \dontrun{
+#' 
 #' ## example for terminal
-#' ## flowr kill_flow x=path_to_flow_directory
+#'## flowr kill_flow x=path_to_flow_directory
+#'## In case path matches multiple folders, flowr asks before killing
+#'kill(x='fastq_haplotyper*')
+#'  Flowr: streamlining workflows
+#'  found multiple wds:
+#'  /fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
+#'  /fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+#'  Really kill all of them ? kill again with force=TRUE
+#'
+#'## submitting again with force=TRUE will kill them:
+#'kill(x='fastq_haplotyper*', force = TRUE)
 #' }
 kill <- function(x, ...) {
 	UseMethod("kill")
@@ -23,7 +44,6 @@ kill <- function(x, ...) {
 
 
 #' @rdname kill
-#' @description works on flow_path. Reads flow object and calls kill.flow()
 #' @importFrom knitr kable
 #' @export
 kill.character <- function(x, force = FALSE, ...){
@@ -36,12 +56,16 @@ kill.character <- function(x, force = FALSE, ...){
 	}
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
+		if(!is.flow(fobj))
+			message("\n\nflowr can only kill flows, where the jobs ids are available. ",
+						 "Please check and confirm that the path supplied is correct, ", 
+						 "and that it has a flow_details.rds file. \n ls -l ", x[i])
+		stop("")
 		kill.flow(fobj, ...)
 	}
 }
 
 #' @rdname kill
-#' @description works on flow object
 #' @export
 kill.flow <- function(x,
 	kill_cmd,

@@ -93,17 +93,23 @@ setClass("flow", representation(jobs = "list",
 #'
 #'
 #' @details
-#' ## Resources:
+#' \strong{Resources}:
 #' Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
 #' job level they overwrite the one supplied in \link{queue}
 #' Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
-#' ## Server:
+#' 
+#' \strong{Server}:
 #' This a hook which may be implemented in future.
-#' ## Submission script:
+#' 
+#' \strong{Submission script}
 #' The 'platform' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
+#' 
 #' @inheritParams job
+#' 
 #' @keywords queue
+#' 
 #' @export
+#' 
 #' @examples
 #' qobj <- queue(platform='lsf')
 queue <- function(object,
@@ -328,7 +334,7 @@ job <- function(cmds = "",
 #' ## As soon as first job on 'job1' is complete
 #' ## One-To-One
 #' jobj3 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter",
-#'  dependency_type = "serial", previous_job = "job1", name = "job3")
+#'  dependency_type = "burst", previous_job = "job1", name = "job3")
 #'
 #' fobj <- flow(jobs = list(jobj1, jobj2, jobj3))
 #'
@@ -350,7 +356,7 @@ flow <- function(
 	trigger_path = "",
 	flow_path = "",
 	version = '0.0',
-	status="",
+	status="created",
 	execute = ""){
 	mode <- match.arg(mode)
 	## create a list of jobs if nore already

@@ -36,12 +36,12 @@ r_github_packages:
   - sahilseth/readthedocs
   - jimhester/covr
 
-env:
-  global:
-    - secure: "0HVT8Y/8P4EUdJqnEL2kWHTkkpLQRJbMRZZxLvrwgXpyXvhUF9+saDDvj95w/lyfSwIfyONn8V307jvX8QspRe+/ltcgbzqJOnfPepyVkK0Iuxexn6BYfqxJl26id7SGP2eJ/aZEzASRpyL42jDbUOhksroiktvLF8Sqwwy0XPQqeH+e/zf+x5AD7p8svJcTs/zP7lK07LfYuNaAt8KgTujlzolG5pcOixeLP/bFWpS4+eEVV4ViaZnfMdg13BXXixCsdCwCv6tVJgo+rkkAoC1Aw5gVyNGheJ2/3M5MQxz38RrdURG40Jb/6qu+98B1JpFzuhqcC12iE11em5aYkbDrCVmJQuZ7KFWJWH9YSVTYvhQ+qI5qCqy7bRl1jr0Z7KvS65EBm3tC6He842MLB0OQaW1HUWcFjMBD1S7YWHluJcWpYgxB6wqPcGGhBgfvl9WpHadWKqQbVjImzUBbnM09uceMDJAIynW6318OEftV0WnG/JM04PKm5rjitOY3KxSIlOYWK4H+hpT8ximh19tQokaJtWHHaoKduoKriNUYCX96dEzE6jt7JbFcuUI/RTKiVEcPcy3XvPmyg3datlss/Bo7Rlo/fvLZ/eRjwL5COQTf5cPVutm0OgIvjSJZcittXeN0Q/JadrUIraq/jhWcmQzPKheEiTd++NXaxTo="
   
 after_success:
-  - Rscript -e 'covr::codecov()'
   - R CMD INSTALL .
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy.sh
+  
+  
+#- Rscript -e 'covr::codecov()'
+  
 

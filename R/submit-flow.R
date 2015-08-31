@@ -42,7 +42,17 @@ parse_prevjobids <- function(x){
 
 }
 
-
+status_cat <- function(x){
+	if(x == "") return(0)
+	nums = c("created" = 0,
+		"dry-run" = 1,
+		"submitted" = 2,
+		"running" = 3,
+		"exited" = 4,
+		"completed" = 5
+	)
+	nums[x]
+}
 
 #' @rdname submit_flow
 #' @param .start_jid Job to start this submission from. Advanced use, should be 1 by default.

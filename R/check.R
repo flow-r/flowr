@@ -1,8 +1,8 @@
 
 #' @rdname check
 #' @title Check consistency of flowdef and flowmat
-#' @description check consistency of objects
-#' Currently checks objects S3 flowdef, flowmat
+#' @description 
+#' Currently checks S3 flowdef & flowmat for consistency.
 #'
 #' @param x a flowdef or flowmat object
 #' @param verbose be chatty
@@ -37,16 +37,25 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	need_cols = c("jobname", "prev_jobs", "sub_type", "dep_type")
 	opt_cols = c("platform", "cpu_reserved", 'walltime', 'queue')
 
+	if(verbose)
+		message("\nchecking if required columns are present...")
 	if (any(!need_cols  %in% colnames(x)))
 		stop(error("def.need.cols"), paste(need_cols, collapse = " "))
 
+	if(verbose)
+		message("checking if resources columns are present...")
 	if (any(!need_cols  %in% colnames(x)))
 		stop(error("def.opt.cols"), paste(opt_cols, collapse = " "))
 
+	if(verbose)
+		message("checking if dependency column has valid names...")
 	if (sum(!x$dep_type %in% dep_types))
 		stop("Dependency type not recognized.\n Inputs are: ",
 				 paste(x$dep_type, collapse = " "),
 				 ".\nAnd they can be one of ", paste(dep_types, collapse = " "))
+
+	if(verbose)
+		message("checking if submission column has valid names...")
 	if (sum(!x$sub_type %in% sub_types))
 		stop("Submission type not recognized. Inputs are: ", paste(x$sub_type, collapse = " "),
 				 ".\nAnd they can be one of  ", paste(sub_types, collapse = " "))
@@ -59,6 +68,8 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 
 	prev_jobs = unlist(strsplit(x$prev_jobs[!(x$prev_jobs == "none")], ","))
 
+	if(verbose)
+		message("checking for missing rows in def...")
 	miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
 	if (length(miss_jobs) > 0){
 		print(kable(x))
@@ -67,6 +78,8 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	## check if dep is none, but prev jobs defined
 
 	## --- check if there are rows where prev_job specied but dep NOT specified
+	if(verbose)
+		message("checking for extra rows in def...")
 	extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")
 	if (sum(extra_rows) > 0){
 		print(kable(x[extra_rows,]))
@@ -105,8 +118,10 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	##      serial  --(burst)--> scatter
 	## not allowed:
 	##      any --(none)--> any
+	message("checking submission and dependency types...")
+	if(verbose) message("\tjobname\tprev.sub_type --> dep_type --> sub_type: relationship")
 	for(i in 1:nrow(x)){
-		if(verbose) message("checking on: ", i," : ", x$jobname[i])
+		if(verbose) message("\t", i,": ", x$jobname[i], "\t", appendLF = FALSE)
 		check_dep_sub_type(dep = x$dep_type[i],
 											 sub = x$sub_type[i],
 											 p.sub = x$sub_type[i-1],
@@ -129,7 +144,8 @@ check_dep_sub_type <- function(dep, sub,
 	p.dep = ifelse(length(p.dep) == 0, "none", p.dep)
 	p.sub = ifelse(length(p.sub) == 0, "none", p.sub)
 
-	if(v) message("dep: ", dep, " sub: ", sub, " p.sub: ", p.sub, " p.dep: ", p.dep)
+	if(v) 
+		message(p.sub," --> ", dep, " --> ", sub, " ", appendLF = FALSE)
 
 	## one to one
 	if(dep == "serial" & sub == "serial"){
@@ -141,9 +157,14 @@ check_dep_sub_type <- function(dep, sub,
 	}else if(p.sub == "serial" & sub == "scatter" & dep == "burst"){
 		if(v) message("rel: one:many")
 	}else if(p.sub == "serial" & sub == "scatter" & dep == "serial"){
-		if(v) stop("rel: one:many. Please replace dep_type to burst")
+		stop(c("detected relationship: one-to-many. ", 
+					 "To define this, one must have dependency type as burst. ",
+					 "Refer to docs.flowr.space for further details."))
 	}else if(p.sub == "scatter" & sub == "scatter" & dep == "burst"){
-		if(v) stop("rel: one:many. Please replace previous sub_type to serial")
+		stop(c("\nDetected relationship: one-to-many. ", 
+					 "To define this, one must have previous sub_type as serial",
+					 "If the relationship is really one-to-one, you may want, ",
+					 "scatter, serial and scatter as previous submission, dependency and submission types, respectively."))
 
 	## many to one
 	}else if(p.sub == "scatter" & sub == "serial" & dep == "gather"){
@@ -151,6 +172,7 @@ check_dep_sub_type <- function(dep, sub,
 	}else if(p.sub == "scatter" & sub == "scatter" & dep == "gather"){
 		if(v) message("rel: many:one. Please change sub_type to serial")
 	}else{
+		if(v) message("")
 	}
 
 }

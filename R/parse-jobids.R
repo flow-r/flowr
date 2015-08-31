@@ -4,7 +4,6 @@
 #' @param jobids output from HPCC upon job submission, as a character vector
 #' @param platform string specifying the platform. This determines how the jobids are parsed
 #' @importFrom stats na.omit
-#' @export
 parse_jobids <- function(jobids, platform){
 
 	## --- TORQUE

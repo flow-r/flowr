@@ -29,7 +29,9 @@ error <- function(x){
 		y = c("flow_status.txt is not writable. Will skip updating it.")
 
 	}else	if(x == "no.shell") {
-		y = "There are no shell scripts, did this flow run ?"
+		y = c("There are no shell scripts, did this flow run? Or perhaps this is a parent folder?",
+		" I need a flowr working directory, ", 
+		"which has folders for each job and tmp folder and files like flow_details etc..")
 
 	}else	if(x == "jobid.non.num") {
 		y = "Unable to parse JOB IDs as numbers, it likely submission failed OR parsing of job ids failed \n\n"

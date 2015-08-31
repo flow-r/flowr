@@ -20,7 +20,6 @@ check(x, ...)
 \item{verbose}{be chatty}
 }
 \description{
-check consistency of objects
-Currently checks objects S3 flowdef, flowmat
+Currently checks S3 flowdef & flowmat for consistency.
 }
 

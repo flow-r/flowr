@@ -2,6 +2,7 @@
 % Please edit documentation in R/to-flow.R
 \name{to_flow}
 \alias{to_flow}
+\alias{to_flow.data.frame}
 \alias{to_flow.flowmat}
 \alias{to_flow.list}
 \alias{to_flow.vector}
@@ -13,6 +14,8 @@ to_flow(x, ...)
 
 \method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
   flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
+
+\method{to_flow}{data.frame}(x, ...)
 
 \method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj, ...)
 }
@@ -49,7 +52,7 @@ Returns a flow object. If execute=TRUE, fobj is rich with information about wher
 the flow was executed. It would include details like jobids, path to exact scripts run etc.
 To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 
-\subsection{Behaviour:}{
+\strong{Behaviour:}{
 What goes in, and what to expect in return?
 \itemize{
 \item submit=FALSE & execute=FALSE: Create and return a flow object

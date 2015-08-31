@@ -4,7 +4,7 @@
 \alias{fetch}
 \alias{fetch_conf}
 \alias{fetch_pipes}
-\title{A generic functions to search for files}
+\title{Two generic functions to search for pipelines and configuration files.}
 \usage{
 fetch(x, places, urls, verbose = get_opts("verbose"))
 
@@ -33,25 +33,58 @@ fetch_conf(x = "flowr.conf", places, ...)
 \description{
 These functions help in searching for specific files in the user's space.
 
-fetch_pipes(): Fetches pipelines in the following places,
+\code{fetch_pipes()}: Fetches pipelines in the following places, in this specific order:
 \itemize{
-\item - available in 'pipelines' folders in flowr and ngsflows packages.
-\item - ~/flowr/pipelines
-\item - github repos (currently not supported)
+\item \strong{user's folder}: \code{~/flowr/pipelines}
+\item \strong{current wd}:
 }
 
-fetch_conf(): Fetches configuration files in the following places,
+\strong{NOTE:} If same pipeline is availabe in multiple places; one from the later
+folder would be selected up. Such that, giving priority to user's home, and current working
+directories. Which is what, one would intuitiuvely expect.
 
+
+\code{fetch_conf()}: Fetches configuration files in the following places:
 \itemize{
-\item - available in 'conf' folders in flowr and ngsflows packages.
-\item - ~/flowr/conf folder
+\item \strong{package}: \code{conf} folders in flowr and ngsflows packages.
+\item \strong{user's folder}: \code{~/flowr/conf} folder.
+\item \strong{current wd}:
 }
 
-By default flowr loads, ~/flowr/conf/flowr.conf and ~/flowr/conf/ngsflows.conf
+\strong{NOTE:}
+This function would greedily return all matching conf files. One would load all of them
+in the order returned by this functions. If the same variable is
+repeated in multiple files, value from the later files would be final. Thus ( as explained above ), giving
+priority to options defined in user's home and current working directories.
+
+By default flowr loads, \code{flowr.conf} and \code{ngsflows.conf}.
+See the following details sections, for more explanation on this.
+}
+\details{
+For example flowr has a variable \code{flow_run_path} where it puts all the execution logs etc.
+The default values is picked up from packages's internal \code{flowr.conf} file.
+To redefine this value, one could create a new file called \code{~/flowr/conf/flowr.conf} and
+add a line:
+
+\code{flow_run_path<TAB>my_awesome_path}, where <TAB> is a tab character, since these are tab
+seperated files.
+
+Also at any time you can run, \code{load_conf('super_specific_opts.conf')}; to load custom options.
 }
 \examples{
 {
-fetch_conf("torque.sh")
+
+## let us find a default conf file
+conf = fetch_conf("flowr.conf");conf
+## load this
+load_opts(conf)
+
+## this returns a list, which prints pretty
+pip = fetch_pipes("sleep_pipe")
+pip$name
+pip$pipe
+pip$def
+
 }
 }
 
