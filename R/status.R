@@ -53,6 +53,12 @@ status <- function(x, out_format = "markdown"){
 
 	wds = get_wds(x)
 	for(wd in wds){
+		
+		ncol = getOption("width"); #Sys.getenv("COLUMNS")
+		hd = paste(rep("=", as.numeric(ncol)), collapse = "")
+		message(paste0("\n", hd,
+									 "\nShowing status of: \n", wd), appendLF = FALSE)
+		
 		x = read_fobj(wd)
 		get_status(x, out_format = out_format)
 	}
@@ -65,6 +71,7 @@ status <- function(x, out_format = "markdown"){
 #'
 #' @export
 get_status <- function(x, ...) {
+	
 	UseMethod("get_status")
 }
 
@@ -101,13 +108,13 @@ get_status.data.frame <- function(x, ...){
 #' @rdname status
 #' @export
 get_status.flow <- function(x, out_format = "markdown", ...){
-
+	
+	
 	## --- get initial flow_det from the flow object
 	flow_det = to_flowdet(x)
 	## --- update the flow_det using the triggers
 	flow_det = get_status(flow_det)
 
-	message(paste0("Showing status of: ", x@flow_path))
 	#write_flow_status_fl(x = x, summ = summ)
 	summ = summarize_flow_det(flow_det, out_format = out_format)
 
