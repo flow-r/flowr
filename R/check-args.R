@@ -42,13 +42,16 @@ check_args <- function(ignore, select){
 	
 	miss = sapply(args, function(var){
 		val = get(var, env)
-		return(var)
+		if(is.null(val))
+		  return(var)
+		else
+		  return(NULL)
 	})
 	miss = unlist(miss) ## vars which are missing
 	
 	if ( !is.null(miss) ){
 		message("Checking arguments for function: ", fn, "\n")
-		message("value of following variables is null: '", paste(miss, collapse = ", "))
+		message("value of following variables is null: '", paste(names(miss), collapse = ", "))
 		stop("There are several options to fix this:
 				 1. Use set_opts(variable1 = 'value', var1 = 'value') format to define these variables.
 				 2. If this function was called directly, you may simply supply these arguments to this function.
