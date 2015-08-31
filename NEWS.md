@@ -29,6 +29,10 @@ flowr 0.9.7 2015-08-22
 |:---------------|-----:|-------:|---------:|-----------:|:----------|
 |001.alnCmd1     |   109|     109|       109|           0|completed  |
 |007.markCmd     |     3|       3|         0|           0|processing |
+- [0.9.7.11]
+	- Switched default value of flow@status to "created". 
+	- better looking status messages
+	
 
 
 
