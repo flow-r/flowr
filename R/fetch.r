@@ -133,7 +133,10 @@ fetch_pipes <- function(x,
 	conf = ifelse(file.exists(conf), conf, NA)
 	
 	
-	pipes = data.frame(name = file_path_sans_ext(basename(r)), def = def, conf = conf, pipe = r)
+	pipes = data.frame(name = file_path_sans_ext(basename(r)), 
+										 def = def, 
+										 conf = conf, 
+										 pipe = r, stringsAsFactors = FALSE)
 
 	pipe_print = pipes;
 	pipe_print$def = basename(as.character(pipe_print$def))
