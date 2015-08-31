@@ -356,7 +356,7 @@ flow <- function(
 	trigger_path = "",
 	flow_path = "",
 	version = '0.0',
-	status="",
+	status="created",
 	execute = ""){
 	mode <- match.arg(mode)
 	## create a list of jobs if nore already
