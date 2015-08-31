@@ -7,3 +7,5 @@ misc
 inst/extdata/*
 inst/staticdocs
 cran-comment.md
+README.html
+TODO.md

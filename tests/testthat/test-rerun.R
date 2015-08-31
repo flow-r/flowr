@@ -1,25 +1,39 @@
-context("Test fetching of sleep pipe")
 
-pip = fetch_pipes("sleep_pipe")
 
-test_that("test fetching of sleep pipe", {
+library(flowr)
+
+#system("env")
+
+set_opts(verbose = TRUE)
+get_opts()
+
+verbose = FALSE
+
+context("\n\nTesting running a pipeline from scratch")
+
+pip = fetch_pipes("sleep_pipe", silent = FALSE)
+
+if(verbose) print(pip)
+
+test_that("check return of fetch_pipes", {
 	expect_equal(length(pip), 4)
 	expect_identical(class(pip), "data.frame")
 })
 
+
+message("class: ", class(pip$pipe))
+message("file ", pip$pipe, " exists: ", file.exists(pip$pipe))
 source(pip$pipe)
 out = sleep_pipe(x = 3, "sample1")
 
-context("Test creation of flowmat")
-
-test_that("test creation of flowmat", {
+test_that("test output of sleep_pipe", {
 	expect_equal(length(out), 2)
 	expect_identical(class(out), "list")
 	expect_identical(is.flowmat(out$flowmat), TRUE)
 })
 
 
-context("Test creation of flowdef")
+#context("test creation of flowdef")
 ## --- specify the resource requirement
 def = to_flowdef(out$flowmat,
 								 platform = "lsf", queue = "short" ,
@@ -31,11 +45,11 @@ test_that("test creation of flowdef", {
 })
 
 
-context("Test creation of flow")
+#context("Test creation of flow")
 fobj = to_flow(out$flowmat, def = def)
 
 test_that("test creation of flow", {
-	expect_identical(class(fobj)[1], "flow")
+	expect_is(fobj, "flow")
 })
 
 

@@ -10,7 +10,7 @@
 \usage{
 plot_flow(x, ...)
 
-\method{plot_flow}{flow}(x, ...)
+\method{plot_flow}{flow}(x, pdf = FALSE, pdffile, ...)
 
 \method{plot_flow}{list}(x, ...)
 
@@ -24,13 +24,13 @@ plot_flow(x, ...)
 
 \item{...}{experimental}
 
-\item{detailed}{include some details}
-
-\item{type}{1 is original, and 2 is a elipse with less details}
-
 \item{pdf}{create a pdf instead of plotting interactively}
 
 \item{pdffile}{output file name for the pdf file}
+
+\item{detailed}{include some details}
+
+\item{type}{1 is original, and 2 is a elipse with less details}
 }
 \description{
 plot the flow object

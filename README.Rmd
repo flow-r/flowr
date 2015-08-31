@@ -1,6 +1,6 @@
 ---
-subtitle: ""
-author: Sahil Seth
+title: "flowr"
+subtitle: "Streamlining Workflows"
 output: 
   rmarkdown::html_document
 packagedocs:
@@ -16,8 +16,6 @@ navpills: |
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
-flowr: Streamline your workflows
-================================
 
 This framework allows you to design and implement complex pipelines, and
 deploy them on your institution's computing cluster. This has been built
@@ -81,4 +79,4 @@ Aknowledgements
 -   An excellent resource for writing your own R packages:
     r-pkgs.had.co.nz
 
-
+<!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->

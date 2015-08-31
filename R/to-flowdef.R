@@ -140,7 +140,7 @@ as.flowdef <- function(x, ...){
 		y = x
 	if(is.character(x)){
 		if(!file.exists(x))
-			stop(error("no.def"), x)
+			stop(paste0(error("no.def"), x))
 		message("def seems to be a file, reading it...")
 		y <- read_sheet(x, id_column = "jobname")
 	}
