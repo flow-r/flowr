@@ -41,6 +41,7 @@
 #' plot_flow(fobj)
 #'
 plot_flow <- function(x, ...) {
+	
 	#message("input x is ", class(x))
 	UseMethod("plot_flow") # nocov
 }
@@ -49,7 +50,14 @@ plot_flow <- function(x, ...) {
 #' @rdname plot_flow
 #' @method plot_flow flow
 #' @export
-plot_flow.flow <- function(x, ...){
+plot_flow.flow <- function(x, pdf = FALSE, pdffile, ...){
+	
+	## if pdffile is provide and pdf is FALSE
+	if(!missing(pdffile))
+		pdf = TRUE
+	if(missing(pdffile) & pdf)
+		pdffile = sprintf("%s.pdf", x@name)
+	
 	#dat <- create_jobs_mat(x)
 	x = to_flowdef(x) # nocov
 	plot_flow(x, ...) # nocov
@@ -91,9 +99,8 @@ plot_flow.flowdef <- function(x,
 	if(!missing(pdffile))
 		pdf = TRUE
 	if(missing(pdffile) & pdf)
-		pdffile = sprintf("%s.pdf", x@name)
-	
-	
+		pdffile = sprintf("%s.pdf", getwd())
+
 	##--- plotting needs prev_jobs to be NA and not none
 	x$prev_jobs = ifelse(x$prev_jobs == "none", NA, x$prev_jobs)
 	p <- switch(type,
