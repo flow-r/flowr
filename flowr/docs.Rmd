@@ -685,7 +685,7 @@ to_flowdef, accepts a flowmat and creates a flow definition. The default skeleto
 
 Here is how it looks presently:
 
-```{r}
+```{r, message=FALSE}
 def = to_flowdef(flowmat)
 plot_flow(suppressMessages(to_flow(flowmat, def)))
 ```

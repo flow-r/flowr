@@ -872,7 +872,7 @@ kable(ex2def[, 1:4])</code></pre>
 <td align="left">build</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
-<td align="left">/Users/sahilseth/Dropbox2/Dropbox/public/github_flowrdocs2/flowr/build.R</td>
+<td align="left">/Users/sahilseth/Dropbox2/Dropbox/public/github_flow/gh-pages/flowr/build.R</td>
 </tr>
 </tbody>
 </table>
@@ -1057,17 +1057,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 6 &amp;&amp; sleep 5;echo ‘hello’</td>
+<td align="left">sleep 9 &amp;&amp; sleep 0;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 7 &amp;&amp; sleep 0;echo ‘hello’</td>
+<td align="left">sleep 1 &amp;&amp; sleep 12;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 9 &amp;&amp; sleep 3;echo ‘hello’</td>
+<td align="left">sleep 9 &amp;&amp; sleep 16;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -1101,29 +1101,8 @@ flowmat = out$flowmat</code></pre>
 <h2>Create flow definition</h2>
 <p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a flowmat and creates a flow definition. The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency. Thus we will enable parallel process where possible, making this into a better pipeline.</p>
 <p>Here is how it looks presently:</p>
-<pre class="r"><code>def = to_flowdef(flowmat)</code></pre>
-<pre><code>## Creating a skeleton flow definition
-## Following jobnames detected: sleep create_tmp merge size
-## 
-## checking if required columns are present...
-## checking if resources columns are present...
-## checking if dependency column has valid names...
-## checking if submission column has valid names...
-## checking for missing rows in def...
-## checking for extra rows in def...
-## checking submission and dependency types...</code></pre>
-<pre class="r"><code>plot_flow(suppressMessages(to_flow(flowmat, def)))</code></pre>
-<pre><code>## 
-## checking if required columns are present...
-## checking if resources columns are present...
-## checking if dependency column has valid names...
-## checking if submission column has valid names...
-## checking for missing rows in def...
-## checking for extra rows in def...
-## checking submission and dependency types...
-## using size: 0.623 0.3738
-## box: H X W 0.045 X 0.0585
-## arr: lwd, len, pos: 1.8 0.36 0.55</code></pre>
+<pre class="r"><code>def = to_flowdef(flowmat)
+plot_flow(suppressMessages(to_flow(flowmat, def)))</code></pre>
 <p><img src="docs_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="624" /></p>
 <p>After making the desired changes, the new pipeline looks better. Alternatively, one may write this to a file and make other desired changes in resource requirements.</p>
 <p>Pipeline follows the following steps, with dependencies mentioned in ():</p>
