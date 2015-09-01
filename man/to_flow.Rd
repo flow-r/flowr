@@ -13,11 +13,13 @@ to_flow(x, ...)
 \method{to_flow}{vector}(x, def, grp_col, jobname_col, cmd_col, ...)
 
 \method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
-  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
+  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj,
+  verbose = get_opts("verbose"), ...)
 
 \method{to_flow}{data.frame}(x, ...)
 
-\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj, ...)
+\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj,
+  verbose = get_opts("verbose"), ...)
 }
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
@@ -44,6 +46,8 @@ This over-rides the platform column in flowdef.}
 \item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
 
 \item{qobj}{Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.}
+
+\item{verbose}{be chatty ? This is numeric with values 0, 1, 2.}
 
 \item{desc}{Advanced Use. final flow name, please don't change.}
 }

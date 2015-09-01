@@ -24,7 +24,7 @@ if(FALSE){
 #' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
 #' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
-#' @param ... not used
+#' @param ... passed onto to_flow
 #'
 #'
 #' @details 
@@ -46,7 +46,7 @@ if(FALSE){
 #' }
 #'  @export
 rerun <- function(x, ...) {
-	if(get_opts("verbose"))
+	if(get_opts("verbose") > 1)
 		message("rerun: input x is ", class(x))
 	UseMethod("rerun")
 }
@@ -72,12 +72,14 @@ rerun.character <- function(x, ...){
 rerun.flow <- function(x, mat, def, start_from,
 											 execute = TRUE, kill = TRUE, ...){
 	fobj = x
+	
 	wd = fobj@flow_path
 
 	assert_version(fobj, '0.9.7.3')
+	assert_status(fobj, "submitted")
 
 	if(missing(start_from)){
-		stop(error("no.start_from"))
+		stop(error("start_from: missing"))
 		#start_from = detect_redo()
 	}
 
@@ -108,7 +110,9 @@ rerun.flow <- function(x, mat, def, start_from,
 	message(paste(def$jobname, collapse = "\n"))
 
 	## jobname, has ids as well.
-	fobj2 <- to_flow(x = mat, def = def, flowname = fobj@name, flow_run_path = fobj@flow_run_path)
+	fobj2 <- to_flow(x = mat, def = def, 
+									 flowname = fobj@name, 
+									 flow_run_path = fobj@flow_run_path, ...)
 
   #knitr::kable(rerun)
 	fobj2@status = "rerun"
@@ -127,7 +131,7 @@ rerun.flow <- function(x, mat, def, start_from,
   newdet = subset_fdet(fobj, flowdet, start_from = start_from)
   if(execute) newdet = file.remove(newdet$trigger)
 
-  return(fobj)
+  invisible(fobj)
 }
 
 

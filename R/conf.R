@@ -6,14 +6,17 @@
 flowopts = new.env()
 
 #' @rdname opts_flow
+#' 
+#' @aliases set_opts get_opts load_opts
+#' 
 #' @title Default options/params used in ngsflows and flowr
 #'
 #' @description
 #' There are three helper functions which attempt to manage params used by flowr and ngsflows:
 #' \itemize{
-#' \item \link{get_opts} OR \code{opts_flow\$get()}: show all default options
-#' \item \link{set_opts} OR \code{opts_flow\$set()}: set default options
-#' \item \link{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
+#' \item \link[params]{get_opts} OR \code{opts_flow\$get()}: show all default options
+#' \item \link[params]{set_opts} OR \code{opts_flow\$set()}: set default options
+#' \item \link[params]{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
 #' }
 #' For more details regarding these funtions refer to \link{params}.
 #'
@@ -22,6 +25,12 @@ flowopts = new.env()
 #' \item set: a set of options in a name=value format seperated by commas
 #' }
 #'
+#' @usage 
+#' 
+#' get_opts(...)
+#' set_opts(...)
+#' load_opts(...)
+#' 
 #' @details
 #' By default flowr loads, \code{~/flowr/conf/flowr.conf} and \code{~/flowr/conf/ngsflows.conf}
 #'
@@ -71,20 +80,26 @@ flowopts = new.env()
 opts_flow = new_opts(flowopts)
 
 
-
+#' @aliases params
 #' @export
 get_opts <- function(...){
 	opts_flow$get(...)
 }
 
+#' @aliases params
 #' @export
 set_opts <- function(...){
 	opts_flow$set(...)
 }
 
+#' @aliases params
 #' @export
 load_opts <- function(...){
 	opts_flow$load(...)
+	
+	## certain opts need to be numeric
+	set_opts(verbose = as.numeric(get_opts("verbose")))
+	
 }
 
 #devtools::install("~/Dropbox/public/github_params")

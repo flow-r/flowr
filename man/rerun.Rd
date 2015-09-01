@@ -16,7 +16,7 @@ rerun(x, ...)
 \arguments{
 \item{x}{flow working directory}
 
-\item{...}{not used}
+\item{...}{passed onto to_flow}
 
 \item{mat}{(optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}}
 
