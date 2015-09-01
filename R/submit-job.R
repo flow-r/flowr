@@ -64,7 +64,9 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 		cmd <- render_queue_cmd(jobj = obj, fobj = fobj, index=i)
 
 		## --- write script to file
-		if(verbose) message("Submitting using script:\n", cmd, "\n")
+		## this if for debugging
+		if(verbose > 1)
+			message("Submitting using script:\n", cmd, "\n")
 
 		## --- return CMD if local, else jobid
 		if(jobj@platform == "local")

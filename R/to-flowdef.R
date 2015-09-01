@@ -23,6 +23,7 @@
 #' @param memory_reserved amount of memory required.
 #' @param cpu_reserved number of cpu's required
 #' @param walltime amount of walltime required
+#' @param verbose be chatty ? This is numeric with values 0, 1, 2.
 #' @param ... not used
 #'
 #' @importFrom knitr kable
@@ -56,11 +57,14 @@ to_flowdef.flowmat <- function(x,
 															 platform = "torque",
 															 memory_reserved = "2000", ## in MB
 															 cpu_reserved = "1",
-															 walltime = "1:00", ...){
+															 walltime = "1:00",
+															 verbose = get_opts("verbose"), ...){
 
-	message("Creating a skeleton flow definition")
+	if(verbose)
+		message("Creating a skeleton flow definition")
 	jobnames <- unique(x$jobname)
-	message("Following jobnames detected: ",
+	if(verbose)
+		message("Following jobnames detected: ",
 					paste(jobnames, collapse = " "))
 
 	njobs = length(jobnames)

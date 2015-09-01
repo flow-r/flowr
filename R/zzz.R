@@ -2,6 +2,8 @@
 .onLoad <- function(lib, pkg){
 	fls = fetch_conf("flowr.conf")
 	suppressMessages(load_opts(fls, check = FALSE))
+	
+	
 }
 
 .onAttach <- function(lib, pkg){
