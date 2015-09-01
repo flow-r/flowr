@@ -101,7 +101,7 @@ Further, we use an additional file specifying the relationship between the steps
 <div class="alert alert-info" role="alert">
 Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to 
 complete before the one described in that row starts.
-
+</div>
 
 ```{r, message=FALSE, echo=FALSE}
 kable(flow_def)
@@ -685,7 +685,7 @@ to_flowdef, accepts a flowmat and creates a flow definition. The default skeleto
 
 Here is how it looks presently:
 
-```{r}
+```{r, message=FALSE}
 def = to_flowdef(flowmat)
 plot_flow(suppressMessages(to_flow(flowmat, def)))
 ```
