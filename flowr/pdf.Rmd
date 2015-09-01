@@ -1,0 +1,13 @@
+---  
+title: My Report  
+output: 
+  pdf_document:
+    toc: yes 
+---
+
+
+```{r child = 'index.Rmd'}
+```
+
+```{r child = 'docs.Rmd'}
+```

@@ -1,0 +1,15 @@
+---
+title: "flowr"
+subtitle: "Streamlining Workflows"
+author: Sahil Seth
+copyright: Sahil Seth
+output:
+  packagedocs:
+    toc: true
+rd_page: true
+navpills: |
+  <li><a href='docs.html'>Docs</a></li>
+  <li class="active"><a href='rd.html'>Package Ref</a></li>
+  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+---
+
