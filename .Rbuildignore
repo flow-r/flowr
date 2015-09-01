@@ -9,3 +9,4 @@ inst/staticdocs
 cran-comment.md
 README.html
 TODO.md
+vignettes/errors.Rmd
