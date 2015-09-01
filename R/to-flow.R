@@ -51,6 +51,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param submit Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE
 #' @param execute Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()
 #' @param qobj Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.
+#' @param verbose be chatty ? This is numeric with values 0, 1, 2.
 #'
 #' @examples
 #' ex = file.path(system.file(package = "flowr"), "pipelines")
@@ -89,32 +90,34 @@ to_flow <- function(x, ...) {
 #' @rdname to_flow
 #' @export
 to_flow.vector <- function(x, def,
-	grp_col,
-	jobname_col,
-	cmd_col,
-	...){
-
+													 grp_col,
+													 jobname_col,
+													 cmd_col,
+													 ...){
+	
 	x = as.flowmat(x,
 								 grp_col = grp_col,
 								 jobname_col = jobname_col,
 								 cmd_col = cmd_col)
 	to_flow(x, def, ...)
-
+	
 }
 
 #' @rdname to_flow
 #' @export
 to_flow.flowmat <- function(x, def,
-	grp_col,
-	jobname_col,
-	cmd_col,
-	flowname,
-	flow_run_path,
-	platform,
-	submit = FALSE,
-	execute = FALSE,
-	qobj, ...){
-
+														grp_col,
+														jobname_col,
+														cmd_col,
+														flowname,
+														flow_run_path,
+														platform,
+														submit = FALSE,
+														execute = FALSE,
+														qobj, 
+														verbose = get_opts("verbose"),
+														...){
+	
 	## --- change all the input columns into character
 	x[] <- lapply(x, as.character)
 	x = as.flowmat(x,
@@ -122,7 +125,7 @@ to_flow.flowmat <- function(x, def,
 								 jobname_col = jobname_col,
 								 cmd_col = cmd_col)
 	def = as.flowdef(def)
-
+	
 	## --- defaults
 	if (missing(flowname)) {
 		flowname = "flowname"
@@ -132,10 +135,11 @@ to_flow.flowmat <- function(x, def,
 		flow_run_path = get_opts("flow_run_path")
 		message("Using flow_run_path default: ", flow_run_path);
 	}
-
-
-	message("\n##--- Checking flow definition and flow matrix for consistency...")
-
+	
+	
+	if(verbose)
+		message("\n##--- Checking flow definition and flow matrix for consistency...")
+	
 	## ---  COMPARE flowdef and flowmat jobnames
 	msg = c("\nflowdef jobs: ", paste(def$jobname, collapse = " "),
 					"\nflowmat jobs: ", paste(unique(x$jobname), collapse = " "))
@@ -144,56 +148,68 @@ to_flow.flowmat <- function(x, def,
 	}
 	if (mean(!na.omit(def$jobname) %in% unique(x$jobname))) {
 		stop("Some jobs in flowdef are not in flowmat\n", msg)
-
+		
 	}
-
-
+	
+	
 	## --- Overrides
-	message("\n##--- Detecting platform...")
+	if(verbose)
+		message("\n##--- Detecting platform...")
 	if ("platform" %in% colnames(def)){
-		message("Will use platform from flow definition")
+		if(verbose)
+			message("Will use platform from flow definition")
 	}
 	if (!missing(platform)){
-		message("Platform supplied, this will override defaults from flow definition...")
+		if(verbose)
+			message("Platform supplied, this will override defaults from flow definition...")
 		def$platform = platform
 	}
 	if (!missing(qobj)){
-		message("qobj supplied, this will override defaults from flow_definion OR platform variable")
-		message("Use of qobj is depreciated",
-			"Use shell scripts provided here as a template: https://github.com/sahilseth/flowr/tree/master/inst/conf",
-			"You may tweak them and stor in ~/flowr/conf")
+		if(verbose){
+			message("qobj supplied; this will override defaults from flow_definion OR platform variable")
+			message("Use of qobj is for advanced use only. ",
+							"Use shell scripts provided here as a template: https://github.com/sahilseth/flowr/tree/master/inst/conf. ",
+							"You may tweak and save them in ~/flowr/conf.")
+		}
+	}else{
+		qobj = NA
 	}
-
+	
 	samps = unique(x$samplename)
 	if (length(samps) > 1)
-		message("Detected multiple samples. Would containerize this submission.")
-
+		if(verbose)
+			message("Detected multiple samples. Would containerize this submission.")
+	
 	fobjs <- lapply(samps, function(samp){
 		x2 = subset(x, x$samplename == samp)
-		message("\nWorking on... ", samp)
+		if(verbose)
+			message("\nWorking on... ", samp)
 		## --- fetch samplename from the flowr_mat
 		cmd.list = split.data.frame(x2, x2$jobname)
 		desc = paste(flowname, samp, sep = "-")
 		fobj = to_flow(x = cmd.list,
-			def = def,
-			desc = desc,
-			flowname = flowname,
-			flow_run_path = flow_run_path,
-			qobj = qobj, ...)
-
-
+									 def = def,
+									 desc = desc,
+									 flowname = flowname,
+									 flow_run_path = flow_run_path,
+									 qobj = qobj, ...)
+		
+		
 		### ----- remove THESE !
 		if (execute|submit){
-			message("\n##--- flowr submission...")
-			message("\nYou may use fobj <- to_flow(...); submit_flow(fobj)")
+			if(verbose)
+				message("\n##--- flowr submission...")
+			if(verbose)
+				message("\nYou may use fobj <- to_flow(...); submit_flow(fobj)")
 			if (length(samps) > 1){
-				message("\n\nDetected ", length(samps), " samples/groups in flow_mat.",
-					"\nflow_mat would be split and each would be submitted seperately...")
+				if(verbose)
+					message("\n\nDetected ", length(samps), " samples/groups in flow_mat.",
+									"\nflow_mat would be split and each would be submitted seperately...")
 			}
 			if (execute)
 				submit = TRUE
 		}
-
+		
 		if (submit)
 			fobjuuid <- submit_flow(fobj, execute = execute)
 		if (execute)
@@ -201,11 +217,11 @@ to_flow.flowmat <- function(x, def,
 		else
 			return(fobj)
 	})
-
+	
 	## --- if there is only one sample, fobj is returned, else a list of flow objects
 	if (length(fobjs) == 1)
 		fobjs = fobjs[[1]]
-
+	
 	invisible(fobjs)
 }
 
@@ -215,31 +231,37 @@ to_flow.data.frame = function(x, ...){
 	## if a data.frame is supplied instead of a flowmat class
 	to_flow(as.flowmat(x))
 }
-	
+
 
 
 #' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
 #' @importFrom utils packageVersion
 #' @importFrom knitr kable
-to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
+to_flow.list <- function(x, def, 
+												 flowname, 
+												 flow_run_path, 
+												 desc, 
+												 qobj, 
+												 verbose = get_opts("verbose"),...){
 	## --- qobj, missing only works for arguments
-# 	if(is.flowmat(x[[1]])){
-# 		warning("to_flow supports a list of commands as a input not list of flowmats.")
-# 		x = do.call(rbind, x)
-# 		fobj = to_flow(x, def, flowname = flowname,
-# 						flow_run_path = flow_run_path, ...)
-# 		return(fobj)
-# 	}
-
+	# 	if(is.flowmat(x[[1]])){
+	# 		warning("to_flow supports a list of commands as a input not list of flowmats.")
+	# 		x = do.call(rbind, x)
+	# 		fobj = to_flow(x, def, flowname = flowname,
+	# 						flow_run_path = flow_run_path, ...)
+	# 		return(fobj)
+	# 	}
+	
 	## x is a list of flow_mat, split by jobname
 	## this list should have three elements
-
-	jobs <- lapply(1:nrow(def), function(i, qobj){
-		message(".", appendLF = FALSE)
+	
+	proc_jobs <- function(i, qobj){
+		if(verbose)
+			message(".", appendLF = FALSE)
 		jobnm = def[i, "jobname"]
 		cmds = x[[jobnm]]$cmd;
-
+		
 		## --- submit def, to get resources for this particular job
 		def2 = subset(def, def$jobname == jobnm)
 		prev_job = unlist(def2$prev_jobs) ## SHOULD be NA
@@ -253,51 +275,62 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 		d_sub_type = unlist(def2$sub_type)
 		d_nodes = unlist(def2$nodes)
 		d_jobid = unlist(def2$jobid)
-
-		if (missing(qobj))
+		
+		if (!inherits(qobj, "queue")){
+			if(verbose > 1)
+				message("creating queue object")
 			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
-
+		}else{
+			if(verbose > 1)
+				message("using queue object supplied")
+		}
+		
+		#print(qobj@submit_exe)
+		
 		## --- getting default for nodes
 		if (is.null(d_nodes))
 			d_nodes = '1'
-
-
+		
+		
 		## -------- if cmds are missing; change to echo 0 and make cpu = 1
 		cpu = ifelse(cmds[1] == ".", 1, d_cpu)
 		## if starts from . echo
 		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
-
+		
 		jobj = job(q_obj = qobj,
-			name = jobnm,
-			jobname = sprintf("%03d.%s", d_jobid, jobnm),
-			previous_job = prev_job,
-			cmds = cmds,
-			dependency_type = d_dep_type,
-			submission_type = d_sub_type,
-			cpu = d_cpu, queue = d_queue,
-			walltime = d_walltime,
-			nodes = d_nodes,
-			memory = d_memory)
+							 name = jobnm,
+							 jobname = sprintf("%03d.%s", d_jobid, jobnm),
+							 previous_job = prev_job,
+							 cmds = cmds,
+							 dependency_type = d_dep_type,
+							 submission_type = d_sub_type,
+							 cpu = d_cpu, queue = d_queue,
+							 walltime = d_walltime,
+							 nodes = d_nodes,
+							 memory = d_memory)
 		return(jobj)
-	})
+	}
+	
 
+	jobs <- lapply(1:nrow(def), proc_jobs, qobj = qobj )
+	
 	fobj <- flow(jobs = jobs,
-		desc = desc, name = flowname,
-		mode = "scheduler",
-		version = as.character(packageVersion("flowr")),
-		flow_run_path = flow_run_path)
-
+							 desc = desc, name = flowname,
+							 mode = "scheduler",
+							 version = as.character(packageVersion("flowr")),
+							 flow_run_path = flow_run_path)
+	
 	## --- check if submission or depedency types were guessed
 	if (is.null(def$sub_type) | is.null(def$dep_type)){
 		message("Submission/definition types were guessed.",
-			"\nThis is really a experimental feature.",
-			"\nPlease check the following table.",
-			"\nIncase of issues please re-submit specifying them explicitly.")
+						"\nThis is really a experimental feature.",
+						"\nPlease check the following table.",
+						"\nIncase of issues please re-submit specifying them explicitly.")
 		mydef = create_jobs_mat(fobj)
 		cols = c("jobname",  'prev_jobs',  'dep_type', 'sub_type')
 		print(kable(mydef[, cols], col.names=FALSE))
 	}
-
+	
 	invisible(fobj)
 }
 
@@ -343,12 +376,12 @@ to_flow.list <- function(x, def, flowname, flow_run_path, desc, qobj, ...){
 #' @param flow_run_path outpath
 #'
 cmds_to_flow <- function(cmd.list,
-	samplename = "",
-	infomat,
-	q_obj = queue(type = "lsf", verbose=FALSE),
-	flowname = "stage2",
-	execute = FALSE,
-	flow_run_path = "/scratch/iacs/flow_pipe/tmp"){
+												 samplename = "",
+												 infomat,
+												 q_obj = queue(type = "lsf", verbose=FALSE),
+												 flowname = "stage2",
+												 execute = FALSE,
+												 flow_run_path = "/scratch/iacs/flow_pipe/tmp"){
 	.Deprecated("to_flow")
 	## trim down the list
 	cmd.list = lapply(cmd.list, function(y) Filter(function(x) !x == "", y))
@@ -359,9 +392,9 @@ cmds_to_flow <- function(cmd.list,
 	missing.info = names(cmd.list)[!names(cmd.list) %in% infomat$jobname]
 	if (length(missing.info) > 0){
 		warning("\n\nMessage:\nOops issue with infomat.\n",
-			"It seems these job names are missing from the infomat:\n",
-			paste(missing.info, collapse="\n"),
-			".\nWill remove them from cmd.list and proceed\n")
+						"It seems these job names are missing from the infomat:\n",
+						paste(missing.info, collapse="\n"),
+						".\nWill remove them from cmd.list and proceed\n")
 		## removing from commands if missing in infomat
 		cmd.list = cmd.list[names(cmd.list) %in% infomat$jobname]
 	}
@@ -370,13 +403,13 @@ cmds_to_flow <- function(cmd.list,
 	missing.prev = infomat$previous_job[!unlist(prev_jobs) %in% c(infomat$jobname, ".", NA, "NA")]
 	if (length(missing.prev) > 0)
 		stop("\n\nMessage:\nOops issue with infomat.\n",
-			"It seems these previous job names are missing from the jobname column:\n",
-			"Dependencies are only supported within the same flow.\n",
-			missing.prev, "\n")
+				 "It seems these previous job names are missing from the jobname column:\n",
+				 "Dependencies are only supported within the same flow.\n",
+				 missing.prev, "\n")
 	if ( mean(table(infomat$jobname)) != 1 || mean(table(names(cmd.list))) != 1 )
 		stop("\n\nMessage:\nOops issue with infomat/cmd.list.\n",
-			"Seem either jobnames in infomat are or that in cmd.list are duplicated\n")
-
+				 "Seem either jobnames in infomat are or that in cmd.list are duplicated\n")
+	
 	jobs = list()
 	for( i in 1:length(cmd.list)){
 		#jobs = lapply(1:length(cmd.list), function(i){
@@ -413,14 +446,14 @@ cmds_to_flow <- function(cmd.list,
 		cpu = ifelse(cmds[1] == ".", 1, cpu)
 		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1]) ## if starts from . echo
 		j = job(q_obj = q_obj, name = jobnm, previous_job = prev_job, cmds = cmds,
-			dependency_type = dep_type, submission_type = sub_type,
-			cpu = cpu, queue = queue,
-			walltime = walltime, memory = memory)
+						dependency_type = dep_type, submission_type = sub_type,
+						cpu = cpu, queue = queue,
+						walltime = walltime, memory = memory)
 		jobs = c(jobs, j)
 	}
 	fobj <- flow(jobs = jobs,
-		desc=sprintf("%s-%s", flowname, samplename), name = flowname,
-		mode="scheduler", flow_run_path = flow_run_path)
+							 desc=sprintf("%s-%s", flowname, samplename), name = flowname,
+							 mode="scheduler", flow_run_path = flow_run_path)
 	len = length(jobs)
 	#debug(flow:::.submit_flow)
 	#mypack:::reload('flow')
