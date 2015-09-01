@@ -80,7 +80,7 @@ kill.flow <- function(x,
 	cmds <- sprintf("%s %s", kill_cmd, flow_det[,jobid_col])
 	tmp <- sapply(cmds, function(cmd){
 		message(cmd, "\n")
-		return(system(cmd, intern = TRUE))
+		return(system(cmd, intern = TRUE, ...))
 	})
 	invisible(tmp)
 }
