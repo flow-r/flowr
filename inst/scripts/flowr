@@ -92,8 +92,8 @@ generic_help <- function(){
 }
 
 
-main <- function(){
-	args <- commandArgs(trailingOnly = TRUE)
+main <- function(args){
+	#args <- commandArgs(trailingOnly = TRUE)
 
 	##-------- if default function is not in the space, load flowr library
 	if(nm == "flowr")
@@ -131,12 +131,16 @@ main <- function(){
 }
 
 
-out = main()
+out = main(commandArgs(trailingOnly = TRUE))
+
+
 
 ## --- showing the output of the returned..
 if(is.data.frame(out)){
 	message("Showing a head of the data.frame")
 	print(head(out))
+}else if(class(out) == "help_files_with_topic"){
+	print(out)
 }else if(is.null(out)){
 	cat("")
 }else if(is.list(out)){
@@ -154,6 +158,14 @@ if(FALSE){
 	paramPairs=c('bwa', 'fqs1=sample1.fq', 'bwa_index=index', 'bwa_samse_opts=myopts')
 	debug(get_params)
 	get_params(paramPairs)
+	
+	out = main("rnorm")
+	expect_is(out, "help_files_with_topic")
+	out = main("rnorm -h")
+	expect_is(out, "help_files_with_topic")
+
+	out = main(c("rnorm", "n=100"))
+	expect_equal(length(out), 100)
 
 }
 
