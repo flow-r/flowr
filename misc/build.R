@@ -85,16 +85,14 @@ check_output("rd.html")
 #system("open index.html")
 
 
-#system("open index.html")
-
-# generate rd.html
-
-#devtools::reload("~/Dropbox/public/github_staticdocs")
-#devtools::install("~/Dropbox/public/github_packagedocs")
-#devtools::reload("~/Dropbox/public/github_flow")
-
-
-# # get topics
-# db <- tools::Rd_db("rbokeh")
-# gsub("\\.Rd", "", names(db))
+## ---- create a PDF manual as well
+if(FALSE){
+	#setwd("~/Dropbox/public/github_flowrpages/flowr")
+	rd = "../../github_flow/man/to_flow.Rd"
+	require(tools)
+	Rd2latex(rd, out = "rd/to_flow.tex")
+	library(pander)
+	system("pandoc -f html -t markdown rd.html > rd2.md")
+	render("pdf.Rmd", pdf_document())
+}
 
