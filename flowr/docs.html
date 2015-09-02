@@ -91,13 +91,13 @@
           <li><a href="#passing-of-flow-definition-resource-columns">Passing of flow definition resource columns</a></li>
           </ul></li>
           <li><a href="#available-pipelines">Available Pipelines</a></li>
-          <li><a href="#cluster-support">Cluster Support</a></li>
           <li><a href="#example-of-building-a-pipeline">Example of building a pipeline</a><ul>
           <li><a href="#define-modules">Define modules</a></li>
           <li><a href="#define-the-pipeline">Define the pipeline</a></li>
           <li><a href="#generate-a-flowmat">Generate a flowmat</a></li>
           <li><a href="#create-flow-definition">Create flow definition</a></li>
           </ul></li>
+          <li><a href="#cluster-support">Cluster Support</a></li>
           </ul>
         </div>
       </div>
@@ -106,17 +106,22 @@
 <div id="content-top"></div>
 <div id="get-started" class="section level1">
 <h1>Get started</h1>
-<p>Let us get a latest stable version of flowr, from <code>CRAN</code>. To get the latest features, your could also try the version from github.</p>
-<pre class="r"><code>install.packages(&#39;flowr&#39;) ## CRAN
-
-install.packages(&#39;devtools&#39;)
-devtools::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
-<p>We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the ‘flowr’ helper script to your <code>~/bin</code> directory. If you would like to do a test drive on its other capabilities, here are a <a href="https://github.com/sahilseth/rfun">few examples</a>.</p>
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
-<pre><code>## You could try this from the terminal
-Rscript -e &#39;library(flowr);setup()&#39;
-## now run the following to confirm that ~/bin is added your PATH variable:
+<p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
+<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
+<p>Running flowr from the terminal will fetch you the following:</p>
+<pre><code>Usage: flowr function [arguments]
+
+  run             Running predefined pipelines; try flowr avail x=&quot;pipelines&quot;
+  fetch_pipes     Checking what modules and pipelines are available; avail x=modules OR avail x=pipelines
+  status          Detailed status of a flow (s).
+  rerun           rerun a previously failed flow
+  kill            Kill the flow, upon providing working directory
+
+Please use &#39;flowr function -h&#39; to obtain further information about the usage.</code></pre>
+<!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
+<pre><code>## run the following to confirm that ~/bin is added your PATH variable:
 echo $PATH
 ## if ~/bin is not in your path, run and add the following to your ~/.bashrc
 export PATH=$PATH:~/bin
@@ -127,7 +132,7 @@ flowr</code></pre>
 <p><img src="files/toy.png" /></p>
 <p>Consider, a simple example where we have <strong>three</strong> instances of the <code>sleep</code> command running ( which basically stalls the terminal for few seconds and does nothing ). After its completion <strong>three</strong> tmp files are created with some random data. After this, a merge step follows, which combines them into one big file. Next we use <code>du</code> to calculate the size of the resulting file. This flow is shown in the above described figure.</p>
 <div class="alert alert-info" role="alert">
-<p><strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.</p>
+<strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
 </div>
 <p>To create this flow in flowr, we need the actual commands to run; and some kind of a configuration file to describe which ones go first.</p>
 <p>Here is a table with the commands we would like to run ( or <code>flow mat</code> ).</p>
@@ -184,7 +189,7 @@ flowr</code></pre>
 </table>
 <p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition">flow_def</a>. Each row in a flow mat relates to one job.</p>
 <div class="alert alert-info" role="alert">
-<p>Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.</p>
+Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.
 </div>
 <table>
 <thead>
@@ -268,7 +273,7 @@ flowr</code></pre>
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
 <div class="alert alert-info" role="alert">
-<p><b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.</p>
+<b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.
 </div>
 <pre class="r"><code>submit_flow(fobj)</code></pre>
 <pre><code>Test Successful!
@@ -278,7 +283,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
 <div id="submit-it" class="section level2">
 <h2>Submit it</h2>
 <div class="alert alert-info" role="alert">
-<p>Submit to the cluster !</p>
+Submit to the cluster !
 </div>
 <pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
@@ -290,7 +295,7 @@ flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
 <h2>Check its status</h2>
 <p>One may periodically run <code>status</code> to monitor the status of a flow.</p>
 <div class="alert alert-info" role="alert">
-<p><b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).</p>
+<b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).
 </div>
 <pre><code>flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 
@@ -312,7 +317,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 |003.merge |     3|       3|         1|           0|   pending|
 |004.size  |     3|       3|         1|           0|   pending|</code></pre>
 <div class="alert alert-success" role="alert">
-<p><b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.</p>
+<b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.
 </div>
 </div>
 <div id="kill-it" class="section level2">
@@ -321,7 +326,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 <p>kill one flow:</p>
 <pre><code>flowr kill_flow x=flow_wd</code></pre>
 <div class="alert alert-warning" role="alert">
-<p>One may instruct flowr to kill multiple flows, but flowr would confirm before killing.</p>
+One may instruct flowr to kill multiple flows, but flowr would confirm before killing.
 </div>
 <pre><code>kill(x=&#39;fastq_haplotyper*&#39;)
 Flowr: streamlining workflows
@@ -332,7 +337,7 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 <p>To kill multiple, set force=TRUE:</p>
 <pre><code>kill(x=&#39;fastq_haplotyper*&#39;, force = TRUE)</code></pre>
 <div class="alert alert-warning" role="alert">
-<p>While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.</p>
+While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.
 </div>
 <pre><code>## manual killing:
 jobids=$(qstat | grep &#39;mypattern&#39;)
@@ -380,7 +385,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <li><code>queue</code></li>
 </ul>
 <div class="alert alert-info" role="alert">
-<p>This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.</p>
+This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
 <p>.. warning:: If these (resource requirements) columns not included in the flow_def, their values should be explicitly defined in the submission template.</p>
@@ -644,12 +649,8 @@ knitr:::kable(dat)
 
 --->
 <p>In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).</p>
-<pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))</code></pre>
-<pre><code>## Warning in utils::read.table(x, as.is = TRUE, sep = &quot;\t&quot;, header =
-## header, : incomplete final line found by readTableHeader on &#39;/Library/
-## Frameworks/R.framework/Versions/3.2/Resources/library/flowr/pipelines/
-## abcd.def&#39;</code></pre>
-<pre class="r"><code>ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
+<pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
+ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
 fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])</code></pre>
 <table>
@@ -691,7 +692,7 @@ kable(ex2def[, 1:4])</code></pre>
 <pre class="r"><code>plot_flow(fobj)</code></pre>
 <p><img src="docs_files/figure-html/build_pipe_plt_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p>There is a darker more prominent shadow to indicate scatter steps.</p>
+There is a darker more prominent shadow to indicate scatter steps.
 </div>
 </div>
 <div id="passing-of-flow-definition-resource-columns" class="section level2">
@@ -761,7 +762,7 @@ kable(ex2def[, 1:4])</code></pre>
 </div>
 <div id="available-pipelines" class="section level1">
 <h1>Available Pipelines</h1>
-<p>Here are some of the available piplines along with their respective locations</p>
+<p>Here are some of the available pipelines along with their respective locations</p>
 <table>
 <thead>
 <tr class="header">
@@ -776,211 +777,22 @@ kable(ex2def[, 1:4])</code></pre>
 <td align="left">sleep_pipe</td>
 <td align="left">sleep_pipe.def</td>
 <td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/flowr/pipelines/sleep_pipe.R</td>
+<td align="left">/usr/local/lib/R/site-library/flowr/pipelines/sleep_pipe.R</td>
 </tr>
 <tr class="even">
-<td align="left">bam_preprocess</td>
-<td align="left">bam_preprocess.def</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/bam_preprocess.R</td>
-</tr>
-<tr class="odd">
-<td align="left">fastq_bam_bwa</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_bam_bwa.R</td>
-</tr>
-<tr class="even">
-<td align="left">fastq_bam_rna_ion</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_bam_rna_ion.R</td>
-</tr>
-<tr class="odd">
-<td align="left">fastq_bam_variants</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_bam_variants.R</td>
-</tr>
-<tr class="even">
-<td align="left">fastq_haplotyper</td>
-<td align="left">fastq_haplotyper.def</td>
-<td align="left">fastq_haplotyper.conf</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_haplotyper.R</td>
-</tr>
-<tr class="odd">
-<td align="left">fastq_star_rna</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_star_rna.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_bam_pindel</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_bam_pindel.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_bam_xenome</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_bam_xenome.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_bwa_pipe</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_bwa_pipe.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_dna_qc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_dna_qc.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_fastq_bam_bwa2</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_fastq_bam_bwa2.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_fastq_bismark_meth</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_fastq_bismark_meth.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_flow_bam_preprocess</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_flow_bam_preprocess.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_proc_bwa_pipe</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_proc_bwa_pipe.R</td>
-</tr>
-<tr class="even">
-<td align="left">split_aln_merge</td>
-<td align="left">split_aln_merge.def</td>
-<td align="left">NA</td>
-<td align="left">/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/split_aln_merge.R</td>
-</tr>
-<tr class="odd">
 <td align="left">build</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
-<td align="left">/Users/sahilseth/Dropbox2/Dropbox/public/github_flow/gh-pages/flowr/build.R</td>
+<td align="left">/home/travis/build/sahilseth/flowr/gh-pages/flowr/build.R</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="cluster-support" class="section level1">
-<h1>Cluster Support</h1>
-<p>Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
-<p>Here are links to latest templates on github:</p>
-<ul>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">torque</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh">lsf</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh">moab</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh">sge</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh">slurm</a>, needs testing</li>
-</ul>
-<p>Adding a new plaform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be neccesary.</p>
-<ol style="list-style-type: decimal">
-<li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
-<li><strong>parsing job ids</strong>: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accomodate this one can use regular expressions as described in the relevent section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</li>
-</ol>
-<p>For example LSF may show a string such as:</p>
-<pre><code>Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.</code></pre>
-<pre><code>jobid=&quot;Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.&quot;
-set_opts(flow_parse_lsf = &quot;.*(\&lt;[0-9]*\&gt;).*  &quot;)
-parse_jobids(jobid, platform=&quot;lsf&quot;)
-[1] &quot;335508&quot;</code></pre>
-<p>In this case <em>335508</em> was the job id and regex worked well !</p>
-<ol start="3" style="list-style-type: decimal">
-<li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr render them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-dependency.R">render_dependency.PLATFORM</a> functions.</li>
-<li><strong>recognize new platform</strong>: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the <a href="https://github.com/sahilseth/flowr/blob/master/R/class-def.R">job class</a></li>
-</ol>
-<p>Essentially this requires us to add a new line like: <code>setClass(&quot;torque&quot;, contains = &quot;job&quot;)</code>.</p>
-<ol start="5" style="list-style-type: decimal">
-<li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
-</ol>
-<div class="alert alert-info" role="alert">
-<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
-</div>
-<p>As of now we have tested this on the following clusters:</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Platform</th>
-<th align="left">command</th>
-<th align="left">status</th>
-<th align="left">queue.type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">LSF 7</td>
-<td align="left">bsub</td>
-<td align="left">Not tested</td>
-<td align="left">lsf</td>
-</tr>
-<tr class="even">
-<td align="left">LSF 9.1</td>
-<td align="left">bsub</td>
-<td align="left">Yes</td>
-<td align="left">lsf</td>
-</tr>
-<tr class="odd">
-<td align="left">Torque</td>
-<td align="left">qsub</td>
-<td align="left">Yes</td>
-<td align="left">torque</td>
-</tr>
-<tr class="even">
-<td align="left">SGE</td>
-<td align="left">qsub</td>
-<td align="left">Beta</td>
-<td align="left">sge</td>
-</tr>
-<tr class="odd">
-<td align="left">SLURM</td>
-<td align="left">sbatch</td>
-<td align="left">under-dev</td>
-<td align="left">slurm</td>
-</tr>
-</tbody>
-</table>
-<p>*queue short-name used in <a href="https://github.com/sahilseth/flow">flow</a></p>
-<ul>
-<li>PBS: <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a></li>
-<li>Torque: <a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
-<ul>
-<li>MD Anderson</li>
-<li><a href="http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html">University of Houston</a></li>
-</ul></li>
-<li>LSF <a href="http://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
-<ul>
-<li>Harvard Medicla School uses: <a href="https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF">LSF HPC 7</a></li>
-<li>Also Used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a></li>
-</ul></li>
-<li>SGE <a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
-<ul>
-<li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a></li>
-<li>Another from <a href="http://www.biostat.jhsph.edu/bit/cluster-usage.html">JHSPH</a></li>
-<li>Dependecy info <a href="https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies">here</a></li>
-</ul></li>
-</ul>
-<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 </div>
 <div id="example-of-building-a-pipeline" class="section level1">
 <h1>Example of building a pipeline</h1>
 <p>A pipeline consists of several pieces, namely, a function which generates a flowmat, a flowdef and optionally a text file with parameters and paths to tools used as part of the pipeline.</p>
 <div class="alert alert-info" role="alert">
-<p>A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.</p>
+A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.
 </div>
 <p>We beleive pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only differnce being, a pipeline also has a correspomding flow definition file. As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).</p>
 <p>Let us follow through an example, providing more details regarding this process. Here are a few examples of modules, three functions <code>sleep</code>, <code>create_tmp</code> and <code>merge_size</code> each returning a flowmat.</p>
@@ -1057,17 +869,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 9 &amp;&amp; sleep 0;echo ‘hello’</td>
+<td align="left">sleep 4 &amp;&amp; sleep 9;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 1 &amp;&amp; sleep 12;echo ‘hello’</td>
+<td align="left">sleep 8 &amp;&amp; sleep 0;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 9 &amp;&amp; sleep 16;echo ‘hello’</td>
+<td align="left">sleep 4 &amp;&amp; sleep 18;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -1103,7 +915,7 @@ flowmat = out$flowmat</code></pre>
 <p>Here is how it looks presently:</p>
 <pre class="r"><code>def = to_flowdef(flowmat)
 plot_flow(suppressMessages(to_flow(flowmat, def)))</code></pre>
-<p><img src="docs_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="624" /></p>
+<p><img src="docs_files/figure-html/unnamed-chunk-16-1.png" title="" alt="" width="624" /></p>
 <p>After making the desired changes, the new pipeline looks better. Alternatively, one may write this to a file and make other desired changes in resource requirements.</p>
 <p>Pipeline follows the following steps, with dependencies mentioned in ():</p>
 <ul>
@@ -1182,8 +994,107 @@ kable(def)</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>plot_flow(suppressMessages(to_flow(flowmat, def)))</code></pre>
-<p><img src="docs_files/figure-html/unnamed-chunk-20-1.png" title="" alt="" width="624" /></p>
+<p><img src="docs_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="624" /></p>
 </div>
+</div>
+<div id="cluster-support" class="section level1">
+<h1>Cluster Support</h1>
+<p>Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
+<p>Here are links to latest templates on github:</p>
+<ul>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">torque</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh">lsf</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh">moab</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh">sge</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh">slurm</a>, needs testing</li>
+</ul>
+<p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
+<ol style="list-style-type: decimal">
+<li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
+<li><strong>parsing job ids</strong>: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</li>
+</ol>
+<p>For example LSF may show a string such as:</p>
+<pre><code>Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.</code></pre>
+<pre><code>jobid=&quot;Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.&quot;
+set_opts(flow_parse_lsf = &quot;.*(\&lt;[0-9]*\&gt;).*  &quot;)
+parse_jobids(jobid, platform=&quot;lsf&quot;)
+[1] &quot;335508&quot;</code></pre>
+<p>In this case <em>335508</em> was the job id and regex worked well !</p>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr render them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-dependency.R">render_dependency.PLATFORM</a> functions.</li>
+<li><strong>recognize new platform</strong>: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the <a href="https://github.com/sahilseth/flowr/blob/master/R/class-def.R">job class</a></li>
+</ol>
+<p>Essentially this requires us to add a new line like: <code>setClass(&quot;torque&quot;, contains = &quot;job&quot;)</code>.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
+</ol>
+<div class="alert alert-info" role="alert">
+There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a>
+</div>
+<p>As of now we have tested this on the following clusters:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Platform</th>
+<th align="left">command</th>
+<th align="left">status</th>
+<th align="left">queue.type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">LSF 7</td>
+<td align="left">bsub</td>
+<td align="left">Not tested</td>
+<td align="left">lsf</td>
+</tr>
+<tr class="even">
+<td align="left">LSF 9.1</td>
+<td align="left">bsub</td>
+<td align="left">Yes</td>
+<td align="left">lsf</td>
+</tr>
+<tr class="odd">
+<td align="left">Torque</td>
+<td align="left">qsub</td>
+<td align="left">Yes</td>
+<td align="left">torque</td>
+</tr>
+<tr class="even">
+<td align="left">SGE</td>
+<td align="left">qsub</td>
+<td align="left">Beta</td>
+<td align="left">sge</td>
+</tr>
+<tr class="odd">
+<td align="left">SLURM</td>
+<td align="left">sbatch</td>
+<td align="left">under-dev</td>
+<td align="left">slurm</td>
+</tr>
+</tbody>
+</table>
+<p>*queue short-name used in <a href="https://github.com/sahilseth/flow">flow</a></p>
+<ul>
+<li>PBS: <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a></li>
+<li>Torque: <a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
+<ul>
+<li>MD Anderson</li>
+<li><a href="http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html">University of Houston</a></li>
+</ul></li>
+<li>LSF <a href="http://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
+<ul>
+<li>Harvard Medicla School uses: <a href="https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF">LSF HPC 7</a></li>
+<li>Also Used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a></li>
+</ul></li>
+<li>SGE <a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
+<ul>
+<li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a></li>
+<li>Another from <a href="http://www.biostat.jhsph.edu/bit/cluster-usage.html">JHSPH</a></li>
+<li>Dependecy info <a href="https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies">here</a></li>
+</ul></li>
+</ul>
+<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 </div>
 
 

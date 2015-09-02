@@ -72,18 +72,23 @@
 <div id="highlights" class="section level2">
 <h2>Highlights</h2>
 <ul>
-<li>Effectively process a pipeline multi-step pipeline, spawning it across the computing cluster</li>
+<li>Effectively process a <strong>multi-step pipeline</strong>, spawning it across the computing cluster</li>
 <li>Example:
 <ul>
-<li>A typical case with next-generation sequencing, a sample with tens of <a href="http://en.wikipedia.org/wiki/FASTQ_format">fastq</a> files)</li>
-<li>Each file can be processed (<a href="http://en.wikipedia.org/wiki/Sequence_alignment">aligned</a>) individually, each using multiple cores</li>
-<li>Say 50 files using 10 cores each, totalling 500 cores across several machines, for one sample</li>
-<li>flowr further supports processing multiple samples in parrellel, spawning thousands of cores.</li>
+<li>A typical case in next-generation sequencing is of processing tens of <a href="http://en.wikipedia.org/wiki/FASTQ_format">fastqs</a> for a sample, <a href="http://en.wikipedia.org/wiki/Sequence_alignment">mapping</a> them to a reference genome.</li>
+<li>Each step may require a range resources from in terms of CPU, RAM etc.
+<ul>
+<li>Consider we have 50 files using 10 cores each for step A (500 cores total).</li>
+<li>Next step uses one core each (50 cores total).</li>
+<li>Say step C merges them, and uses only 1 core. several machines, for one sample</li>
 </ul></li>
-<li>Reproducible, with cleanly structured execution logs</li>
-<li>Track and re-run flows</li>
-<li>Lean and Portable, with easy installation</li>
-<li>Supports multiple platforms (torque, lsf, sge, slurm …)</li>
+<li>Some pipelines may reserve the maximum, example say 500 cores throught, flowr would handle the <strong>surge</strong>, reserving 500, 50 or 1; when needed.</li>
+<li>Now consider the run has 10 samples, all of them would be procesed in parallel, spawning <strong>thousands of cores</strong>.</li>
+</ul></li>
+<li><strong>Reproducible</strong> and <strong>transparent</strong>, with cleanly structured execution logs</li>
+<li><strong>Track</strong> and <strong>re-run</strong> flows</li>
+<li><strong>Lean</strong> and <strong>Portable</strong>, with easy installation</li>
+<li>Supports <strong>multiple cluster computing platforms</strong> (torque, lsf, sge, slurm …)</li>
 </ul>
 <div id="a-few-lines-to-get-started" class="section level3">
 <h3>A few lines, to get started:</h3>
@@ -96,8 +101,7 @@ install.packages(devtools)
 devtools::install_github(&quot;sahilseth/flowr&quot;)
 
 library(flowr) ## load the library
-setup() ## copy flowr bash script; and create a folder flowr under home.
-run(&#39;sleep&#39;, execute=TRUE,  platform=&#39;moab&#39;) ## submit a simple example</code></pre>
+setup() ## copy flowr bash script; and create a folder flowr under home.</code></pre>
 <ul>
 <li>Here is a shiny app, <a href="https://sseth.shinyapps.io/flow_creator">flow_creator</a> which helps you build a flow.</li>
 <li>A few <a href="http://sahilseth.github.io/slides/flowrintro">slides</a> providing a quick overview.</li>

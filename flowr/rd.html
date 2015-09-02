@@ -147,7 +147,7 @@ methods, utils
 Imports
 </h4>
 <p>
-diagram, whisker, params (&gt;= 0.2.4), tools, knitr
+diagram, whisker, params (&gt;= 0.2.8), tools, knitr
 </p>
 <h4>
 Suggests
@@ -171,18 +171,6 @@ Taking in a named list and returns a two columns data.frame
 <p class="rd-p">
 Taking in a named list and returns a two columns data.frame as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.
 </p>
-<h4>
-Usage
-</h4>
-<pre class="r"><code><div>to_flowmat(x, ...)</div>
-<div>## method for class 'list'
-to_flowmat(x, samplename, ...)</div>
-<div>## method for class 'data.frame'
-to_flowmat(x, ...)</div>
-<div>## method for class 'flow'
-to_flowmat(x, ...)</div>
-<div>as.flowmat(x, grp_col, jobname_col, cmd_col, ...)</div>
-<div>is.flowmat(x)</div></code></pre>
 <h4>
 Arguments
 </h4>
@@ -233,18 +221,6 @@ Create a skeleton flow definition using a flowmat.
 <p class="rd-p">
 This function enables creation of a skeleton flow definition with several default values, using a flowmat. To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront. As such, these params must be of the same length as number of unique jobs using in the flowmat.
 </p>
-<h4>
-Usage
-</h4>
-<pre class="r"><code><div>to_flowdef(x, ...)</div>
-<div>## method for class 'flowmat'
-to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
-<div>## method for class 'flow'
-to_flowdef(x, ...)</div>
-<div>## method for class 'character'
-to_flowdef(x, ...)</div>
-<div>as.flowdef(x, ...)</div>
-<div>is.flowdef(x)</div></code></pre>
 <h4>
 Arguments
 </h4>
@@ -328,15 +304,18 @@ Use a set of shell commands and flow definiton to create <a href='flow.html'>flo
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>to_flow(x, ...)</div>
-<div>## method for class 'vector'
-to_flow(x, def, grp_col, jobname_col, cmd_col, ...)</div>
-<div>## method for class 'flowmat'
-to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
-<div>## method for class 'data.frame'
-to_flow(x, ...)</div>
-<div>## method for class 'list'
-to_flow(x, def, flowname, flow_run_path, desc, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+<pre class="r"><code>to_flow(x, ...)
+
+to_flowvector(x, def, grp_col, jobname_col, cmd_col, ...)
+
+to_flowflowmat(x, def, grp_col, jobname_col, cmd_col, flowname,
+  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj,
+  verbose = get_opts("verbose"), ...)
+
+to_flowdata.frame(x, ...)
+
+to_flowlist(x, def, flowname, flow_run_path, desc, qobj,
+  verbose = get_opts("verbose"), ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -475,11 +454,12 @@ submit_flow
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
-<div>## method for class 'list'
-submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
-<div>## method for class 'flow'
-submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), execute&nbsp;=&nbsp;FALSE, uuid, plot&nbsp;=&nbsp;TRUE, dump&nbsp;=&nbsp;TRUE, .start_jid&nbsp;=&nbsp;1, ...)</div></code></pre>
+<pre class="r"><code>submit_flow(x, verbose = get_opts("verbose"), ...)
+
+submit_flowlist(x, verbose = get_opts("verbose"), ...)
+
+submit_flowflow(x, verbose = get_opts("verbose"),
+  execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1, ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -549,15 +529,16 @@ plot the flow object plot_flow.character: works on a flowdef file.
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>plot_flow(x, ...)</div>
-<div>## method for class 'flow'
-plot_flow(x, pdf&nbsp;=&nbsp;FALSE, pdffile, ...)</div>
-<div>## method for class 'list'
-plot_flow(x, ...)</div>
-<div>## method for class 'character'
-plot_flow(x, ...)</div>
-<div>## method for class 'flowdef'
-plot_flow(x, detailed&nbsp;=&nbsp;TRUE, type&nbsp;=&nbsp;c("1", "2"), pdf&nbsp;=&nbsp;FALSE, pdffile, ...)</div></code></pre>
+<pre class="r"><code>plot_flow(x, ...)
+
+plot_flowflow(x, pdf = FALSE, pdffile, ...)
+
+plot_flowlist(x, ...)
+
+plot_flowcharacter(x, ...)
+
+plot_flowflowdef(x, detailed = TRUE, type = c("1", "2"),
+  pdf = FALSE, pdffile, ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -635,14 +616,15 @@ Summarize status of executed flow(x)
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>status(x, out_format&nbsp;=&nbsp;"markdown")</div>
-<div>get_status(x, ...)</div>
-<div>## method for class 'character'
-get_status(x, out_format&nbsp;=&nbsp;"markdown", ...)</div>
-<div>## method for class 'data.frame'
-get_status(x, ...)</div>
-<div>## method for class 'flow'
-get_status(x, out_format&nbsp;=&nbsp;"markdown", ...)</div></code></pre>
+<pre class="r"><code>status(x, out_format = "markdown")
+
+get_status(x, ...)
+
+get_statuscharacter(x, out_format = "markdown", ...)
+
+get_statusdata.frame(x, ...)
+
+get_statusflow(x, out_format = "markdown", ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -706,11 +688,11 @@ Kill all jobs submitted to the computing platform, for one or multiple flows
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>kill(x, ...)</div>
-<div>## method for class 'character'
-kill(x, force&nbsp;=&nbsp;FALSE, ...)</div>
-<div>## method for class 'flow'
-kill(x, kill_cmd, jobid_col&nbsp;=&nbsp;"job_sub_id", ...)</div></code></pre>
+<pre class="r"><code>kill(x, ...)
+
+killcharacter(x, force = FALSE, ...)
+
+killflow(x, kill_cmd, jobid_col = "job_sub_id", ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -781,11 +763,12 @@ Re-run a pipeline in case of hardware or software failures.
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>rerun(x, ...)</div>
-<div>## method for class 'character'
-rerun(x, ...)</div>
-<div>## method for class 'flow'
-rerun(x, mat, def, start_from, execute&nbsp;=&nbsp;TRUE, kill&nbsp;=&nbsp;TRUE, ...)</div></code></pre>
+<pre class="r"><code>rerun(x, ...)
+
+reruncharacter(x, ...)
+
+rerunflow(x, mat, def, start_from, execute = TRUE, kill = TRUE,
+  ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -882,10 +865,11 @@ For more details regarding these funtions refer to <a href='http://www.inside-r.
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>flowopts</div>
-<div>get_opts(...)
+<pre class="r"><code>flowopts
+
+get_opts(...)
 set_opts(...)
-load_opts(...)</div></code></pre>
+load_opts(...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -966,10 +950,6 @@ get_opts()</code></pre>
 Setup and initialize some scripts.
 </h3>
 <h4>
-Usage
-</h4>
-<pre class="r"><code><div>setup(bin&nbsp;=&nbsp;"~/bin", flow_base_path&nbsp;=&nbsp;get_opts("flow_base_path"))</div></code></pre>
-<h4>
 Arguments
 </h4>
 <dl class="rd-dl">
@@ -1007,7 +987,11 @@ This function defines the queue used to submit jobs to the cluster. In essence d
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>queue(object, platform&nbsp;=&nbsp;c("local", "lsf", "torque", "sge", "moab"), format&nbsp;=&nbsp;"", queue&nbsp;=&nbsp;"long", walltime, memory, cpu&nbsp;=&nbsp;1, extra_opts&nbsp;=&nbsp;"", submit_exe, nodes&nbsp;=&nbsp;"1", jobname&nbsp;=&nbsp;"name", email&nbsp;=&nbsp;Sys.getenv("USER"), dependency&nbsp;=&nbsp;list(), server&nbsp;=&nbsp;"localhost", verbose&nbsp;=&nbsp;FALSE, cwd&nbsp;=&nbsp;"", stderr&nbsp;=&nbsp;"", stdout&nbsp;=&nbsp;"", ...)</div></code></pre>
+<pre class="r"><code>queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
+  format = "", queue = "long", walltime, memory, cpu = 1,
+  extra_opts = "", submit_exe, nodes = "1", jobname = "name",
+  email = Sys.getenv("USER"), dependency = list(), server = "localhost",
+  verbose = FALSE, cwd = "", stderr = "", stdout = "", ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -1152,7 +1136,9 @@ job class
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>job(cmds&nbsp;=&nbsp;"", name&nbsp;=&nbsp;"myjob", q_obj&nbsp;=&nbsp;new("queue"), previous_job&nbsp;=&nbsp;"", cpu&nbsp;=&nbsp;1, memory, walltime, submission_type&nbsp;=&nbsp;c("scatter", "serial"), dependency_type&nbsp;=&nbsp;c("none", "gather", "serial", "burst"), ...)</div></code></pre>
+<pre class="r"><code>job(cmds = "", name = "myjob", q_obj = new("queue"), previous_job = "",
+  cpu = 1, memory, walltime, submission_type = c("scatter", "serial"),
+  dependency_type = c("none", "gather", "serial", "burst"), ...)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -1255,8 +1241,12 @@ Flow constructor
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>flow(jobs&nbsp;=&nbsp;list(new("job")), name&nbsp;=&nbsp;"newflow", desc&nbsp;=&nbsp;"my_super_flow", mode&nbsp;=&nbsp;c("scheduler", "trigger", "R"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), trigger_path&nbsp;=&nbsp;"", flow_path&nbsp;=&nbsp;"", version&nbsp;=&nbsp;"0.0", status&nbsp;=&nbsp;"created", execute&nbsp;=&nbsp;"")</div>
-<div>is.flow(x)</div></code></pre>
+<pre class="r"><code>flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
+  mode = c("scheduler", "trigger", "R"),
+  flow_run_path = get_opts("flow_run_path"), trigger_path = "",
+  flow_path = "", version = "0.0", status = "created", execute = "")
+
+is.flow(x)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -1368,7 +1358,7 @@ get_unique_id
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>get_unique_id(prefix&nbsp;=&nbsp;"id", suffix&nbsp;=&nbsp;"", random_length&nbsp;=&nbsp;8)</div></code></pre>
+<pre class="r"><code>get_unique_id(prefix = "id", suffix = "", random_length = 8)</code></pre>
 <h4>
 Arguments
 </h4>
@@ -1406,16 +1396,6 @@ to_flowdet
 to_flowdet get a flow_details file from the directory structure. This has less information than the one generated using a flow object. Lacks jobids etc…
 </p>
 <h4>
-Usage
-</h4>
-<pre class="r"><code><div>to_flowdet(x, ...)</div>
-<div>## method for class 'rootdir'
-to_flowdet(x, ...)</div>
-<div>## method for class 'character'
-to_flowdet(x, ...)</div>
-<div>## method for class 'flow'
-to_flowdet(x, ...)</div></code></pre>
-<h4>
 Arguments
 </h4>
 <dl class="rd-dl">
@@ -1445,10 +1425,6 @@ if x is char. assumed a path, check if flow object exists in it and read it. If 
 parse_jobids
 </h3>
 <h4>
-Usage
-</h4>
-<pre class="r"><code><div>parse_jobids(jobids, platform)</div></code></pre>
-<h4>
 Arguments
 </h4>
 <dl class="rd-dl">
@@ -1474,10 +1450,6 @@ checks all the arguments in the parent frame. None of them should be null.
 <p class="rd-p">
 This function may be optionally moved to a more generic package.
 </p>
-<h4>
-Usage
-</h4>
-<pre class="r"><code><div>check_args(ignore, select)</div></code></pre>
 <h4>
 Arguments
 </h4>
