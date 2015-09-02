@@ -26,23 +26,25 @@ are to be executed in a (work)flow.
 Highlights
 ----------
 
-- Effectively process a pipeline multi-step pipeline, spawning it
+- Effectively process a **multi-step pipeline**, spawning it
 across the computing cluster
-- Example:
-	- A typical case with next-generation sequencing, a sample
-    with tens of
-    [fastq](http://en.wikipedia.org/wiki/FASTQ_format) files)
-	- Each file can be processed
-     ([aligned](http://en.wikipedia.org/wiki/Sequence_alignment))
-     individually, each using multiple cores
-	- Say 50 files using 10 cores each, totalling 500 cores across
+- Example: 
+	- A typical case in next-generation sequencing is of processing tens of
+   [fastqs](http://en.wikipedia.org/wiki/FASTQ_format) for a sample,
+   [mapping](http://en.wikipedia.org/wiki/Sequence_alignment) them to a reference genome.
+	- Each step may require a range resources from in terms of CPU, RAM etc.
+		- Consider we have 50 files using 10 cores each for step A (500 cores total).
+		- Next step uses one core each (50 cores total).
+		- Say step C merges them, and uses only 1 core.
      several machines, for one sample
-	- flowr further supports processing multiple samples in
-        parrellel, spawning thousands of cores.
--   Reproducible, with cleanly structured execution logs
--   Track and re-run flows
--   Lean and Portable, with easy installation
--   Supports multiple platforms (torque, lsf, sge, slurm ...)
+	- Some pipelines may reserve the maximum, example say 500 cores throught, 
+	flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
+	- Now consider the run has 10 samples, all of them would be procesed in
+	 parallel, spawning **thousands of cores**.
+-   **Reproducible** and **transparent**, with cleanly structured execution logs
+-   **Track** and **re-run** flows
+-   **Lean** and **Portable**, with easy installation
+-   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...)
 
 ### A few lines, to get started:
 
@@ -57,7 +59,6 @@ devtools::install_github("sahilseth/flowr")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
-run('sleep', execute=TRUE,  platform='moab') ## submit a simple example
 ```
 
 -   Here is a shiny app,
