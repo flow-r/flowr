@@ -1,8 +1,8 @@
-install.packages("drat", repos = "http://cran.rstudio.com")
-library(drat)
-addRepo("sahilseth")
+#install.packages("drat", repos = "http://cran.rstudio.com")
+#library(drat)
+#addRepo("sahilseth")
 
-install.packages("ngsflows", repos = "http://cran.rstudio.com")
+#install.packages("ngsflows", repos = "http://cran.rstudio.com")
 #library(ngsflows)
 
 
@@ -14,9 +14,11 @@ require(knitr)
 
 
 if(Sys.info()['sysname'] == "Darwin"){
-	outwd = "../github_flowrpages/flowr"
+	outwd = "~/Dropbox/public/github_flowrpages/flowr"
+	code_path <- "~/Dropbox/public/github_flow"
 }else{
-	outwd = "gh-pages/flowr/"
+	outwd = "gh-pages/flowr"
+	code_path <- "../../"
 }
 
 if(!file.exists(outwd))
@@ -40,8 +42,7 @@ library(flowr)
 library(rmarkdown)
 
 # make sure your working directory is set to repo base directory
-setwd("gh-pages/flowr")
-code_path <- "../../"
+setwd(outwd)
 #setwd("~/Dropbox/public/github_flowrdocs2/flowr")
 
 ## this make file uses several files, from flowr folder
@@ -74,10 +75,15 @@ check_output("index.html")
 
 render("docs.Rmd", output_format = pd_expand)
 check_output("docs.html")
+#system("open docs.html")
+
+render("news.Rmd", output_format = pd_expand)
+check_output("news.html")
 
 dir.create(file.path(code_path, "inst/staticdocs"))
 #undebug(packagedocs:::get_rd_data)
-#debug(packagedocs:::rd_template)
+#load_all("~/Dropbox/public/github_packagedocs/")
+#debug(rd_template)
 render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
 
