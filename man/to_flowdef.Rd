@@ -53,4 +53,31 @@ flowmat.
 To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront.
 As such, these params must be of the same length as number of unique jobs using in the flowmat.
 }
+\details{
+When using \code{as.flowdef(flowdef, verbose = 2)}, you may expect the following
+output, which described all the checks performed on the flow definition file.
+
+\preformatted{
+
+	 checking if required columns are present...
+	 checking if resources columns are present...
+	 checking if dependency column has valid names...
+	 checking if submission column has valid names...
+	 checking for missing rows in def...
+	 checking for extra rows in def...
+	 checking submission and dependency types...
+	 jobname prev.sub_type --> dep_type --> sub_type: relationship
+	 1: aln1 none --> none --> scatter
+	 2: aln2 scatter --> none --> scatter
+	 3: sampe        scatter --> serial --> scatter rel: complex one:one
+	 4: fixrg        scatter --> serial --> scatter rel: complex one:one
+	 5: merge        scatter --> gather --> serial rel: many:one
+	 6: markdup      serial --> serial --> serial rel: simple one:one
+	 7: target       serial --> serial --> serial rel: simple one:one
+	 8: realign      serial --> burst --> scatter rel: one:many
+	 9: baserecalib  scatter --> serial --> scatter rel: complex one:one
+	 10: printreads  scatter --> serial --> scatter rel: complex one:one
+	 11: haplotyper  scatter --> serial --> scatter rel: complex one:one
+}
+}
 
