@@ -286,9 +286,9 @@ calc_arrows <- function(x){
 	curves=c(-0.2,0.2);
 
 	## final params:
-	if(verbose) message("using size: ", cex, " ", cex_detail, 
-					"\nbox: H X W ", boxht, " X ", boxwd,
-					"\narr: lwd, len, pos: ", arr.lwd, " ", arr.len, " ", arr.pos)
+	if(verbose > 1) message("font size: ", cex, " ", cex_detail, 
+					"\nbox size: H X W ", boxht, " X ", boxwd,
+					"\narr size: lwd, len, pos: ", arr.lwd, " ", arr.len, " ", arr.pos)
 	
 
 	#detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
