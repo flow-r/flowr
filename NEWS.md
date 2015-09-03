@@ -1,44 +1,71 @@
 ---
 output: html_document
+packagedocs:
+    toc: true
+navpills: |
+  <li><a href='docs.html'>Docs</a></li>
+  <li><a href='rd.html'>Package Ref</a></li>
+  <li class="active"><a href='news.html'>News</a></li>
+  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-
-
-flowr 0.9.7 2015-08-22
+flowr latest
 ----------------------------------------------
-- run(): runs a complete pipeline:
-	- create flowmat, my_pipeline()
-	- load conf, load_conf()
-	- load flowdef, as.flowdef()
-	- created a flow object, to_flow()
-	- Submit to the cluster, submit_flow()
-- kill(): now a S3 functions, and operates on both a flow object
-   and flow_path folder
-- check(): Now works on flowdef and flowmat
-- as.flowmat(), as.flowdef(): easy ways to fetch and check these tables
-- fetch() along with fetch_pipes() and fetch_conf() simplifies finding files
-- dependecies: brought back knitr dependency
-- Reduce function overload, moving several functions a seperate `params` pkg
-	- moved read_sheet(), write_sheet()
-	- moved get_opts(), set_opts()
-	- moved .load_conf() load_conf()
-	- Here is a link to [params](https://github.com/sahilseth/params) package
-	- includes kable as part of params
-- [0.9.7.10] Now supports new column of status (completed/processing/errored...)
+- Modified the output of status function, to add a `status` column. Specifically, 
+this uses information from other columns and summarizes whether a specific step is 
+`pending`, `processing`, `completed` or `errored`.
+
+```
+================================================================================
 |                | total| started| completed| exit_status|status     |
 |:---------------|-----:|-------:|---------:|-----------:|:----------|
 |001.alnCmd1     |   109|     109|       109|           0|completed  |
 |007.markCmd     |     3|       3|         0|           0|processing |
+```
+
 - [0.9.7.11]
 	- Switched default value of flow@status to "created". 
-	- better looking status messages
+	- When using status on several folders, it used to be a little cluttered. 
+	Have added spaces, so that this looks prettier now.
+- **Introducing verbose levels**:
+
+	One can set the level of verboseness using `opts_flow$set(verbose=2)`.
+	Where the level may be 0, 1 or 2. Level 2 is recommended when developing a new pipeline.
+	Level 1 is good for most purposes, which level 0 is almost silent producing messages 
+	only when neccessary. Would be great, getting feedback on this.
+
 	
 
 
 
+flowr 0.9.7.10 2015-09-02
+----------------------------------------------
+- This release adds and changes functionality of several functions. 
+- A new function run(), creates and submits a pipeline. Specifically it follows the following steps:
+	- One supplies the name of the pipeline, which is used to fetch the pipeline using:
+		`fetch_pipe()`
+	- create flowmat by running a function called `mypipeline()`, `mypipeline` is the name of the pipeline.
+	- load configuration file, with paths to tools etc using `load_conf()`
+	- fetch the flow definition using `fetch_pipe`, and load it using `as.flowdef()`
+	- Further, create a flow object using `to_flow()`
+	- Finally, submit to the cluster, submit_flow()
+- `kill()`: now a S3 functions, and operates on both a flow object
+   and flow_wd folder
+- `check()`: Now works on flowdef and flowmat
+- as.flowmat(), as.flowdef(): easy ways to fetch and check these tables
+- `fetch()` along with `fetch_pipes()` and `fetch_conf()` simplify finding files
+- Reduce function overload, moving several functions a seperate `params` pkg
+	- moved `read_sheet()`, `write_sheet()`
+	- moved `get_opts()`, `set_opts()`
+	- moved `.load_conf()` `load_conf()`
+	- Here is a link to [params](https://github.com/sahilseth/params) package
+	- kable function is now a part of params, that removes the dependency to knitr package
 
 
-flowr 0.9.6.13
+
+
+
+flowr 0.9.6.13 2015-09-02
 ----------------------------------------------
 - Using PBS/LSF script instead of one line commands
 - Format now a script, parsed using whisker
