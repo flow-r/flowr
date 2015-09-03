@@ -2,7 +2,8 @@
 title: "flowr"
 subtitle: "Streamlining Workflows"
 output: 
-  rmarkdown::html_document
+    html_document: 
+    keep_md: yes
 packagedocs:
     toc: false
 navpills: |
