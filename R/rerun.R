@@ -99,17 +99,26 @@ rerun.flow <- function(x, mat, def, start_from,
 		mat = as.flowmat(mat)
 	}
 
-	## kill the flow
-	if(kill)
-		capture.output(try(kill(wd)),
-			file = file.path(wd, "kill_jobs.out"))
 
 	message("\nSubsetting... get stuff to run starting, ", start_from, ":\n")
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from)
 	def = subset_fdef(fobj = fobj, def = def, start_from = start_from)
 	message(paste(def$jobname, collapse = "\n"))
+	
 
-	## jobname, has ids as well.
+	## reset few things before we start the new flow
+	## kill the flow
+	if(kill)
+		capture.output(try(kill(wd)),
+			file = file.path(wd, "kill_jobs.out"))
+  
+	## remove trigger files
+	det = to_flowdet(fobj)
+  newdet = subset_fdet(fobj, det, start_from = start_from)
+  if(execute) 
+  	newdet = file.remove(newdet$trigger)
+
+  ## jobname, has ids as well.
 	fobj2 <- to_flow(x = mat, def = def, 
 									 flowname = fobj@name, 
 									 flow_run_path = fobj@flow_run_path, ...)
@@ -121,15 +130,12 @@ rerun.flow <- function(x, mat, def, start_from,
 		execute = execute,
 		dump = FALSE)
 
-  flowdet = to_flowdet(fobj)
   ## -- need a function to read and update the old flow object with new job submission ids
   fobj = update.flow(fobj, child = fobj2)
-
+	## new flowdet of the new flow
+  flowdet = to_flowdet(fobj)
   write_flow_details(wd, fobj, flow_det = flowdet)
   
-  ## get trigger files
-  newdet = subset_fdet(fobj, flowdet, start_from = start_from)
-  if(execute) newdet = file.remove(newdet$trigger)
 
   invisible(fobj)
 }
@@ -218,8 +224,7 @@ subset_fdet <- function(fobj, det, start_from){
 	mods = names(fobj@jobs)
 	mods = mods[which(grepl(start_from, mods)):length(mods)]
 	## get mat
-	det = subset(det, det$jobname %in% mods)
-
+	det = subset(det, det$jobnm %in% mods)
 	return(det)
 }
 
