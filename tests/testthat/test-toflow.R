@@ -90,7 +90,7 @@ test_that("test creation of flow, fails; when it should", {
 })
 
 
-context("Test creation of flow for multiple platforms")
+context("Test flowr on multiple platform, including creation, status, rerun and kill")
 
 plats = c("lsf", "sge", "torque")
 for(plat in plats){
@@ -106,39 +106,48 @@ for(plat in plats){
 	expect_equal(qobj@submit_exe, "echo")
 	expect_equal(fobj@jobs[[1]]@submit_exe, "echo")
 	
-	fobj2 = suppressMessages(submit_flow(fobj))
+	fobj_dry = suppressMessages(submit_flow(fobj))
 	#expect_warning(suppressMessages(submit_flow(fobj, execute = TRUE)), "Unable to parse JOB IDs")
 	
-	test_that("test fobj on all platforms", {
+	## fake submit
+	fobj_sub = fobj_dry
+	fobj_sub@status = "submitted"
+	
+	
+	test_that("test fobj is correct", {
 		
 		expect_is(fobj, "flow")
-		expect_is(fobj2, "flow")
-		expect_equal(fobj2@status, "dry-run")
+		expect_is(fobj_dry, "flow")
+		expect_equal(fobj_dry@status, "dry-run")
 		
 		## create flowdet
-		expect_is(to_flowdet(fobj2), "data.frame")
+		expect_is(to_flowdet(fobj_dry), "data.frame")
 		expect_error(to_flowdet(fobj), "fobj: no execution details")
-		
+	})
+	
+	test_that("flow is killable", {
 		## killing
 		expect_error(kill(fobj), "fobj: no execution details")
-		expect_error(suppressMessages(kill(fobj2, kill_cmd = "xyz", ignore.stderr = TRUE)),
-								 "error in running command")
-		
+	})
+	
+	test_that("flow is re-runnable", {
 		##  -----  re-running
 		expect_error(rerun(fobj), "fobj: not submitted yet")
 		expect_error(rerun(fobj, start_from = "create_tmp"), "fobj: not submitted yet")
 		
-		## fake submit
-		fobj2@status = "submitted"
-		expect_error(rerun(fobj2), "start_from: missing")
+		## rerun the fake submit
+		expect_error(rerun(fobj_sub), "start_from: missing")
 		## check rerun output
-		fobj_re = suppressMessages(rerun(fobj2, start_from = "create_tmp", kill = FALSE, execute = FALSE))
+		fobj_re = suppressMessages(rerun(fobj_sub, start_from = "create_tmp", kill = FALSE, execute = FALSE))
 		#suppressMessages(rerun(fobj2, start_from = "create_tmp", kill = TRUE, qobj = qobj)), "kill"
-		fobj_re = suppressMessages(rerun(fobj2, start_from = "create_tmp", kill = FALSE, qobj = qobj))
-
+		fobj_re = suppressMessages(rerun(fobj_sub, start_from = "create_tmp", kill = FALSE, qobj = qobj))
+		
+		## check the flow
 		expect_is(fobj_re, "flow")
 		
 	})
+	
+	
 }
 
 
