@@ -104,7 +104,7 @@ submit_flow.flow <- function(x,
 	for(i in .start_jid:length(x@jobs)){
 		## ------ check if there are any dependencies
 		previous_job <- x@jobs[[i]]@previous_job
-		if(verbose) message("Working on, ", i, "with prev: ", previous_job)
+		if(verbose > 1) message("Working on job ", i, " with previous job: ", previous_job)
 
 		## if there is a previous job
 		if(prevjob_exists(previous_job)){
