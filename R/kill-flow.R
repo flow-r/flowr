@@ -56,11 +56,12 @@ kill.character <- function(x, force = FALSE, ...){
 	}
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
-		if(!is.flow(fobj))
-			message("\n\nflowr can only kill flows, where the jobs ids are available. ",
-						 "Please check and confirm that the path supplied is correct, ", 
-						 "and that it has a flow_details.rds file. \n ls -l ", x[i])
-		stop("")
+		if(!is.flow(fobj)){
+		  message("\n\nflowr can only kill flows, where the jobs ids are available. ",
+		          "Please check and confirm that the path supplied is correct, ", 
+		          "and that it has a flow_details.rds file. \n ls -l ", x[i])
+		  stop("")
+		}
 		kill.flow(fobj, ...)
 	}
 }
@@ -80,7 +81,10 @@ kill.flow <- function(x,
 	cmds <- sprintf("%s %s", kill_cmd, flow_det[,jobid_col])
 	tmp <- sapply(cmds, function(cmd){
 		message(cmd, "\n")
-		return(system(cmd, intern = TRUE, ...))
+		#return(try(system(cmd, intern = TRUE, ...)))
+		## dots become a problem
+		## print(as.list(...))
+		return(try(system(cmd, intern = TRUE)))
 	})
 	invisible(tmp)
 }
