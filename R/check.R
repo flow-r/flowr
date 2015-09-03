@@ -77,9 +77,9 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 		message("checking for missing rows in def...")
 	miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
 	if (length(miss_jobs) > 0){
+		message(paste(kable(x), collapse = "\n"))
 		stop(c("extra jobs in prev_jobs\n",
-					 "Some jobs do not exist, but are present in prev_jobs: ", miss_jobs, "\n"),
-				 kable(x))
+					 "Some jobs do not exist, but are present in prev_jobs: ", miss_jobs, "\n"))
 	}
 	## check if dep is none, but prev jobs defined
 
@@ -88,13 +88,13 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 		message("checking for extra rows in def...")
 	extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")
 	if (sum(extra_rows) > 0){
-		print(kable(x[extra_rows,]))
+		message(paste(kable(x[extra_rows,]), collapse = "\n"))
 		stop(error("prev_job.wo.dep_type"))
 	}
 
 	extra_rows = (x$dep_type != "none" & x$prev_jobs == "none")
 	if (sum(extra_rows)){
-		print(kable(x[extra_rows,]))
+		print(paste(kable(x[extra_rows,]), collapse = "\n"))
 		stop(error("dep_type.wo.prev_job"))
 	}
 
@@ -111,6 +111,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	}
 
 	x$cpu_reserved = as.numeric(x$cpu_reserved)
+	
 	#print(x)
 	## check all previous jobs defined in names
 	## code previous jobs as NA
@@ -172,7 +173,7 @@ check_dep_sub_type <- function(dep, sub,
 					 "Refer to docs.flowr.space for further details."))
 	}else if(p.sub == "scatter" & sub == "scatter" & dep == "burst"){
 		stop(c("\nDetected relationship: one-to-many. ", 
-					 "To define this, one must have previous sub_type as serial",
+					 "To define this, one must have previous sub_type as serial. ",
 					 "If the relationship is really one-to-one, you may want, ",
 					 "scatter, serial and scatter as previous submission, dependency and submission types, respectively."))
 
