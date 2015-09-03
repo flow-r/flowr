@@ -80,7 +80,8 @@ fetch <- function(x, places, urls, verbose = get_opts("verbose")){
 	y = sapply(places, list.files, pattern = paste0(x, "$"),
 		full.names = TRUE)
 	y = as.character(unlist(y))
-	if(verbose) message(y)
+	if(verbose > 1) 
+		message(y)
 	return(y)
 }
 
@@ -104,7 +105,7 @@ fetch_pipes <- function(x,
 	}
 
 	if(missing(x)){
-		message("Please supply a name of the pipline to run, here are the options")
+		message("Please supply a name of the pipeline to run, here are the options")
 		x = ".*"
 	}
 	
@@ -141,7 +142,8 @@ fetch_pipes <- function(x,
 	pipe_print = pipes;
 	pipe_print$def = basename(as.character(pipe_print$def))
 	pipe_print$conf = basename(as.character(pipe_print$conf))
-	if(!silent) print(kable(pipe_print))
+	if(!silent) 
+		print(kable(pipe_print))
 
 	if(last_only){
 		if(nrow(pipes) > 1)
@@ -151,7 +153,7 @@ fetch_pipes <- function(x,
 
 	if(!silent)
 		if(length(r) == 0)
-			warning(error("no.pipe"), x)
+			warning(error("no.pipe"), paste(x, collapse = "\n"))
 	invisible(pipes)
 
 }
@@ -190,8 +192,11 @@ search_conf <- function(...){
 }
 
 ## testing....
+
+
 avail_pipes <- function(){
-	urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
-	urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
+	#urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
+	#urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
+
 }
 
