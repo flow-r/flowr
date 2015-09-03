@@ -13,31 +13,42 @@ set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
 parse_lsf_out <- function(x,
 	scale_time = 1/3600,
 	n = 100,
-	time_format = get_opts("time_format")){
+	time_format = get_opts("time_format"),
+	verbose = get_opts('verbose')){
 	
-	text <- scan(x, what = "character", sep = "\n")
+	if(verbose > 1)
+		message("reading: ", x)
+	
+	text <- scan(x, what = "character", sep = "\n", quiet = TRUE)
 
 	cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
+	cpu_time = as.numeric(cpu_time) * scale_time
 	bgn_time = try(gsub("BGN at ", "", grep("^BGN at", text, value = TRUE)))
 	bgn_time = try(as.character(strptime(bgn_time, format = time_format)))
 	end_time = try(gsub("END at ", "", grep("^END at", text, value = TRUE)))
 	end_time = try(as.character(strptime(end_time, format = time_format)))
 
-	avg_mem = try(gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2]))
-	max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]))
-	max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]))
+	avg_mem = try(gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
+	max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
+	max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
 
 	host = gsub(".*host <([a-z0-9]*)>.*", "\\1", grep("host <.*>", text, value = TRUE))
 	cores = gsub(".*ptile=(.*)\\].*", "\\1", grep("ptile=", text, value = TRUE))
 	
-	return(list(cpu_time = as.numeric(cpu_time) * scale_time,
+	#warnings()
+	#message(cpu_time)
+	dat = suppressWarnings(data.frame(
+		cpu_time = cpu_time,
 		bgn_time = bgn_time,
 		end_time = end_time,
-		avg_mem = avg_mem,
-		max_mem = max_mem,
-		max_swap = max_swap,
+		avg_mem = as.numeric(avg_mem),
+		max_mem = as.numeric(max_mem),
+		max_swap = as.numeric(max_swap),
 		host = host,
-		cores = cores))
+		cores = cores, 
+		stringsAsFactors = FALSE))
+	
+	return(dat)
 }
 
 #' @title get_resources
@@ -100,17 +111,17 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
 	resources <- do.call(rbind, tmp)
 	mat_res <- cbind(flowdet, resources);dim(mat_res)
 	## restructure for plotting:
-	mat_res$avg_mem = as.numeric(mat_res$avg_mem)
-	mat_res$max_mem = as.numeric(mat_res$max_mem)
-	mat_res$max_swap = as.numeric(mat_res$max_swap)
-	mat_res$cpu = as.numeric(mat_res$cpu)
-	mat_res$bgn_time = unlist(mat_res$bgn_time)
-	mat_res$end_time = unlist(mat_res$end_time)
+	#mat_res$avg_mem = as.numeric(mat_res$avg_mem)
+	#mat_res$max_mem = as.numeric(mat_res$max_mem)
+	#mat_res$max_swap = as.numeric(mat_res$max_swap)
+	#mat_res$cpu_time = mat_res$cpu_time
+	#mat_res$bgn_time = unlist(mat_res$bgn_time)
+	#mat_res$end_time = unlist(mat_res$end_time)
 	mat_res$wd = basename(wd)
 	#mat_res$node = 
 
 	dat = reshape2::melt(mat_res,
-						 measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu", "bgn_time", "end_time"))
+						 measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu_time", "bgn_time", "end_time"))
 	if(plot){
 		mytheme <- ggplot2::theme_bw() +
 			ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
