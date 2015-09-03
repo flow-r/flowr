@@ -5,7 +5,7 @@
 \title{parse LSF output files}
 \usage{
 parse_lsf_out(x, scale_time = 1/3600, n = 100,
-  time_format = get_opts("time_format"))
+  time_format = get_opts("time_format"), verbose = get_opts("verbose"))
 }
 \arguments{
 \item{x}{file}
