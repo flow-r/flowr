@@ -561,10 +561,12 @@ Here are some of the available pipelines along with their respective locations
 
 ```{r echo=FALSE, results='asis', message=FALSE}
 pipes = fetch_pipes(silent = TRUE)
-pipes$pipe = basename(pipes$pipe)
-pipes$def = basename(pipes$def)
-pipes$conf = basename(pipes$conf)
-params::kable(pipes)
+if(nrow(pipes) > 0){
+	pipes$pipe = basename(pipes$pipe)
+	pipes$def = basename(pipes$def)
+	pipes$conf = basename(pipes$conf)
+	params::kable(pipes)
+}
 ```
 
 
