@@ -65,7 +65,7 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 
 		## --- write script to file
 		## this if for debugging
-		if(verbose > 1)
+		if(verbose > 2)
 			message("Submitting using script:\n", cmd, "\n")
 
 		## --- return CMD if local, else jobid
