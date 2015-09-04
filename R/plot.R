@@ -50,14 +50,9 @@ plot_flow <- function(x, ...) {
 #' @rdname plot_flow
 #' @method plot_flow flow
 #' @export
-plot_flow.flow <- function(x, pdf = FALSE, pdffile, ...){
+plot_flow.flow <- function(x, ...){
 	
-	## if pdffile is provide and pdf is FALSE
-	if(!missing(pdffile))
-		pdf = TRUE
-	if(missing(pdffile) & pdf)
-		pdffile = sprintf("%s.pdf", x@name)
-	
+
 	#dat <- create_jobs_mat(x)
 	x = to_flowdef(x) # nocov
 	plot_flow(x, ...) # nocov
@@ -92,15 +87,15 @@ plot_flow.flowdef <- function(x,
 															pdf = FALSE,
 															pdffile,
 															...){
-
+	
 	type = match.arg(type)
-
+	
 	## if pdffile is provide and pdf is FALSE
 	if(!missing(pdffile))
 		pdf = TRUE
 	if(missing(pdffile) & pdf)
 		pdffile = sprintf("%s.pdf", getwd())
-
+	
 	##--- plotting needs prev_jobs to be NA and not none
 	x$prev_jobs = ifelse(x$prev_jobs == "none", NA, x$prev_jobs)
 	p <- switch(type,
@@ -117,17 +112,22 @@ split_multi_dep <- function(x){
 	## --- handle cases where we have multiple dependencies
 	multi_rows <- grep(",", x$prev_jobs)
 	prev_col = which(colnames(x) == "prev_jobs")
-
+	
 	if (length(multi_rows)>0){
 		x2 <- data.frame()
-		for(i in length(multi_rows)){
+		for(i in 1:length(multi_rows)){
 			## always get the current index
 			row = head(grep(",", x$prev_jobs), 1)
 			prev_jobs = prev_jobs = strsplit(as.c(x[row,]$prev_jobs),",")[[1]]
-			dt = x[row, ]
-			x2 = suppressWarnings(cbind(dt[, -prev_col], prev_jobs))
+			dt = x[row, ] ## dt to be removed
+			x2 = suppressWarnings(cbind(dt[, -prev_col], prev_jobs)) ## new df to be added
 			## insert at the right place
-			x <- rbind(x[1:(row-1),], x2, x[(row+1):nrow(x),])
+			before = x[1:(row-1),]
+			after = x[(row+1):nrow(x), ]
+			if(nrow(x) == row)
+				x <- rbind(before, x2)
+			else
+				x <- rbind(before, x2, after)
 		}
 	}
 	return(x)
@@ -136,6 +136,7 @@ split_multi_dep <- function(x){
 
 arrange_flowdef <- function(x, n = 4){
 	jobnames=unique(as.c(x$jobname))
+	n = length(jobnames) / 2
 	jobid <- 1:length(jobnames);names(jobid)=jobnames
 	prev_jobid <- jobid[as.c(x$prev_jobs)]
 	get_new_ids <- function(x){
@@ -156,16 +157,24 @@ arrange_flowdef <- function(x, n = 4){
 	return(x)
 }
 
-display_mat <- function(x){
+display_mat <- function(x, verbose = get_opts("verbose")){
 	x$level = 0
 	for(i in 1:nrow(x)){
 		prev = x$prev_jobs[i]
+		nm = x$jobname[i]
+		
+		if(verbose > 2)
+			message("display_mat: index: ", i, " nm: ", nm, " prev: ", prev)
+		
 		if (!is.na(prev)){
-			if (prev != ""){
+			if (prev != ""){ ## if prev exists
 				prev_level = subset(x, x$jobname == prev)$level
+				if(verbose > 2)
+					message("prev_level: ", prev_level, " x$level[i]: ", x$level[i])
 				x$level[i] = prev_level + 1
 			}
 		}
+		
 	}
 	table(x$level)
 }
@@ -178,21 +187,22 @@ calc_boxdim <- function(x, detailed, pdf){
 	
 	h = dev.size("cm")[2] ## height
 	
-	if(x > 15)
-		message("Plotting may not be pretty with big flows",
-						"try with detailed = FALSE OR",
+	if(x > 15 & detailed)
+		message("Plotting may not be pretty with big flows ",
+						"you may try with, detailed=FALSE",
 						"")
 	
 	## eq from eureka
-	ht = round(0.05 - 0.0013*x, 3)
+	## smaller boxes for bigger flows
+	ht = round(0.05 - 0.0012*x, 3)
 	
 	if(!detailed)
-		ht = ht - 0.01
+		ht = ht*0.9
 	
 	if(pdf)
-		ht = ht - 0.01
+		ht = ht - 0.00
 	
-	wd = ht * 1.3
+	wd = ht * 2
 	
 	detail.offset = c(0, ht*0.6) ## tweak the offset a little
 	list(wd = wd, ht = ht, detail.offset = detail.offset)
@@ -200,11 +210,17 @@ calc_boxdim <- function(x, detailed, pdf){
 
 #' Calculate font size based on the size of the window
 #' @param x box height
-calc_fontsize <- function(x){
+calc_fontsize <- function(x, verbose = get_opts("verbose")){
+	
 	## get height of the window
 	h = dev.size("px")[2]
+	
 	cex =  0.2 + 0.001*h + 3*x
 	cex_detail = 0.6*cex
+	
+	if(verbose > 1)
+		message("window size: ", h, "px cex: ", cex)
+	
 	list(cex = cex, cex_detail = cex_detail)
 }
 
@@ -222,12 +238,24 @@ calc_shadowsize <- function(x){
 #' Title
 #'
 #' @param x boxht
-calc_arrows <- function(x){
-
+calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
+	
+	## width of the arrow is 40 times the box ht
 	lwd=x*40;
-	len=lwd * 0.2;
+	
+	## length is 20% of of line width
+	## the units are for diagram package
+	len = lwd * 0.2;
+	
+	## position, where to put the arrow in the conencting lines
 	pos=0.55
 	
+	if(pdf){
+		message("pdf: true, increasing arrow size")
+		lwd = 0.7 + x*60; ## need thicker
+		len = 0.5 + x*20; ## need them smaller than usual
+	}
+
 	list(lwd = lwd, len = len, pos = pos)
 }
 
@@ -243,25 +271,30 @@ calc_arrows <- function(x){
 																 width, height, 
 																 verbose = get_opts("verbose"), 
 																 ...){
-
+	
 	if (missing(height))  height = 2.5 * nrow(x)
 	if (missing(width)) width = 2 * nrow(x)
 	if (nrow(x) < 2) return(c("need a few more jobs.."))
-
+	
+	## split multiple dependencies
 	x = split_multi_dep(x)
 	x = arrange_flowdef(x)
-
+	
 	jobnames=unique(as.c(x$jobname))
 	dat_dep <- x[complete.cases(x),] ## remove first two
-
+	
 	## Get the first row for every job
 	dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
-
+	
 	## -------- get positions
 	#disp_mat <- table(ifelse(is.na(dat_uniq$prev_jobid), 0, dat_uniq$prev_jobid))
 	disp_mat = display_mat(dat_uniq)
 	elpos <- coordinates(disp_mat)
-
+	
+	## open PDF before calculations, this IMP
+	## calc use, dev.size
+	if (pdf) pdf(file=pdffile, width = width, height = height)
+	
 	## -------- graphic params:
 	shadow.col <- "lightskyblue4";
 	tmp = calc_boxdim(nrow(x), detailed, pdf)
@@ -279,26 +312,26 @@ calc_arrows <- function(x){
 	
 	## arrows
 	arr.col="gray26";
-	arr = calc_arrows(boxht)
+	arr = calc_arrows(boxht, pdf = pdf)
 	arr.lwd = arr$lwd
 	arr.len = arr$len
 	arr.pos = arr$pos
 	curves=c(-0.2,0.2);
-
-	## final params:
-	if(verbose > 1) message("font size: ", cex, " ", cex_detail, 
-					"\nbox size: H X W ", boxht, " X ", boxwd,
-					"\narr size: lwd, len, pos: ", arr.lwd, " ", arr.len, " ", arr.pos)
 	
-
+	## final params:
+	if(verbose > 1) 
+		message("font size: ", cex, " ", cex_detail, 
+						"\nbox size: H X W ", boxht, " X ", boxwd,
+						"\narr size: lwd, len, pos: ", arr.lwd, " ", arr.len, " ", arr.pos)
+	
+	
 	#detailed.labs = sprintf("%s:%s %s", dat_uniq$nodes, dat_uniq$cpu, dat_uniq$sub_type)
 	detailed.labs.sub = sprintf("sub: %s", dat_uniq$sub_type)
 	detailed.labs.dep = sprintf("dep: %s", dat_uniq$dep_type)
 	## --------------- start plotting
 	par(mar = c(0, 0, 0, 0)) ## how much margin to leave around...
-	if (pdf) pdf(file=pdffile, width = width, height = height)
 	openplotmat()
-
+	
 	## -------------------------------- a r r o w s ------------------------------- ##
 	if (nrow(dat_dep>0)){
 		for (i in 1:nrow(dat_dep)){
@@ -314,7 +347,7 @@ calc_arrows <- function(x){
 										 arr.col=arr.col, lcol=arr.col)
 		}
 	}
-
+	
 	## -------------------------------- b o x e s ------------------------------- ##
 	for (i in 1:nrow(dat_uniq)){
 		lab=dat_uniq$jobname[i]
@@ -356,13 +389,13 @@ calc_arrows <- function(x){
 																 box.lcol = "lightskyblue4",
 																 relsize = 0.85,
 																 ...){
-
+	
 	if (missing(height))  height = 2.5 * nrow(x)
 	if (missing(width)) width = 2 * nrow(x)
 	if (nrow(x) < 2) return(c("need a few more jobs.."))
-
+	
 	x = arrange_flowdef(x)
-
+	
 	jobnames=unique(as.c(x$jobname))
 	dat_dep <- x[complete.cases(x),]
 	#dat_uniq <- x[sapply(jobnames, function(j) which(x$jobname==j)[1]),]
@@ -381,11 +414,11 @@ calc_arrows <- function(x){
 	}
 	if (pdf) pdf(file=pdffile, width = width, height = height)
 	plotmat(m,
-							 curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
-							 segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
-							 cex.txt = cex.txt, ## labels
-							 box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd,
-							 shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
+					curve = curve, arr.type = arr.type, arr.lcol = arr.lcol, arr.col = arr.col, ## arraow
+					segment.from = segment.from, segment.to = segment.to, arr.pos = arr.pos,
+					cex.txt = cex.txt, ## labels
+					box.prop = box.prop, box.cex = box.cex, box.type = box.type, box.lwd = box.lwd,
+					shadow.size = shadow.size, box.lcol = box.lcol, relsize = relsize, ...) ## box
 	if (pdf) dev.off()
 }
 
