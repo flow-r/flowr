@@ -88,7 +88,9 @@ render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
 
 check_output("rd.html")
-#system("open index.html")
+if(Sys.info()['sysname'] == "Darwin"){
+	system("open index.html")
+}
 
 
 ## ---- create a PDF manual as well
