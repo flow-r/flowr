@@ -67,11 +67,11 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 
 flow_help <- function(){
 	cmds <- matrix(c(
-		"fetch_pipes",  "Checking what modules and pipelines are available; flowr fetch_pipes",
 		'status',       'Detailed status of a flow(s).',
 		'rerun',        'rerun a previously failed flow',
 		'kill',         'Kill the flow, upon providing working directory',
-		'run',          'Running predefined pipelines; EXPERIMENTAL'
+		"fetch_pipes",  "Checking what modules and pipelines are available; flowr fetch_pipes"
+#		'run',          'Running predefined pipelines; EXPERIMENTAL'
 	), byrow=T, ncol=2)
 	#cat("\nThis interface allows shell access to all functions in package flowr (and beyond).")
 	cat(sprintf("\n  %-15s %s", cmds[,1], cmds[,2]), sep="")
