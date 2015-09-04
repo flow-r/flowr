@@ -30,11 +30,11 @@ this uses information from other columns and summarizes whether a specific step 
 - **Introducing verbose levels**:
 
 	One can set the level of verboseness using `opts_flow$set(verbose=2)`.
-	Where the level may be 0, 1 or 2. Level 2 is recommended when developing a new pipeline.
-	Level 1 is good for most purposes, which level 0 is almost silent producing messages 
-	only when neccessary. Would be great, getting feedback on this.
-
-	
+	Where the level may be 0, 1, 2.... 
+	Level 1 is good for most purposes, where as, 
+	level 0 is almost silent, producing messages 
+	only when neccessary.
+	While level 2 is good when developing a new pipeline, additional details provided by level 3.
 
 
 

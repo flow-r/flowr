@@ -669,7 +669,7 @@ fobj = to_flow(flowmat, def, flowname = "sleep_pipe")
 
 Now we we use a host of function on this, including:
 
-```{r}
+```{r eval=FALSE}
 plot_flow(fobj)
 submit_flow(fobj) ## dry run
 fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
