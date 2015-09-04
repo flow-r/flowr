@@ -6,11 +6,11 @@ Version: 0.9.7.9013
 Date: 2015-08-22
 Depends:
     methods,
+    params  (>= 0.2.8),
     utils
 Imports:
     diagram,
     whisker,
-    params  (>= 0.2.8),
     tools,
     knitr
 Suggests:
