@@ -9,7 +9,9 @@ set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
 #' @param x file
 #' @param scale_time time is usually in seconds, scale of 1/60 shows minutes, 1/3600 shows in hours
 #' @param n how many lines to read; usually resources details are on top. 100 works well. .Depreciated
-#' @param time_format format of time in the execution logs. This should match the format in lsf/torque etc. shell script templates.
+#' @param time_format format of time in the execution logs. This should match the format in lsf/torque etc. 
+#' 	shell script templates.
+#' @param verbose produce step-by-step messages
 parse_lsf_out <- function(x,
 	scale_time = 1/3600,
 	n = 100,
