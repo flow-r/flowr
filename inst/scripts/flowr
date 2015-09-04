@@ -73,7 +73,7 @@ flow_help <- function(){
 		"fetch_pipes",  "Checking what modules and pipelines are available; flowr fetch_pipes"
 #		'run',          'Running predefined pipelines; EXPERIMENTAL'
 	), byrow=T, ncol=2)
-	#cat("\nThis interface allows shell access to all functions in package flowr (and beyond).")
+	#cat("\nShowing a subset of functions, but all flowr functions can be accessed.")
 	cat(sprintf("\n  %-15s %s", cmds[,1], cmds[,2]), sep="")
 }
 
@@ -143,14 +143,18 @@ main <- function(args){
 
 	if( is.na(func) ){
 		generic_help()
-		
-#  	}else if(func == "-h"){
-#  		generic_help()
-		
-	}else if(is.function(get(func)) & "-h" %in% flowargs){
+		invisible()
+	}
+	
+	fn = try(get(func))
+	if(class(try(fn)) == "try-error")
+		stop("\n\nwe would not find a function by this name, please check: ", func)
+	
+	if(is.function(fn) & "-h" %in% flowargs){
 		return(help(func))
 		
 	}else{
+			
 		params <- get_params(func = func, paramPairs = args, verbose = verbose)
 		if(verbose){
 			cat("\nStarting", func, "with params\n",
@@ -160,9 +164,9 @@ main <- function(args){
 			if(verbose) print(str(params))
 		}
 		#cat("Calling:", args[1])
-		try(do.call(func, args = params))
 		if(length(args) == 0)
 			message("\ntry:      flowr -h ", func, "     to get more details on this function.")
+		try(do.call(func, args = params))
 		#return(out)
 	}
 	
