@@ -126,7 +126,7 @@ Streamlining Design and Deployment of Complex Workflows
 <strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]
 </p>
 <p>
-<strong>Version:</strong> 0.9.7.12
+<strong>Version:</strong> 0.9.7.9013
 </p>
 <p>
 <strong>License:</strong> MIT + file LICENSE
@@ -141,13 +141,13 @@ An interface to streamline design of complex workflows and their deployment to a
 Depends
 </h4>
 <p>
-methods, utils
+methods, params (&gt;= 0.2.8), utils
 </p>
 <h4>
 Imports
 </h4>
 <p>
-diagram, whisker, params (&gt;= 0.2.8), tools, knitr
+diagram, whisker, tools, knitr
 </p>
 <h4>
 Suggests
@@ -292,6 +292,36 @@ verbose
 be chatty ? This is numeric with values 0, 1, 2.
 </dd>
 </dl>
+<h4>
+Details
+</h4>
+<p class="rd-p">
+When using <code>as.flowdef(flowdef, verbose = 2)</code>, you may expect the following output, which described all the checks performed on the flow definition file.
+</p>
+<p class="rd-p">
+<pre></p>
+
+  <p class="rd-p">checking if required columns are present...
+     checking if resources columns are present...
+     checking if dependency column has valid names...
+     checking if submission column has valid names...
+     checking for missing rows in def...
+     checking for extra rows in def...
+     checking submission and dependency types...
+     jobname prev.sub_type --> dep_type --> sub_type: relationship
+     1: aln1 none --> none --> scatter
+     2: aln2 scatter --> none --> scatter
+     3: sampe        scatter --> serial --> scatter rel: complex one:one
+     4: fixrg        scatter --> serial --> scatter rel: complex one:one
+     5: merge        scatter --> gather --> serial rel: many:one
+     6: markdup      serial --> serial --> serial rel: simple one:one
+     7: target       serial --> serial --> serial rel: simple one:one
+     8: realign      serial --> burst --> scatter rel: one:many
+     9: baserecalib  scatter --> serial --> scatter rel: complex one:one
+     10: printreads  scatter --> serial --> scatter rel: complex one:one
+     11: haplotyper  scatter --> serial --> scatter rel: complex one:one
+</pre>
+</p>
 </div>
 <div id="to_flow" class="section level2">
 <h2>to_flow</h2>
@@ -531,7 +561,7 @@ Usage
 </h4>
 <pre class="r"><code>plot_flow(x, ...)
 
-plot_flowflow(x, pdf = FALSE, pdffile, ...)
+plot_flowflow(x, ...)
 
 plot_flowlist(x, ...)
 
@@ -556,18 +586,6 @@ Object of class <code>flow</code>, or a list of flow objects or a flowdef
 experimental
 </dd>
 <dt>
-pdf
-</dt>
-<dd class="rd-dd">
-create a pdf instead of plotting interactively
-</dd>
-<dt>
-pdffile
-</dt>
-<dd class="rd-dd">
-output file name for the pdf file
-</dd>
-<dt>
 detailed
 </dt>
 <dd class="rd-dd">
@@ -578,6 +596,18 @@ type
 </dt>
 <dd class="rd-dd">
 1 is original, and 2 is a elipse with less details
+</dd>
+<dt>
+pdf
+</dt>
+<dd class="rd-dd">
+create a pdf instead of plotting interactively
+</dd>
+<dt>
+pdffile
+</dt>
+<dd class="rd-dd">
+output file name for the pdf file
 </dd>
 </dl>
 <h4>

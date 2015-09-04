@@ -1,0 +1,243 @@
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc" />
+
+  
+  
+  <title></title>
+
+    <script src="assets/jquery-1.11.0/jquery.min.js"></script>
+  <link href="assets/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="assets/bootstrap-3.3.2/js/bootstrap.min.js"></script>
+  <script src="assets/bootstrap-3.3.2/shim/html5shiv.min.js"></script>
+  <script src="assets/bootstrap-3.3.2/shim/respond.min.js"></script>
+  <link href="assets/highlight-8.4/tomorrow.css" rel="stylesheet" />
+  <script src="assets/highlight-8.4/highlight.pack.js"></script>
+  <link href="assets/fontawesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+  <script src="assets/stickykit-1.1.1/sticky-kit.min.js"></script>
+  <script src="assets/jqueryeasing-1.3/jquery.easing.min.js"></script>
+  <link href="assets/packagedocs-0.0.1/pd.css" rel="stylesheet" />
+  <script src="assets/packagedocs-0.0.1/pd.js"></script>
+  <script src="assets/packagedocs-0.0.1/pd-sticky-toc.js"></script>
+  
+  
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+  
+  <header class="navbar navbar-white navbar-fixed-top" role="banner" id="header">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+                <a href="index.html" class="navbar-brand page-scroll">
+        
+        </a>
+      </div>
+            <nav class="collapse navbar-collapse" role="navigation">
+        <ul class="nav nav-pills pull-right">
+<li>
+<a href='docs.html'>Docs</a>
+</li>
+<li>
+<a href='rd.html'>Package Ref</a>
+</li>
+<li class="active">
+<a href='news.html'>News</a>
+</li>
+<li>
+<a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a>
+</li>
+        </ul>
+      </nav>
+          </div>
+  </header>
+
+  <!-- Begin Body -->
+  <div class="container">
+    <div class="row">
+            <div class="col-md-3" id="sidebar-col">
+        <div id="toc">
+          <ul>
+          <li><a href="#flowr-latest">flowr latest</a></li>
+          <li><a href="#flowr-0.9.7.10-2015-09-02">flowr 0.9.7.10 2015-09-02</a></li>
+          <li><a href="#flowr-0.9.6.13-2015-09-02">flowr 0.9.6.13 2015-09-02</a></li>
+          <li><a href="#flowr-0.9.6.10">flowr 0.9.6.10</a></li>
+          <li><a href="#flowr-0.9.6.7">flowr 0.9.6.7</a></li>
+          <li><a href="#flowr-0.9.6.6">flowr 0.9.6.6</a></li>
+          <li><a href="#flowr-0.9.6.5">flowr 0.9.6.5</a></li>
+          <li><a href="#flowr-0.9.6.1">flowr 0.9.6.1</a></li>
+          <li><a href="#flowr-0.9.5.1">flowr 0.9.5.1</a></li>
+          <li><a href="#flow-0.85">flow 0.85</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9" id="content-col">
+      
+<div id="content-top"></div>
+<div id="flowr-latest" class="section level2">
+<h2>flowr latest</h2>
+<ul>
+<li>Modified the output of status function, to add a <code>status</code> column. Specifically, this uses information from other columns and summarizes whether a specific step is <code>pending</code>, <code>processing</code>, <code>completed</code> or <code>errored</code>.</li>
+</ul>
+<pre><code>================================================================================
+|                | total| started| completed| exit_status|status     |
+|:---------------|-----:|-------:|---------:|-----------:|:----------|
+|001.alnCmd1     |   109|     109|       109|           0|completed  |
+|007.markCmd     |     3|       3|         0|           0|processing |</code></pre>
+<ul>
+<li>[0.9.7.11]
+<ul>
+<li>Switched default value of <a href="mailto:flow@status">flow@status</a> to “created”.</li>
+<li>When using status on several folders, it used to be a little cluttered. Have added spaces, so that this looks prettier now.</li>
+</ul></li>
+<li><p><strong>Introducing verbose levels</strong>:</p>
+<p>One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>. Where the level may be 0, 1, 2…. Level 1 is good for most purposes, where as, level 0 is almost silent, producing messages only when neccessary. While level 2 is good when developing a new pipeline, additional details provided by level 3.</p></li>
+</ul>
+</div>
+<div id="flowr-0.9.7.10-2015-09-02" class="section level2">
+<h2>flowr 0.9.7.10 2015-09-02</h2>
+<ul>
+<li>This release adds and changes functionality of several functions.</li>
+<li>A new function run(), creates and submits a pipeline. Specifically it follows the following steps:
+<ul>
+<li>One supplies the name of the pipeline, which is used to fetch the pipeline using: <code>fetch_pipe()</code></li>
+<li>create flowmat by running a function called <code>mypipeline()</code>, <code>mypipeline</code> is the name of the pipeline.</li>
+<li>load configuration file, with paths to tools etc using <code>load_conf()</code></li>
+<li>fetch the flow definition using <code>fetch_pipe</code>, and load it using <code>as.flowdef()</code></li>
+<li>Further, create a flow object using <code>to_flow()</code></li>
+<li>Finally, submit to the cluster, submit_flow()</li>
+</ul></li>
+<li><code>kill()</code>: now a S3 functions, and operates on both a flow object and flow_wd folder</li>
+<li><code>check()</code>: Now works on flowdef and flowmat</li>
+<li>as.flowmat(), as.flowdef(): easy ways to fetch and check these tables</li>
+<li><code>fetch()</code> along with <code>fetch_pipes()</code> and <code>fetch_conf()</code> simplify finding files</li>
+<li>Reduce function overload, moving several functions a seperate <code>params</code> pkg
+<ul>
+<li>moved <code>read_sheet()</code>, <code>write_sheet()</code></li>
+<li>moved <code>get_opts()</code>, <code>set_opts()</code></li>
+<li>moved <code>.load_conf()</code> <code>load_conf()</code></li>
+<li>Here is a link to <a href="https://github.com/sahilseth/params">params</a> package</li>
+<li>kable function is now a part of params, that removes the dependency to knitr package</li>
+</ul></li>
+</ul>
+</div>
+<div id="flowr-0.9.6.13-2015-09-02" class="section level2">
+<h2>flowr 0.9.6.13 2015-09-02</h2>
+<ul>
+<li>Using PBS/LSF script instead of one line commands</li>
+<li>Format now a script, parsed using whisker</li>
+<li>to_flowmat() and to_flowdef() introduced; creating of these tables simplified</li>
+<li>Refactored code for plot_flow, handles multiple dependencies beautifully</li>
+</ul>
+</div>
+<div id="flowr-0.9.6.10" class="section level2">
+<h2>flowr 0.9.6.10</h2>
+<ul>
+<li>add to_flow()</li>
+<li>kill_flow()</li>
+<li>supports moab</li>
+<li>burst as dependency type</li>
+<li>node can be character</li>
+<li>final job names changed to: sprintf(“%s_%s-%s”, basename(<a href="mailto:fobj@flow_path">fobj@flow_path</a>), <a href="mailto:jobj@jobname">jobj@jobname</a>, i)</li>
+<li>Using PBS/LSF script instead of one line commands</li>
+<li>Format now a script, parsed using whisker</li>
+</ul>
+</div>
+<div id="flowr-0.9.6.7" class="section level2">
+<h2>flowr 0.9.6.7</h2>
+<ul>
+<li>add read_sample_sheet</li>
+<li>clean package dependencies</li>
+</ul>
+</div>
+<div id="flowr-0.9.6.6" class="section level2">
+<h2>flowr 0.9.6.6</h2>
+<ul>
+<li>switch cat to messages</li>
+<li>added to_flow</li>
+</ul>
+</div>
+<div id="flowr-0.9.6.5" class="section level2">
+<h2>flowr 0.9.6.5</h2>
+<ul>
+<li>Added more examples</li>
+<li>Update Vignette with more examples</li>
+<li>squash issues in DESCRIPTION</li>
+</ul>
+</div>
+<div id="flowr-0.9.6.1" class="section level2">
+<h2>flowr 0.9.6.1</h2>
+<ul>
+<li>Added some vignettes for a simple and comples example</li>
+<li>satiate CRAN checks</li>
+</ul>
+</div>
+<div id="flowr-0.9.5.1" class="section level2">
+<h2>flowr 0.9.5.1</h2>
+<ul>
+<li>Added several new functions kill_flow(), which kills the flow.</li>
+<li>Added experimental rerun_flow which still needs some work</li>
+<li>updated documentation to satiate R CMD check</li>
+<li>now job() checks for a dependency_type is previous job is provided</li>
+<li>Added some slides inst</li>
+<li>Integrated documentation with Sphnix</li>
+<li>submit_flow, now generates flow_details.txt, flow.pdf, flow_status.txt</li>
+<li>status() updates: flow_details.txt and flow_status.txt</li>
+<li>save flow.rda files with all details on the flow</li>
+<li>update flow details with job exit status, to be used in rerun</li>
+</ul>
+<p><strong>TODO</strong></p>
+<ul>
+<li>add more examples</li>
+<li>update and cleanup documentation</li>
+<li>integrate with sqlite with status</li>
+<li>add example pipelines</li>
+<li>assign UUID to each job/flow. and use that to track them.</li>
+<li>Work on test_queue()</li>
+<li>Add recipies</li>
+</ul>
+</div>
+<div id="flow-0.85" class="section level2">
+<h2>flow 0.85</h2>
+<ul>
+<li>get_flow_details():</li>
+<li>Attach a job_number</li>
+<li>Attach a flow level unique ID</li>
+<li>update flow details with exited jobs</li>
+<li>Create trigger upon start</li>
+<li>add started/pending column in details and summary</li>
+<li>plot_flow(): make plot type 1 as default</li>
+<li>get_flow_status(): -exit_status: reports number of exited jobs (not sum of exit codes)</li>
+</ul>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <div class="col-md-6">
+              </div>
+      <div class="col-md-6">
+        <p class="pull-right">created with <a href="https://github.com/hafen/packagedocs">packagedocs</a></p>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>

@@ -2,18 +2,21 @@
 title: "flowr"
 subtitle: "Streamlining Workflows"
 output: 
-  rmarkdown::html_document
+    html_document: 
+    keep_md: yes
 packagedocs:
     toc: false
 navpills: |
   <li><a href='docs.html'>Docs</a></li>
   <li><a href='rd.html'>Package Ref</a></li>
+  <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
 
-[![Build Status](https://travis-ci.org/sahilseth/flowr.png?branch=master)](https://travis-ci.org/sahilseth/flowr)
+[![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
+[![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
 

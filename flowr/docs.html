@@ -6,6 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
+    <meta name="date" content="2015-09-04" />
   
   <title>flowr</title>
 
@@ -55,6 +56,9 @@
 <a href='rd.html'>Package Ref</a>
 </li>
 <li>
+<a href='news.html'>News</a>
+</li>
+<li>
 <a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a>
 </li>
         </ul>
@@ -79,8 +83,8 @@
           <li><a href="#re-run-a-flow">Re-run a flow</a></li>
           </ul></li>
           <li><a href="#ingredients-for-building-a-pipeline">Ingredients for building a pipeline</a><ul>
-          <li><a href="#flow-definition">1. Flow Definition</a></li>
-          <li><a href="#flow-mat-a-table-with-shell-commands-to-run">2. Flow mat: A table with shell commands to run</a></li>
+          <li><a href="#flow-mat">1. Flow mat</a></li>
+          <li><a href="#flow-definition">2. Flow definition</a></li>
           </ul></li>
           <li><a href="#submission-types">Submission types</a></li>
           <li><a href="#dependency-types">Dependency types</a></li>
@@ -91,13 +95,12 @@
           <li><a href="#passing-of-flow-definition-resource-columns">Passing of flow definition resource columns</a></li>
           </ul></li>
           <li><a href="#available-pipelines">Available Pipelines</a></li>
-          <li><a href="#example-of-building-a-pipeline">Example of building a pipeline</a><ul>
+          <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
           <li><a href="#define-modules">Define modules</a></li>
           <li><a href="#define-the-pipeline">Define the pipeline</a></li>
           <li><a href="#generate-a-flowmat">Generate a flowmat</a></li>
           <li><a href="#create-flow-definition">Create flow definition</a></li>
           </ul></li>
-          <li><a href="#cluster-support">Cluster Support</a></li>
           </ul>
         </div>
       </div>
@@ -268,7 +271,7 @@ Notice how jobname column is being used a key throught the two tables. And how p
 <h2>Plot it</h2>
 <p>We can use <code>plot_flow</code> to quickly visualize the flow; this really helps when developing complex workflows. Additionally, this function also works on the <code>flow definition</code> table as well (<code>plot_flow(flow_def</code>).</p>
 <pre class="r"><code>plot_flow(fobj) # ?plot_flow for more information</code></pre>
-<p><img src="docs_files/figure-html/plot_example1-1.png" title="Flow chart describing process for example 1" alt="Flow chart describing process for example 1" width="480" /></p>
+<p><img src="docs_files/figure-html/plotit-1.png" title="Flow chart describing process for example 1" alt="Flow chart describing process for example 1" width="624" /></p>
 </div>
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
@@ -365,15 +368,86 @@ qdel $jobids
 ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
 flow_mat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
 flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
+<div id="flow-mat" class="section level2">
+<h2>1. Flow mat</h2>
+<blockquote>
+<p>describes commands to run, as part of each step</p>
+</blockquote>
+<p>Each row in flow mat describes a shell command, with information regarding what step is it part of and what sample does ti belong to.</p>
+<p>Essentially, this is a tab delimited file with three columns:</p>
+<ul>
+<li><code>samplename</code>: A grouping column. The table is split using this column and each subset is treated as an individual flow. Thus we may have one flowmat for a series of samples, and all the whole set would be submitted as a batch.
+<ul>
+<li>If all the commands are for a single sample, one can just repeat a dummy name like sample1 all throughout.</li>
+</ul></li>
+<li><code>jobname</code>: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table defined above.</li>
+<li><code>cmd</code>: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a <code>;</code> or <code>&amp;&amp;</code>, more on this <a href="http://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls">here</a>. Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.</li>
+</ul>
+<p>Here is an example <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.tsv">flow_mat</a> for the flowr described above.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">samplename</th>
+<th align="left">jobname</th>
+<th align="left">cmd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">sleep</td>
+<td align="left">sleep 10 &amp;&amp; sleep 2;echo hello</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">sleep</td>
+<td align="left">sleep 11 &amp;&amp; sleep 8;echo hello</td>
+</tr>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">sleep</td>
+<td align="left">sleep 11 &amp;&amp; sleep 17;echo hello</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_1</td>
+</tr>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_2</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_3</td>
+</tr>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">merge</td>
+<td align="left">cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 &gt; sample1_merged</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">size</td>
+<td align="left">du -sh sample1_merged; echo MY shell: $SHELL</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="flow-definition" class="section level2">
-<h2>1. Flow Definition</h2>
+<h2>2. Flow definition</h2>
+<blockquote>
+<p>defines how to stich pieces of the (work)flow</p>
+</blockquote>
 <p>Each row in this table refers to one step of the pipeline. It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it.</p>
 <p>It is a tab separated file, with a minimum of 4 columns:</p>
 <ul>
 <li><code>jobname</code>: Name of the step</li>
-<li><code>sub_type</code>: Short for submission type, refers to, how should multiple commands of this step be submitted. Possible values are <code>serial</code> or <code>scatter</code>.</li>
+<li><code>sub_type</code>: Short for <a href="#submission-types">submission type</a>, refers to, how should multiple commands of this step be submitted. Possible values are <code>serial</code> or <code>scatter</code>.</li>
 <li><code>prev_job</code>: Short for previous job, this would be jobname of the previous job. This can be NA/./none if this is a independent/initial step, and no previous step is required for this to start.</li>
-<li><code>dep_type</code>: Short for dependency type, refers to the relationship of this job with the one defined in <code>prev_job</code>. This can take values <code>none</code>, <code>gather</code>, <code>serial</code> or <code>burst</code>.</li>
+<li><code>dep_type</code>: Short for <a href="#dependency-type">dependency type</a>, refers to the relationship of this job with the one defined in <code>prev_job</code>. This can take values <code>none</code>, <code>gather</code>, <code>serial</code> or <code>burst</code>.</li>
 </ul>
 <p>These would be explained in detail, below.</p>
 <p>Apart from the above described variables, several others defining the resource requirements of each step are also available. These give great amount of flexibility to the user in choosing CPU, wall time, memory and queue for each step (and are passed along to the HPCC platform).</p>
@@ -388,7 +462,9 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
-<p>.. warning:: If these (resource requirements) columns not included in the flow_def, their values should be explicitly defined in the submission template.</p>
+<div class="alert alert-info" role="alert">
+If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section below.
+</div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
 <table>
 <thead>
@@ -470,70 +546,6 @@ This is especially useful for genomics pipelines, since each step may use differ
 - cpu_reserved: Amount of CPU reserved.
 
 Its best to have this as a tab seperated file (with no row.names). -->
-</div>
-<div id="flow-mat-a-table-with-shell-commands-to-run" class="section level2">
-<h2>2. Flow mat: A table with shell commands to run</h2>
-<p>This is also a tab separated table, with a minimum of three columns as defined below:</p>
-<ul>
-<li><code>samplename</code>: A grouping column. The table is split using this column and each subset is treated as a individual flow. This makes it very easy to process multiple samples using a single submission command.
-<ul>
-<li>If all the commands are for a single sample, one can just repeat a dummy name like sample1 all throughout.</li>
-</ul></li>
-<li><code>jobname</code>: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table defined above.</li>
-<li><code>cmd</code>: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a <code>;</code> or <code>&amp;&amp;</code>, more on this <a href="http://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls">here</a>. Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.</li>
-</ul>
-<p>Here is an example <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.tsv">flow_mat</a>.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">samplename</th>
-<th align="left">jobname</th>
-<th align="left">cmd</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 2;echo hello</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 8;echo hello</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 17;echo hello</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_1</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_2</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_3</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">merge</td>
-<td align="left">cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 &gt; sample1_merged</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">size</td>
-<td align="left">du -sh sample1_merged; echo MY shell: $SHELL</td>
-</tr>
-</tbody>
-</table>
 <!---
 ### Style 2
 
@@ -572,16 +584,15 @@ dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 --->
+</div>
+</div>
+<div id="submission-types" class="section level1">
+<h1>Submission types</h1>
 <div id="example" class="section level3">
 <h3>Example:</h3>
 <p>A —-&gt; B —–&gt; C —–&gt; D</p>
 <p>Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1.</p>
 <p>Consider another step D (with D1-D3), which comes after C.</p>
-</div>
-</div>
-</div>
-<div id="submission-types" class="section level1">
-<h1>Submission types</h1>
 <blockquote>
 <p><em>This refers to the sub_type column in flow definition.</em></p>
 </blockquote>
@@ -595,6 +606,7 @@ knitr:::kable(dat)
 <li><em>Wrap A1 through A10, into a single job.</em></li>
 </ul></li>
 </ul>
+</div>
 </div>
 <div id="dependency-types" class="section level1">
 <h1>Dependency types</h1>
@@ -628,6 +640,7 @@ knitr:::kable(dat)
 <p>[scatter] —serial—&gt; [scatter]</p>
 <p>A is submitted as scatter, A1 through A10. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also B1 through B10 are independent of each other.</p>
 <p>To set this up, A and B would have <code>sub_type</code> <code>scatter</code> and B would have <code>dep_type</code> as <code>serial</code>. Further, since A is an initial step its <code>dep_type</code> and <code>prev_job</code> would defined as <code>none</code>.</p>
+<p><img src="docs_files/figure-html/plot_one_one-1.png" title="" alt="" width="624" /></p>
 </div>
 <div id="gather-many-to-one-relationship" class="section level2">
 <h2>Gather: many to one relationship</h2>
@@ -690,20 +703,20 @@ kable(ex2def[, 1:4])</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>plot_flow(fobj)</code></pre>
-<p><img src="docs_files/figure-html/build_pipe_plt_abcd-1.png" title="" alt="" width="624" /></p>
+<p><img src="docs_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
 There is a darker more prominent shadow to indicate scatter steps.
 </div>
 </div>
 <div id="passing-of-flow-definition-resource-columns" class="section level2">
 <h2>Passing of flow definition resource columns</h2>
-<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script.</p>
-<p>The following table provides a mapping between the flow definition columns and variables in the submission template (<a href="#flow-def-columns">pipelines below</a>).</p>
+<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.</p>
+<p>The following table provides a mapping between the flow definition columns and variables in the submission templates:</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">flow_def_column</th>
-<th align="left">hpc_script_variable</th>
+<th align="left">flowdef variable</th>
+<th align="left">submission template variable</th>
 </tr>
 </thead>
 <tbody>
@@ -757,44 +770,20 @@ There is a darker more prominent shadow to indicate scatter steps.
 </tr>
 </tbody>
 </table>
-<p>*: These are generated on the fly **: This is gathered from flow_mat</p>
+<p><code>* These are generated on the fly</code> and <code>** This is gathered from flow mat</code></p>
 </div>
 </div>
 <div id="available-pipelines" class="section level1">
 <h1>Available Pipelines</h1>
 <p>Here are some of the available pipelines along with their respective locations</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">name</th>
-<th align="left">def</th>
-<th align="left">conf</th>
-<th align="left">pipe</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">sleep_pipe</td>
-<td align="left">sleep_pipe.def</td>
-<td align="left">NA</td>
-<td align="left">/usr/local/lib/R/site-library/flowr/pipelines/sleep_pipe.R</td>
-</tr>
-<tr class="even">
-<td align="left">build</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">/home/travis/build/sahilseth/flowr/gh-pages/flowr/build.R</td>
-</tr>
-</tbody>
-</table>
 </div>
-<div id="example-of-building-a-pipeline" class="section level1">
-<h1>Example of building a pipeline</h1>
-<p>A pipeline consists of several pieces, namely, a function which generates a flowmat, a flowdef and optionally a text file with parameters and paths to tools used as part of the pipeline.</p>
+<div id="tutorial-building-a-pipeline" class="section level1">
+<h1>Tutorial: building a pipeline</h1>
+<p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="#flow_mat">flowmat</a>. In a multi-step pipeline, we need to know what steps come before others, we would describe them in a a <a href="#flow_mat">flow definition</a> file.</p>
+<p>For the sake of giving names, lets call a function which generates a flow mat, a module. One may generate this table using R, python, Java or any other language.</p>
 <div class="alert alert-info" role="alert">
-A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.
+<strong>module</strong> A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.
 </div>
-<p>We beleive pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only differnce being, a pipeline also has a correspomding flow definition file. As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).</p>
 <p>Let us follow through an example, providing more details regarding this process. Here are a few examples of modules, three functions <code>sleep</code>, <code>create_tmp</code> and <code>merge_size</code> each returning a flowmat.</p>
 <div id="define-modules" class="section level2">
 <h2>Define modules</h2>
@@ -832,6 +821,10 @@ merge_size &lt;- function(x, samplename){
     flowmat = to_flowmat(cmd, samplename)
     return(list(flowmat = flowmat, outfiles = mergedfile))
 }</code></pre>
+<p>We believe pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only difference being, a pipeline also has a correspomding flow definition file.</p>
+<div class="alert alert-info" role="alert">
+As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
+</div>
 <p>We then define another function <code>sleep_pipe</code> which calls the above defined <strong>modules</strong>; fetches flowmat from each, creating a larger flowmat. This time we will define a flowdef for the <code>sleep_pipe</code> function, elevating its status from module to a pipeline.</p>
 </div>
 <div id="define-the-pipeline" class="section level2">
@@ -869,17 +862,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 9;echo ‘hello’</td>
+<td align="left">sleep 3 &amp;&amp; sleep 16;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 8 &amp;&amp; sleep 0;echo ‘hello’</td>
+<td align="left">sleep 14 &amp;&amp; sleep 12;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 18;echo ‘hello’</td>
+<td align="left">sleep 15 &amp;&amp; sleep 1;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -914,8 +907,8 @@ flowmat = out$flowmat</code></pre>
 <p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a flowmat and creates a flow definition. The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency. Thus we will enable parallel process where possible, making this into a better pipeline.</p>
 <p>Here is how it looks presently:</p>
 <pre class="r"><code>def = to_flowdef(flowmat)
-plot_flow(suppressMessages(to_flow(flowmat, def)))</code></pre>
-<p><img src="docs_files/figure-html/unnamed-chunk-16-1.png" title="" alt="" width="624" /></p>
+suppressMessages(plot_flow(def))</code></pre>
+<p><img src="docs_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
 <p>After making the desired changes, the new pipeline looks better. Alternatively, one may write this to a file and make other desired changes in resource requirements.</p>
 <p>Pipeline follows the following steps, with dependencies mentioned in ():</p>
 <ul>
@@ -993,32 +986,66 @@ kable(def)</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_flow(suppressMessages(to_flow(flowmat, def)))</code></pre>
-<p><img src="docs_files/figure-html/unnamed-chunk-18-1.png" title="" alt="" width="624" /></p>
-</div>
-</div>
-<div id="cluster-support" class="section level1">
-<h1>Cluster Support</h1>
-<p>Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
-<p>Here are links to latest templates on github:</p>
-<ul>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">torque</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh">lsf</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh">moab</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh">sge</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh">slurm</a>, needs testing</li>
-</ul>
-<p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
-<ol style="list-style-type: decimal">
-<li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
-<li><strong>parsing job ids</strong>: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</li>
-</ol>
-<p>For example LSF may show a string such as:</p>
-<pre><code>Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.</code></pre>
-<pre><code>jobid=&quot;Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.&quot;
-set_opts(flow_parse_lsf = &quot;.*(\&lt;[0-9]*\&gt;).*  &quot;)
-parse_jobids(jobid, platform=&quot;lsf&quot;)
-[1] &quot;335508&quot;</code></pre>
+<p><img src="docs_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
+<p>Let us now create flow object from this.</p>
+<pre class="r"><code>fobj = to_flow(flowmat, def, flowname = &quot;sleep_pipe&quot;)</code></pre>
+<pre><code>## 
+## checking if required columns are present...
+## checking if resources columns are present...
+## checking if dependency column has valid names...
+## checking if submission column has valid names...
+## checking for missing rows in def...
+## checking for extra rows in def...
+## checking submission and dependency types...
+## Using flow_run_path default: ~/flowr/runs
+## 
+## ##--- Checking flow definition and flow matrix for consistency...
+## 
+## ##--- Detecting platform...
+## Will use platform from flow definition
+## 
+## Working on... sample1
+## ....</code></pre>
+<p>Now we we use a host of function on this, including:</p>
+<pre class="r"><code>plot_flow(fobj)
+submit_flow(fobj) ## dry run
+fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
+
+## after submission, we can use the following:
+status(fobj2)
+rerun(fobj2)
+kill(fobj2)</code></pre>
+<p>One may need to change the platform and resource columns of the flowdef to suite your platform. The easiest way might be to write these to a file, and then edit using your favoroite text editor. You only need to do this once for a pipeline.</p>
+<pre class="r"><code>write_sheet(def, &quot;sleep_pipe.def&quot;)
+## now make all the changes you need to,
+## and then read it back using: 
+def = as.flowdef(&quot;sleep_pipe.def&quot;)</code></pre>
+<pre><code>
+
+# Cluster Support
+
+Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box.
+Further, one may copy and edit them (and save to `~/flowr/conf`) in case some changes are required. Templates from this folder (`~/flowr/conf`), would override defaults.
+
+Here are links to latest templates on github:
+
+- [torque](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh)
+- [lsf](https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh)
+- [moab](https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh)
+- [sge](https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh)
+- [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
+
+
+Adding a new platform involves [a few steps](https://github.com/sahilseth/flowr/issues/7), briefly we need to consider the following steps where changes would be necessary.
+
+1. **job submission**: One needs to add a new template for the new platform. Several [examples](https://github.com/sahilseth/flowr/blob/master/inst/conf) are available as described in the previous section.
+2. **parsing job ids**: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf).
+
+For example LSF may show a string such as:
+</code></pre>
+<p>Job &lt;335508&gt; is submitted to queue <transfer>.</p>
+<pre><code></code></pre>
+<p>jobid=“Job &lt;335508&gt; is submitted to queue <transfer>.” set_opts(flow_parse_lsf = “.<em>(&lt;[0-9]</em>&gt;).*”) parse_jobids(jobid, platform=“lsf”) [1] “335508” ```</p>
 <p>In this case <em>335508</em> was the job id and regex worked well !</p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr render them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-dependency.R">render_dependency.PLATFORM</a> functions.</li>
@@ -1095,6 +1122,7 @@ There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job sched
 </ul></li>
 </ul>
 <p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
+</div>
 </div>
 
 
