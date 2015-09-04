@@ -209,6 +209,8 @@ calc_boxdim <- function(x, detailed, pdf){
 }
 
 #' Calculate font size based on the size of the window
+#'
+#' @param verbose 
 #' @param x box height
 calc_fontsize <- function(x, verbose = get_opts("verbose")){
 	
@@ -237,6 +239,8 @@ calc_shadowsize <- function(x){
 
 #' Title
 #'
+#' @param pdf 
+#' @param verbose 
 #' @param x boxht
 calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
 	

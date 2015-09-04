@@ -4,7 +4,7 @@
 \alias{calc_fontsize}
 \title{Calculate font size based on the size of the window}
 \usage{
-calc_fontsize(x)
+calc_fontsize(x, verbose = get_opts("verbose"))
 }
 \arguments{
 \item{x}{box height}

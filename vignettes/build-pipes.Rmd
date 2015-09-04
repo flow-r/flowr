@@ -560,13 +560,16 @@ kable(mat, col.names = c("flowdef variable", "submission template variable"))
 Here are some of the available pipelines along with their respective locations
 
 ```{r echo=FALSE, results='asis', message=FALSE}
-pipes = fetch_pipes(silent = TRUE)
-if(nrow(pipes) > 0){
-	pipes$pipe = basename(pipes$pipe)
-	pipes$def = basename(pipes$def)
-	pipes$conf = basename(pipes$conf)
-	params::kable(pipes)
-}
+pipes = try(fetch_pipes(silent = TRUE))
+
+if(class(pipes) != "try-error")
+	if(nrow(pipes) > 0){
+		pipes$pipe = basename(pipes$pipe)
+		pipes$def = basename(pipes$def)
+		pipes$conf = basename(pipes$conf)
+		params::kable(pipes)
+	}
+
 ```
 
 

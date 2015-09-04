@@ -4,7 +4,7 @@
 \alias{calc_arrows}
 \title{Title}
 \usage{
-calc_arrows(x)
+calc_arrows(x, pdf, verbose = get_opts("verbose"))
 }
 \arguments{
 \item{x}{boxht}
