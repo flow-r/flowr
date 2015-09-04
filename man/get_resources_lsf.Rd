@@ -4,7 +4,8 @@
 \alias{get_resources_lsf}
 \title{get_resources_lsf}
 \usage{
-get_resources_lsf(wd, cores = 4, pattern = "out$", plot = FALSE)
+get_resources_lsf(wd, cores = 4, pattern = "out$", plot = FALSE,
+  verbose = get_opts("verbose"))
 }
 \arguments{
 \item{wd}{Path to a flow working directory}

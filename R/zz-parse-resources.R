@@ -48,6 +48,9 @@ parse_lsf_out <- function(x,
 		cores = cores, 
 		stringsAsFactors = FALSE))
 	
+	## incase the flow was re-run, it may have multiple bgn and end times
+	dat = tail(dat, 1)
+	
 	return(dat)
 }
 
@@ -88,7 +91,7 @@ get_resources <- function(x, odir, ...){
 #' @examples \dontrun{
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }
-get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
+get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE, verbose = get_opts("verbose")){
 
 	if (!requireNamespace("reshape2", quietly = TRUE)) {
 		stop("reshape2 needed for this function to work. Please install it.",
@@ -100,6 +103,8 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE){
 	}
 
 	#fobj = read_fobj(wd)
+	if(verbose)
+		message("working on: ", wd)
 	flowdet = to_flowdet(wd)
 	flowdet$out = gsub("sh$", "out", flowdet$cmd)
 	
