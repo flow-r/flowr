@@ -94,7 +94,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 
 	extra_rows = (x$dep_type != "none" & x$prev_jobs == "none")
 	if (sum(extra_rows)){
-		print(paste(kable(x[extra_rows,]), collapse = "\n"))
+		message(paste(kable(x[extra_rows,]), collapse = "\n"))
 		stop(error("dep_type.wo.prev_job"))
 	}
 
