@@ -8,6 +8,10 @@ calc_arrows(x, pdf, verbose = get_opts("verbose"))
 }
 \arguments{
 \item{x}{boxht}
+
+\item{pdf}{}
+
+\item{verbose}{}
 }
 \description{
 Title

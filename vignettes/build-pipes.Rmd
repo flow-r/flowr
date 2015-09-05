@@ -559,7 +559,7 @@ kable(mat, col.names = c("flowdef variable", "submission template variable"))
 
 Here are some of the available pipelines along with their respective locations
 
-```{r echo=FALSE, results='asis', message=FALSE, eval=FALSE}
+```{r echo=FALSE, results='asis', message=FALSE}
 pipes = try(fetch_pipes(silent = TRUE))
 
 if(class(pipes) != "try-error")
@@ -696,7 +696,6 @@ write_sheet(def, "sleep_pipe.def")
 def = as.flowdef("sleep_pipe.def")
 ```
 
-```
 
 
 # Cluster Support
