@@ -32,8 +32,9 @@ r_packages:
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
   - sahilseth/params
-  - hadley/staticdocs
+  - sahilseth/ngsflows
   - sahilseth/readthedocs
+  - hadley/staticdocs
   - jimhester/covr
   - hafen/packagedocs
 
