@@ -2,8 +2,8 @@
 #library(drat)
 #addRepo("sahilseth")
 
-#install.packages("ngsflows", repos = "http://cran.rstudio.com")
-#library(ngsflows)
+install.packages("ngsflows", repos = "http://cran.rstudio.com")
+library(ngsflows)
 
 
 library(staticdocs)
