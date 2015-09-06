@@ -93,6 +93,7 @@ fetch_pipes <- function(x,
 												last_only = FALSE,
 												urls = get_opts("flowr_pipe_urls"),
 												silent = FALSE,
+												verbose = get_opts("verbose"),
 												ask = TRUE){
 	if(missing(places)){
 		places = c(
@@ -142,8 +143,9 @@ fetch_pipes <- function(x,
 	pipe_print = pipes;
 	pipe_print$def = basename(as.character(pipe_print$def))
 	pipe_print$conf = basename(as.character(pipe_print$conf))
-	if(!silent) 
-		print(kable(pipe_print))
+	
+	if(verbose > 1 & !silent) 
+		message(paste(kable(pipe_print), collapse = "\n"))
 
 	if(last_only){
 		if(nrow(pipes) > 1)
@@ -151,7 +153,7 @@ fetch_pipes <- function(x,
 		pipes = tail(pipes, 1)
 	}
 
-	if(!silent)
+	if(verbose > 1 & !silent)
 		if(length(r) == 0)
 			warning(error("no.pipe"), paste(x, collapse = "\n"))
 	invisible(pipes)
