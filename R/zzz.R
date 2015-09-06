@@ -8,7 +8,7 @@
 	#print(set_opts)
 	packageStartupMessage("Flowr: streamlining workflows")
 	
-	fls = unique(unlist(sapply(c("flowr", "ngsflows"), fetch_conf)))
+	fls = unique(unlist(sapply(c("flowr"), fetch_conf)))
 	suppressMessages(load_opts(fls, check = FALSE))
 	
 	if(get_opts('verbose') > 1)
