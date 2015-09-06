@@ -57,7 +57,7 @@ status <- function(x, out_format = "markdown"){
 		ncol = getOption("width"); #Sys.getenv("COLUMNS")
 		hd = paste(rep("=", as.numeric(ncol)), collapse = "")
 		message(paste0("\n", hd,
-									 "\nShowing status of: \n", wd), appendLF = FALSE)
+									 "\nShowing status of: \n", wd))
 		
 		x = read_fobj(wd)
 		get_status(x, out_format = out_format)
@@ -158,7 +158,7 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 	})
 	summ$status = status
 	tmp <- knitr::kable(summ, out_format, output = FALSE)
-	print(tmp)
+	message(paste(tmp, collapse = "\n"))
 	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
 	return(summ)
 }
@@ -189,7 +189,7 @@ summarize_flow_det <- function(x, out_format){
 	})
 	summ$status = status
 	tmp <- knitr::kable(summ, out_format, output = FALSE)
-	print(tmp)
+	message(paste(tmp, collapse = "\n"))
 	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
 	return(summ)
 }
