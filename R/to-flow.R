@@ -148,7 +148,6 @@ to_flow.flowmat <- function(x, def,
 	}
 	if (mean(!na.omit(def$jobname) %in% unique(x$jobname))) {
 		stop("Some jobs in flowdef are not in flowmat\n", msg)
-		
 	}
 	
 	
@@ -177,13 +176,22 @@ to_flow.flowmat <- function(x, def,
 	
 	samps = unique(x$samplename)
 	if (length(samps) > 1)
-		if(verbose)
-			message("Detected multiple samples. Would containerize this submission.")
+		if(verbose > 1)
+			message("Detected multiple samples. Subsetting flowmat, would containerize this submission...")
 	
 	fobjs <- lapply(samps, function(samp){
 		x2 = subset(x, x$samplename == samp)
 		if(verbose)
 			message("\nWorking on... ", samp)
+		
+		## Check again for multi sample flow
+		## in case of more complex flows like
+		msg = c("\nflowdef jobs: ", paste(def$jobname, collapse = " "),
+						"\nflowmat jobs: ", paste(unique(x2$jobname), collapse = " "))
+		if (mean(!na.omit(def$jobname) %in% unique(x2$jobname))) {
+		  stop("Some jobs in flowdef are not in flowmat\n", msg)
+		}
+		
 		## --- fetch samplename from the flowr_mat
 		cmd.list = split.data.frame(x2, x2$jobname)
 		desc = paste(flowname, samp, sep = "-")
