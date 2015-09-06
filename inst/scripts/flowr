@@ -18,32 +18,38 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 
 	args <- formals(func)
 	paramPairs <- paramPairs[grep("=", paramPairs)] ## get those with =
-	#print("args:");print(args)
+
+	if(verbose){message("args:");print(args)}
+	
 	#print("paramPairs:");print(paramPairs)
 	#args_supplied = sapply(strsplit(paramPairs, "="), "[[", 1)
 
 
 	if(verbose) 
-		message("\nget_params: we have ", length(paramPairs), " parameters\n", paramPairs)
+		message("\nget_params: we have ", 
+						length(paramPairs), " parameters\n",
+						paste(paramPairs, collapse = "\n"))
 	
 	for(param in paramPairs){
 		if(verbose)
-			message("\nstarting process with: ", paramPairs)
+			message("\nstarting process with: ", param)
+		
 		splt <- unlist(strsplit(param, "="));
 		nm = splt[1]
 		value = splt[2]
 		value <- strsplit(value,",")[[1]] #handling those with , in value.. for multiple R values
 
 		## --- if function supports ... need to pass ALL arguments
-		if(sum(names(args) %in% "...") & !nm %in% names(args)){
+		if(sum( names(args) %in% "...") & !nm %in% names(args) ){
 			## -- remove the dots argument
-			dots = which(names(args) == "...")
-			args = args[-dots]
 			message("Adding ", nm, ":", value)
 			l = list(nm = value);names(l) = nm
 			args <- c(args, l)
 		}
-
+		
+# 		if(verbose)
+# 			message("processing param: ", nm, " value ", args[[nm]])
+		
 		if(class(args[[nm]]) == "numeric" ){
 			args[[nm]] = as.numeric(value)
 		}else if(class(args[[nm]]) %in% c("character", "name" )){
@@ -56,8 +62,14 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 			args[[nm]] = as.character(value)
 		}
 		if(verbose)
-			cat("processed param: ", nm, " value ", args[[nm]])
+			message("processed param: ", nm, " value ", args[[nm]])
 	}
+	
+	## remove dots
+	dots = which( names(args) == "..." )
+	if(length(dots) > 0 )
+		args = args[-dots]
+	
 
 	##print(do.call(rbind, as.list(args)))
 	if(verbose) print(args)
@@ -228,6 +240,9 @@ if(FALSE){
 
 	out = main(c("rnorm", "n=100"))
 	expect_equal(length(out), 100)
+	
+	## rerun example:
+	paramPairs=c('x=fastq_mutect-C835.HCC1143.2___C835.HCC1143_BL.4-20150905-22-31-28-5AG8iPdH', 'start_from=mutect', 'kill=FALSE')
 
 }
 
