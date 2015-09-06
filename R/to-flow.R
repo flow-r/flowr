@@ -184,12 +184,12 @@ to_flow.flowmat <- function(x, def,
 		if(verbose)
 			message("\nWorking on... ", samp)
 		
-		## Check again for multi sample flow
-		## in case of more complex flows like
+		## Compare flowdef and flowmat, AGAIN
+		## in case of more complex flows like fastq_mutect
 		msg = c("\nflowdef jobs: ", paste(def$jobname, collapse = " "),
 						"\nflowmat jobs: ", paste(unique(x2$jobname), collapse = " "))
 		if (mean(!na.omit(def$jobname) %in% unique(x2$jobname))) {
-		  stop("Some jobs in flowdef are not in flowmat\n", msg)
+			stop("Some jobs in flowdef are not in flowmat\n", msg)
 		}
 		
 		## --- fetch samplename from the flowr_mat
@@ -241,6 +241,74 @@ to_flow.data.frame = function(x, ...){
 }
 
 
+## several variables come from global space !
+proc_jobs <- function(x,
+											i, 
+											qobj,
+											def,
+											desc,
+											verbose = get_opts("verbose")
+											
+){
+	
+	if(verbose)
+		message(".", appendLF = FALSE)
+	
+	jobnm = def[i, "jobname"]
+	cmds = x[[jobnm]]$cmd;
+	
+
+	## --- submit def, to get resources for this particular job
+	def2 = subset(def, def$jobname == jobnm)
+	prev_job = unlist(def2$prev_jobs) ## SHOULD be NA
+	if (!is.na(prev_job))
+		prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
+	d_cpu = unlist(def2$cpu_reserved)
+	d_walltime = unlist(def2$walltime)
+	d_memory = as.character(unlist(def2$memory_reserved))
+	d_queue = unlist(def2$queue)
+	d_dep_type = unlist(def2$dep_type)
+	d_sub_type = unlist(def2$sub_type)
+	d_nodes = unlist(def2$nodes)
+	d_jobid = unlist(def2$jobid)
+	
+	if (!inherits(qobj, "queue")){
+		qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
+	}else{
+		if(verbose > 1)
+			message("using queue object supplied")
+	}
+	
+	#print(qobj@submit_exe)
+	
+	## --- getting default for nodes
+	if (is.null(d_nodes))
+		d_nodes = '1'
+	
+	
+	##  if cmds are missing; change to echo 0 and make cpu = 1
+	d_cpu = ifelse(cmds[1] == ".", 1, d_cpu)
+	## if starts from . echo
+	cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
+	
+	if(is.null(cmds))
+		stop("command is missing for: ", desc, " jobnm: ", jobnm, 
+						"\nPlease check the flowmat and flowdef; this is a show stoppper.\n")
+
+	jobj = job(q_obj = qobj,
+						 name = jobnm,
+						 jobname = sprintf("%03d.%s", d_jobid, jobnm),
+						 previous_job = prev_job,
+						 cmds = cmds,
+						 dependency_type = d_dep_type,
+						 submission_type = d_sub_type,
+						 cpu = d_cpu, queue = d_queue,
+						 walltime = d_walltime,
+						 nodes = d_nodes,
+						 memory = d_memory)
+	return(jobj)
+}
+
 
 #' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
@@ -263,64 +331,10 @@ to_flow.list <- function(x, def,
 	
 	## x is a list of flow_mat, split by jobname
 	## this list should have three elements
-	
-	proc_jobs <- function(i, qobj){
-		if(verbose)
-			message(".", appendLF = FALSE)
-		jobnm = def[i, "jobname"]
-		cmds = x[[jobnm]]$cmd;
-		
-		## --- submit def, to get resources for this particular job
-		def2 = subset(def, def$jobname == jobnm)
-		prev_job = unlist(def2$prev_jobs) ## SHOULD be NA
-		if (!is.na(prev_job))
-			prev_job = strsplit(prev_job, ",")[[1]] ## supports multi
-		d_cpu = unlist(def2$cpu_reserved)
-		d_walltime = unlist(def2$walltime)
-		d_memory = as.character(unlist(def2$memory_reserved))
-		d_queue = unlist(def2$queue)
-		d_dep_type = unlist(def2$dep_type)
-		d_sub_type = unlist(def2$sub_type)
-		d_nodes = unlist(def2$nodes)
-		d_jobid = unlist(def2$jobid)
-		
-		if (!inherits(qobj, "queue")){
-			if(verbose > 1)
-				message("creating queue object")
-			qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
-		}else{
-			if(verbose > 1)
-				message("using queue object supplied")
-		}
-		
-		#print(qobj@submit_exe)
-		
-		## --- getting default for nodes
-		if (is.null(d_nodes))
-			d_nodes = '1'
-		
-		
-		## -------- if cmds are missing; change to echo 0 and make cpu = 1
-		cpu = ifelse(cmds[1] == ".", 1, d_cpu)
-		## if starts from . echo
-		cmds[1] = ifelse(cmds[1] == "\\.", "echo done", cmds[1])
-		
-		jobj = job(q_obj = qobj,
-							 name = jobnm,
-							 jobname = sprintf("%03d.%s", d_jobid, jobnm),
-							 previous_job = prev_job,
-							 cmds = cmds,
-							 dependency_type = d_dep_type,
-							 submission_type = d_sub_type,
-							 cpu = d_cpu, queue = d_queue,
-							 walltime = d_walltime,
-							 nodes = d_nodes,
-							 memory = d_memory)
-		return(jobj)
-	}
-	
 
-	jobs <- lapply(1:nrow(def), proc_jobs, qobj = qobj )
+	jobs <- lapply(1:nrow(def), function(i){
+								 proc_jobs(x = x, i = i, qobj = qobj, def = def, verbose = verbose, desc = desc)
+	})
 	
 	fobj <- flow(jobs = jobs,
 							 desc = desc, name = flowname,
