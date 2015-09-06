@@ -60,6 +60,11 @@ rerun.character <- function(x, ...){
 
 	if(is.character(fobj))
 		stop("x does not seems to be a correct path to the flow submission, missing flow_details.rds")
+	
+	args = list(...)
+	if(any(names(args) %in% c("flowmat", "flowdef", "flow_mat", "flow_def")))
+		stop("some arguments not recognized\n",
+				 "Valid arguments for rerun are: mat and def, for flow matrix and flow definition respectively.")
 
 	rerun(fobj, ...)
 
