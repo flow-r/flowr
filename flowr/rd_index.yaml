@@ -20,6 +20,7 @@
   topics:
     - opts_flow
     - setup
+    - flowr_verbose
 -
   section_name: Details on flowr's classes
   description:
