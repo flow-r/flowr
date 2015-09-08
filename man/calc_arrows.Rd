@@ -7,11 +7,11 @@
 calc_arrows(x, pdf, verbose = get_opts("verbose"))
 }
 \arguments{
-\item{x}{boxht}
+\item{x}{boxht height of the box, as returned by calc_box}
 
-\item{pdf}{}
+\item{pdf}{creating pdf of displaying interactively}
 
-\item{verbose}{}
+\item{verbose}{display verbose messages}
 }
 \description{
 Title

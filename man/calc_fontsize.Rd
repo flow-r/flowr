@@ -9,7 +9,7 @@ calc_fontsize(x, verbose = get_opts("verbose"))
 \arguments{
 \item{x}{box height}
 
-\item{verbose}{}
+\item{verbose}{display verbose messages}
 }
 \description{
 Calculate font size based on the size of the window

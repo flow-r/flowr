@@ -21,21 +21,27 @@ parse_lsf_out <- function(x,
 	if(verbose > 1)
 		message("reading: ", x)
 	
-	text <- scan(x, what = "character", sep = "\n", quiet = TRUE)
+	if(!file.exists(x)){
+		cpu_time=bgn_time=end_time=avg_mem=max_mem=max_swap=host=cores=NA
+		
+	}else{
 
-	cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
-	cpu_time = as.numeric(cpu_time) * scale_time
-	bgn_time = try(gsub("BGN at ", "", grep("^BGN at", text, value = TRUE)))
-	bgn_time = try(as.character(strptime(bgn_time, format = time_format)))
-	end_time = try(gsub("END at ", "", grep("^END at", text, value = TRUE)))
-	end_time = try(as.character(strptime(end_time, format = time_format)))
+		text <- scan(x, what = "character", sep = "\n", quiet = TRUE)
 
-	avg_mem = try(gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
-	max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
-	max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
-
-	host = gsub(".*host <([a-z0-9]*)>.*", "\\1", grep("host <.*>", text, value = TRUE))
-	cores = gsub(".*ptile=(.*)\\].*", "\\1", grep("ptile=", text, value = TRUE))
+		cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
+		cpu_time = as.numeric(cpu_time) * scale_time
+		bgn_time = try(gsub("BGN at ", "", grep("^BGN at", text, value = TRUE)))
+		bgn_time = try(as.character(strptime(bgn_time, format = time_format)))
+		end_time = try(gsub("END at ", "", grep("^END at", text, value = TRUE)))
+		end_time = try(as.character(strptime(end_time, format = time_format)))
+		
+		avg_mem = try(gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
+		max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
+		max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
+		
+		host = gsub(".*host <([a-z0-9]*)>.*", "\\1", grep("host <.*>", text, value = TRUE))
+		cores = gsub(".*ptile=(.*)\\].*", "\\1", grep("ptile=", text, value = TRUE))
+	}
 	
 	#warnings()
 	#message(cpu_time)
