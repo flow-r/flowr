@@ -235,7 +235,7 @@ column specifying commands to run, default cmd
 Flow Definition defines how to stich pieces of the (work)flow into a flow.
 </h3>
 <p class="rd-p">
-This function enables creation of a skeleton flow definition with several default values, using a flowmat. To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront. As such, these params must be of the same length as number of unique jobs using in the flowmat. Each row in this table refers to one step of the pipeline. It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it. <strong>Submission types</strong> Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1. Consider another step D (with D1-D3), which comes after C. &lt;&gt; A —-&gt; B —–&gt; C —–&gt; D&lt;&gt; <em>This refers to the sub_type column in flow definition.</em>
+This function enables creation of a skeleton flow definition with several default values, using a flowmat. To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront. As such, these params must be of the same length as number of unique jobs using in the flowmat. Each row in this table refers to one step of the pipeline. It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it. <br> <strong>Submission types:</strong> <em>This refers to the sub_type column in flow definition.</em> Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1. Consider another step D (with D1-D3), which comes after C. A —-&gt; B —–&gt; C —–&gt; D
 <ul>
 <li>
 <code>scatter</code>: submit all commands as parallel, independent jobs. - <em>Submit A1 through A10 as independent jobs</em>
@@ -340,17 +340,17 @@ amount of walltime required
 verbose
 </dt>
 <dd class="rd-dd">
-A numeric value indicating the amount of messages to produce. Values are integers varying from 0, 1, 2, 3, …. Please refer to the flowr_verbose page for more details. [<code>get_opts(“verbose”)</code>] [1]
+A numeric value indicating the amount of messages to produce. Values are integers varying from 0, 1, 2, 3, …. Please refer to the <a href=#verbose>verbose</a> page for more details. [<code>get_opts(“verbose”)</code>] [1]
 </dd>
 </dl>
 <h4>
 Format
 </h4>
 <p class="rd-p">
-This is a tab separated file, with a minimum of 4 columns:</br>
+This is a tab separated file, with a minimum of 4 columns:<br>
 </p>
 <p class="rd-p">
-<em>required columns</em>:</br>
+<em>required columns</em>:<br>
 <ul>
 <li>
 <code>jobname</code>: Name of the step
@@ -367,7 +367,7 @@ This is a tab separated file, with a minimum of 4 columns:</br>
 </ul>
 </p>
 <p class="rd-p">
-<em>resource columns</em> (recommended):</br>
+<em>resource columns</em> (recommended):<br>
 </p>
 <p class="rd-p">
 Apart from the above described variables, several other variables defining the resource requirements of each step are also available. These give great amount of flexibility to the user in choosing CPU, wall time, memory and queue for each step (and are passed along to the HPCC platform).
@@ -490,7 +490,7 @@ Depreciated, modify <a href = http://docs.flowr.space/en/latest/rd/vignettes/bui
 verbose
 </dt>
 <dd class="rd-dd">
-A numeric value indicating the amount of messages to produce. Values are integers varying from 0, 1, 2, 3, …. Please refer to the flowr_verbose page for more details. [<code>get_opts(“verbose”)</code>] [1]
+A numeric value indicating the amount of messages to produce. Values are integers varying from 0, 1, 2, 3, …. Please refer to the <a href=#verbose>verbose</a> page for more details. [<code>get_opts(“verbose”)</code>] [1]
 </dd>
 <dt>
 desc
