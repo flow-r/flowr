@@ -3,7 +3,7 @@
   description:
   topics:
     - to_flowmat
-    - to_flowdef
+    - flowdef
     - to_flow
 -
   section_name: Submiting and managing a flow
@@ -20,7 +20,7 @@
   topics:
     - opts_flow
     - setup
-    - flowr_verbose
+    - verbose
 -
   section_name: Details on flowr's classes
   description:

@@ -21,6 +21,7 @@ navpills: |
 
 ```{r libs, echo = FALSE, message = FALSE}
 library(knitr)
+#opts_chunk$set(dev='CairoPNG')
 library(flowr)
 ```
 
@@ -559,9 +560,9 @@ kable(mat, col.names = c("flowdef variable", "submission template variable"))
 
 Here are some of the available pipelines along with their respective locations
 
-```{r echo=FALSE, results='asis', message=FALSE, eval=FALSE}
-pipes = try(fetch_pipes(silent = TRUE))
+```{r echo=FALSE, results='asis', message=TRUE}
 
+pipes = try(fetch_pipes(silent = TRUE))
 if(class(pipes) != "try-error")
 	if(nrow(pipes) > 0){
 		pipes$pipe = basename(pipes$pipe)
@@ -696,7 +697,6 @@ write_sheet(def, "sleep_pipe.def")
 def = as.flowdef("sleep_pipe.def")
 ```
 
-```
 
 
 # Cluster Support

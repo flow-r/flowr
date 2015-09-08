@@ -71,15 +71,11 @@
         <div id="toc">
           <ul>
           <li><a href="#flowr-latest">flowr latest</a></li>
-          <li><a href="#flowr-0.9.7.10-2015-09-02">flowr 0.9.7.10 2015-09-02</a></li>
-          <li><a href="#flowr-0.9.6.13-2015-09-02">flowr 0.9.6.13 2015-09-02</a></li>
-          <li><a href="#flowr-0.9.6.10">flowr 0.9.6.10</a></li>
+          <li><a href="#flowr-0.9.7.10">flowr 0.9.7.10</a></li>
+          <li><a href="#flowr-0.9.6.13">flowr 0.9.6.13</a></li>
           <li><a href="#flowr-0.9.6.7">flowr 0.9.6.7</a></li>
-          <li><a href="#flowr-0.9.6.6">flowr 0.9.6.6</a></li>
-          <li><a href="#flowr-0.9.6.5">flowr 0.9.6.5</a></li>
-          <li><a href="#flowr-0.9.6.1">flowr 0.9.6.1</a></li>
           <li><a href="#flowr-0.9.5.1">flowr 0.9.5.1</a></li>
-          <li><a href="#flow-0.85">flow 0.85</a></li>
+          <li><a href="#flowr-0.85">flowr 0.85</a></li>
           </ul>
         </div>
       </div>
@@ -103,11 +99,33 @@
 <li>When using status on several folders, it used to be a little cluttered. Have added spaces, so that this looks prettier now.</li>
 </ul></li>
 <li><p><strong>Introducing verbose levels</strong>:</p>
-<p>One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>. Where the level may be 0, 1, 2…. Level 1 is good for most purposes, where as, level 0 is almost silent, producing messages only when neccessary. While level 2 is good when developing a new pipeline, additional details provided by level 3.</p></li>
+<p>One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>. Where the level may be 0, 1, 2…. Level 1 is good for most purposes, where as, level 0 is almost silent, producing messages only when neccessary. While level 2 is good when developing a new pipeline, additional details useful for debugging are provided by level 3.</p></li>
+<li><p>Detailed checking of flowdef</p>
+<pre><code>checking if required columns are present...
+checking if resources columns are present...
+checking if dependency column has valid names...
+checking if submission column has valid names...
+checking for missing rows in def...
+checking for extra rows in def...
+checking submission and dependency types...
+jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
+1: aln1_a   none --&gt; none --&gt; scatter 
+2: aln2_a   scatter --&gt; none --&gt; scatter 
+3: sampe_a  scatter --&gt; serial --&gt; scatter rel: complex one:one
+4: fixrg_a  scatter --&gt; serial --&gt; scatter rel: complex one:one
+5: merge_a  scatter --&gt; gather --&gt; serial rel: many:one
+6: markdup_a    serial --&gt; serial --&gt; serial rel: simple one:one
+7: target_a serial --&gt; serial --&gt; serial rel: simple one:one
+8: realign_a    serial --&gt; burst --&gt; scatter rel: one:many
+9: baserecalib_a    scatter --&gt; serial --&gt; scatter rel: complex one:one
+10: printreads_a    scatter --&gt; serial --&gt; scatter rel: complex one:one</code></pre></li>
 </ul>
 </div>
-<div id="flowr-0.9.7.10-2015-09-02" class="section level2">
-<h2>flowr 0.9.7.10 2015-09-02</h2>
+<div id="flowr-0.9.7.10" class="section level2">
+<h2>flowr 0.9.7.10</h2>
+<blockquote>
+<p>2015-08-22</p>
+</blockquote>
 <ul>
 <li>This release adds and changes functionality of several functions.</li>
 <li>A new function run(), creates and submits a pipeline. Specifically it follows the following steps:
@@ -131,19 +149,20 @@
 <li>Here is a link to <a href="https://github.com/sahilseth/params">params</a> package</li>
 <li>kable function is now a part of params, that removes the dependency to knitr package</li>
 </ul></li>
+<li>plot_flow: supports flowdef</li>
 </ul>
 </div>
-<div id="flowr-0.9.6.13-2015-09-02" class="section level2">
-<h2>flowr 0.9.6.13 2015-09-02</h2>
+<div id="flowr-0.9.6.13" class="section level2">
+<h2>flowr 0.9.6.13</h2>
+<ul>
+<li>[0.9.6.13] 2015-07-23
 <ul>
 <li>Using PBS/LSF script instead of one line commands</li>
 <li>Format now a script, parsed using whisker</li>
 <li>to_flowmat() and to_flowdef() introduced; creating of these tables simplified</li>
 <li>Refactored code for plot_flow, handles multiple dependencies beautifully</li>
-</ul>
-</div>
-<div id="flowr-0.9.6.10" class="section level2">
-<h2>flowr 0.9.6.10</h2>
+</ul></li>
+<li>[0.9.6.10] 2015-07-08
 <ul>
 <li>add to_flow()</li>
 <li>kill_flow()</li>
@@ -153,39 +172,40 @@
 <li>final job names changed to: sprintf(“%s_%s-%s”, basename(<a href="mailto:fobj@flow_path">fobj@flow_path</a>), <a href="mailto:jobj@jobname">jobj@jobname</a>, i)</li>
 <li>Using PBS/LSF script instead of one line commands</li>
 <li>Format now a script, parsed using whisker</li>
+</ul></li>
 </ul>
 </div>
 <div id="flowr-0.9.6.7" class="section level2">
 <h2>flowr 0.9.6.7</h2>
+<blockquote>
+<p>2015-04-07</p>
+</blockquote>
 <ul>
 <li>add read_sample_sheet</li>
 <li>clean package dependencies</li>
-</ul>
-</div>
-<div id="flowr-0.9.6.6" class="section level2">
-<h2>flowr 0.9.6.6</h2>
+<li>[0.9.6.6]
 <ul>
 <li>switch cat to messages</li>
 <li>added to_flow</li>
-</ul>
-</div>
-<div id="flowr-0.9.6.5" class="section level2">
-<h2>flowr 0.9.6.5</h2>
+</ul></li>
+<li>[0.9.6.5]
 <ul>
 <li>Added more examples</li>
 <li>Update Vignette with more examples</li>
 <li>squash issues in DESCRIPTION</li>
-</ul>
-</div>
-<div id="flowr-0.9.6.1" class="section level2">
-<h2>flowr 0.9.6.1</h2>
+</ul></li>
+<li>[0.9.6.1]
 <ul>
 <li>Added some vignettes for a simple and comples example</li>
 <li>satiate CRAN checks</li>
+</ul></li>
 </ul>
 </div>
 <div id="flowr-0.9.5.1" class="section level2">
 <h2>flowr 0.9.5.1</h2>
+<blockquote>
+<p>2015-03-16</p>
+</blockquote>
 <ul>
 <li>Added several new functions kill_flow(), which kills the flow.</li>
 <li>Added experimental rerun_flow which still needs some work</li>
@@ -209,8 +229,11 @@
 <li>Add recipies</li>
 </ul>
 </div>
-<div id="flow-0.85" class="section level2">
-<h2>flow 0.85</h2>
+<div id="flowr-0.85" class="section level2">
+<h2>flowr 0.85</h2>
+<blockquote>
+<p>2014-12-05</p>
+</blockquote>
 <ul>
 <li>get_flow_details():</li>
 <li>Attach a job_number</li>
