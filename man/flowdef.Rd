@@ -90,7 +90,8 @@ It describes the resources used by the step and also its relationship with other
 especially, the step immediately prior to it.
 }
 
-\strong{Submission types}
+\strong{Submission types:}
+\emph{This refers to the sub_type column in flow definition.}
 
 Consider an example with three steps A, B and C.
 A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and
@@ -100,7 +101,7 @@ Consider another step D (with D1-D3), which comes after C. <\br>
 A   ----> B  -----> C -----> D<\br>
 
 
-\emph{This refers to the sub_type column in flow definition.} %% <\br>
+ %% <\br>
 
 \itemize{
 \item \code{scatter}: submit all commands as parallel, independent jobs.

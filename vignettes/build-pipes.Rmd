@@ -21,7 +21,6 @@ navpills: |
 
 ```{r libs, echo = FALSE, message = FALSE}
 library(knitr)
-#opts_chunk$set(dev='CairoPNG')
 library(flowr)
 ```
 
