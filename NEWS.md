@@ -34,12 +34,37 @@ this uses information from other columns and summarizes whether a specific step 
 	Level 1 is good for most purposes, where as, 
 	level 0 is almost silent, producing messages 
 	only when neccessary.
-	While level 2 is good when developing a new pipeline, additional details provided by level 3.
+	While level 2 is good when developing a new pipeline, additional details useful for debugging are 
+	provided by level 3.
+	
+- Detailed checking of flowdef
+```
+checking if required columns are present...
+checking if resources columns are present...
+checking if dependency column has valid names...
+checking if submission column has valid names...
+checking for missing rows in def...
+checking for extra rows in def...
+checking submission and dependency types...
+	jobname	prev.sub_type --> dep_type --> sub_type: relationship
+	1: aln1_a	none --> none --> scatter 
+	2: aln2_a	scatter --> none --> scatter 
+	3: sampe_a	scatter --> serial --> scatter rel: complex one:one
+	4: fixrg_a	scatter --> serial --> scatter rel: complex one:one
+	5: merge_a	scatter --> gather --> serial rel: many:one
+	6: markdup_a	serial --> serial --> serial rel: simple one:one
+	7: target_a	serial --> serial --> serial rel: simple one:one
+	8: realign_a	serial --> burst --> scatter rel: one:many
+	9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
+	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
+```
 
 
 
-flowr 0.9.7.10 2015-09-02
+flowr 0.9.7.10
 ----------------------------------------------
+> 2015-08-22
+
 - This release adds and changes functionality of several functions. 
 - A new function run(), creates and submits a pipeline. Specifically it follows the following steps:
 	- One supplies the name of the pipeline, which is used to fetch the pipeline using:
@@ -60,54 +85,49 @@ flowr 0.9.7.10 2015-09-02
 	- moved `.load_conf()` `load_conf()`
 	- Here is a link to [params](https://github.com/sahilseth/params) package
 	- kable function is now a part of params, that removes the dependency to knitr package
+- plot_flow: supports flowdef
 
 
 
 
 
-flowr 0.9.6.13 2015-09-02
+flowr 0.9.6.13
 ----------------------------------------------
-- Using PBS/LSF script instead of one line commands
-- Format now a script, parsed using whisker
-- to_flowmat() and to_flowdef() introduced; creating of these tables simplified
-- Refactored code for plot_flow, handles multiple dependencies beautifully
-
-
-flowr 0.9.6.10
-----------------------------------------------
-- add to_flow()
-- kill_flow()
-- supports moab
-- burst as dependency type
-- node can be character
-- final job names changed to: sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
-- Using PBS/LSF script instead of one line commands
-- Format now a script, parsed using whisker
+- [0.9.6.13] 2015-07-23
+	- Using PBS/LSF script instead of one line commands
+	- Format now a script, parsed using whisker
+	- to_flowmat() and to_flowdef() introduced; creating of these tables simplified
+	- Refactored code for plot_flow, handles multiple dependencies beautifully
+- [0.9.6.10] 2015-07-08
+	- add to_flow()
+	- kill_flow()
+	- supports moab
+	- burst as dependency type
+	- node can be character
+	- final job names changed to: sprintf("%s_%s-%s", basename(fobj@flow_path), jobj@jobname, i)
+	- Using PBS/LSF script instead of one line commands
+	- Format now a script, parsed using whisker
 
 flowr 0.9.6.7
 ----------------------------------------------
+> 2015-04-07
+
 - add read_sample_sheet
 - clean package dependencies
-
-
-flowr 0.9.6.6
-----------------------------------------------
-- switch cat to messages
-- added to_flow
-
-flowr 0.9.6.5
-----------------------------------------------
-- Added more examples
-- Update Vignette with more examples
-- squash issues in DESCRIPTION
-
-flowr 0.9.6.1
-----------------------------------------------
-- Added some vignettes for a simple and comples example
-- satiate CRAN checks
+- [0.9.6.6]
+	- switch cat to messages
+	- added to_flow
+- [0.9.6.5]
+	- Added more examples
+	- Update Vignette with more examples
+	- squash issues in DESCRIPTION
+- [0.9.6.1]
+	- Added some vignettes for a simple and comples example
+	- satiate CRAN checks
 
 flowr 0.9.5.1
 ----------------------------------------------
+> 2015-03-16
 
 - Added several new functions kill_flow(), which kills the flow.
 - Added experimental rerun_flow which still needs some work
@@ -131,8 +151,9 @@ flow_status.txt
 - Work on test_queue()
 - Add recipies
 
-flow 0.85
+flowr 0.85
 ----------------------------------------------
+> 2014-12-05
 
 - get\_flow_details():
  - Attach a job_number

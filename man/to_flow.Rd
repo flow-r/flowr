@@ -28,26 +28,29 @@ to_flow(x, ...)
 
 \item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
 
-\item{grp_col}{column name used to split x (flow_mat). Default: `samplename`}
+\item{grp_col}{column name used to split x (flow_mat). [samplename]}
 
-\item{jobname_col}{column name with job names. Default: `jobname`}
+\item{jobname_col}{column name with job names. [jobname]}
 
-\item{cmd_col}{column name with commands. Default: `cmd`}
+\item{cmd_col}{column name with commands. [cmd]}
 
-\item{flowname}{name of the flow}
+\item{flowname}{name of the flow [flowname]}
 
-\item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.}
+\item{flow_run_path}{Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
+[\code{~/flowr/runs}].}
 
 \item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flowdef.}
+This over-rides the platform column in flowdef. (optional)}
 
-\item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
+\item{submit}{Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]}
 
-\item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
+\item{execute}{Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]}
 
 \item{qobj}{Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.}
 
-\item{verbose}{be chatty ? This is numeric with values 0, 1, 2.}
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{flowr_verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
 
 \item{desc}{Advanced Use. final flow name, please don't change.}
 }

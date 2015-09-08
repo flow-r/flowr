@@ -28,9 +28,9 @@ detect_dep_type <- function(x, cmds, prev_job){
 
 
 
-
 #' @title
 #' Create flow objects
+#' @name to_flow
 #'
 #' @description
 #' Use a set of shell commands and flow definiton to create \link{flow} object.
@@ -38,20 +38,23 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' @param x path (char. vector) to flow_mat, a data.frame or a list.
 #' @param def A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow
 #' @param platform character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-#' This over-rides the platform column in flowdef.
-#' @param grp_col column name used to split x (flow_mat). Default: `samplename`
-#' @param jobname_col column name with job names. Default: `jobname`
-#' @param cmd_col column name with commands. Default: `cmd`
-#' @param flowname name of the flow
-#' @param flow_run_path Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.
+#' This over-rides the platform column in flowdef. (optional)
+#' @param grp_col column name used to split x (flow_mat). [samplename]
+#' @param jobname_col column name with job names. [jobname]
+#' @param cmd_col column name with commands. [cmd]
+#' @param flowname name of the flow [flowname]
+#' @param flow_run_path Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
+#'  [\code{~/flowr/runs}].
 #' @param desc Advanced Use. final flow name, please don't change.
 #'
 #' @param ... Supplied to specific functions like \code{to_flow.data.frame}
 #'
-#' @param submit Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE
-#' @param execute Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()
+#' @param submit Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]
+#' @param execute Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]
 #' @param qobj Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.
-#' @param verbose be chatty ? This is numeric with values 0, 1, 2.
+#' @param verbose A numeric value indicating the amount of messages to produce.
+#'  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{flowr_verbose} page for more details.
+#' [\code{get_opts("verbose")}] [1]
 #'
 #' @examples
 #' ex = file.path(system.file(package = "flowr"), "pipelines")

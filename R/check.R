@@ -8,6 +8,30 @@
 #' @param verbose be chatty
 #' @param ... suppled to \code{check.classname} function
 #'
+#' @details 
+#' 
+#' \strong{A typical output from flowdef} with verbose level: 2
+#' 
+#' \preformatted{
+#'	checking if required columns are present...
+#'	checking if resources columns are present...
+#'	checking if dependency column has valid names...
+#'	checking if submission column has valid names...
+#'	checking for missing rows in def...
+#'	checking for extra rows in def...
+#'	checking submission and dependency types...
+#'	jobname	prev.sub_type --> dep_type --> sub_type: relationship
+#'	1: aln1_a	none --> none --> scatter 
+#'	2: aln2_a	scatter --> none --> scatter 
+#'	3: sampe_a	scatter --> serial --> scatter rel: complex one:one
+#'	4: fixrg_a	scatter --> serial --> scatter rel: complex one:one
+#'	5: merge_a	scatter --> gather --> serial rel: many:one
+#'	6: markdup_a	serial --> serial --> serial rel: simple one:one
+#'	7: target_a	serial --> serial --> serial rel: simple one:one
+#'	8: realign_a	serial --> burst --> scatter rel: one:many
+#'	9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
+#'	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
+#'	}
 #' @export
 check <- function(x, ...) {
 	UseMethod("check")
