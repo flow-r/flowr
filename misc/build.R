@@ -63,7 +63,9 @@ unlink("assets", recursive = TRUE)
 fls = c(
   "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
-  "vignettes/build-pipes.Rmd" = "docs.Rmd")
+  "vignettes/build-pipes.Rmd" = "docs.Rmd",
+  "vignettes/tutorial.Rmd" = "tutorial.Rmd"
+)
 
 unlink(fls)
 file.copy(from = file.path(code_path, names(fls)), to = fls)
@@ -76,6 +78,8 @@ check_output("index.html")
 render("docs.Rmd", output_format = pd_expand)
 check_output("docs.html")
 #system("open docs.html")
+render("tutorial.Rmd", output_format = pd_expand)
+check_output("tutorial.html")
 
 render("news.Rmd", output_format = pd_expand)
 check_output("news.html")

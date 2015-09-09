@@ -67,8 +67,8 @@ opts = set_opts(flow_run_path = "~/mypath")
 opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
 
 ## load options from a configuration file: load_opts()
-myconfile = fetch_conf("flowr.conf")
-load_opts(myconfile)
+conffile = fetch_conf("flowr.conf")
+load_opts(conffile)
 
 ## Fetch options: get_opts()
 get_opts("flow_run_path")

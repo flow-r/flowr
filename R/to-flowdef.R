@@ -20,25 +20,25 @@
 #' Each row in this table refers to one step of the pipeline. 
 #' It describes the resources used by the step and also its relationship with other steps, 
 #' especially, the step immediately prior to it.
-#' }
+#' } <br><br>
 #' 
 #' \strong{Submission types:} 
-#' \emph{This refers to the sub_type column in flow definition.}
+#' \emph{This refers to the sub_type column in flow definition.}<br>
 #' 
 #' Consider an example with three steps A, B and C. 
 #' A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and 
 #' C has a single command, C1.
-#' Consider another step D (with D1-D3), which comes after C. <\br>
+#' Consider another step D (with D1-D3), which comes after C.
 #' 
-#' A   ----> B  -----> C -----> D<\br>
+#' A   ----> B  -----> C -----> D
 #' 
 #' 
-#'  %% <\br>
+#'  
 #' 
 #' \itemize{
 #' \item \code{scatter}: submit all commands as parallel, independent jobs. 
 #' 
-#' 	- *Submit A1 through A10 as independent jobs*
+#' 	*Submit A1 through A10 as independent jobs*
 #' 	\item \code{serial}: run these commands sequentially one after the other. 
 #' 	
 #' 	- *Wrap A1 through A10, into a single job.*
@@ -50,23 +50,20 @@
 #' 
 #' \itemize{
 #' \item \code{none}: independent job.
-#' 
-#' 	- *Initial step A has no dependency*
+#' 		\itemize{\item *Initial step A has no dependency*}
 #' 	\item \code{serial}: *one to one* relationship with previous job. 
-#' 	
-#' 	- *B1 can start as soon as A1 completes.*
+#' 	\itemize{\item*B1 can start as soon as A1 completes.*}
 #' 	\item \code{gather}: *many to one*, wait for **all** commands in previous job to finish then start the  current step. 
-#' 	
-#' 	- *All jobs of B (1-10), need to complete before C1 is started*
+#' 	\itemize{\item *All jobs of B (1-10), need to complete before C1 is started*}
 #' 	\item \code{burst}: *one to many* wait for the previous step which has one job and start processing all cmds in the current step. 
 #' 	
 #' 	- *D1 to D3 are started as soon as C1 finishes.*
 #' }
 #' 
 #' @format
-#' This is a tab separated file, with a minimum of 4 columns:</br>
+#' This is a tab separated file, with a minimum of 4 columns:<br>
 #' 
-#' \emph{required columns}:</br>
+#' \emph{required columns}:<br>
 #' \itemize{
 #' \item{\code{jobname}}: Name of the step
 #' \item{\code{sub_type}}: Short for submission type, 
@@ -78,7 +75,7 @@
 #' This can take values `none`, `gather`, `serial` or `burst`.
 #' }
 #' 
-#' \emph{resource columns} (recommended):</br>
+#' \emph{resource columns} (recommended):<br>
 #' 
 #' Apart from the above described variables, 
 #' several other variables defining the resource requirements of each step are also available.
