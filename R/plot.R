@@ -136,7 +136,9 @@ split_multi_dep <- function(x){
 
 arrange_flowdef <- function(x, n = 4){
 	jobnames=unique(as.c(x$jobname))
-	n = length(jobnames) / 2
+	
+	## number time, one needs to run arrange
+	n = length(jobnames) / 1.5
 	jobid <- 1:length(jobnames);names(jobid)=jobnames
 	prev_jobid <- jobid[as.c(x$prev_jobs)]
 	get_new_ids <- function(x){
