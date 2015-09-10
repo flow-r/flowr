@@ -52,10 +52,10 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 		
 		if(class(args[[nm]]) == "numeric" ){
 			args[[nm]] = as.numeric(value)
+		}else if(class(args[[nm]]) %in% c("logical") | value %in% c("TRUE", "FALSE")){
+			args[[nm]] = as.logical(value)
 		}else if(class(args[[nm]]) %in% c("character", "name" )){
 			args[[nm]] = as.character(value)
-		}else if(class(args[[nm]]) %in% c("logical")){
-			args[[nm]] = as.logical(value)
 		}else if(class(args[[nm]]) %in% c("list")){
 			args[[nm]] = as.list(value)
 		}else if(class(args[[nm]]) %in% c("call")){ ## example call to getOption
@@ -70,10 +70,15 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 	if(length(dots) > 0 )
 		args = args[-dots]
 	
+	## check values if NULL, remove.
+	rm = which(sapply(args, is.name))
+	if(length(rm) > 0)
+		args = args[-rm]
 
 	##print(do.call(rbind, as.list(args)))
 	if(verbose) print(args)
 	return(as.list(args))
+	
 }
 
 
