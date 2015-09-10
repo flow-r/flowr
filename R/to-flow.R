@@ -92,7 +92,7 @@ to_flow <- function(x, ...) {
 #' @description vector: a file with flowmat table
 #' @rdname to_flow
 #' @export
-to_flow.vector <- function(x, def,
+to_flow.character <- function(x, def,
 													 grp_col,
 													 jobname_col,
 													 cmd_col,

@@ -106,7 +106,7 @@ A   ----> B  -----> C -----> D
 \itemize{
 \item \code{scatter}: submit all commands as parallel, independent jobs.
 
-	- *Submit A1 through A10 as independent jobs*
+	*Submit A1 through A10 as independent jobs*
 	\item \code{serial}: run these commands sequentially one after the other.
 
 	- *Wrap A1 through A10, into a single job.*
