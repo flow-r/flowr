@@ -2,15 +2,15 @@
 % Please edit documentation in R/to-flow.R
 \name{to_flow}
 \alias{to_flow}
+\alias{to_flow.character}
 \alias{to_flow.data.frame}
 \alias{to_flow.flowmat}
 \alias{to_flow.list}
-\alias{to_flow.vector}
 \title{Create flow objects}
 \usage{
 to_flow(x, ...)
 
-\method{to_flow}{vector}(x, def, grp_col, jobname_col, cmd_col, ...)
+\method{to_flow}{character}(x, def, grp_col, jobname_col, cmd_col, ...)
 
 \method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
   flow_run_path, platform, submit = FALSE, execute = FALSE, qobj,
