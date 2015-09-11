@@ -68,6 +68,7 @@ kill.character <- function(x, force = FALSE, ...){
 }
 
 #' @rdname kill
+#' @importFrom utils txtProgressBar
 #' @export
 kill.flow <- function(x,
 	kill_cmd,
@@ -88,16 +89,25 @@ kill.flow <- function(x,
 									log)
 	
 	## redirect STDERR as well if silent
-	if(verbose == 0)
+	if(verbose < 2)
 		cmds = paste0(cmds, "  2>&1")
+	message("killing ", length(cmds), " jobs, please wait... See kill_jobs.out in the wd for more details.")
 	
-	tmp <- sapply(cmds, function(cmd){
+	pb <- txtProgressBar(style = 3, min = 1, max = length(cmds))
+	for(i in 1:length(cmds)) {
 		if(verbose > 2) message(cmd, "\n")
-		#return(try(system(cmd, intern = TRUE, ...)))
-		## dots become a problem
-		## print(as.list(...))
-		return(try(system(cmd, intern = TRUE)))
-	})
+		try(system(cmds[i], intern = TRUE))
+		setTxtProgressBar(pb, i)
+	}
+	close(pb)
+	
+# 	tmp <- pbsapply(cmds, function(cmd){
+# 		Sys.sleep(1)
+# 		#return(try(system(cmd, intern = TRUE, ...)))
+# 		## dots become a problem
+# 		## print(as.list(...))
+# 		#return(try(system(cmd, intern = TRUE)))
+# 	})
 	invisible(tmp)
 }
 
