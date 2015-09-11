@@ -57,10 +57,10 @@ kill.character <- function(x, force = FALSE, ...){
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
 		if(!is.flow(fobj)){
-		  message("\n\nflowr can only kill flows, where the jobs ids are available. ",
-		          "Please check and confirm that the path supplied is correct, ", 
-		          "and that it has a flow_details.rds file. \n ls -l ", x[i])
-		  stop("")
+			stop("\nmissing flow_details at this location\n", 
+					 "flowr can only kill flows, where the jobs ids are available.\n",
+					 "Please check and confirm that the path supplied is correct, ", 
+					 "and that it has a flow_details.rds file. \n ls -l ", x[i])
 		}
 		kill.flow(fobj, ...)
 	}
@@ -70,6 +70,7 @@ kill.character <- function(x, force = FALSE, ...){
 #' @export
 kill.flow <- function(x,
 	kill_cmd,
+	verbose = get_opts("verbose"),
 	jobid_col = "job_sub_id", ...){
 
 	if(missing(kill_cmd)){
@@ -78,9 +79,18 @@ kill.flow <- function(x,
 	#flow_details = read_flow_detail_fl(wd)
 
 	flow_det = to_flowdet(x)
-	cmds <- sprintf("%s %s", kill_cmd, flow_det[,jobid_col])
+	wd = fobj@flow_path
+	log = file.path(wd, "kill_jobs.out")
+	cmds <- sprintf("%s %s >> %s", 
+									kill_cmd, flow_det[,jobid_col],
+									log)
+	
+	## redirect STDERR as well if silent
+	if(verbose == 0)
+		cmds = paste0(cmds, "  2>&1")
+	
 	tmp <- sapply(cmds, function(cmd){
-		message(cmd, "\n")
+		if(verbose > 2) message(cmd, "\n")
 		#return(try(system(cmd, intern = TRUE, ...)))
 		## dots become a problem
 		## print(as.list(...))
