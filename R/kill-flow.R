@@ -18,6 +18,7 @@
 #' it here; fot custom platoforms.
 #' @param force You need to set force=TRUE, to kill multiple flows. This makes sure multiple flows are NOT killed by accident.
 #' @param ... not used
+#' @inheritParams to_flow
 #'
 #'
 #' @export
@@ -79,7 +80,8 @@ kill.flow <- function(x,
 	#flow_details = read_flow_detail_fl(wd)
 
 	flow_det = to_flowdet(x)
-	wd = fobj@flow_path
+
+	wd = x@flow_path
 	log = file.path(wd, "kill_jobs.out")
 	cmds <- sprintf("%s %s >> %s", 
 									kill_cmd, flow_det[,jobid_col],

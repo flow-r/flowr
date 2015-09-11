@@ -10,7 +10,8 @@ kill(x, ...)
 
 \method{kill}{character}(x, force = FALSE, ...)
 
-\method{kill}{flow}(x, kill_cmd, jobid_col = "job_sub_id", ...)
+\method{kill}{flow}(x, kill_cmd, verbose = get_opts("verbose"),
+  jobid_col = "job_sub_id", ...)
 }
 \arguments{
 \item{x}{either path to flow wd or object of class \link{flow}}
@@ -21,6 +22,10 @@ kill(x, ...)
 
 \item{kill_cmd}{The command used to kill. flowr tries to guess this commands, as defined in the detect_kill_cmd(). Supplying
 it here; fot custom platoforms.}
+
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
 
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
 }

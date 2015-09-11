@@ -4,14 +4,18 @@
 \alias{subset_fmat}
 \title{subset_fmat}
 \usage{
-subset_fmat(fobj, mat, start_from)
+subset_fmat(fobj, mat, start_from, select, ignore)
 }
 \arguments{
 \item{fobj}{flow object}
 
-\item{mat}{a part of flowdef}
+\item{mat}{a part of flowmat}
 
-\item{start_from,}{where to start from}
+\item{start_from}{which job to start from, this is a job name.}
+
+\item{select}{select a subset of jobs to rerun [character vector]}
+
+\item{ignore}{ignore a subset of jobs to rerun [character vector]}
 }
 \description{
 subset_fmat

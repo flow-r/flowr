@@ -11,7 +11,7 @@ rerun(x, ...)
 \method{rerun}{character}(x, ...)
 
 \method{rerun}{flow}(x, mat, def, start_from, execute = TRUE, kill = TRUE,
-  ...)
+  select, ignore, ...)
 }
 \arguments{
 \item{x}{flow working directory}
@@ -27,6 +27,10 @@ rerun(x, ...)
 \item{execute}{[logical] whether to execute or not}
 
 \item{kill}{(optional) logical indicating whether to kill the jobs from the previous execution of flow.}
+
+\item{select}{select a subset of jobs to rerun [character vector]}
+
+\item{ignore}{ignore a subset of jobs to rerun [character vector]}
 }
 \description{
 \itemize{

@@ -11,5 +11,4 @@ vignettes/.DS_Store
 README.html
 
 tests/testthat/Rplots.pdf
-
 tests/testthat/sleep_pipe*

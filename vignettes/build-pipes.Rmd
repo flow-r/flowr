@@ -613,7 +613,7 @@ parse_jobids(jobid, platform="lsf")
 In this case *335508* was the job id and regex worked well !
 
 3. **render dependency**: After collecting job ids from previous jobs, flowr render them as a dependency for subsequent
-jobs. This is handled by [render_dependency.PLATFORM](https://github.com/sahilseth/flowr/blob/master/R/parse-dependency.R) functions.
+jobs. This is handled by [render_dependency.PLATFORM](https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R) functions.
 4. **recognize new platform**: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the [job class](https://github.com/sahilseth/flowr/blob/master/R/class-def.R)
 
 Essentially this requires us to add a new line like: `setClass("torque", contains = "job")`.

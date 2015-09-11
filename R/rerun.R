@@ -21,6 +21,8 @@ if(FALSE){
 #' @param x flow working directory
 #' @param execute [logical] whether to execute or not
 #' @param start_from which job to start from, this is a job name.
+#' @param select select a subset of jobs to rerun [character vector]
+#' @param ignore ignore a subset of jobs to rerun [character vector]
 #' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
 #' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
@@ -224,9 +226,9 @@ subset_mods <- function(fobj, start_from, select, ignore){
 
 #' subset_fmat
 #'
+#' @param mat a part of flowmat
 #' @param fobj flow object
-#' @param mat a part of flowdef
-#' @param start_from, where to start from
+#' @inheritParams rerun
 subset_fmat <- function(fobj, mat, start_from, select, ignore){
 	
 	mods = subset_mods(fobj, start_from, select, ignore)
@@ -243,7 +245,7 @@ subset_fmat <- function(fobj, mat, start_from, select, ignore){
 #' subset_fdef
 #' @param fobj flow object
 #' @param def flowdef
-#' @param start_from where to start from
+#' @inheritParams rerun
 #'
 subset_fdef <- function(fobj, def, start_from, select, ignore){
 	
@@ -263,7 +265,7 @@ subset_fdef <- function(fobj, def, start_from, select, ignore){
 #' subset flow details file
 #' @param fobj flow object
 #' @param det flowdet
-#' @param start_from where to start from
+#' @inheritParams rerun
 #'
 subset_fdet <- function(fobj, det, start_from, select, ignore){
 	

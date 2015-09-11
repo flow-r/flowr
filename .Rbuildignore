@@ -10,3 +10,7 @@ cran-comment.md
 README.html
 TODO.md
 vignettes/errors.Rmd
+
+## ignore test files and folders
+tests/testthat/Rplots.pdf
+tests/testthat/sleep_pipe*
