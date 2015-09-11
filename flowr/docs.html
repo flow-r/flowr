@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-09-08" />
+    <meta name="date" content="2015-09-11" />
   
   <title>flowr</title>
 
@@ -53,6 +53,9 @@
 <a href='docs.html'>Docs</a>
 </li>
 <li>
+<a href='Tutorial.html'>Tutorial</a>
+</li>
+<li>
 <a href='rd.html'>Package Ref</a>
 </li>
 <li>
@@ -95,12 +98,6 @@
           <li><a href="#passing-of-flow-definition-resource-columns">Passing of flow definition resource columns</a></li>
           </ul></li>
           <li><a href="#available-pipelines">Available Pipelines</a></li>
-          <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
-          <li><a href="#define-modules">Define modules</a></li>
-          <li><a href="#define-the-pipeline">Define the pipeline</a></li>
-          <li><a href="#generate-a-flowmat">Generate a flowmat</a></li>
-          <li><a href="#create-flow-definition">Create flow definition</a></li>
-          </ul></li>
           <li><a href="#cluster-support">Cluster Support</a></li>
           </ul>
         </div>
@@ -136,7 +133,7 @@ flowr</code></pre>
 <p><img src="files/toy.png" /></p>
 <p>Consider, a simple example where we have <strong>three</strong> instances of the <code>sleep</code> command running ( which basically stalls the terminal for few seconds and does nothing ). After its completion <strong>three</strong> tmp files are created with some random data. After this, a merge step follows, which combines them into one big file. Next we use <code>du</code> to calculate the size of the resulting file. This flow is shown in the above described figure.</p>
 <div class="alert alert-info" role="alert">
-<p><strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.</p>
+<strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
 </div>
 <p>To create this flow in flowr, we need the actual commands to run; and some kind of a configuration file to describe which ones go first.</p>
 <p>Here is a table with the commands we would like to run ( or <code>flow mat</code> ).</p>
@@ -193,7 +190,7 @@ flowr</code></pre>
 </table>
 <p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition">flow_def</a>. Each row in a flow mat relates to one job.</p>
 <div class="alert alert-info" role="alert">
-<p>Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.</p>
+Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.
 </div>
 <table>
 <thead>
@@ -277,7 +274,7 @@ flowr</code></pre>
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
 <div class="alert alert-info" role="alert">
-<p><b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.</p>
+<b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.
 </div>
 <pre class="r"><code>submit_flow(fobj)</code></pre>
 <pre><code>Test Successful!
@@ -287,7 +284,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
 <div id="submit-it" class="section level2">
 <h2>Submit it</h2>
 <div class="alert alert-info" role="alert">
-<p>Submit to the cluster !</p>
+Submit to the cluster !
 </div>
 <pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
@@ -299,7 +296,7 @@ flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
 <h2>Check its status</h2>
 <p>One may periodically run <code>status</code> to monitor the status of a flow.</p>
 <div class="alert alert-info" role="alert">
-<p><b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).</p>
+<b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).
 </div>
 <pre><code>flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 
@@ -321,7 +318,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 |003.merge |     3|       3|         1|           0|   pending|
 |004.size  |     3|       3|         1|           0|   pending|</code></pre>
 <div class="alert alert-success" role="alert">
-<p><b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.</p>
+<b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.
 </div>
 </div>
 <div id="kill-it" class="section level2">
@@ -330,7 +327,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 <p>kill one flow:</p>
 <pre><code>flowr kill_flow x=flow_wd</code></pre>
 <div class="alert alert-warning" role="alert">
-<p>One may instruct flowr to kill multiple flows, but flowr would confirm before killing.</p>
+One may instruct flowr to kill multiple flows, but flowr would confirm before killing.
 </div>
 <pre><code>kill(x=&#39;fastq_haplotyper*&#39;)
 Flowr: streamlining workflows
@@ -341,7 +338,7 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 <p>To kill multiple, set force=TRUE:</p>
 <pre><code>kill(x=&#39;fastq_haplotyper*&#39;, force = TRUE)</code></pre>
 <div class="alert alert-warning" role="alert">
-<p>While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.</p>
+While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.
 </div>
 <pre><code>## manual killing:
 jobids=$(qstat | grep &#39;mypattern&#39;)
@@ -460,11 +457,11 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <li><code>queue</code></li>
 </ul>
 <div class="alert alert-info" role="alert">
-<p>This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.</p>
+This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
 <div class="alert alert-info" role="alert">
-<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section below.</p>
+If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section below.
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
 <table>
@@ -706,7 +703,7 @@ kable(ex2def[, 1:4])</code></pre>
 <pre class="r"><code>plot_flow(fobj)</code></pre>
 <p><img src="docs_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p>There is a darker more prominent shadow to indicate scatter steps.</p>
+There is a darker more prominent shadow to indicate scatter steps.
 </div>
 </div>
 <div id="passing-of-flow-definition-resource-columns" class="section level2">
@@ -777,372 +774,6 @@ kable(ex2def[, 1:4])</code></pre>
 <div id="available-pipelines" class="section level1">
 <h1>Available Pipelines</h1>
 <p>Here are some of the available pipelines along with their respective locations</p>
-<pre><code>## Please supply a name of the pipeline to run, here are the options
-## /Library/Frameworks/R.framework/Versions/3.2/Resources/library/flowr/pipelines/sleep_pipe.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/bam_preprocess.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_bam_bwa.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_bam_rna_ion.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_bam_variants.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_haplotyper.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/fastq_star_rna.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_bam_pindel.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_bam_xenome.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_bwa_pipe.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_dna_qc.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_fastq_bam_bwa2.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_fastq_bismark_meth.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_flow_bam_preprocess.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/old_proc_bwa_pipe.R/Library/Frameworks/R.framework/Versions/3.2/Resources/library/ngsflows/pipelines/split_aln_merge.R/Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/build.R</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">name</th>
-<th align="left">def</th>
-<th align="left">conf</th>
-<th align="left">pipe</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">sleep_pipe</td>
-<td align="left">sleep_pipe.def</td>
-<td align="left">NA</td>
-<td align="left">sleep_pipe.R</td>
-</tr>
-<tr class="even">
-<td align="left">bam_preprocess</td>
-<td align="left">bam_preprocess.def</td>
-<td align="left">NA</td>
-<td align="left">bam_preprocess.R</td>
-</tr>
-<tr class="odd">
-<td align="left">fastq_bam_bwa</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">fastq_bam_bwa.R</td>
-</tr>
-<tr class="even">
-<td align="left">fastq_bam_rna_ion</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">fastq_bam_rna_ion.R</td>
-</tr>
-<tr class="odd">
-<td align="left">fastq_bam_variants</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">fastq_bam_variants.R</td>
-</tr>
-<tr class="even">
-<td align="left">fastq_haplotyper</td>
-<td align="left">fastq_haplotyper.def</td>
-<td align="left">fastq_haplotyper.conf</td>
-<td align="left">fastq_haplotyper.R</td>
-</tr>
-<tr class="odd">
-<td align="left">fastq_star_rna</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">fastq_star_rna.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_bam_pindel</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_bam_pindel.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_bam_xenome</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_bam_xenome.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_bwa_pipe</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_bwa_pipe.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_dna_qc</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_dna_qc.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_fastq_bam_bwa2</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_fastq_bam_bwa2.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_fastq_bismark_meth</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_fastq_bismark_meth.R</td>
-</tr>
-<tr class="even">
-<td align="left">old_flow_bam_preprocess</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_flow_bam_preprocess.R</td>
-</tr>
-<tr class="odd">
-<td align="left">old_proc_bwa_pipe</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">old_proc_bwa_pipe.R</td>
-</tr>
-<tr class="even">
-<td align="left">split_aln_merge</td>
-<td align="left">split_aln_merge.def</td>
-<td align="left">NA</td>
-<td align="left">split_aln_merge.R</td>
-</tr>
-<tr class="odd">
-<td align="left">build</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">build.R</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="tutorial-building-a-pipeline" class="section level1">
-<h1>Tutorial: building a pipeline</h1>
-<p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="#flow_mat">flowmat</a>. In a multi-step pipeline, we need to know what steps come before others, we would describe them in a a <a href="#flow_mat">flow definition</a> file.</p>
-<p>For the sake of giving names, lets call a function which generates a flow mat, a module. One may generate this table using R, python, Java or any other language.</p>
-<div class="alert alert-info" role="alert">
-<p><strong>module</strong> A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.</p>
-</div>
-<p>Let us follow through an example, providing more details regarding this process. Here are a few examples of modules, three functions <code>sleep</code>, <code>create_tmp</code> and <code>merge_size</code> each returning a flowmat.</p>
-<div id="define-modules" class="section level2">
-<h2>Define modules</h2>
-<pre class="r"><code>#&#39; @param x number of sleep commands
-sleep &lt;- function(x, samplename){
-    cmd = list(sleep = sprintf(&quot;sleep %s &amp;&amp; sleep %s;echo &#39;hello&#39;&quot;,
-        abs(round(rnorm(x)*10, 0)),
-        abs(round(rnorm(x)*10, 0))))
-    flowmat = to_flowmat(cmd, samplename)
-    return(list(flowmat = flowmat))
-}
-
-#&#39; @param x number of tmp commands
-create_tmp &lt;- function(x, samplename){
-    ## Create 100 temporary files
-    tmp = sprintf(&quot;%s_tmp_%s&quot;, samplename, 1:x)
-    cmd = list(create_tmp = sprintf(&quot;head -c 100000 /dev/urandom &gt; %s&quot;, tmp))
-    ## --- convert the list into a data.frame
-    flowmat = to_flowmat(cmd, samplename)
-    return(list(flowmat = flowmat, outfiles = tmp))
-}
-
-#&#39; @param x vector of files to merge
-merge_size &lt;- function(x, samplename){
-    ## Merge them according to samples, 10 each
-    mergedfile = paste0(samplename, &quot;_merged&quot;)
-    cmd_merge &lt;- sprintf(&quot;cat %s &gt; %s&quot;,
-        paste(x, collapse = &quot; &quot;), ## input files
-        mergedfile)
-    ## get the size of merged files
-    cmd_size = sprintf(&quot;du -sh %s; echo &#39;MY shell:&#39; $SHELL&quot;, mergedfile)
-
-    cmd = list(merge = cmd_merge, size = cmd_size)
-    ## --- convert the list into a data.frame
-    flowmat = to_flowmat(cmd, samplename)
-    return(list(flowmat = flowmat, outfiles = mergedfile))
-}</code></pre>
-<p>We believe pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only difference being, a pipeline also has a correspomding flow definition file.</p>
-<div class="alert alert-info" role="alert">
-<p>As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).</p>
-</div>
-<p>We then define another function <code>sleep_pipe</code> which calls the above defined <strong>modules</strong>; fetches flowmat from each, creating a larger flowmat. This time we will define a flowdef for the <code>sleep_pipe</code> function, elevating its status from module to a pipeline.</p>
-</div>
-<div id="define-the-pipeline" class="section level2">
-<h2>Define the pipeline</h2>
-<pre class="r"><code>#&#39; @param x number of files to make
-sleep_pipe &lt;- function(x = 3, samplename = &quot;samp1&quot;){
-
-    ## call the modules one by one...
-    out_sleep = sleep(x, samplename)
-    out_create_tmp = create_tmp(x, samplename)
-    out_merge_size = merge_size(out_create_tmp$outfiles, samplename)
-
-    ## row bind all the commands
-    flowmat = rbind(out_sleep$flowmat,
-        out_create_tmp$flowmat,
-        out_merge_size$flowmat)
-
-    return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
-}</code></pre>
-</div>
-<div id="generate-a-flowmat" class="section level2">
-<h2>Generate a flowmat</h2>
-<p>Here is how the generated flowmat looks like.</p>
-<pre class="r"><code>out = sleep_pipe(x = 3, &quot;sample1&quot;)
-flowmat = out$flowmat</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">samplename</th>
-<th align="left">jobname</th>
-<th align="left">cmd</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 6;echo ‘hello’</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 7 &amp;&amp; sleep 0;echo ‘hello’</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 9 &amp;&amp; sleep 9;echo ‘hello’</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_1</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_2</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_3</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
-<td align="left">merge</td>
-<td align="left">cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 &gt; sample1_merged</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">size</td>
-<td align="left">du -sh sample1_merged; echo ‘MY shell:’ $SHELL</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="create-flow-definition" class="section level2">
-<h2>Create flow definition</h2>
-<p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a flowmat and creates a flow definition. The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency. Thus we will enable parallel process where possible, making this into a better pipeline.</p>
-<p>Here is how it looks presently:</p>
-<pre class="r"><code>def = to_flowdef(flowmat)
-suppressMessages(plot_flow(def))</code></pre>
-<p><img src="docs_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
-<p>After making the desired changes, the new pipeline looks better. Alternatively, one may write this to a file and make other desired changes in resource requirements.</p>
-<p>Pipeline follows the following steps, with dependencies mentioned in ():</p>
-<ul>
-<li>multiple sleep commands would run in parallel (none, first step)</li>
-<li>For each sleep, create_tmp creates a tmp file (serial)</li>
-<li>All tmp files are merged; when all are complete (gather)</li>
-<li>Then we get size on the resulting file (serial)</li>
-</ul>
-<pre class="r"><code>def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
-def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
-kable(def)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">jobname</th>
-<th align="left">sub_type</th>
-<th align="left">prev_jobs</th>
-<th align="left">dep_type</th>
-<th align="left">queue</th>
-<th align="left">memory_reserved</th>
-<th align="left">walltime</th>
-<th align="right">cpu_reserved</th>
-<th align="left">platform</th>
-<th align="right">jobid</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">sleep</td>
-<td align="left">scatter</td>
-<td align="left">none</td>
-<td align="left">none</td>
-<td align="left">short</td>
-<td align="left">2000</td>
-<td align="left">1:00</td>
-<td align="right">1</td>
-<td align="left">torque</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">create_tmp</td>
-<td align="left">scatter</td>
-<td align="left">sleep</td>
-<td align="left">serial</td>
-<td align="left">short</td>
-<td align="left">2000</td>
-<td align="left">1:00</td>
-<td align="right">1</td>
-<td align="left">torque</td>
-<td align="right">2</td>
-</tr>
-<tr class="odd">
-<td align="left">merge</td>
-<td align="left">serial</td>
-<td align="left">create_tmp</td>
-<td align="left">gather</td>
-<td align="left">short</td>
-<td align="left">2000</td>
-<td align="left">1:00</td>
-<td align="right">1</td>
-<td align="left">torque</td>
-<td align="right">3</td>
-</tr>
-<tr class="even">
-<td align="left">size</td>
-<td align="left">serial</td>
-<td align="left">merge</td>
-<td align="left">serial</td>
-<td align="left">short</td>
-<td align="left">2000</td>
-<td align="left">1:00</td>
-<td align="right">1</td>
-<td align="left">torque</td>
-<td align="right">4</td>
-</tr>
-</tbody>
-</table>
-<p><img src="docs_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
-<p>Let us now create flow object from this.</p>
-<pre class="r"><code>fobj = to_flow(flowmat, def, flowname = &quot;sleep_pipe&quot;)</code></pre>
-<pre><code>## 
-## checking if required columns are present...
-## checking if resources columns are present...
-## checking if dependency column has valid names...
-## checking if submission column has valid names...
-## checking for missing rows in def...
-## checking for extra rows in def...
-## checking submission and dependency types...
-##  jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
-##  1: sleep    none --&gt; none --&gt; scatter 
-##  2: create_tmp   scatter --&gt; serial --&gt; scatter rel: complex one:one
-##  3: merge    scatter --&gt; gather --&gt; serial rel: many:one
-##  4: size serial --&gt; serial --&gt; serial rel: simple one:one
-## Using flow_run_path default: ~/flowr/runs
-## 
-## ##--- Checking flow definition and flow matrix for consistency...
-## 
-## ##--- Detecting platform...
-## Will use platform from flow definition
-## 
-## Working on... sample1
-## ....</code></pre>
-<p>Now we we use a host of function on this, including:</p>
-<pre class="r"><code>plot_flow(fobj)
-submit_flow(fobj) ## dry run
-fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
-
-## after submission, we can use the following:
-status(fobj2)
-rerun(fobj2)
-kill(fobj2)</code></pre>
-<p>One may need to change the platform and resource columns of the flowdef to suite your platform. The easiest way might be to write these to a file, and then edit using your favoroite text editor. You only need to do this once for a pipeline.</p>
-<pre class="r"><code>write_sheet(def, &quot;sleep_pipe.def&quot;)
-## now make all the changes you need to,
-## and then read it back using: 
-def = as.flowdef(&quot;sleep_pipe.def&quot;)</code></pre>
-</div>
 </div>
 <div id="cluster-support" class="section level1">
 <h1>Cluster Support</h1>
@@ -1168,7 +799,7 @@ parse_jobids(jobid, platform=&quot;lsf&quot;)
 [1] &quot;335508&quot;</code></pre>
 <p>In this case <em>335508</em> was the job id and regex worked well !</p>
 <ol start="3" style="list-style-type: decimal">
-<li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr render them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-dependency.R">render_dependency.PLATFORM</a> functions.</li>
+<li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr render them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</li>
 <li><strong>recognize new platform</strong>: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the <a href="https://github.com/sahilseth/flowr/blob/master/R/class-def.R">job class</a></li>
 </ol>
 <p>Essentially this requires us to add a new line like: <code>setClass(&quot;torque&quot;, contains = &quot;job&quot;)</code>.</p>
@@ -1176,7 +807,7 @@ parse_jobids(jobid, platform=&quot;lsf&quot;)
 <li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
 </ol>
 <div class="alert alert-info" role="alert">
-<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
+There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a>
 </div>
 <p>As of now we have tested this on the following clusters:</p>
 <table>

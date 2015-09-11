@@ -119,6 +119,16 @@ jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
 8: realign_a    serial --&gt; burst --&gt; scatter rel: one:many
 9: baserecalib_a    scatter --&gt; serial --&gt; scatter rel: complex one:one
 10: printreads_a    scatter --&gt; serial --&gt; scatter rel: complex one:one</code></pre></li>
+<li>rerun [0.9.7.9021]:
+<ul>
+<li>one can specify an arbitary types of jobs to re-run using select and ignore.</li>
+</ul></li>
+<li>job killing and submission now sport a progress bar:
+<ul>
+<li>|============================================================ | 70%</li>
+<li>This is especially useful flows with thousands of jobs</li>
+</ul></li>
+<li><p>Fixed a bug in lsf.sh template file, where it was missing the -n argument.</p></li>
 </ul>
 </div>
 <div id="flowr-0.9.7.10" class="section level2">

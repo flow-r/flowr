@@ -1,0 +1,353 @@
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc" />
+
+    <meta name="author" content="Sahil Seth" />
+  
+    <meta name="date" content="2015-09-11" />
+  
+  <title>flowr</title>
+
+    <script src="assets/jquery-1.11.0/jquery.min.js"></script>
+  <link href="assets/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="assets/bootstrap-3.3.2/js/bootstrap.min.js"></script>
+  <script src="assets/bootstrap-3.3.2/shim/html5shiv.min.js"></script>
+  <script src="assets/bootstrap-3.3.2/shim/respond.min.js"></script>
+  <link href="assets/highlight-8.4/tomorrow.css" rel="stylesheet" />
+  <script src="assets/highlight-8.4/highlight.pack.js"></script>
+  <link href="assets/fontawesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+  <script src="assets/stickykit-1.1.1/sticky-kit.min.js"></script>
+  <script src="assets/jqueryeasing-1.3/jquery.easing.min.js"></script>
+  <link href="assets/packagedocs-0.0.1/pd.css" rel="stylesheet" />
+  <script src="assets/packagedocs-0.0.1/pd.js"></script>
+  <script src="assets/packagedocs-0.0.1/pd-sticky-toc.js"></script>
+  
+  
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+  
+  <header class="navbar navbar-white navbar-fixed-top" role="banner" id="header">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+                <a href="index.html" class="navbar-brand page-scroll">
+        flowr - Streamlining Workflows
+        </a>
+      </div>
+            <nav class="collapse navbar-collapse" role="navigation">
+        <ul class="nav nav-pills pull-right">
+<li>
+<a href='docs.html'>Docs</a>
+</li>
+<li class="active">
+<a href='Tutorial.html'>Tutorial</a>
+</li>
+<li>
+<a href='rd.html'>Package Ref</a>
+</li>
+<li>
+<a href='news.html'>News</a>
+</li>
+<li>
+<a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a>
+</li>
+        </ul>
+      </nav>
+          </div>
+  </header>
+
+  <!-- Begin Body -->
+  <div class="container">
+    <div class="row">
+            <div class="col-md-3" id="sidebar-col">
+        <div id="toc">
+          <ul>
+          <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
+          <li><a href="#define-modules">Define modules</a></li>
+          <li><a href="#define-the-pipeline">Define the pipeline</a></li>
+          <li><a href="#generate-a-flowmat">Generate a flowmat</a></li>
+          <li><a href="#create-flow-definition">Create flow definition</a></li>
+          </ul></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9" id="content-col">
+      
+<div id="content-top"></div>
+<div id="tutorial-building-a-pipeline" class="section level1">
+<h1>Tutorial: building a pipeline</h1>
+<p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="#flow_mat">flowmat</a>. In a multi-step pipeline, we need to know what steps come before others, we would describe them in a a <a href="#flow_mat">flow definition</a> file.</p>
+<p>For the sake of giving names, lets call a function which generates a flow mat, a module. One may generate this table using R, python, Java or any other language.</p>
+<div class="alert alert-info" role="alert">
+<strong>module</strong> A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.
+</div>
+<p>Let us follow through an example, providing more details regarding this process. Here are a few examples of modules, three functions <code>sleep</code>, <code>create_tmp</code> and <code>merge_size</code> each returning a flowmat.</p>
+<div id="define-modules" class="section level2">
+<h2>Define modules</h2>
+<pre class="r"><code>#&#39; @param x number of sleep commands
+sleep &lt;- function(x, samplename){
+    cmd = list(sleep = sprintf(&quot;sleep %s &amp;&amp; sleep %s;echo &#39;hello&#39;&quot;,
+        abs(round(rnorm(x)*10, 0)),
+        abs(round(rnorm(x)*10, 0))))
+    flowmat = to_flowmat(cmd, samplename)
+    return(list(flowmat = flowmat))
+}
+
+#&#39; @param x number of tmp commands
+create_tmp &lt;- function(x, samplename){
+    ## Create 100 temporary files
+    tmp = sprintf(&quot;%s_tmp_%s&quot;, samplename, 1:x)
+    cmd = list(create_tmp = sprintf(&quot;head -c 100000 /dev/urandom &gt; %s&quot;, tmp))
+    ## --- convert the list into a data.frame
+    flowmat = to_flowmat(cmd, samplename)
+    return(list(flowmat = flowmat, outfiles = tmp))
+}
+
+#&#39; @param x vector of files to merge
+merge_size &lt;- function(x, samplename){
+    ## Merge them according to samples, 10 each
+    mergedfile = paste0(samplename, &quot;_merged&quot;)
+    cmd_merge &lt;- sprintf(&quot;cat %s &gt; %s&quot;,
+        paste(x, collapse = &quot; &quot;), ## input files
+        mergedfile)
+    ## get the size of merged files
+    cmd_size = sprintf(&quot;du -sh %s; echo &#39;MY shell:&#39; $SHELL&quot;, mergedfile)
+
+    cmd = list(merge = cmd_merge, size = cmd_size)
+    ## --- convert the list into a data.frame
+    flowmat = to_flowmat(cmd, samplename)
+    return(list(flowmat = flowmat, outfiles = mergedfile))
+}</code></pre>
+<p>We believe pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only difference being, a pipeline also has a correspomding flow definition file.</p>
+<div class="alert alert-info" role="alert">
+As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
+</div>
+<p>We then define another function <code>sleep_pipe</code> which calls the above defined <strong>modules</strong>; fetches flowmat from each, creating a larger flowmat. This time we will define a flowdef for the <code>sleep_pipe</code> function, elevating its status from module to a pipeline.</p>
+</div>
+<div id="define-the-pipeline" class="section level2">
+<h2>Define the pipeline</h2>
+<pre class="r"><code>#&#39; @param x number of files to make
+sleep_pipe &lt;- function(x = 3, samplename = &quot;samp1&quot;){
+
+    ## call the modules one by one...
+    out_sleep = sleep(x, samplename)
+    out_create_tmp = create_tmp(x, samplename)
+    out_merge_size = merge_size(out_create_tmp$outfiles, samplename)
+
+    ## row bind all the commands
+    flowmat = rbind(out_sleep$flowmat,
+        out_create_tmp$flowmat,
+        out_merge_size$flowmat)
+
+    return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
+}</code></pre>
+</div>
+<div id="generate-a-flowmat" class="section level2">
+<h2>Generate a flowmat</h2>
+<p>Here is how the generated flowmat looks like.</p>
+<pre class="r"><code>out = sleep_pipe(x = 3, &quot;sample1&quot;)
+flowmat = out$flowmat</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">samplename</th>
+<th align="left">jobname</th>
+<th align="left">cmd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">sleep</td>
+<td align="left">sleep 3 &amp;&amp; sleep 7;echo ‘hello’</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">sleep</td>
+<td align="left">sleep 8 &amp;&amp; sleep 8;echo ‘hello’</td>
+</tr>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">sleep</td>
+<td align="left">sleep 0 &amp;&amp; sleep 6;echo ‘hello’</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_1</td>
+</tr>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_2</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">create_tmp</td>
+<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_3</td>
+</tr>
+<tr class="odd">
+<td align="left">sample1</td>
+<td align="left">merge</td>
+<td align="left">cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 &gt; sample1_merged</td>
+</tr>
+<tr class="even">
+<td align="left">sample1</td>
+<td align="left">size</td>
+<td align="left">du -sh sample1_merged; echo ‘MY shell:’ $SHELL</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="create-flow-definition" class="section level2">
+<h2>Create flow definition</h2>
+<p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a flowmat and creates a flow definition. The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency. Thus we will enable parallel process where possible, making this into a better pipeline.</p>
+<p>Here is how it looks presently:</p>
+<pre class="r"><code>def = to_flowdef(flowmat)
+suppressMessages(plot_flow(def))</code></pre>
+<p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
+<p>After making the desired changes, the new pipeline looks better. Alternatively, one may write this to a file and make other desired changes in resource requirements.</p>
+<p>Pipeline follows the following steps, with dependencies mentioned in ():</p>
+<ul>
+<li>multiple sleep commands would run in parallel (none, first step)</li>
+<li>For each sleep, create_tmp creates a tmp file (serial)</li>
+<li>All tmp files are merged; when all are complete (gather)</li>
+<li>Then we get size on the resulting file (serial)</li>
+</ul>
+<pre class="r"><code>def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
+def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
+kable(def)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">jobname</th>
+<th align="left">sub_type</th>
+<th align="left">prev_jobs</th>
+<th align="left">dep_type</th>
+<th align="left">queue</th>
+<th align="left">memory_reserved</th>
+<th align="left">walltime</th>
+<th align="right">cpu_reserved</th>
+<th align="left">platform</th>
+<th align="right">jobid</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">sleep</td>
+<td align="left">scatter</td>
+<td align="left">none</td>
+<td align="left">none</td>
+<td align="left">short</td>
+<td align="left">2000</td>
+<td align="left">1:00</td>
+<td align="right">1</td>
+<td align="left">torque</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">create_tmp</td>
+<td align="left">scatter</td>
+<td align="left">sleep</td>
+<td align="left">serial</td>
+<td align="left">short</td>
+<td align="left">2000</td>
+<td align="left">1:00</td>
+<td align="right">1</td>
+<td align="left">torque</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">merge</td>
+<td align="left">serial</td>
+<td align="left">create_tmp</td>
+<td align="left">gather</td>
+<td align="left">short</td>
+<td align="left">2000</td>
+<td align="left">1:00</td>
+<td align="right">1</td>
+<td align="left">torque</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">size</td>
+<td align="left">serial</td>
+<td align="left">merge</td>
+<td align="left">serial</td>
+<td align="left">short</td>
+<td align="left">2000</td>
+<td align="left">1:00</td>
+<td align="right">1</td>
+<td align="left">torque</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
+<p>Let us now create flow object from this.</p>
+<pre class="r"><code>fobj = to_flow(flowmat, def, flowname = &quot;sleep_pipe&quot;)</code></pre>
+<pre><code>## 
+## checking if required columns are present...
+## checking if resources columns are present...
+## checking if dependency column has valid names...
+## checking if submission column has valid names...
+## checking for missing rows in def...
+## checking for extra rows in def...
+## checking submission and dependency types...
+## Using flow_run_path default: ~/flowr/runs
+## 
+## ##--- Checking flow definition and flow matrix for consistency...
+## 
+## ##--- Detecting platform...
+## Will use platform from flow definition
+## 
+## Working on... sample1
+## ....</code></pre>
+<p>Now we we use a host of function on this, including:</p>
+<pre class="r"><code>plot_flow(fobj)
+submit_flow(fobj) ## dry run
+fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
+
+## after submission, we can use the following:
+status(fobj2)
+rerun(fobj2)
+kill(fobj2)</code></pre>
+<p>One may need to change the platform and resource columns of the flowdef to suite your platform. The easiest way might be to write these to a file, and then edit using your favoroite text editor. You only need to do this once for a pipeline.</p>
+<pre class="r"><code>write_sheet(def, &quot;sleep_pipe.def&quot;)
+## now make all the changes you need to,
+## and then read it back using: 
+def = as.flowdef(&quot;sleep_pipe.def&quot;)</code></pre>
+</div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <div class="col-md-6">
+              </div>
+      <div class="col-md-6">
+        <p class="pull-right">created with <a href="https://github.com/hafen/packagedocs">packagedocs</a></p>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>
