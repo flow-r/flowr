@@ -42,7 +42,8 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 		## --- if function supports ... need to pass ALL arguments
 		if(sum( names(args) %in% "...") & !nm %in% names(args) ){
 			## -- remove the dots argument
-			message("Adding ", nm, ":", value)
+			if(verbose)
+				message("Adding ", nm, ":", value)
 			l = list(nm = value);names(l) = nm
 			args <- c(args, l)
 		}
@@ -52,7 +53,7 @@ get_params <- function(func, paramPairs, verbose = FALSE){
 		
 		if(class(args[[nm]]) == "numeric" ){
 			args[[nm]] = as.numeric(value)
-		}else if(class(args[[nm]]) %in% c("logical") | value %in% c("TRUE", "FALSE")){
+		}else if(class(args[[nm]]) %in% c("logical") | (value[1] %in% c("TRUE", "FALSE") & length(value) == 1)){
 			args[[nm]] = as.logical(value)
 		}else if(class(args[[nm]]) %in% c("character", "name" )){
 			args[[nm]] = as.character(value)
