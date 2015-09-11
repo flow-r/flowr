@@ -11,7 +11,7 @@ rerun(x, ...)
 \method{rerun}{character}(x, ...)
 
 \method{rerun}{flow}(x, mat, def, start_from, execute = TRUE, kill = TRUE,
-  select, ignore, ...)
+  select, ignore, verbose = get_opts("verbose"), ...)
 }
 \arguments{
 \item{x}{flow working directory}

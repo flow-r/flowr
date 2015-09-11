@@ -48,8 +48,10 @@ if(FALSE){
 #' }
 #'  @export
 rerun <- function(x, ...) {
+	
 	if(get_opts("verbose") > 1)
 		message("rerun: input x is ", class(x))
+	
 	UseMethod("rerun")
 }
 
@@ -82,6 +84,7 @@ rerun.flow <- function(x, mat, def,
 											 kill = TRUE, 
 											 select,
 											 ignore,
+											 verbose = get_opts("verbose"),
 											 ...){
 	fobj = x
 	
@@ -99,7 +102,7 @@ rerun.flow <- function(x, mat, def,
 	if(missing(ignore))
 		ignore=NA
 	
-	if(is.na(start_from) & is.na(ignore) & is.na(select)){
+	if(is.na(start_from) & is.na(ignore[1]) & is.na(select[1])){
 		stop("start_from, select, ignore: missing\n", 
 				 "Detection of failure point is currently not supported. ",
 				 "Please mention what steps need to be re-run.\n", 
@@ -108,7 +111,7 @@ rerun.flow <- function(x, mat, def,
 		#start_from = detect_redo()
 	}
 	
-	if( !is.na(ignore) & !is.na(select) )
+	if( !is.na(ignore[1]) & !is.na(select[1]) )
 		stop("both ignore and select specified\n",
 				 "Either specify jobs to re-run using select OR ",
 				 "jobs to be ignored using re-run, not both")
@@ -118,6 +121,7 @@ rerun.flow <- function(x, mat, def,
 		message("\nExtracting flow definition from previous run.")
 		def = to_flowdef(fobj)
 	}else{
+		message("\nReading flow definition supplied.")
 		def = as.flowdef(def) ## as jobids now !
 	}
 	
@@ -139,8 +143,7 @@ rerun.flow <- function(x, mat, def,
 	## reset few things before we start the new flow
 	## kill the flow
 	if(kill)
-		capture.output(try(kill(wd)),
-									 file = file.path(wd, "kill_jobs.out"))
+		try(kill(wd))
 	
 	## remove trigger files
 	det = to_flowdet(fobj)
