@@ -2,7 +2,9 @@
 #library(drat)
 #addRepo("sahilseth")
 
-install.packages("ngsflows", repos = "http://cran.rstudio.com")
+#install.packages("ngsflows", repos = "http://cran.rstudio.com")
+devtools::install_github("sahilseth/ngsflows")
+
 library(ngsflows)
 
 
