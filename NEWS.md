@@ -58,7 +58,7 @@ checking submission and dependency types...
 	9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
 	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
 ```
-- rerun: 
+- rerun [0.9.7.9021]: 
 	- one can specify an arbitary types of jobs to re-run using select and ignore.
 - job killing and submission now sport a progress bar:
 	- |============================================================      | 70%

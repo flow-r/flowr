@@ -1,12 +1,13 @@
-install.packages("drat", repos = "http://cran.rstudio.com")
-library(drat)
-addRepo("sahilseth")
 
-install.packages("ngsflows", repos = "http://cran.rstudio.com")
+options(repos = c(CRAN = "http://cran.rstudio.com"))
+install.packages("drat")
+library(drat)
+repo = addRepo("sahilseth")
+
+install.packages("ngsflows")
 #devtools::install_github("sahilseth/ngsflows")
 
 library(ngsflows)
-
 
 library(staticdocs)
 library(packagedocs)
