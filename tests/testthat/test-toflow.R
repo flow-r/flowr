@@ -136,7 +136,7 @@ for(plat in plats){
 		expect_error(rerun(fobj, start_from = "create_tmp"), "fobj: not submitted yet")
 		
 		## rerun the fake submit
-		expect_error(rerun(fobj_sub), "start_from: missing")
+		expect_error(rerun(fobj_sub), "start_from, select, ignore: missing")
 		## check rerun output
 		fobj_re = suppressMessages(rerun(fobj_sub, start_from = "create_tmp", kill = FALSE, execute = FALSE))
 		#suppressMessages(rerun(fobj2, start_from = "create_tmp", kill = TRUE, qobj = qobj)), "kill"
@@ -149,6 +149,10 @@ for(plat in plats){
 	
 	
 }
+
+## add re-run test, specifying without start_from, with select and ignore: FAILS
+## specify none: fails
+## count jobs after select, ignore and start_from, and match them to expectation.
 
 
 
