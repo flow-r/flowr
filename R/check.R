@@ -8,6 +8,30 @@
 #' @param verbose be chatty
 #' @param ... suppled to \code{check.classname} function
 #'
+#' @details 
+#' 
+#' \strong{A typical output from flowdef} with verbose level: 2
+#' 
+#' \preformatted{
+#'	checking if required columns are present...
+#'	checking if resources columns are present...
+#'	checking if dependency column has valid names...
+#'	checking if submission column has valid names...
+#'	checking for missing rows in def...
+#'	checking for extra rows in def...
+#'	checking submission and dependency types...
+#'	jobname	prev.sub_type --> dep_type --> sub_type: relationship
+#'	1: aln1_a	none --> none --> scatter 
+#'	2: aln2_a	scatter --> none --> scatter 
+#'	3: sampe_a	scatter --> serial --> scatter rel: complex one:one
+#'	4: fixrg_a	scatter --> serial --> scatter rel: complex one:one
+#'	5: merge_a	scatter --> gather --> serial rel: many:one
+#'	6: markdup_a	serial --> serial --> serial rel: simple one:one
+#'	7: target_a	serial --> serial --> serial rel: simple one:one
+#'	8: realign_a	serial --> burst --> scatter rel: one:many
+#'	9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
+#'	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
+#'	}
 #' @export
 check <- function(x, ...) {
 	UseMethod("check")
@@ -35,31 +59,36 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	dep_types = c("none", "serial", "gather", "burst")
 	sub_types = c("serial", "scatter")
 	need_cols = c("jobname", "prev_jobs", "sub_type", "dep_type")
-	opt_cols = c("platform", "cpu_reserved", 'walltime', 'queue')
+	opt_cols = c("platform", "cpu_reserved", 'walltime', 'queue', 'memory_reserved')
 
 	if(verbose)
 		message("\nchecking if required columns are present...")
 	if (any(!need_cols  %in% colnames(x)))
-		stop(error("def.need.cols"), paste(need_cols, collapse = " "))
+		stop(c(error("flowdef: missing required columns"),
+					 paste(need_cols, collapse = " ")))
 
 	if(verbose)
 		message("checking if resources columns are present...")
-	if (any(!need_cols  %in% colnames(x)))
-		stop(error("def.opt.cols"), paste(opt_cols, collapse = " "))
+	if (any(!opt_cols  %in% colnames(x)))
+		stop(c(error("flowdef: missing resource columns", msg = stop), 
+							paste(opt_cols, collapse = ", ")))
 
 	if(verbose)
 		message("checking if dependency column has valid names...")
 	if (sum(!x$dep_type %in% dep_types))
-		stop("Dependency type not recognized.\n Inputs are: ",
+		stop("dep_type: invalid\n",
+			"Dependency type not recognized.\n Inputs are: ",
 				 paste(x$dep_type, collapse = " "),
-				 ".\nAnd they can be one of ", paste(dep_types, collapse = " "))
+				 ".\nAnd they can be one of ", paste(dep_types, collapse = ", "))
 
 	if(verbose)
 		message("checking if submission column has valid names...")
-	if (sum(!x$sub_type %in% sub_types))
-		stop("Submission type not recognized. Inputs are: ", paste(x$sub_type, collapse = " "),
-				 ".\nAnd they can be one of  ", paste(sub_types, collapse = " "))
-
+	if (sum(!x$sub_type %in% sub_types)){
+		stop("sub_type: invalid\n",
+				 "Submission type not recognized. Inputs are: ", paste(x$sub_type, collapse = " "),
+				 ", and they can be one of: ", paste(sub_types, collapse = ", "))
+	}
+	
 	## check if some jobs are put as dependencies but not properly defined
 	## prevjob_exists()
 	x$prev_jobs = gsub("\\.|NA", "none", x$prev_jobs)
@@ -72,8 +101,9 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 		message("checking for missing rows in def...")
 	miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
 	if (length(miss_jobs) > 0){
-		print(kable(x))
-		stop("Some jobs do not exist, but are present in prev_jobs: ", miss_jobs, "\n")
+		message(paste(kable(x), collapse = "\n"))
+		stop(c("extra jobs in prev_jobs\n",
+					 "Some jobs do not exist, but are present in prev_jobs: ", miss_jobs, "\n"))
 	}
 	## check if dep is none, but prev jobs defined
 
@@ -82,13 +112,13 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 		message("checking for extra rows in def...")
 	extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")
 	if (sum(extra_rows) > 0){
-		print(kable(x[extra_rows,]))
+		message(paste(kable(x[extra_rows,]), collapse = "\n"))
 		stop(error("prev_job.wo.dep_type"))
 	}
 
 	extra_rows = (x$dep_type != "none" & x$prev_jobs == "none")
 	if (sum(extra_rows)){
-		print(kable(x[extra_rows,]))
+		message(paste(kable(x[extra_rows,]), collapse = "\n"))
 		stop(error("dep_type.wo.prev_job"))
 	}
 
@@ -105,6 +135,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	}
 
 	x$cpu_reserved = as.numeric(x$cpu_reserved)
+	
 	#print(x)
 	## check all previous jobs defined in names
 	## code previous jobs as NA
@@ -118,10 +149,11 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	##      serial  --(burst)--> scatter
 	## not allowed:
 	##      any --(none)--> any
-	message("checking submission and dependency types...")
-	if(verbose) message("\tjobname\tprev.sub_type --> dep_type --> sub_type: relationship")
+	if(verbose)
+		message("checking submission and dependency types...")
+	if(verbose > 1) message("\tjobname\tprev.sub_type --> dep_type --> sub_type: relationship")
 	for(i in 1:nrow(x)){
-		if(verbose) message("\t", i,": ", x$jobname[i], "\t", appendLF = FALSE)
+		if(verbose > 1) message("\t", i,": ", x$jobname[i], "\t", appendLF = FALSE)
 		check_dep_sub_type(dep = x$dep_type[i],
 											 sub = x$sub_type[i],
 											 p.sub = x$sub_type[i-1],
@@ -144,35 +176,41 @@ check_dep_sub_type <- function(dep, sub,
 	p.dep = ifelse(length(p.dep) == 0, "none", p.dep)
 	p.sub = ifelse(length(p.sub) == 0, "none", p.sub)
 
-	if(v) 
+	if(v > 1) 
 		message(p.sub," --> ", dep, " --> ", sub, " ", appendLF = FALSE)
 
 	## one to one
 	if(dep == "serial" & sub == "serial"){
-		if(v) message("rel: simple one:one")
+		if(v > 1) 
+			message("rel: simple one:one")
 	}else if(dep == "serial" & sub == "scatter" & p.sub == "scatter"){
-		if(v) message("rel: complex one:one")
+		if(v > 1) 
+			message("rel: complex one:one")
 
 	## one to many
 	}else if(p.sub == "serial" & sub == "scatter" & dep == "burst"){
-		if(v) message("rel: one:many")
+		if(v > 1) 
+			message("rel: one:many")
 	}else if(p.sub == "serial" & sub == "scatter" & dep == "serial"){
 		stop(c("detected relationship: one-to-many. ", 
 					 "To define this, one must have dependency type as burst. ",
 					 "Refer to docs.flowr.space for further details."))
 	}else if(p.sub == "scatter" & sub == "scatter" & dep == "burst"){
 		stop(c("\nDetected relationship: one-to-many. ", 
-					 "To define this, one must have previous sub_type as serial",
+					 "To define this, one must have previous sub_type as serial. ",
 					 "If the relationship is really one-to-one, you may want, ",
 					 "scatter, serial and scatter as previous submission, dependency and submission types, respectively."))
 
 	## many to one
 	}else if(p.sub == "scatter" & sub == "serial" & dep == "gather"){
-		if(v) message("rel: many:one")
+		if(v > 1) 
+			message("rel: many:one")
 	}else if(p.sub == "scatter" & sub == "scatter" & dep == "gather"){
-		if(v) message("rel: many:one. Please change sub_type to serial")
+		if(v > 1) 
+			message("rel: many:one. Please change sub_type to serial")
 	}else{
-		if(v) message("")
+		if(v > 1) 
+			message("")
 	}
 
 }

@@ -64,7 +64,9 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 		cmd <- render_queue_cmd(jobj = obj, fobj = fobj, index=i)
 
 		## --- write script to file
-		if(verbose) message("Submitting using script:\n", cmd, "\n")
+		## this if for debugging
+		if(verbose > 2)
+			message("Submitting using script:\n", cmd, "\n")
 
 		## --- return CMD if local, else jobid
 		if(jobj@platform == "local")
@@ -104,7 +106,7 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 #' @importFrom utils tail
 #'
 render_queue_cmd <- function(jobj, file, index, fobj){
-	if(get_opts("verbose"))
+	if(get_opts("verbose") > 1)
 		message("Working on ", jobj@name, " with index ", index)
 	
 	## --- get platform of previous job
@@ -196,9 +198,8 @@ whisker_render <- function(template, data) {
 	mis = vars[!vars %in% names(data)]
 
 	if(length(mis) > 0)
-		stop("Some variables are specfied in script template, but missing in job object: ",
-		paste(mis, collapse = " "),
-		".\nRefer to ?job, for details on variable names that can be used.")
+		stop("Some variables are specfied in script template, but missing in data ",
+				 paste(mis, collapse = " "))
 	out = whisker.render(template, data)
 	return(list(out = out, vars = vars, mis = mis))
 }

@@ -113,3 +113,37 @@ assert_version <- function(fobj, min_ver){
 	
 }
 
+
+
+status_cat <- function(x){
+	if(x == "") return(0)
+	nums = c("created" = 0,
+					 "dry-run" = 1,
+					 "submitted" = 2,
+					 "running" = 3,
+					 "exited" = 4,
+					 "completed" = 5
+	)
+	nums[x]
+}
+
+
+
+assert_status <- function(fobj, status){
+	
+	msg1 = switch(status,
+								"dry-run" = "fobj: no execution details",
+								"submitted" = "fobj: not submitted yet",
+								"running" = "fobj: is not running",
+								"exited" = "fobj: has not exited",
+								"completed" = "fobj: has not completed")
+								
+
+	msg2 = c("We need a flow with status: ", status, "\n",
+					"however, status of this flow is: ", fobj@status)
+	
+	if(status_cat(fobj@status) < status_cat(status))
+		stop(c(msg1, "\n", msg2))
+
+}
+

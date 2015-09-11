@@ -49,13 +49,8 @@ to_flowdet.character <- function(x, ...){
 to_flowdet.flow <- function(x, ...){
 	## detect the status of fobj
 	
-	if(status_cat(x@status) < 2){
-		stop(c("To get details on a submitted flow, one must provide a flow object as ", 
-					 "returned by submit_flow() function.",
-					 "This has details on job submission IDs etc. ", 
-					 "Alternatively, you may supply the execution path for this flow (flow_wd).",
-					 "The status of the flow you provided (x@status): ", x@status))
-	}
+	assert_status(x, "dry-run")
+	
 	fobj = x
 	ret <- lapply(1:length(fobj@jobs), function(i){
 		to_flowdet(fobj@jobs[[i]])

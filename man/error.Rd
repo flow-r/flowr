@@ -4,7 +4,7 @@
 \alias{error}
 \title{Error Handler}
 \usage{
-error(x)
+error(x, ...)
 }
 \arguments{
 \item{x}{this is a string(s) with short error summary}

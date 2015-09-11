@@ -2,7 +2,7 @@
 #' @description function to handle all error descriptions
 #' @keywords internal
 #' @param x this is a string(s) with short error summary
-error <- function(x){
+error <- function(x, ...){
 
 	assert_character(x, 1)
 
@@ -17,7 +17,7 @@ error <- function(x){
 					"\nOne of them being flow was not completely submitted.",
 					"\nFlow details file is created at the end of submission of all jobs")
 
-	}else if (x == "no.start_from") {
+	}else if (x == "start_from: missing") {
 		y = c("Please mention where to start this flow from.",
 					"\nDetection of failure point is currently not supported",
 					" Use start_from=<jobname>")
@@ -45,10 +45,10 @@ error <- function(x){
 	}else	if(x == "no.pipe") {
 		y = "Could not find a pipeline with this name: "
 
-	}else	if(x == "def.need.cols") {
+	}else	if(x == "flowdef: missing required columns") {
 		y = "flowdef needs these columns to proceed: "
 
-	}else	if(x == "def.opt.cols") {
+	}else	if(x == "flowdef: missing resource columns") {
 		y = "flowr works better with these columns in flowdef: "
 
 	}else	if(x == "prev_job.wo.dep_type") {
@@ -66,5 +66,5 @@ error <- function(x){
 		y = ""
 	}
 
-	return(y)
+	return(c(x, "\n", y))
 }

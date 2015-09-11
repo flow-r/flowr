@@ -38,7 +38,7 @@ get_wds <- function(x){
 #' \dontrun{
 #' status(x = "~/flowr/runs/sleep_pipe*")
 #' ## an example for running from terminal
-#' flowr status x=path_to_flow_directory cores=6
+#' flowr status x=path_to_flow_directory
 #' }
 status <- function(x, out_format = "markdown"){
 	## get the total jobs
@@ -57,7 +57,7 @@ status <- function(x, out_format = "markdown"){
 		ncol = getOption("width"); #Sys.getenv("COLUMNS")
 		hd = paste(rep("=", as.numeric(ncol)), collapse = "")
 		message(paste0("\n", hd,
-									 "\nShowing status of: \n", wd), appendLF = FALSE)
+									 "\nSummarizing status (using triggers) of: \n", wd))
 		
 		x = read_fobj(wd)
 		get_status(x, out_format = out_format)
@@ -89,6 +89,8 @@ get_status.character <- function(x, out_format = "markdown", ...){
 #' @export
 get_status.data.frame <- function(x, ...){
 
+	## get exit codes for all triggers
+	
 	exit_code <- unlist(lapply(x$trigger, function(y){
 		if(file.exists(y)){
 			tmp <- as.numeric(scan(y, what = "character", quiet = TRUE))
@@ -158,7 +160,7 @@ get_status.flow <- function(x, out_format = "markdown", ...){
 	})
 	summ$status = status
 	tmp <- knitr::kable(summ, out_format, output = FALSE)
-	print(tmp)
+	message(paste(tmp, collapse = "\n"))
 	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
 	return(summ)
 }
@@ -189,7 +191,7 @@ summarize_flow_det <- function(x, out_format){
 	})
 	summ$status = status
 	tmp <- knitr::kable(summ, out_format, output = FALSE)
-	print(tmp)
+	message(paste(tmp, collapse = "\n"))
 	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
 	return(summ)
 }

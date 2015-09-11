@@ -1,6 +1,1 @@
-## This flow def is used in building-pipes documenation							
-jobname	sub_type	prev_jobs	dep_type	queue	memory_reserved	walltime	cpu_reserved
-A	scatter	none	none	medium	163185	23:00	1
-B	scatter	A	serial	medium	163185	23:00	1
-C	serial	B	gather	medium	163185	23:00	1
-D	scatter	C	burst	medium	163185	23:00	1
+## This flow def is used in building-pipes documenation								jobname	sub_type	prev_jobs	dep_type	queue	memory_reserved	walltime	cpu_reserved	platformA	scatter	none	none	medium	163185	23:00	1	lsfB	scatter	A	serial	medium	163185	23:00	1	lsfC	serial	B	gather	medium	163185	23:00	1	lsfD	scatter	C	burst	medium	163185	23:00	1	lsf

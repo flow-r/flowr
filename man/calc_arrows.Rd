@@ -4,10 +4,14 @@
 \alias{calc_arrows}
 \title{Title}
 \usage{
-calc_arrows(x)
+calc_arrows(x, pdf, verbose = get_opts("verbose"))
 }
 \arguments{
-\item{x}{boxht}
+\item{x}{boxht height of the box, as returned by calc_box}
+
+\item{pdf}{creating pdf of displaying interactively}
+
+\item{verbose}{display verbose messages}
 }
 \description{
 Title

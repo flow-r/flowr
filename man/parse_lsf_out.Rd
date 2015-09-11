@@ -5,7 +5,7 @@
 \title{parse LSF output files}
 \usage{
 parse_lsf_out(x, scale_time = 1/3600, n = 100,
-  time_format = get_opts("time_format"))
+  time_format = get_opts("time_format"), verbose = get_opts("verbose"))
 }
 \arguments{
 \item{x}{file}
@@ -14,7 +14,10 @@ parse_lsf_out(x, scale_time = 1/3600, n = 100,
 
 \item{n}{how many lines to read; usually resources details are on top. 100 works well. .Depreciated}
 
-\item{time_format}{format of time in the execution logs. This should match the format in lsf/torque etc. shell script templates.}
+\item{time_format}{format of time in the execution logs. This should match the format in lsf/torque etc.
+shell script templates.}
+
+\item{verbose}{produce step-by-step messages}
 }
 \description{
 parse LSF output files

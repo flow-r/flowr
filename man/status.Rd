@@ -43,7 +43,7 @@ Alternatively, x can also be a flow object
 \dontrun{
 status(x = "~/flowr/runs/sleep_pipe*")
 ## an example for running from terminal
-flowr status x=path_to_flow_directory cores=6
+flowr status x=path_to_flow_directory
 }
 }
 

@@ -11,12 +11,12 @@ rerun(x, ...)
 \method{rerun}{character}(x, ...)
 
 \method{rerun}{flow}(x, mat, def, start_from, execute = TRUE, kill = TRUE,
-  ...)
+  select, ignore, verbose = get_opts("verbose"), ...)
 }
 \arguments{
 \item{x}{flow working directory}
 
-\item{...}{not used}
+\item{...}{passed onto to_flow}
 
 \item{mat}{(optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}}
 
@@ -27,6 +27,10 @@ rerun(x, ...)
 \item{execute}{[logical] whether to execute or not}
 
 \item{kill}{(optional) logical indicating whether to kill the jobs from the previous execution of flow.}
+
+\item{select}{select a subset of jobs to rerun [character vector]}
+
+\item{ignore}{ignore a subset of jobs to rerun [character vector]}
 }
 \description{
 \itemize{

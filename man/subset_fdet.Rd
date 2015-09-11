@@ -4,14 +4,18 @@
 \alias{subset_fdet}
 \title{subset flow details file}
 \usage{
-subset_fdet(fobj, det, start_from)
+subset_fdet(fobj, det, start_from, select, ignore)
 }
 \arguments{
 \item{fobj}{flow object}
 
 \item{det}{flowdet}
 
-\item{start_from}{where to start from}
+\item{start_from}{which job to start from, this is a job name.}
+
+\item{select}{select a subset of jobs to rerun [character vector]}
+
+\item{ignore}{ignore a subset of jobs to rerun [character vector]}
 }
 \description{
 subset flow details file

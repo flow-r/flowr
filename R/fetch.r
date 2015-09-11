@@ -80,7 +80,8 @@ fetch <- function(x, places, urls, verbose = get_opts("verbose")){
 	y = sapply(places, list.files, pattern = paste0(x, "$"),
 		full.names = TRUE)
 	y = as.character(unlist(y))
-	if(verbose) message(y)
+	if(verbose > 1) 
+		message(y)
 	return(y)
 }
 
@@ -92,6 +93,7 @@ fetch_pipes <- function(x,
 												last_only = FALSE,
 												urls = get_opts("flowr_pipe_urls"),
 												silent = FALSE,
+												verbose = get_opts("verbose"),
 												ask = TRUE){
 	if(missing(places)){
 		places = c(
@@ -104,7 +106,7 @@ fetch_pipes <- function(x,
 	}
 
 	if(missing(x)){
-		message("Please supply a name of the pipline to run, here are the options")
+		message("Please supply a name of the pipeline to run, here are the options")
 		x = ".*"
 	}
 	
@@ -133,12 +135,17 @@ fetch_pipes <- function(x,
 	conf = ifelse(file.exists(conf), conf, NA)
 	
 	
-	pipes = data.frame(name = file_path_sans_ext(basename(r)), def = def, conf = conf, pipe = r)
+	pipes = data.frame(name = file_path_sans_ext(basename(r)), 
+										 def = def, 
+										 conf = conf, 
+										 pipe = r, stringsAsFactors = FALSE)
 
 	pipe_print = pipes;
 	pipe_print$def = basename(as.character(pipe_print$def))
 	pipe_print$conf = basename(as.character(pipe_print$conf))
-	if(!silent) print(kable(pipe_print))
+	
+	if(verbose > 1 & !silent) 
+		message(paste(kable(pipe_print), collapse = "\n"))
 
 	if(last_only){
 		if(nrow(pipes) > 1)
@@ -146,9 +153,9 @@ fetch_pipes <- function(x,
 		pipes = tail(pipes, 1)
 	}
 
-	if(!silent)
+	if(verbose > 1 & !silent)
 		if(length(r) == 0)
-			warning(error("no.pipe"), x)
+			warning(error("no.pipe"), paste(x, collapse = "\n"))
 	invisible(pipes)
 
 }
@@ -187,8 +194,11 @@ search_conf <- function(...){
 }
 
 ## testing....
+
+
 avail_pipes <- function(){
-	urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
-	urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
+	#urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
+	#urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
+
 }
 

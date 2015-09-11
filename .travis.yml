@@ -31,17 +31,18 @@ r_packages:
 
 ## Following to take care of stringi error from travis (temporary)
 r_github_packages:
-  - sahilseth/params
   - hadley/staticdocs
-  - sahilseth/readthedocs
   - jimhester/covr
+  - sahilseth/params
+  - sahilseth/packagedocs
+##  - sahilseth/readthedocs
+##  - sahilseth/ngsflows, would work only after this is released
+
 
   
 after_success:
   - R CMD INSTALL .
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy.sh
-  
-  
-#- Rscript -e 'covr::codecov()'
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy2.sh
+  - Rscript -e 'covr::codecov()'
   
 

@@ -39,6 +39,8 @@ Defaults to \code{~/flows/trigger}. Best practice to ignore it.}
 \item{status}{\code{character} Not used at this time}
 
 \item{execute}{executtion status of flow object.}
+
+\item{x}{[used by is.flow] a flow object}
 }
 \description{
 Flow constructor

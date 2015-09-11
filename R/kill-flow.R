@@ -18,6 +18,7 @@
 #' it here; fot custom platoforms.
 #' @param force You need to set force=TRUE, to kill multiple flows. This makes sure multiple flows are NOT killed by accident.
 #' @param ... not used
+#' @inheritParams to_flow
 #'
 #'
 #' @export
@@ -56,19 +57,22 @@ kill.character <- function(x, force = FALSE, ...){
 	}
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
-		if(!is.flow(fobj))
-			message("\n\nflowr can only kill flows, where the jobs ids are available. ",
-						 "Please check and confirm that the path supplied is correct, ", 
-						 "and that it has a flow_details.rds file. \n ls -l ", x[i])
-		stop("")
+		if(!is.flow(fobj)){
+			stop("\nmissing flow_details at this location\n", 
+					 "flowr can only kill flows, where the jobs ids are available.\n",
+					 "Please check and confirm that the path supplied is correct, ", 
+					 "and that it has a flow_details.rds file. \n ls -l ", x[i])
+		}
 		kill.flow(fobj, ...)
 	}
 }
 
 #' @rdname kill
+#' @importFrom utils txtProgressBar
 #' @export
 kill.flow <- function(x,
 	kill_cmd,
+	verbose = get_opts("verbose"),
 	jobid_col = "job_sub_id", ...){
 
 	if(missing(kill_cmd)){
@@ -77,11 +81,33 @@ kill.flow <- function(x,
 	#flow_details = read_flow_detail_fl(wd)
 
 	flow_det = to_flowdet(x)
-	cmds <- sprintf("%s %s", kill_cmd, flow_det[,jobid_col])
-	tmp <- sapply(cmds, function(cmd){
-		message(cmd, "\n")
-		return(system(cmd, intern = TRUE))
-	})
+
+	wd = x@flow_path
+	log = file.path(wd, "kill_jobs.out")
+	cmds <- sprintf("%s %s >> %s", 
+									kill_cmd, flow_det[,jobid_col],
+									log)
+	
+	## redirect STDERR as well if silent
+	if(verbose < 2)
+		cmds = paste0(cmds, "  2>&1")
+	message("killing ", length(cmds), " jobs, please wait... See kill_jobs.out in the wd for more details.")
+	
+	pb <- txtProgressBar(style = 3, min = 1, max = length(cmds))
+	for(i in 1:length(cmds)) {
+		if(verbose > 2) message(cmd, "\n")
+		try(system(cmds[i], intern = TRUE))
+		setTxtProgressBar(pb, i)
+	}
+	close(pb)
+	
+# 	tmp <- pbsapply(cmds, function(cmd){
+# 		Sys.sleep(1)
+# 		#return(try(system(cmd, intern = TRUE, ...)))
+# 		## dots become a problem
+# 		## print(as.list(...))
+# 		#return(try(system(cmd, intern = TRUE)))
+# 	})
 	invisible(tmp)
 }
 

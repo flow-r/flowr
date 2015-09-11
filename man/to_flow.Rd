@@ -2,22 +2,24 @@
 % Please edit documentation in R/to-flow.R
 \name{to_flow}
 \alias{to_flow}
+\alias{to_flow.character}
 \alias{to_flow.data.frame}
 \alias{to_flow.flowmat}
 \alias{to_flow.list}
-\alias{to_flow.vector}
 \title{Create flow objects}
 \usage{
 to_flow(x, ...)
 
-\method{to_flow}{vector}(x, def, grp_col, jobname_col, cmd_col, ...)
+\method{to_flow}{character}(x, def, grp_col, jobname_col, cmd_col, ...)
 
 \method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
-  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj, ...)
+  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj,
+  verbose = get_opts("verbose"), ...)
 
 \method{to_flow}{data.frame}(x, ...)
 
-\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj, ...)
+\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj,
+  verbose = get_opts("verbose"), ...)
 }
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
@@ -26,24 +28,29 @@ to_flow(x, ...)
 
 \item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
 
-\item{grp_col}{column name used to split x (flow_mat). Default: `samplename`}
+\item{grp_col}{column name used to split x (flow_mat). [samplename]}
 
-\item{jobname_col}{column name with job names. Default: `jobname`}
+\item{jobname_col}{column name with job names. [jobname]}
 
-\item{cmd_col}{column name with commands. Default: `cmd`}
+\item{cmd_col}{column name with commands. [cmd]}
 
-\item{flowname}{name of the flow}
+\item{flowname}{name of the flow [flowname]}
 
-\item{flow_run_path}{Path to a folder. Main operating folder for this flow. Default it `get_opts("flow_run_path")`.}
+\item{flow_run_path}{Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
+[\code{~/flowr/runs}].}
 
 \item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flowdef.}
+This over-rides the platform column in flowdef. (optional)}
 
-\item{submit}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE}
+\item{submit}{Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]}
 
-\item{execute}{Depreciated. Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow()}
+\item{execute}{Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]}
 
 \item{qobj}{Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.}
+
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
 
 \item{desc}{Advanced Use. final flow name, please don't change.}
 }

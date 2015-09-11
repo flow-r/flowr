@@ -1,7 +1,7 @@
 
 if(FALSE){
-  wd = "/rsrch2/iacs/ngs_runs/1412_tcga_normals/ESCA/logs/esca-2015-03-09-00-05-36-tfhaScFP/"
-  wd = "/rsrch2/iacs/ngs_runs/1412_tcga_normals/BRCA/logs/brca-2015-02-17-12-42-32-MCscE2AW"
+	wd = "/rsrch2/iacs/ngs_runs/1412_tcga_normals/ESCA/logs/esca-2015-03-09-00-05-36-tfhaScFP/"
+	wd = "/rsrch2/iacs/ngs_runs/1412_tcga_normals/BRCA/logs/brca-2015-02-17-12-42-32-MCscE2AW"
 }
 
 
@@ -21,10 +21,12 @@ if(FALSE){
 #' @param x flow working directory
 #' @param execute [logical] whether to execute or not
 #' @param start_from which job to start from, this is a job name.
+#' @param select select a subset of jobs to rerun [character vector]
+#' @param ignore ignore a subset of jobs to rerun [character vector]
 #' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
 #' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
-#' @param ... not used
+#' @param ... passed onto to_flow
 #'
 #'
 #' @details 
@@ -46,8 +48,10 @@ if(FALSE){
 #' }
 #'  @export
 rerun <- function(x, ...) {
-	if(get_opts("verbose"))
+	
+	if(get_opts("verbose") > 1)
 		message("rerun: input x is ", class(x))
+	
 	UseMethod("rerun")
 }
 
@@ -57,38 +61,70 @@ rerun <- function(x, ...) {
 rerun.character <- function(x, ...){
 	message("x looks like a path, reading flow_details.rds")
 	fobj <- read_fobj(x)
-
+	
 	if(is.character(fobj))
 		stop("x does not seems to be a correct path to the flow submission, missing flow_details.rds")
-
+	
+	args = list(...)
+	if(any(names(args) %in% c("flowmat", "flowdef", "flow_mat", "flow_def")))
+		stop("some arguments not recognized\n",
+				 "Valid arguments for rerun are: mat and def, for flow matrix and flow definition respectively.")
+	
 	rerun(fobj, ...)
-
+	
 }
 
 
 #' @rdname rerun
 #' @importFrom utils capture.output
 #' @importFrom knitr kable
-rerun.flow <- function(x, mat, def, start_from,
-											 execute = TRUE, kill = TRUE, ...){
+rerun.flow <- function(x, mat, def, 
+											 start_from,
+											 execute = TRUE,
+											 kill = TRUE, 
+											 select,
+											 ignore,
+											 verbose = get_opts("verbose"),
+											 ...){
 	fobj = x
+	
 	wd = fobj@flow_path
-
+	
 	assert_version(fobj, '0.9.7.3')
-
-	if(missing(start_from)){
-		stop(error("no.start_from"))
+	assert_status(fobj, "submitted")
+	
+	## converting missing to NA, so that passing to subsequent 
+	## steps is easier
+	if(missing(start_from))
+		start_from=NA
+	if(missing(select))
+		select=NA
+	if(missing(ignore))
+		ignore=NA
+	
+	if(is.na(start_from) & is.na(ignore[1]) & is.na(select[1])){
+		stop("start_from, select, ignore: missing\n", 
+				 "Detection of failure point is currently not supported. ",
+				 "Please mention what steps need to be re-run.\n", 
+				 "Use start_from=<jobname>\n",
+				 "OR select=<jobnames> OR ignore=<jobnames>")
 		#start_from = detect_redo()
 	}
-
+	
+	if( !is.na(ignore[1]) & !is.na(select[1]) )
+		stop("both ignore and select specified\n",
+				 "Either specify jobs to re-run using select OR ",
+				 "jobs to be ignored using re-run, not both")
+	
 	if(missing(def)){
 		#stop("Please metion where to start from. Detection currently no supported")
 		message("\nExtracting flow definition from previous run.")
 		def = to_flowdef(fobj)
 	}else{
+		message("\nReading flow definition supplied.")
 		def = as.flowdef(def) ## as jobids now !
 	}
-
+	
 	if(missing(mat)){
 		message("Extracting flow mat (shell cmds) from previous run.")
 		message("Hope the reason for previous failure was fixed...")
@@ -96,51 +132,57 @@ rerun.flow <- function(x, mat, def, start_from,
 	}else{
 		mat = as.flowmat(mat)
 	}
-
+	
+	
+	message("\nSubsetting... get stuff to re-run:\n")
+	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from, select, ignore)
+	def = subset_fdef(fobj = fobj, def = def, start_from = start_from, select, ignore)
+	message(paste(def$jobname, collapse = "\n"))
+	
+	
+	## reset few things before we start the new flow
 	## kill the flow
 	if(kill)
-		capture.output(try(kill(wd)),
-			file = file.path(wd, "kill_jobs.out"))
-
-	message("\nSubsetting... get stuff to run starting, ", start_from, ":\n")
-	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from)
-	def = subset_fdef(fobj = fobj, def = def, start_from = start_from)
-	message(paste(def$jobname, collapse = "\n"))
-
+		try(kill(wd))
+	
+	## remove trigger files
+	det = to_flowdet(fobj)
+	newdet = subset_fdet(fobj, det, start_from = start_from, select, ignore)
+	if(execute) 
+		newdet = file.remove(newdet$trigger)
+	
 	## jobname, has ids as well.
-	fobj2 <- to_flow(x = mat, def = def, flowname = fobj@name, flow_run_path = fobj@flow_run_path)
-
-  #knitr::kable(rerun)
+	fobj2 <- to_flow(x = mat, def = def, 
+									 flowname = fobj@name, 
+									 flow_run_path = fobj@flow_run_path, ...)
+	
+	#knitr::kable(rerun)
 	fobj2@status = "rerun"
 	fobj2 <- submit_flow(fobj2,
-		uuid = fobj@flow_path,
-		execute = execute,
-		dump = FALSE)
+											 uuid = fobj@flow_path,
+											 execute = execute,
+											 dump = FALSE)
+	
+	## -- need a function to read and update the old flow object with new job submission ids
+	fobj = update.flow(fobj, child = fobj2)
+	## new flowdet of the new flow
+	flowdet = to_flowdet(fobj)
+	write_flow_details(wd, fobj, flow_det = flowdet)
 
-  flowdet = to_flowdet(fobj)
-  ## -- need a function to read and update the old flow object with new job submission ids
-  fobj = update.flow(fobj, child = fobj2)
-
-  write_flow_details(wd, fobj, flow_det = flowdet)
-  
-  ## get trigger files
-  newdet = subset_fdet(fobj, flowdet, start_from = start_from)
-  if(execute) newdet = file.remove(newdet$trigger)
-
-  return(fobj)
+	invisible(fobj)
 }
 
 
 
 update.flow <- function(x, child){
-
+	
 	child_jobs = jobnames(child)
 	## --- for each job in child update ids
 	for(j in child_jobs){
 		x@jobs[[j]]@id = child@jobs[[j]]@id
 	}
 	return(x)
-
+	
 }
 
 #' @importFrom params read_sheet
@@ -168,14 +210,32 @@ detect_redo <- function(fobj, wd){
 	}
 }
 
+subset_mods <- function(fobj, start_from, select, ignore){
+	
+	mods = names(fobj@jobs)
+	
+	## subset jobs using, start from, ignore and select
+	if(!missing(start_from) & !all(is.na(start_from)) )
+		mods = mods[which(grepl(start_from, mods)):length(mods)]
+	
+	if(!missing(select) & !all(is.na(select)))
+		mods = mods[mods %in% select]
+	
+	if(!missing(ignore) & !all(is.na(ignore)))
+		mods = mods[!mods %in% ignore]
+	
+	return(mods)
+}
+
 #' subset_fmat
 #'
+#' @param mat a part of flowmat
 #' @param fobj flow object
-#' @param mat a part of flowdef
-#' @param start_from, where to start from
-subset_fmat <- function(fobj, mat, start_from){
-	mods = names(fobj@jobs)
-	mods = mods[which(grepl(start_from, mods)):length(mods)]
+#' @inheritParams rerun
+subset_fmat <- function(fobj, mat, start_from, select, ignore){
+	
+	mods = subset_mods(fobj, start_from, select, ignore)
+	
 	## get mat
 	mat = subset(mat, mat$jobname %in% mods)
 	## subset and get jobs which failed
@@ -183,39 +243,42 @@ subset_fmat <- function(fobj, mat, start_from){
 	return(mat)
 }
 
+
+
 #' subset_fdef
 #' @param fobj flow object
 #' @param def flowdef
-#' @param start_from where to start from
+#' @inheritParams rerun
 #'
-subset_fdef <- function(fobj, def, start_from){
-
+subset_fdef <- function(fobj, def, start_from, select, ignore){
+	
 	if(missing(def))
 		stop("Please supply a flow def file")
-	mods = names(fobj@jobs)
-	mods = mods[which(grepl(start_from, mods)):length(mods)]
+	
+	mods = subset_mods(fobj, start_from, select, ignore)
+	
 	## get mat
 	def = subset(def, def$jobname %in% mods)
 	def$prev_jobs = ifelse(def$prev_jobs %in% mods, def$prev_jobs, "none")
 	def$dep_type = ifelse(def$prev_jobs %in% mods, def$dep_type, "none")
-
+	
 	return(def)
 }
 
 #' subset flow details file
 #' @param fobj flow object
 #' @param det flowdet
-#' @param start_from where to start from
+#' @inheritParams rerun
 #'
-subset_fdet <- function(fobj, det, start_from){
+subset_fdet <- function(fobj, det, start_from, select, ignore){
 	
 	if(missing(det))
 		stop("Please supply a flow det file")
-	mods = names(fobj@jobs)
-	mods = mods[which(grepl(start_from, mods)):length(mods)]
+	
+	mods = subset_mods(fobj, start_from, select, ignore)
+	
 	## get mat
-	det = subset(det, det$jobname %in% mods)
-
+	det = subset(det, det$jobnm %in% mods)
 	return(det)
 }
 

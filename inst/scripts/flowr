@@ -9,67 +9,89 @@
 #### -----------------------
 
 ## -------- incase of issues switch on verbose to see what is going on !
-verbose=FALSE
+verbose = FALSE
 nm = "flowr"
 
-get_params <- function(paramPairs){
-	func <- as.character(paramPairs[1])
-	if(length(func) == 0) return(help())
+get_params <- function(func, paramPairs, verbose = FALSE){
+	#func <- as.character(paramPairs[1])
+	#if(length(func) == 0) return(help())
 
 	args <- formals(func)
 	paramPairs <- paramPairs[grep("=", paramPairs)] ## get those with =
-	#print("args:");print(args)
+
+	if(verbose){message("args:");print(args)}
+	
 	#print("paramPairs:");print(paramPairs)
 	#args_supplied = sapply(strsplit(paramPairs, "="), "[[", 1)
 
 
-	if(verbose) message("We have ",length(paramPairs)," parameters\n")
+	if(verbose) 
+		message("\nget_params: we have ", 
+						length(paramPairs), " parameters\n",
+						paste(paramPairs, collapse = "\n"))
+	
 	for(param in paramPairs){
-		temp <- unlist(strsplit(param, "="));
-		nm = gsub("-", "", temp[1])
-		value=temp[2]
+		if(verbose)
+			message("\nstarting process with: ", param)
+		
+		splt <- unlist(strsplit(param, "="));
+		nm = splt[1]
+		value = splt[2]
 		value <- strsplit(value,",")[[1]] #handling those with , in value.. for multiple R values
 
 		## --- if function supports ... need to pass ALL arguments
-		if(sum(names(args) %in% "...") & !nm %in% names(args)){
+		if(sum( names(args) %in% "...") & !nm %in% names(args) ){
 			## -- remove the dots argument
-			dots = which(names(args) == "...")
-			args = args[-dots]
-			message("Adding ", nm, ":", value)
+			if(verbose)
+				message("Adding ", nm, ":", value)
 			l = list(nm = value);names(l) = nm
 			args <- c(args, l)
 		}
-
+		
+# 		if(verbose)
+# 			message("processing param: ", nm, " value ", args[[nm]])
+		
 		if(class(args[[nm]]) == "numeric" ){
 			args[[nm]] = as.numeric(value)
+		}else if(class(args[[nm]]) %in% c("logical") | (value[1] %in% c("TRUE", "FALSE") & length(value) == 1)){
+			args[[nm]] = as.logical(value)
 		}else if(class(args[[nm]]) %in% c("character", "name" )){
 			args[[nm]] = as.character(value)
-		}else if(class(args[[nm]]) %in% c("logical")){
-			args[[nm]] = as.logical(value)
 		}else if(class(args[[nm]]) %in% c("list")){
 			args[[nm]] = as.list(value)
 		}else if(class(args[[nm]]) %in% c("call")){ ## example call to getOption
 			args[[nm]] = as.character(value)
 		}
-		#print(args)
+		if(verbose)
+			message("processed param: ", nm, " value ", args[[nm]])
 	}
-
+	
+	## remove dots
+	dots = which( names(args) == "..." )
+	if(length(dots) > 0 )
+		args = args[-dots]
+	
+	## check values if NULL, remove.
+	rm = which(sapply(args, is.name))
+	if(length(rm) > 0)
+		args = args[-rm]
 
 	##print(do.call(rbind, as.list(args)))
 	if(verbose) print(args)
 	return(as.list(args))
+	
 }
 
 
 flow_help <- function(){
 	cmds <- matrix(c(
-		'run',     'Running predefined pipelines; try flowr avail x="pipelines',
-		"avail",    "Checking what modules and pipelines are available; avail x=modules OR avail x=pipelines",
-		'status',   'Detailed status of a flow (s).',
-		'rerun_flow',     'rerun a previously failed flow',
-		'kill_flow',     'Kill the flow, upon providing working directory'
+		'status',       'Detailed status of a flow(s).',
+		'rerun',        'rerun a previously failed flow',
+		'kill',         'Kill the flow, upon providing working directory',
+		"fetch_pipes",  "Checking what modules and pipelines are available; flowr fetch_pipes"
+#		'run',          'Running predefined pipelines; EXPERIMENTAL'
 	), byrow=T, ncol=2)
-	#cat("\nThis interface allows shell access to all functions in package flowr (and beyond).")
+	#cat("\nShowing a subset of functions, but all flowr functions can be accessed.")
 	cat(sprintf("\n  %-15s %s", cmds[,1], cmds[,2]), sep="")
 }
 
@@ -88,64 +110,122 @@ generic_help <- function(){
 	#}
 	if(nm == "flowr")
 		flow_help()
-	cat(sprintf("\n\nPlease use '%s function -h' to obtain further information about the usage.\n", nm))
+	cat(sprintf("\n\nPlease use '%s -h function' to obtain further information about the usage.\n", nm))
 }
 
 
-main <- function(){
-	args <- commandArgs(trailingOnly = TRUE)
+main <- function(args){
+	#args <- commandArgs(trailingOnly = TRUE)
 
 	##-------- if default function is not in the space, load flowr library
 	if(nm == "flowr")
 		require(flowr, quietly=!verbose, warn.conflicts=verbose)
-
-	## -------------- Load the required package
-	if(grepl("::", args[1])){
-		pkg <- gsub("(.?)::.*", "\\1", args[1])
-		cat("loading pkg:", pkg, "\n");
-		library(pkg, character.only = TRUE)
-		args[1] = as.character(gsub(".*::(.*)", "\\1", args[1]))
+	
+	if(missing(args))
+		return(generic_help())
+		
+	
+	## args which start with - are for flowr script
+	rm = grep("^-", args)
+	flowargs = args[rm]
+	
+	if("-v" %in% flowargs)
+		verbose = TRUE
+	
+	if(verbose){
+		message("args:"); print(args)
+		message("flowargs:"); print(flowargs)
+		message("Using ", flowargs, " as arguments for flowr")
+	}
+	
+	if(length(rm) > 0)
+		args = args[-rm]
+	func = args[1]
+	args = args[-1]
+	
+	if(verbose){
+		message("\nusing func:");
+		print(func)
+		message("with final args:");
+		print(args)
 	}
 
-	if(is.na(args[1])){
+
+	## -------------- Load the required package
+	if(grepl("::", func)){
+		pkg <- gsub("(.?)::.*", "\\1", func)
+		cat("loading pkg:", pkg, "\n");
+		library(pkg, character.only = TRUE)
+		func = as.character(gsub(".*::(.*)", "\\1", func))
+	}
+
+	if( is.na(func) ){
 		generic_help()
-	}else if(args[1] == "-h"){
-		generic_help()
-	}else if(is.na(args[2])){
-		help(args[1])
-	}else if(args[2] == "-h"){
-		help(args[1])
+		invisible()
+	}
+	
+	fn = try(get(func))
+	if(class(try(fn)) == "try-error")
+		stop("\n\nwe would not find a function by this name, please check: ", func)
+	
+	if(is.function(fn) & "-h" %in% flowargs){
+		return(help(func))
+		
 	}else{
-		params <- get_params(args)
+			
+		params <- get_params(func = func, paramPairs = args, verbose = verbose)
 		if(verbose){
-			cat("\nStarting",args[1],"with params\n",
+			cat("\nStarting", func, "with params\n",
 				paste(names(params), unlist(params),sep=": ",
 					collapse="\n"),"\n")
 			#print(args)
 			if(verbose) print(str(params))
 		}
 		#cat("Calling:", args[1])
-		out <- do.call(args[1], args = params)
-		return(out)
+		if(length(args) == 0)
+			message("\ntry:      flowr -h ", func, "     to get more details on this function.")
+		try(do.call(func, args = params))
+		#return(out)
+	}
+	
+}
+
+## --- showing the output of the returned..
+render_out <- function(out){
+	
+	if(is.data.frame(out)){
+		message("Showing the first 100 rows of the data.frame")
+		try(knitr:::kable(head(out, 100)), silent = TRUE)
+		
+	}else if(class(out) == "help_files_with_topic"){
+		## print help files
+		print(out)
+		
+	}else if(is.null(out)){
+		## skip NULL
+		cat("")
+		
+	}else if(is.list(out)){
+		## print list
+		print(out)
+		
+	}else if(is.atomic(out)){
+		print(cat(out, "\n"))
+		
+	}else if(is.function(out)){
+		print(out)
+	
+	}else{
+		cat("")
 	}
 }
 
 
-out = main()
+main(commandArgs(trailingOnly = TRUE))
 
-## --- showing the output of the returned..
-if(is.data.frame(out)){
-	message("Showing a head of the data.frame")
-	print(head(out))
-}else if(is.null(out)){
-	cat("")
-}else if(is.list(out)){
-	print(out)
-}else if(is.atomic(out)){
-	print(cat(out, "\n"))
-}else{
-	cat("")
-}
+#render_out(out)
+
+
 
 
 
@@ -154,7 +234,33 @@ if(FALSE){
 	paramPairs=c('bwa', 'fqs1=sample1.fq', 'bwa_index=index', 'bwa_samse_opts=myopts')
 	debug(get_params)
 	get_params(paramPairs)
+	
+	
+	library(testthat)
+	
+	out = main("rnorm")
+	expect_is(out, "help_files_with_topic")
+	
+	out = main("rnorm -h")
+	expect_is(out, "help_files_with_topic")
+
+	out = main(c("rnorm", "n=100"))
+	expect_equal(length(out), 100)
+	
+	## rerun example:
+	paramPairs=c('x=fastq_mutect-C835.HCC1143.2___C835.HCC1143_BL.4-20150905-22-31-28-5AG8iPdH', 'start_from=mutect', 'kill=FALSE')
 
 }
+
+
+ex = "
+## all examples
+flowr
+flowr -h
+flowr -h fetch_pipes
+flowr fetch_pipes
+
+"
+
 
 if(verbose) warnings()

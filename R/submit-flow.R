@@ -23,7 +23,8 @@
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
 submit_flow <- function(x, verbose = get_opts("verbose"), ...) {
-	if(verbose) message("input x is ", class(x))
+	if(verbose > 1)
+		message("input x is ", class(x))
 	UseMethod("submit_flow")
 }
 
@@ -42,21 +43,12 @@ parse_prevjobids <- function(x){
 
 }
 
-status_cat <- function(x){
-	if(x == "") return(0)
-	nums = c("created" = 0,
-		"dry-run" = 1,
-		"submitted" = 2,
-		"running" = 3,
-		"exited" = 4,
-		"completed" = 5
-	)
-	nums[x]
-}
+
 
 #' @rdname submit_flow
 #' @param .start_jid Job to start this submission from. Advanced use, should be 1 by default.
 #' @importFrom tools file_path_as_absolute
+#' @importFrom utils txtProgressBar
 #' @export
 submit_flow.flow <- function(x,
 														 verbose = get_opts("verbose"),
@@ -110,11 +102,15 @@ submit_flow.flow <- function(x,
 	## prevjob is null but dep_type exists --- > problem, check should detect.
 	## split dependency, if multiple previous jobs
 
-	for(i in .start_jid:length(x@jobs)){
+	#x <- pbsapply(1:length(x@jobs), function(i, x = x){
+	
+	from=.start_jid;to=length(x@jobs)
+	pb <- txtProgressBar(min = from, max = to, style = 3)
+	for(i in from:to){
 		## ------ check if there are any dependencies
 		previous_job <- x@jobs[[i]]@previous_job
-		if(verbose) message("Working on, ", i, "with prev: ", previous_job)
-
+		if(verbose > 1) message("Working on job ", i, " with previous job: ", previous_job)
+		
 		## if there is a previous job
 		if(prevjob_exists(previous_job)){
 			## --- split multiple dependencies as a list
@@ -124,20 +120,23 @@ submit_flow.flow <- function(x,
 			## split the MATRIX by rowindex, into a LIST
 			x@jobs[[i]]@dependency <- split(previds, row(previds))
 		}
-	
+		
 		## ------ submit the job, get updates job object
 		x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
 															fobj = x,
 															execute=execute,
 															job_id=i,
 															verbose = verbose, ...)
+		setTxtProgressBar(pb, i)
 	}
+	close(pb)
+	
 
 	x@status <- "dry-run"
 	if(execute){
 		x@status <- "submitted"
 	}else{
-		message("Test Successful!\n",
+		message("Dry Run Successful!\n",
 						"You may check this folder for consistency. ",
 						"Also you may submit again with execute=TRUE\n",
 						x@flow_path)

@@ -2,8 +2,19 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^\.git/*
-#.*
+
+
 misc
 inst/extdata/*
 inst/staticdocs
+
+## ignoring extra markdown files
+README.Rmd
+README.html
+TODO.md
 cran-comment.md
+vignettes/errors.Rmd
+
+## ignore test files and folders
+tests/testthat/Rplots.pdf
+tests/testthat/sleep_pipe*
