@@ -81,14 +81,12 @@
 <li>Effectively process a <strong>multi-step pipeline</strong>, spawning it across the computing cluster</li>
 <li>Example:
 <ul>
-<li>A typical case in next-generation sequencing is of processing tens of <a href="http://en.wikipedia.org/wiki/FASTQ_format">fastqs</a> for a sample, <a href="http://en.wikipedia.org/wiki/Sequence_alignment">mapping</a> them to a reference genome.</li>
-<li>Each step may require a range resources from in terms of CPU, RAM etc.
-<ul>
-<li>Consider we have 50 files using 10 cores each for step A (500 cores total).</li>
-<li>Next step uses one core each (50 cores total).</li>
-<li>Say step C merges them, and uses only 1 core. several machines, for one sample</li>
-</ul></li>
-<li>Some pipelines may reserve the maximum, example say 500 cores throught, flowr would handle the <strong>surge</strong>, reserving 500, 50 or 1; when needed.</li>
+<li>A typical case in next-generation sequencing involves processing of tens of <a href="http://en.wikipedia.org/wiki/FASTQ_format">fastqs</a> for a sample, <a href="http://en.wikipedia.org/wiki/Sequence_alignment">mapping</a> them to a reference genome.</li>
+<li>Each step requires a range resources in terms of CPU, RAM etc.</li>
+<li>Consider step 1 uses 10 cores for each file; with 50 files it would use 500 cores in total.</li>
+<li>Next step uses one core for each file, 50 cores in total.</li>
+<li>Say step C merges them, and uses only 1 core.</li>
+<li>Some pipelines may reserve the maximum, example say 500 cores throught steps 1 to 3, flowr would handle the <strong>surge</strong>, reserving 500, 50 or 1; when needed.</li>
 <li>Now consider the run has 10 samples, all of them would be procesed in parallel, spawning <strong>thousands of cores</strong>.</li>
 </ul></li>
 <li><strong>Reproducible</strong> and <strong>transparent</strong>, with cleanly structured execution logs</li>
@@ -108,11 +106,17 @@ devtools::install_github(&quot;sahilseth/flowr&quot;)
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.</code></pre>
-<ul>
-<li>Here is a shiny app, <a href="https://sseth.shinyapps.io/flow_creator">flow_creator</a> which helps you build a flow.</li>
-<li>A few <a href="http://sahilseth.github.io/slides/flowrintro">slides</a> providing a quick overview.</li>
-</ul>
 </div>
+</div>
+<div id="resources" class="section level2">
+<h2>Resources</h2>
+<ul>
+<li>For a quick overview, you may browse through, these <a href="http://sahilseth.github.io/slides/flowrintro">introductory slides</a>.</li>
+<li>The <a href="http://sahilseth.github.io/flowr/flowr/docs.html">documentation</a> provides additional details regarding the ideas and concepts used in flowr</li>
+<li>We have a <a href="http://sahilseth.github.io/flowr/flowr/tutorial.html">tutorial</a> which can walk you through creating a new pipeline</li>
+<li>Additionally, a subset of important functions are described in the <a href="http://sahilseth.github.io/flowr/flowr/rd.html">package reference</a> page</li>
+<li>You can use a <a href="https://sseth.shinyapps.io/flow_creator">flow creator</a> a shiny app to aid in designing a shiny new flow</li>
+</ul>
 </div>
 <div id="aknowledgements" class="section level2">
 <h2>Aknowledgements</h2>
@@ -122,7 +126,7 @@ setup() ## copy flowr bash script; and create a folder flowr under home.</code><
 <li>Kadir Akdemir</li>
 <li>Ethan Mao</li>
 <li>Henry Song</li>
-<li>An excellent resource for writing your own R packages: r-pkgs.had.co.nz</li>
+<li>An excellent resource for writing your own R packages: <a href="r-pkgs.had.co.nz" class="uri">r-pkgs.had.co.nz</a></li>
 </ul>
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
 </div>
