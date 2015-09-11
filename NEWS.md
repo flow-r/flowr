@@ -1,9 +1,14 @@
 ---
+title: "flowr"
+subtitle: "Streamlining Workflows"
+author: Sahil Seth
+date: "`r Sys.Date()`"
 output: html_document
 packagedocs:
     toc: true
 navpills: |
   <li><a href='docs.html'>Docs</a></li>
+  <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Package Ref</a></li>
   <li class="active"><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
@@ -66,7 +71,7 @@ checking submission and dependency types...
 - Fixed a bug in lsf.sh template file, where it was missing the -n argument.
 
 
-flowr 0.9.7.10
+flowr (apples) 0.9.7.10
 ----------------------------------------------
 > 2015-08-22
 
