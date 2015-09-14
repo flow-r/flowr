@@ -17,7 +17,8 @@ get_resources(x, odir, ...)
 get_resources currenty this only works on LSF
 }
 \details{
-If \code{x} is a parent level folder, then resources are summarized for all its child folders.
+If \code{x} is a parent level folder,
+then resources are summarized for all its child folders.
 }
 \examples{
 \dontrun{

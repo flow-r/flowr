@@ -18,7 +18,7 @@ parse_lsf_out <- function(x,
 	time_format = get_opts("time_format"),
 	verbose = get_opts('verbose')){
 	
-	if(verbose > 1)
+	if(verbose > 2)
 		message("reading: ", x)
 	
 	if(!file.exists(x)){
@@ -26,7 +26,10 @@ parse_lsf_out <- function(x,
 		
 	}else{
 
-		text <- scan(x, what = "character", sep = "\n", quiet = TRUE)
+		hd = system(paste0("head -n100 ", x), intern = TRUE)
+		tl = system(paste0("tail -n100 ", x), intern = TRUE)
+		text = unique(c(hd, tl))
+		#text <- scan(x, what = "character", sep = "\n", quiet = TRUE)
 
 		cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
 		cpu_time = as.numeric(cpu_time) * scale_time
@@ -67,7 +70,12 @@ parse_lsf_out <- function(x,
 #' @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
 #' @param odir Output directory to save the results
 #' @param \dots other arguments sent to \link{get_resources_lsf}
-#' @details If \code{x} is a parent level folder, then resources are summarized for all its child folders.
+#' 
+#' @details If \code{x} is a parent level folder, 
+#' then resources are summarized for all its child folders.
+#' 
+#' @export
+#' 
 #' @examples \dontrun{
 #' get_resources(x = x, odir = ~/tmp)
 #' }
@@ -95,11 +103,19 @@ get_resources <- function(x, odir, ...){
 #' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
 #' @importFrom tools file_path_sans_ext
 #' @importFrom parallel mclapply
+#' 
 #' @keywords internal
+#' 
+#' @export
+#' 
 #' @examples \dontrun{
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }
-get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE, verbose = get_opts("verbose")){
+get_resources_lsf <- function(wd, 
+															cores = 4, 
+															pattern = "out$",
+															plot = FALSE,
+															verbose = get_opts("verbose")){
 
 	if (!requireNamespace("reshape2", quietly = TRUE)) {
 		stop("reshape2 needed for this function to work. Please install it.",
@@ -120,7 +136,15 @@ get_resources_lsf <- function(wd, cores = 4, pattern = "out$", plot = FALSE, ver
 	flowdet$out2 = file.path(wd, basename(dirname(flowdet$cmd)), 
 	                         gsub("sh$", "out", basename(flowdet$cmd)))
 	
-	tmp = mclapply(as.c(flowdet$out2), function(x) try(parse_lsf_out(x)), mc.cores = cores)
+	to = nrow(flowdet)
+	pb <- txtProgressBar(min = 1, max = to, style = 3)
+	tmp = lapply( 1:to, function(i) {
+		pb$up(i)
+		x = as.c(flowdet$out2)[i]
+		try(parse_lsf_out(x))
+	})
+	close(pb)
+
 	resources <- do.call(rbind, tmp)
 	mat_res <- cbind(flowdet, resources);dim(mat_res)
 	## restructure for plotting:
