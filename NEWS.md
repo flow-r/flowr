@@ -64,11 +64,16 @@ checking submission and dependency types...
 	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
 ```
 - rerun [0.9.7.9021]: 
-	- one can specify an arbitary types of jobs to re-run using select and ignore.
+	- Previously one could specify a starting point from where a re-run flow
+	would initiate execution. Now one may also specify an arbitary number of 
+	of steps to re-run using select and ignore; which may need to run again.
 - job killing and submission now sport a progress bar:
 	- |============================================================      | 70%
 	- This is especially useful flows with thousands of jobs
 - Fixed a bug in lsf.sh template file, where it was missing the -n argument.
+- Now the status function has a new argument use_cache. If enabled, it skips 
+fetching statuses of previously completed jobs; this really speeding things up.
+	- Also we have added a progress bar to show the status of this summarization.
 
 
 flowr (apples) 0.9.7.10

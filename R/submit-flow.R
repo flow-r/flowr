@@ -109,7 +109,8 @@ submit_flow.flow <- function(x,
 	for(i in from:to){
 		## ------ check if there are any dependencies
 		previous_job <- x@jobs[[i]]@previous_job
-		if(verbose > 1) message("Working on job ", i, " with previous job: ", previous_job)
+		if(verbose > 1) 
+			message("Working on job ", i, " with previous job: ", previous_job)
 		
 		## if there is a previous job
 		if(prevjob_exists(previous_job)){
@@ -127,7 +128,8 @@ submit_flow.flow <- function(x,
 															execute=execute,
 															job_id=i,
 															verbose = verbose, ...)
-		setTxtProgressBar(pb, i)
+		if(verbose > 0)
+			pb$up(i)
 	}
 	close(pb)
 	

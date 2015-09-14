@@ -257,7 +257,7 @@ calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
 	pos=0.55
 	
 	if(pdf){
-		message("pdf: true, increasing arrow size")
+		message("plotting a pdffile...")
 		lwd = 0.7 + x*60; ## need thicker
 		len = 0.5 + x*20; ## need them smaller than usual
 	}
