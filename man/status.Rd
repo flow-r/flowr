@@ -8,18 +8,22 @@
 \alias{status}
 \title{status}
 \usage{
-status(x, out_format = "markdown")
+status(x, use_cache = TRUE, verbose = get_opts("verbose"),
+  out_format = "markdown")
 
 get_status(x, ...)
 
-\method{get_status}{character}(x, out_format = "markdown", ...)
+\method{get_status}{flow}(x, verbose, use_cache, out_format, ...)
 
-\method{get_status}{data.frame}(x, ...)
+\method{get_status}{character}(x, verbose, use_cache, out_format, ...)
 
-\method{get_status}{flow}(x, out_format = "markdown", ...)
+\method{get_status}{data.frame}(x, verbose, use_cache, ...)
 }
 \arguments{
 \item{x}{path to the flow root folder or a parent folder to summarize several flows.}
+
+\item{use_cache}{by default is true. This skips checking status of jobs which have already been created.
+To get a more accurate summary, one may turn this off.}
 
 \item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html...}
 
@@ -37,7 +41,11 @@ basename(x) is used in a wild card search.
 \item Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
 }
 
-Alternatively, x can also be a flow object
+Alternatively, x can also be a flow object.
+
+Use \strong{use_cache} is to speed up checking status of jobs which have already been completed.
+Essentially this skips creation of a flow details text file if it already exists
+and also skips reading the trigger files for jobs whose exit code was 0, last time this was checked.
 }
 \examples{
 \dontrun{
