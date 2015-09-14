@@ -26,6 +26,7 @@ if(FALSE){
 #' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
 #' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
+#' @inheritParams to_flow
 #' @param ... passed onto to_flow
 #'
 #'

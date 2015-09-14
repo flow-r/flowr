@@ -25,6 +25,10 @@ get_status(x, ...)
 \item{use_cache}{by default is true. This skips checking status of jobs which have already been created.
 To get a more accurate summary, one may turn this off.}
 
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
+
 \item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html...}
 
 \item{...}{not used}

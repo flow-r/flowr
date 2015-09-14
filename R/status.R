@@ -20,6 +20,7 @@ get_wds <- function(x){
 #' @param use_cache by default is true. This skips checking status of jobs which have already been created.
 #' To get a more accurate summary, one may turn this off.
 #' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
+#' @inheritParams to_flow
 #'
 #' @details
 #' basename(x) is used in a wild card search.
