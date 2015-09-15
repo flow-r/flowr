@@ -4,7 +4,9 @@
 \alias{setup}
 \title{Setup and initialize some scripts.}
 \usage{
-setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"))
+setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"),
+  flow_run_path = get_opts("flow_run_path"),
+  flow_conf_path = get_opts("flow_conf_path"))
 }
 \arguments{
 \item{bin}{path to bin folder}

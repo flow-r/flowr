@@ -70,7 +70,8 @@ status <- function(x,
 		hd = paste(rep("=", as.numeric(ncol)), collapse = "")
 		message(paste0("\n", hd,
 									 "\nSummarizing status (using triggers) of: \n", wd))
-		message("Using cache for speed, skipping checking jobs, which were previously marked complete...")
+		if(use_cache)
+			message("Using cache for speed, skipping checking jobs, which were previously marked complete...")
 		
 		x = read_fobj(wd)
 		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache)
@@ -149,26 +150,36 @@ get_status.data.frame <- function(x, verbose, use_cache, ...){
 	## one may need to make this faster, for now, we will just show a progress bar
 	if(verbose > 1)
 		message("fetching exit codes...")
-	pb <- txtProgressBar(min = 1, max = nrow(x), style = 3)
-	exit_code <- unlist(lapply(1:nrow(x), function(i){
-		pb$up(i)
+	if(nrow(x) > 1)
+		pb <- txtProgressBar(min = 1, max = nrow(x), style = 3)
+	
+	get_code <-  function(i){
+		if(nrow(x) > 1)
+			pb$up(i)
 		fl = x$trigger[i]
 		## skip reading the code
 		code = x$exit_code[i]
-		if(!is.null(code))
-			if(code == 0 & use_cache){
-				#message("0");
-				return(0)
-			}
-		else		
-			if(file.exists(fl)){
-				tmp <- as.numeric(scan(fl, what = "character", quiet = TRUE))
-				code <- ifelse(length(tmp) > 0, tmp, -1) ## -1 mean not completed
-				return(code)
-			}else
-				return(NA)
-	}))
-	close(pb)
+		code = ifelse(is.na(code), -1, code)
+		code = ifelse(is.null(code), -1, code)
+		if(verbose > 2)
+			message("previous exit code: ", code)
+		if(use_cache){
+			return(0)
+		}
+		if(file.exists(fl)){
+			tmp <- as.numeric(scan(fl, what = "character", quiet = TRUE))
+			code <- ifelse(length(tmp) > 0, tmp, -1) ## -1 mean not completed
+			return(code)
+		}else{
+			return(NA)
+		}
+	}
+	
+	exit_code <- lapply(1:nrow(x), get_code)
+	exit_code = unlist(exit_code)
+	
+	if(nrow(x) > 1)
+		close(pb)
 	
 	x$started = !is.na(exit_code)
 	x$exit_code = exit_code

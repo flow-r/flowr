@@ -105,7 +105,8 @@ submit_flow.flow <- function(x,
 	#x <- pbsapply(1:length(x@jobs), function(i, x = x){
 	
 	from=.start_jid;to=length(x@jobs)
-	pb <- txtProgressBar(min = from, max = to, style = 3)
+	if(from > to)
+		pb <- txtProgressBar(min = from, max = to, style = 3)
 	for(i in from:to){
 		## ------ check if there are any dependencies
 		previous_job <- x@jobs[[i]]@previous_job
@@ -128,10 +129,11 @@ submit_flow.flow <- function(x,
 															execute=execute,
 															job_id=i,
 															verbose = verbose, ...)
-		if(verbose > 0)
+		if(verbose > 0 & 	from > to)
 			pb$up(i)
 	}
-	close(pb)
+	if(from > to)
+		close(pb)
 	
 
 	x@status <- "dry-run"
