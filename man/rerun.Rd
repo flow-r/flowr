@@ -31,6 +31,10 @@ rerun(x, ...)
 \item{select}{select a subset of jobs to rerun [character vector]}
 
 \item{ignore}{ignore a subset of jobs to rerun [character vector]}
+
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
 }
 \description{
 \itemize{

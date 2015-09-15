@@ -5,7 +5,10 @@
 #'
 #' @details Will add more to this to identify cluster and aid in other things
 #' @export
-setup <- function(bin = "~/bin", flow_base_path = get_opts("flow_base_path")){
+setup <- function(bin = "~/bin", 
+									flow_base_path = get_opts("flow_base_path"),
+									flow_run_path = get_opts("flow_run_path"),
+									flow_conf_path = get_opts("flow_conf_path")){
 	pkg = "flowr"
 	if(!file.exists(bin)) dir.create(bin) ## create bin, if it does not exist
 	script = file.path(bin, pkg)
@@ -19,7 +22,7 @@ setup <- function(bin = "~/bin", flow_base_path = get_opts("flow_base_path")){
 
 	message("Creating a directory structure under ", flow_base_path)
 	dir.create(flow_base_path, showWarnings = FALSE)
-	dir.create(flow_base_path, showWarnings = FALSE)
-	dir.create(flow_base_path, showWarnings = FALSE)
+	dir.create(flow_conf_path, showWarnings = FALSE)
+	dir.create(flow_run_path, showWarnings = FALSE)
 	message(tmp)
 }
