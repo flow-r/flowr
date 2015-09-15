@@ -273,9 +273,7 @@ Refer to the [help section](http://docs.flowr.space/en/latest/rd/topics/complete
 
 # Ingredients for building a pipeline
 
-An easy and quick way to build a workflow is create to create a set of two tab delimited files. First is a table with commands to run (for each module of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively (as introduces in the above sections).
-
-> Both these files have a `jobname` column which is used as a ID to connect them to each other.
+An easy and quick way to build a workflow is create to create a set of two tab delimited files. First is a table with commands to run (for each module of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively (as introduced in the above sections).
 
 We could read in, examples of both of these files to understand their structure.
 
@@ -285,6 +283,8 @@ ex = file.path(system.file(package = "flowr"), "pipelines")
 flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
 flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
 ```
+
+> Both these files have a `jobname` column connects them to each other.
 
 ```{r build_pipe_ex1, eval=FALSE, echo=FALSE}
 #flow_def = read_sheet(file.path(exdata, "example1_flow_def2.txt"))
@@ -297,16 +297,16 @@ fobj = submit_flow(fobj)
 
 ## 1. Flow mat
 
-> describes commands to run, as part of each step
+> describes commands to run.
 
-Each row in flow mat describes a shell command, with information regarding what step is it part of and 
-what sample does ti belong to.
+Each row in flow mat describes one shell command, with additional information regarding the name of the step etc.
 
 Essentially, this is a tab delimited file with three columns:
 
-- `samplename`: A grouping column. The table is split using this column and each subset is treated as an individual flow. Thus we may have one flowmat for a series of samples, and all the whole set would be submitted as a batch.
+- `samplename`: A grouping column. The table is split using this column and each subset is treated as an individual flow. 
+Thus we may have one flowmat for a series of samples, and the whole set would be submitted as a batch.
 	- If all the commands are for a single sample, one can just repeat a dummy name like sample1 all throughout.
-- `jobname`: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table defined above.
+- `jobname`: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table described below.
 - `cmd`: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a `;` or `&&`, more on this [here](http://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls). Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.
 
 Here is an example [flow_mat](https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.tsv) for the 

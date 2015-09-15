@@ -357,28 +357,28 @@ qdel $jobids
 </div>
 <div id="ingredients-for-building-a-pipeline" class="section level1">
 <h1>Ingredients for building a pipeline</h1>
-<p>An easy and quick way to build a workflow is create to create a set of two tab delimited files. First is a table with commands to run (for each module of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively (as introduces in the above sections).</p>
-<blockquote>
-<p>Both these files have a <code>jobname</code> column which is used as a ID to connect them to each other.</p>
-</blockquote>
+<p>An easy and quick way to build a workflow is create to create a set of two tab delimited files. First is a table with commands to run (for each module of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively (as introduced in the above sections).</p>
 <p>We could read in, examples of both of these files to understand their structure.</p>
 <pre class="r"><code>## ------ load some example data
 ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
 flow_mat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
 flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
+<blockquote>
+<p>Both these files have a <code>jobname</code> column connects them to each other.</p>
+</blockquote>
 <div id="flow-mat" class="section level2">
 <h2>1. Flow mat</h2>
 <blockquote>
-<p>describes commands to run, as part of each step</p>
+<p>describes commands to run.</p>
 </blockquote>
-<p>Each row in flow mat describes a shell command, with information regarding what step is it part of and what sample does ti belong to.</p>
+<p>Each row in flow mat describes one shell command, with additional information regarding the name of the step etc.</p>
 <p>Essentially, this is a tab delimited file with three columns:</p>
 <ul>
-<li><code>samplename</code>: A grouping column. The table is split using this column and each subset is treated as an individual flow. Thus we may have one flowmat for a series of samples, and all the whole set would be submitted as a batch.
+<li><code>samplename</code>: A grouping column. The table is split using this column and each subset is treated as an individual flow. Thus we may have one flowmat for a series of samples, and the whole set would be submitted as a batch.
 <ul>
 <li>If all the commands are for a single sample, one can just repeat a dummy name like sample1 all throughout.</li>
 </ul></li>
-<li><code>jobname</code>: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table defined above.</li>
+<li><code>jobname</code>: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table described below.</li>
 <li><code>cmd</code>: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a <code>;</code> or <code>&amp;&amp;</code>, more on this <a href="http://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls">here</a>. Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.</li>
 </ul>
 <p>Here is an example <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.tsv">flow_mat</a> for the flowr described above.</p>
