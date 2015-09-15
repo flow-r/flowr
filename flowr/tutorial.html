@@ -92,7 +92,7 @@
 <p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="#flow_mat">flowmat</a>. In a multi-step pipeline, we need to know what steps come before others, we would describe them in a a <a href="#flow_mat">flow definition</a> file.</p>
 <p>For the sake of giving names, lets call a function which generates a flow mat, a module. One may generate this table using R, python, Java or any other language.</p>
 <div class="alert alert-info" role="alert">
-<p><strong>module</strong> A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.</p>
+<strong>module</strong> A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.
 </div>
 <p>Let us follow through an example, providing more details regarding this process. Here are a few examples of modules, three functions <code>sleep</code>, <code>create_tmp</code> and <code>merge_size</code> each returning a flowmat.</p>
 <div id="define-modules" class="section level2">
@@ -133,7 +133,7 @@ merge_size &lt;- function(x, samplename){
 }</code></pre>
 <p>We believe pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only difference being, a pipeline also has a correspomding flow definition file.</p>
 <div class="alert alert-info" role="alert">
-<p>As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).</p>
+As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
 </div>
 <p>We then define another function <code>sleep_pipe</code> which calls the above defined <strong>modules</strong>; fetches flowmat from each, creating a larger flowmat. This time we will define a flowdef for the <code>sleep_pipe</code> function, elevating its status from module to a pipeline.</p>
 </div>
@@ -172,17 +172,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 6;echo ‘hello’</td>
+<td align="left">sleep 2 &amp;&amp; sleep 19;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 3 &amp;&amp; sleep 3;echo ‘hello’</td>
+<td align="left">sleep 3 &amp;&amp; sleep 4;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 8 &amp;&amp; sleep 12;echo ‘hello’</td>
+<td align="left">sleep 5 &amp;&amp; sleep 1;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -307,11 +307,6 @@ kable(def)</code></pre>
 ## checking for missing rows in def...
 ## checking for extra rows in def...
 ## checking submission and dependency types...
-##  jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
-##  1: sleep    none --&gt; none --&gt; scatter 
-##  2: create_tmp   scatter --&gt; serial --&gt; scatter rel: complex one:one
-##  3: merge    scatter --&gt; gather --&gt; serial rel: many:one
-##  4: size serial --&gt; serial --&gt; serial rel: simple one:one
 ## Using flow_run_path default: ~/flowr/runs
 ## 
 ## ##--- Checking flow definition and flow matrix for consistency...
