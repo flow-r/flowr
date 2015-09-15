@@ -6,7 +6,7 @@
 
   
   
-  <title></title>
+  <title>flowr</title>
 
     <script src="assets/jquery-1.11.0/jquery.min.js"></script>
   <link href="assets/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" />
@@ -42,9 +42,28 @@
           <span class="icon-bar"></span>
         </button>
                 <a href="index.html" class="navbar-brand page-scroll">
-        
+        flowr - Streamlining Workflows
         </a>
       </div>
+            <nav class="collapse navbar-collapse" role="navigation">
+        <ul class="nav nav-pills pull-right">
+<li>
+<a href='docs.html'>Docs</a>
+</li>
+<li>
+<a href='tutorial.html'>Tutorial</a>
+</li>
+<li>
+<a href='rd.html'>Package Ref</a>
+</li>
+<li>
+<a href='news.html'>News</a>
+</li>
+<li>
+<a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a>
+</li>
+        </ul>
+      </nav>
           </div>
   </header>
 
@@ -54,8 +73,6 @@
             <div class="col-md-12">
       
 <div id="content-top"></div>
-<div id="flowr" class="section level1">
-<h1>flowr</h1>
 <p><a href="https://travis-ci.org/sahilseth/flowr"><img src="https://travis-ci.org/sahilseth/flowr.svg?branch=master" alt="Build Status" /></a> <a href="http://cran.rstudio.com/web/packages/flowr/index.html"><img src="http://www.r-pkg.org/badges/version/flowr" alt="cran" /></a> <a href="http://codecov.io/github/sahilseth/flowr?branch=devel"><img src="http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel" alt="codecov.io" /></a> <img src="http://cranlogs.r-pkg.org/badges/grand-total/flowr" alt="downloads" /></p>
 <p>This framework allows you to design and implement complex pipelines, and deploy them on your institution’s computing cluster. This has been built keeping in mind the needs of bioinformatics workflows. However, it is easily extendable to any field where a series of steps (shell commands) are to be executed in a (work)flow.</p>
 <div id="highlights" class="section level2">
@@ -98,7 +115,7 @@ setup() ## copy flowr bash script; and create a folder flowr under home.</code><
 <li>The <a href="http://sahilseth.github.io/flowr/flowr/docs.html">documentation</a> provides additional details regarding the ideas and concepts used in flowr</li>
 <li>We have a <a href="http://sahilseth.github.io/flowr/flowr/tutorial.html">tutorial</a> which can walk you through creating a new pipeline</li>
 <li>Additionally, a subset of important functions are described in the <a href="http://sahilseth.github.io/flowr/flowr/rd.html">package reference</a> page</li>
-<li>You can use a <a href="https://sseth.shinyapps.io/flow_creator">flow creator</a> a shiny app to aid in designing a shiny new flow</li>
+<li>You can use <a href="https://sseth.shinyapps.io/flow_creator">flow creator</a>, a shiny app to aid in designing a <em>shiny</em> new flow. This provides a good example of the concepts</li>
 </ul>
 </div>
 <div id="aknowledgements" class="section level2">
@@ -112,7 +129,6 @@ setup() ## copy flowr bash script; and create a folder flowr under home.</code><
 <li>An excellent resource for writing your own R packages: <a href="r-pkgs.had.co.nz" class="uri">r-pkgs.had.co.nz</a></li>
 </ul>
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
-</div>
 </div>
 
 
