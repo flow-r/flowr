@@ -1,4 +1,18 @@
-# flowr
+---
+title: "flowr"
+subtitle: "Streamlining Workflows"
+output: 
+    html_document: 
+       keep_md: yes
+packagedocs:
+    toc: false
+navpills: |
+  <li><a href='docs.html'>Docs</a></li>
+  <li><a href='tutorial.html'>Tutorial</a></li>
+  <li><a href='rd.html'>Package Ref</a></li>
+  <li><a href='news.html'>News</a></li>
+  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+---
 
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
@@ -37,8 +51,7 @@ across the computing cluster
 
 ### A few lines, to get started:
 
-
-```r
+``` {r, eval=FALSE}
 ## From the official R repository (may be a few versions behind)
 install.packages("flowr")
 
