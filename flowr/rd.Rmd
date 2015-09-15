@@ -49,6 +49,7 @@ testthat</p>
 
 # Creating a Flow
 
+<<<<<<< HEAD
 
 
 ## to_flowmat
@@ -763,6 +764,12 @@ def = as.flowdef(fl, verbose = 2)
 	# 	3: C	scatter --> gather --> serial rel: many:one
 	# 	4: D	serial --> burst --> scatter rel: one:many</code></pre>
 
+=======
+# Submiting and managing a flow
+
+# Managing parameters
+
+>>>>>>> origin/gh-pages
 # Details on flowr's classes
 
 
