@@ -64,7 +64,7 @@ status <- function(x,
 		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache)
 	
 	wds = get_wds(x)
-	for(wd in wds){
+	lst = lapply(wds, function(wd){
 		
 		ncol = getOption("width"); #Sys.getenv("COLUMNS")
 		hd = paste(rep("=", as.numeric(ncol)), collapse = "")
@@ -74,9 +74,9 @@ status <- function(x,
 			message("Using cache for speed, skipping checking jobs, which were previously marked complete...")
 		
 		x = read_fobj(wd)
-		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache)
-	} 
-	invisible()
+		lst = get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache)
+	})
+	invisible(lst)
 }
 
 #' @rdname status
@@ -89,11 +89,27 @@ get_status <- function(x, ...) {
 	UseMethod("get_status")
 }
 
+
+final_status <- function(x){
+	#statuses = sapply(x@jobs, function(y) y@status)
+	statuses = x
+	if(all(statuses == "complete")){
+		final = "complete"
+	}else if(any(statuses == "errored")){
+		final = "errored"
+	}else if(all(statuses == "pending")){
+		final = "pending"
+	}else if(any(statuses == "processing")){
+		final = "processing"
+	}
+	return(final)
+}
+
+
 #' @rdname status
 #' @export
 get_status.flow <- function(x, verbose, use_cache, out_format, ...){
-	
-	
+
 	## --- get initial flow_det from the flow object
 	flow_det = to_flowdet(x)
 	## --- update the flow_det using the triggers
@@ -108,6 +124,8 @@ get_status.flow <- function(x, verbose, use_cache, out_format, ...){
 		status = summ$status[i]
 		x@jobs[[jobnm]]@status = status
 	}
+	status = final_status(summ$status)
+	x@status = status
 	## --- if input is a flow
 	## update status and exit code in the flow object
 	
@@ -115,7 +133,7 @@ get_status.flow <- function(x, verbose, use_cache, out_format, ...){
 	write_flow_details(x = x@flow_path, summ = summ, flow_det = flow_det)
 	
 	#flow_det = try(update_flow_det(wd = x@flow_path, mat_cmd = mat_cmd))
-	invisible(flow_det)
+	invisible(list(summary = summ, status = status))
 }
 
 #' @rdname status
@@ -138,7 +156,9 @@ get_status.character <- function(x, verbose, use_cache, out_format, ...){
 	
 	flow_det = get_status(flow_det, verbose, use_cache, ...)
 	summ = summarize_flow_det(flow_det, out_format = out_format)
+	status = final_status(summ$status)
 	write_flow_details(x, summ = summ, flow_det = flow_det)
+	invisible(list(summary = summ, status = status))
 }
 
 #' @rdname status
