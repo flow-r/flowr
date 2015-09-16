@@ -126,6 +126,10 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	x[, "cmd"] = x[, cmd_col]
 	x[, "samplename"] = x[, grp_col]
 	
+	## check rows
+	if(nrow(x) == 0)
+		stop("flowmat empty\nIt seems there are no rows in flowmat, please check and try again.")
+	
 	## --- add class flowmat, suggests that this has been checked
 	class(x) <- c("flowmat", "data.frame")
 	x = check(x)
