@@ -50,7 +50,7 @@ get_wds <- function(x){
 #' flowr status x=path_to_flow_directory
 #' }
 status <- function(x, 
-									 use_cache = TRUE,
+									 use_cache = FALSE,
 									 verbose = get_opts("verbose"),
 									 out_format = "markdown"){
 	## get the total jobs
@@ -159,11 +159,11 @@ get_status.data.frame <- function(x, verbose, use_cache, ...){
 		fl = x$trigger[i]
 		## skip reading the code
 		code = x$exit_code[i]
-		code = ifelse(is.na(code), -1, code)
 		code = ifelse(is.null(code), -1, code)
+		code = ifelse(is.na(code), -1, code)
 		if(verbose > 2)
 			message("previous exit code: ", code)
-		if(use_cache){
+		if( code == 0 & use_cache){
 			return(0)
 		}
 		if(file.exists(fl)){

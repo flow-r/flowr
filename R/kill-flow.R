@@ -93,12 +93,15 @@ kill.flow <- function(x,
 		cmds = paste0(cmds, "  2>&1")
 	message("killing ", length(cmds), " jobs, please wait... See kill_jobs.out in the wd for more details.")
 	
+	
 	pb <- txtProgressBar(style = 3, min = 1, max = length(cmds))
 	tmp <- lapply(1:length(cmds), function(i){
 		#for(i in 1:length(cmds)) {
-		if(verbose > 2) message(cmds[i], "\n")
+		if(verbose > 2) 
+			message(cmds[i], "\n")
 		try(system(cmds[i], intern = TRUE))
-		pb$up(i)
+		if(length(cmds) > 1)
+			pb$up(i)
 	})
 	close(pb)
 	
