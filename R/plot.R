@@ -160,6 +160,9 @@ arrange_flowdef <- function(x, n = 4){
 }
 
 display_mat <- function(x, verbose = get_opts("verbose")){
+	
+	check_args()
+	
 	x$level = 0
 	for(i in 1:nrow(x)){
 		prev = x$prev_jobs[i]
