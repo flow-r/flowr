@@ -58,6 +58,9 @@ if(FALSE){
 
 	## LET fobjs be a list of flow objects to be run
 	submit_run(fobj, wd = "<flow_run_path>", max_processing = 7)
+	
+	## use the devel branch of flowr
+	## devtools:::install_github("sahilseth/flowr", ref = "devel")
 
 
 
