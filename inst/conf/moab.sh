@@ -9,7 +9,7 @@
 #MSUB -V                                               # -V export all env of user to compute nodes
 #MSUB -j oe                                           # merge output from stdout and stderr
 #MSUB -S /bin/bash                                    # use bash shell
-#MSUB -d {{{CWD}}}                                      # the workding dir for each job, this is {{{flow_path}}}/tmp
+#MSUB -d {{{CWD}}}                                      # the workding dir for each job, this is <flow_path>/tmp
 #MSUB -M {{{EMAIL}}}                                    # email address of the person
 #MSUB -m n                                              # when to send a email
 #MSUB {{{DEPENDENCY}}}                                  # Don't remove dependency args come here

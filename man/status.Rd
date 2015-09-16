@@ -8,7 +8,7 @@
 \alias{status}
 \title{status}
 \usage{
-status(x, use_cache = TRUE, verbose = get_opts("verbose"),
+status(x, use_cache = FALSE, verbose = get_opts("verbose"),
   out_format = "markdown")
 
 get_status(x, ...)

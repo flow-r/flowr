@@ -64,7 +64,7 @@ knitr::opts_knit$set(root.dir = normalizePath("."))
 unlink("assets", recursive = TRUE)
 
 fls = c(
-  "README.md" = "index.Rmd",
+  "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
   "vignettes/build-pipes.Rmd" = "docs.Rmd",
   "vignettes/tutorial.Rmd" = "tutorial.Rmd"

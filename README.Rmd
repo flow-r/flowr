@@ -73,8 +73,8 @@ the ideas and concepts used in flowr
 new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://sahilseth.github.io/flowr/flowr/rd.html)
 page
-- You can use a [flow creator](https://sseth.shinyapps.io/flow_creator) a shiny app to aid in
-	designing a shiny new flow
+- You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
+	designing a *shiny* new flow. This provides a good example of the concepts
 
 
 
