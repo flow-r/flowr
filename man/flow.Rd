@@ -59,7 +59,7 @@ jobj2 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial",
 ## As soon as first job on 'job1' is complete
 ## One-To-One
 jobj3 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter",
- dependency_type = "burst", previous_job = "job1", name = "job3")
+ dependency_type = "serial", previous_job = "job1", name = "job3")
 
 fobj <- flow(jobs = list(jobj1, jobj2, jobj3))
 
