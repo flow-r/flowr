@@ -158,8 +158,8 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 		if(verbose > 1) 
 			message("\t", i,": ", x$jobname[i], "\t", appendLF = FALSE)
 		prev_jobs = unlist(strsplit(x$prev_jobs[i], ","))
-		p.sub = subset(x, jobname %in% prev_jobs)$sub_type
-		p.dep = subset(x, jobname %in% prev_jobs)$dep_type
+		p.sub = x[x$jobname %in% prev_jobs, 'sub_type']
+		p.dep = x[x$jobname %in% prev_jobs, 'dep_type']
 		check_dep_sub_type(dep = x$dep_type[i],
 											 sub = x$sub_type[i],
 											 p.sub = p.sub,
