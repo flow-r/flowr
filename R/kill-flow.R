@@ -80,6 +80,8 @@ kill.flow <- function(x,
 	}
 	#flow_details = read_flow_detail_fl(wd)
 
+	check_args()
+	
 	flow_det = to_flowdet(x)
 
 	wd = x@flow_path

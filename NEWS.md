@@ -70,7 +70,7 @@ checking submission and dependency types...
 - job killing and submission now sport a progress bar:
 	- |============================================================      | 70%
 	- This is especially useful flows with thousands of jobs
-- Fixed a bug in lsf.sh template file, where it was missing the -n argument.
+- Fixed 2 important bugs in moab.sh, lsf.sh template file, where it was missing the -n argument.
 - Now the status function has a new argument use_cache. If enabled, it skips 
 fetching statuses of previously completed jobs; this really speeding things up.
 	- Also we have added a progress bar to show the status of this summarization.
