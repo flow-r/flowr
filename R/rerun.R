@@ -135,10 +135,10 @@ rerun.flow <- function(x, mat, def,
 	}
 	
 	
-	message("\nSubsetting... get stuff to re-run:\n")
+	message("\nSubsetting... get steps to re-run:")
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from, select, ignore)
 	def = subset_fdef(fobj = fobj, def = def, start_from = start_from, select, ignore)
-	message(paste(def$jobname, collapse = "\n"))
+	message(paste(def$jobname, collapse = "\n"), "\n")
 	
 	
 	## reset few things before we start the new flow
@@ -179,8 +179,10 @@ update.flow <- function(x, child){
 	
 	child_jobs = jobnames(child)
 	## --- for each job in child update ids
+	## updat the whole job, and not just IDs
 	for(j in child_jobs){
-		x@jobs[[j]]@id = child@jobs[[j]]@id
+		#x@jobs[[j]]@id = child@jobs[[j]]@id
+		x@jobs[[j]] = child@jobs[[j]]
 	}
 	return(x)
 	
