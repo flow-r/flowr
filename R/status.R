@@ -93,13 +93,15 @@ get_status <- function(x, ...) {
 final_status <- function(x){
 	#statuses = sapply(x@jobs, function(y) y@status)
 	statuses = x
-	if(all(statuses == "complete")){
+	if(all(statuses == "completed")){ ## all complete
 		final = "complete"
-	}else if(any(statuses == "errored")){
+	}else if(any(statuses == "errored")){ ## some errored
 		final = "errored"
-	}else if(all(statuses == "pending")){
+	}else if(all(statuses == "pending")){ ## all pending
 		final = "pending"
-	}else if(any(statuses == "processing")){
+	}else if(any(statuses == "processing")){ ## some processing
+		final = "processing"
+	}else if(any(statuses == "pending")){ ## some pending
 		final = "processing"
 	}
 	return(final)
