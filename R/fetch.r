@@ -106,7 +106,7 @@ fetch_pipes <- function(x,
 	}
 
 	if(missing(x)){
-		message("Please supply a name of the pipeline to run, here are the options")
+		message("Since no search pattern was supplied, here is the complete list of available pipelines:")
 		x = ".*"
 	}
 	
@@ -121,7 +121,7 @@ fetch_pipes <- function(x,
 	
 
 	## in case of multiple files, use the last one
-	r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls)
+	r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
 	
 	## seemed travis was repeating some of them
 	## seen here: http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#available-pipelines
@@ -144,7 +144,7 @@ fetch_pipes <- function(x,
 	pipe_print$def = basename(as.character(pipe_print$def))
 	pipe_print$conf = basename(as.character(pipe_print$conf))
 	
-	if(verbose > 1 & !silent) 
+	if(verbose > 0 & !silent) 
 		message(paste(kable(pipe_print), collapse = "\n"))
 
 	if(last_only){

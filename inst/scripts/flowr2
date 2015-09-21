@@ -1,0 +1,53 @@
+#!/usr/bin/env Rscript
+## Copyright 2014, Sahil Seth
+## licence: MIT
+## sahil.seth@me.com
+## A few functions to supplement those already in this package.
+## URL: github.com/sahilseth/funr
+#### -----------------------
+
+
+## One may define their own functions here
+## or load default packages they use quite often
+## for example load devtools, knitr etc.
+
+
+library(funr)
+suppressMessages(library(flowr, verbose = FALSE, quietly = TRUE))
+
+help_text = "
+
+Usage: flowr function [arguments]
+
+  status          Detailed status of a flow(s).
+  rerun           rerun a previously failed flow
+  kill            Kill the flow, upon providing working directory
+  fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
+
+Please use 'flowr -h function' to obtain further information about the usage.
+
+
+Examples:
+wd=<path to a flowr execution folder>
+flowr run x=sleep_pipe platform=local
+flowr run x=sleep_pipe platform=local execute=TRUE
+
+## get status on all the run 
+## (all flows with 'sleep_pipe' in their name are used)
+flowr status x=~/flowr/runs/sleep_pipe*
+## Use parent folder to get summary of all the runs
+flowr status x=~/flowr/runs
+
+## kill the flow
+flowr kill x=~/flowr/runs/sleep_pipe*
+## if their are multiple flows, need to to be sure
+flowr kill x=~/flowr/runs/sleep_pipe* force=TRUE
+
+## using a FULL path to a execution folder
+flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=start_from
+"
+
+
+out = funr(args = commandArgs(trailingOnly = TRUE), script_name = "flowr", help_text = help_text)
+
+funr::render_out(out)
