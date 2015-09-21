@@ -14,6 +14,8 @@ branches:
 
 # install R: use r-packages-precise (https://cran.r-project.org/bin/linux/ubuntu/precise/)
 # as source which is white listed (https://github.com/travis-ci/apt-source-whitelist/)
+## https://github.com/travis-ci/apt-package-whitelist
+## to see the current versions: http://packages.ubuntu.com/precise/text/pandoc
 addons:
   apt:
     sources:
@@ -23,6 +25,7 @@ addons:
     - r-recommended
     - pandoc
     - libcurl3
+    - cabal
 
 # cache local R libraries directory:
 cache:
@@ -62,5 +65,6 @@ script:
 
 after_success:
   - R CMD INSTALL .
+  - cabal update;cabal install pandoc
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy2.sh
   - Rscript -e 'covr::codecov()'
