@@ -49,7 +49,7 @@ install:
   - Rscript -e 'if(!"devtools" %in% rownames(installed.packages())) { install.packages("devtools", dependencies = TRUE) }'
   - Rscript -e 'if(!"covr" %in% rownames(installed.packages())) { install.packages("covr", dependencies = TRUE) }'
   - Rscript -e 'if(!requireNamespace("staticdocs")) devtools::install_github("sahilseth/staticdocs")'
-  - Rscript -e 'if(!requireNamespace("pacakgedocs")) devtools::install_github("sahilseth/packagedocs")'
+  - Rscript -e 'if(!requireNamespace("packagedocs")) devtools::install_github("sahilseth/packagedocs")'
   - Rscript -e 'if(!requireNamespace("params")) devtools::install_github("sahilseth/params")'
   - Rscript -e 'update.packages(ask = FALSE, instlib = "~/Rlib")' ## update all packages !
   - Rscript -e 'devtools::install_deps(pkg = ".", dependencies = TRUE)'
