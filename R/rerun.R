@@ -78,7 +78,7 @@ rerun.character <- function(x, ...){
 
 #' @rdname rerun
 #' @importFrom utils capture.output
-#' @importFrom knitr kable
+#' @importFrom params kable
 rerun.flow <- function(x, mat, def, 
 											 start_from,
 											 execute = TRUE,
@@ -219,7 +219,9 @@ subset_mods <- function(fobj, start_from, select, ignore){
 	
 	## subset jobs using, start from, ignore and select
 	if(!missing(start_from) & !all(is.na(start_from)) )
-		mods = mods[which(grepl(start_from, mods)):length(mods)]
+		mods = mods[which(mods == start_from):length(mods)]
+	
+	##mods = mods[which(grepl(start_from, mods)):length(mods)]
 	
 	if(!missing(select) & !all(is.na(select)))
 		mods = mods[mods %in% select]
