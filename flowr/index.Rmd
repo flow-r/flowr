@@ -52,13 +52,15 @@ across the computing cluster
 ### A few lines, to get started:
 
 ``` {r, eval=FALSE}
-## From the official R repository (may be a few versions behind)
+## From the official R repository (updated every month or so)
 install.packages("flowr")
 
-## OR
-
+## OR for a latest stable version (updated every few days):
 install.packages(devtools)
 devtools::install_github("sahilseth/flowr")
+
+## OR cutting edge devel version
+devtools::install_github("sahilseth/flowr", ref = "devel")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
