@@ -57,7 +57,7 @@
 #' 
 #' @importFrom tools file_path_sans_ext
 #' @importFrom utils tail
-#' @importFrom knitr kable
+#' @importFrom params kable
 #' @export
 #'
 #' @examples {

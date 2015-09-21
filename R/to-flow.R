@@ -316,7 +316,7 @@ proc_jobs <- function(x,
 #' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
 #' @importFrom utils packageVersion
-#' @importFrom knitr kable
+#' @importFrom params kable
 to_flow.list <- function(x, def, 
 												 flowname, 
 												 flow_run_path, 

@@ -101,7 +101,7 @@
 #' @inheritParams to_flow
 #' @param ... not used
 #'
-#' @importFrom knitr kable
+#' @importFrom params kable
 #' 
 #' @export
 to_flowdef <- function(x, ...){

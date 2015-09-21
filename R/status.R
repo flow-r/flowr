@@ -235,7 +235,7 @@ get_status.data.frame <- function(x, verbose, use_cache, ...){
 		}
 	})
 	summ$status = status
-	tmp <- knitr::kable(summ, out_format, output = FALSE)
+	tmp <- params::kable(summ, out_format, output = FALSE)
 	message(paste(tmp, collapse = "\n"))
 	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
 	return(summ)
@@ -266,7 +266,7 @@ summarize_flow_det <- function(x, out_format){
 		}
 	})
 	summ$status = status
-	tmp <- knitr::kable(summ, out_format, output = FALSE)
+	tmp <- params::kable(summ, out_format, output = FALSE)
 	message(paste(tmp, collapse = "\n"))
 	summ = cbind(jobname = rownames(summ), jobnm = nm, summ)
 	return(summ)

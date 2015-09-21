@@ -52,7 +52,7 @@ check.flowmat <- function(x, ...){
 
 
 #' @rdname check
-#' @importFrom knitr kable
+#' @importFrom params kable
 #' @export
 check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 
