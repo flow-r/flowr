@@ -1,7 +1,9 @@
 #' Setup and initialize some scripts.
 #'
 #' @param bin path to bin folder
-#' @param flow_base_path the root folder for all flowr operations
+#' @param flow_base_path The base of flowr configuration and execution folders.
+#' @param flow_conf_path Flowr configuration folder
+#' @inheritParams to_flow
 #'
 #' @details Will add more to this to identify cluster and aid in other things
 #' @export

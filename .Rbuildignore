@@ -1,7 +1,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
 ^\.git/*
+
+## ignore travis files
+.travis_bak.yml
+.travis.yml
 
 
 misc

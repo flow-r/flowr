@@ -11,7 +11,12 @@ setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"),
 \arguments{
 \item{bin}{path to bin folder}
 
-\item{flow_base_path}{the root folder for all flowr operations}
+\item{flow_base_path}{The base of flowr configuration and execution folders.}
+
+\item{flow_run_path}{Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
+[\code{~/flowr/runs}].}
+
+\item{flow_conf_path}{Flowr configuration folder}
 }
 \description{
 Setup and initialize some scripts.

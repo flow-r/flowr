@@ -11,8 +11,7 @@ Depends:
 Imports:
     diagram,
     whisker,
-    tools,
-    knitr
+    tools
 Suggests:
     reshape2,
     ggplot2,
