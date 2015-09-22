@@ -23,9 +23,9 @@ addons:
     packages:
     - r-base-dev
     - r-recommended
-    - pandoc
     - libcurl3
-    - cabal
+    - cabal ## for pandoc
+    
 
 # cache local R libraries directory:
 cache:

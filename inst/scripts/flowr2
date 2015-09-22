@@ -12,8 +12,6 @@
 ## for example load devtools, knitr etc.
 
 
-library(funr)
-suppressMessages(library(flowr, verbose = FALSE, quietly = TRUE))
 
 help_text = "
 
@@ -28,12 +26,16 @@ Please use 'flowr -h function' to obtain further information about the usage.
 
 
 Examples:
-wd=<path to a flowr execution folder>
+## Run a small pipeline
 flowr run x=sleep_pipe platform=local
 flowr run x=sleep_pipe platform=local execute=TRUE
 
+## When running a pipeline, flowr create a unique working 
+## directory for each flow. This is used to monitor, kill and re-run the flow.
+wd=<path to a flowr execution folder>
+
 ## get status on all the run 
-## (all flows with 'sleep_pipe' in their name are used)
+## (all flows with 'sleep_pipe' in their name are checked and their status is shown)
 flowr status x=~/flowr/runs/sleep_pipe*
 ## Use parent folder to get summary of all the runs
 flowr status x=~/flowr/runs
@@ -47,7 +49,10 @@ flowr kill x=~/flowr/runs/sleep_pipe* force=TRUE
 flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=start_from
 "
 
-
+## parse all the arugment using the funr function
+if(!require(funr)) install.packages('funr'); library(funr)
+suppressMessages(library(flowr, verbose = FALSE, quietly = TRUE))
 out = funr(args = commandArgs(trailingOnly = TRUE), script_name = "flowr", help_text = help_text)
+## parse the output nicely using render_funr
+funr::render_funr(out)
 
-funr::render_out(out)

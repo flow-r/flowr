@@ -1,14 +1,23 @@
 ---
-title: "Untitled"
+title: "flowr"
+subtitle: "Streamlining Workflows"
+author: Sahil Seth
+date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette
+  rmarkdown::html_document: 
+    keep_md: yes
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Common Issues and Errors}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
-  packagedocs:
-    self_contained: false
+packagedocs:
     toc: true
+navpills: |
+  <li class="active"><a href='docs.html'>Docs</a></li>
+  <li><a href='tutorial.html'>Tutorial</a></li>
+  <li><a href='rd.html'>Package Ref</a></li>
+  <li><a href='news.html'>News</a></li>
+  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
 ```{r global_options, include=FALSE}

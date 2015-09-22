@@ -4,9 +4,10 @@ subtitle: "Streamlining Workflows"
 author: Sahil Seth
 date: "`r Sys.Date()`"
 output: 
-    rmarkdown::html_vignette
+  rmarkdown::html_document: 
+    keep_md: yes
 vignette: >
-    %\VignetteIndexEntry{Vignette Title}
+    %\VignetteIndexEntry{Tutorial on Building Pipelines}
     %\VignetteEngine{knitr::rmarkdown}
     \usepackage[utf8]{inputenc}
 packagedocs:
