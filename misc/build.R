@@ -1,12 +1,14 @@
 
 options(repos = c(CRAN = "http://cran.rstudio.com"))
-install.packages("drat")
+if(!require(drat))
+	install.packages("drat")
+
 library(drat)
 repo = addRepo("sahilseth")
 
-install.packages("ngsflows")
 #devtools::install_github("sahilseth/ngsflows")
-
+if(!require(ngsflows))
+	install.packages("ngsflows")
 library(ngsflows)
 
 library(staticdocs)
@@ -82,6 +84,7 @@ render("docs.Rmd", output_format = pd_expand)
 check_output("docs.html")
 #system("open docs.html")
 render("tutorial.Rmd", output_format = pd_expand)
+#purl("tutorial.Rmd")
 check_output("tutorial.html")
 
 render("news.Rmd", output_format = pd_expand)

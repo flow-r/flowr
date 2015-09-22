@@ -5,7 +5,7 @@ Description: An interface to streamline design of complex workflows and their de
 Version: 0.9.7.9027
 Date: 2015-08-22
 Depends:
-    R (>= 3.1.0),
+    R (>= 3.0.2),
     methods,
     params  (>= 0.2.8),
     utils

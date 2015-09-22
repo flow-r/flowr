@@ -24,8 +24,7 @@ addons:
     - r-base-dev
     - r-recommended
     - libcurl3
-    - cabal ## for pandoc
-    
+
 
 # cache local R libraries directory:
 cache:
@@ -34,6 +33,15 @@ cache:
 # Be strict when checking our package
 warnings_are_errors: false
 
+# Install binary pandoc from Rstudio
+before_install:
+  - export PATH="$HOME/pandoc:$PATH"
+  - mkdir $HOME/pandoc
+  - curl -O https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.3.zip
+  - unzip -j pandoc-1.12.3.zip pandoc-1.12.3/linux/debian/x86_64/pandoc
+      -d $HOME/pandoc
+  - chmod +x $HOME/pandoc/pandoc
+  - pandoc --version
 
 # install the package and dependencies:
 # - create directory for R libraries (if not already exists)
