@@ -4,10 +4,10 @@
 ## proceed with caution !
 
 
-#' render dependency
-#' Advanced use, for debugging. Or adding a currenltly un-supported platform.
-#' @param x is a `job` object
-#' @param ... not used
+# render dependency
+# Advanced use, for debugging. Or adding a currenltly un-supported platform.
+# @param x is a `job` object
+# @param ... not used
 render_dependency <- function(x, ...) {
 	# 	message("input x is ", class(x))
 	UseMethod("render_dependency")
@@ -97,17 +97,15 @@ render_dependency.sge <- function(x, index, ...){
 render_dependency.slurm <- function(x, index, ...){
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
-		dep = sprintf("-W depend=afterok:%s",
+		dep = sprintf("--dependency==afterok:%s",
 									paste(unlist(x@dependency), collapse = ":"))
-	}else if(dep_type == "serial"){
-		dep <- sprintf("-W %s", paste(" depend=afterok:",
-																	x@dependency[[index]],
-																	sep="", collapse=":"))
+	}else if(dep_type == "serial"){ ## collapse jobs at a specific index
+		dep <- sprintf("--dependency=afterok:%s", 
+									 paste(x@dependency[[index]], sep="", collapse=":"))
 	}else if(dep_type == "burst"){
-		index=1
-		dep <- sprintf("-W %s",paste(" depend=afterok:",
-																 x@dependency[[index]], sep="",
-																 collapse=":"))
+		index=1 ## ALL of them would see index 1
+		dep <- sprintf("--dependency=afterok:%s",
+									 paste(x@dependency[[index]], sep="", collapse=":"))
 	}else{dep = ""}
 	return(dep)
 }

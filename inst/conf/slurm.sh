@@ -1,30 +1,35 @@
+#!/bin/bash
+#SBATCH -J {{{JOBNAME}}}
+#SBATCH -N {{{NODES}}}
+#SBATCH --chdir {{{CWD}}}
+#SBATCH --error={{{STDOUT}}}
+#SBATCH --output={{{STDOUT}}}
+#SBATCH account {{{QUEUE}}}
+#SBATCH --time={{{WALLTIME}}} 
+#SBATCH --mem= {{{MEMORY}}}
+#SBATCH -n {{{CPU}}}
+#SBATCH --cpus-per-task {{{CPU}}}
+#SBATCH {{{DEPENDENCY}}}
+#SBATCH {{{EXTRA_OPTS}}}
+#SBATCH --exclusive 
+
+
 ## example from
 ## https://www.hpc2n.umu.se/node/738
+## more details in: https://computing.llnl.gov/tutorials/moab/man/srun.txt
+## srun ./my_program
 
 
+## ------------------------------ n o t e s -------------------------##
+## All variables specified above are replaced on the fly. 
+## Most of them come from the flow_definition file.
+## This is a core component of how flowr interacts with the cluster.
+## Please refer to the platform manual, before editing this file
+## ------------------------------------------------------------------##
 
-#!/bin/bash
-# The name of the account you are running in. If none is given, you 
-# will run in the default account, which will have lower priority
-# and can take a long time to start. 
-#SBATCH -A <account> 
-# Asking for two nodes
-#SBATCH -N 2
-# and two processors
-#SBATCH -n 2
-# and two cpu's per task
-#SBATCH -c 2
-
-# This means the job cannot share nodes with any other running 
-# jobs - it is the opposite of --share 
-#SBATCH --exclusive 
-# The job may take up to 5 minutes to complete 
-#SBATCH --time=00:05:00 
-# Set the names for the error and output files 
-#SBATCH --error=job.%J.err 
-#SBATCH --output=job.%J.out
-
-srun ./my_program
+## --- DO NOT EDIT from below here---- ##
+## following will always overwrite previous output file, if any. See https://github.com/sahilseth/flowr/issues/13
+set +o noclobber
 
 touch {{{TRIGGER}}}
 echo 'BGN at' $(date)
@@ -37,4 +42,3 @@ exitstat=$?
 echo 'END at' $(date)
 echo ${exitstat} > {{{TRIGGER}}}
 exit ${exitstat}
-
