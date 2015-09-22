@@ -18,7 +18,7 @@ navpills: |
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.7.9025</p>
+<p><strong>Version:</strong> 0.9.7.9027</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
@@ -26,6 +26,7 @@ navpills: |
 
 <h4>Depends</h4>
 <p>
+R (>= 3.0.2),
 methods,
 params  (>= 0.2.8),
 utils</p>
@@ -34,12 +35,12 @@ utils</p>
 <p>
 diagram,
 whisker,
-tools,
-knitr</p>
+tools</p>
 
 <h4>Suggests</h4>
 <p>
 reshape2,
+knitr,
 ggplot2,
 openxlsx,
 testthat</p>
