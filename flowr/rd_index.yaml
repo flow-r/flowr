@@ -2,9 +2,9 @@
   section_name: Creating a Flow
   description:
   topics:
-    - to_flowmat
-    - flowdef
     - to_flow
+    - to_flowmat
+    - to_flowdef
 -
   section_name: Submiting and managing a flow
   description:
