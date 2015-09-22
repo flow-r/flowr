@@ -4,7 +4,7 @@
 \alias{run}
 \alias{run_flow}
 \alias{run_pipe}
-\title{run pipelines}
+\title{Run automated Pipelines}
 \usage{
 run(x, platform, def, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
@@ -23,13 +23,45 @@ run_pipe(x, platform, def, flow_run_path = get_opts("flow_run_path"),
 
 \item{execute}{TRUE/FALSE}
 
-\item{...}{passed onto the pipeline function specified in x}
+\item{...}{passed onto the pipeline function as specified in x}
 }
 \description{
-Running examples flows
-This wraps a few steps:
-Get all the commands to run (flow_mat)
-Create a `flow` object, using flow_mat and a default flowdef (picked from the same folder).
-Use `submit_flow()` to submit this to the cluster.
+Run complete pipelines, by wrapping several steps into one convinient function:
+
+Taking \code{sleep_pipe} as a example.
+\itemize{
+  \item Use \link{fetch_pipes} to get paths to a Rscript, flowdef file and optionally a configuration file
+  with various default options used.
+  \item Create a flowmat (using the function defined in the Rscript)
+  \item Create a `flow` object, using flowmat created and flowdef (as fetched using fetch_pipes)
+  \item Submit the flow to the cluster (using \link{submit_flow})
+}
+}
+\examples{
+\dontrun{
+
+## Run a short pipeline (dry run)
+run("sleep_pipe")
+
+## Run a short pipeline on the local machine
+run("sleep_pipe", platform = "local", execute = TRUE)
+
+## Run a short pipeline on the a torque cluster (qsub)
+run("sleep_pipe", platform = "torque", execute = TRUE)
+
+## Run a short pipeline on the a MOAB cluster (msub)
+run("sleep_pipe", platform = "moab", execute = TRUE)
+
+## Run a short pipeline on the a IBM (LSF) cluster (bsub)
+run("sleep_pipe", platform = "lsf", execute = TRUE)
+
+## Run a short pipeline on the a MOAB cluster (msub)
+run("sleep_pipe", platform = "moab", execute = TRUE)
+
+## change parameters of the pipeline
+## All extra parameters are passed on to the function function.
+run("sleep_pipe", platform = "lsf", execute = TRUE, x = 5)
+
+}
 }
 

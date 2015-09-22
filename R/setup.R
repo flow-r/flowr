@@ -1,11 +1,16 @@
-#' Setup and initialize some scripts.
+#' Setup and initialize flowr
 #'
+#' @description 
+#' This functions creates a directory structure in user's home directory. 
+#' Additionally it creates a shortcut to the \code{flowr} helper script in \code{~/bin}.
+#' 
+#' 
 #' @param bin path to bin folder
 #' @param flow_base_path The base of flowr configuration and execution folders.
 #' @param flow_conf_path Flowr configuration folder
 #' @inheritParams to_flow
 #'
-#' @details Will add more to this to identify cluster and aid in other things
+#' @details Will add more to this, to identify cluster and aid in other things.
 #' @export
 setup <- function(bin = "~/bin", 
 									flow_base_path = get_opts("flow_base_path"),
@@ -26,5 +31,10 @@ setup <- function(bin = "~/bin",
 	dir.create(flow_base_path, showWarnings = FALSE)
 	dir.create(flow_conf_path, showWarnings = FALSE)
 	dir.create(flow_run_path, showWarnings = FALSE)
+	
+	## fetch conf files and copy them, if they exist show warning
+	confs = sapply(c("flowr","ngsflows"), function(x) fetch_conf(x, verbose = 0)[1])
+	tmp2 = file.copy(confs, flow_conf_path, overwrite = FALSE)
+	
 	message(tmp)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/class-def.R
 \name{job}
 \alias{job}
-\title{job class}
+\title{Describing details of the job object}
 \usage{
 job(cmds = "", name = "myjob", q_obj = new("queue"), previous_job = "",
   cpu = 1, memory, walltime, submission_type = c("scatter", "serial"),
@@ -30,7 +30,7 @@ job(cmds = "", name = "myjob", q_obj = new("queue"), previous_job = "",
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
 }
 \description{
-job class
+Internal function (used by to_flow), which aids in creating a job object.
 }
 \examples{
 qobj <- queue(platform="torque")

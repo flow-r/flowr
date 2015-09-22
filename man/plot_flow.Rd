@@ -6,7 +6,7 @@
 \alias{plot_flow.flow}
 \alias{plot_flow.flowdef}
 \alias{plot_flow.list}
-\title{plot_flow}
+\title{Plot a clean and scalable flowchart describing the (work)flow}
 \usage{
 plot_flow(x, ...)
 
@@ -22,20 +22,18 @@ plot_flow(x, ...)
 \arguments{
 \item{x}{Object of class \code{flow}, or a list of flow objects or a flowdef}
 
-\item{...}{experimental}
+\item{...}{experimental and only for advanced use.}
 
-\item{detailed}{include some details}
+\item{detailed}{include submission and dependency types in the plot [TRUE]}
 
-\item{type}{1 is original, and 2 is a elipse with less details}
+\item{type}{1 is original, and 2 is a elipse with less details [1]}
 
-\item{pdf}{create a pdf instead of plotting interactively}
+\item{pdf}{create a pdf instead of plotting interactively [FALSE]}
 
-\item{pdffile}{output file name for the pdf file}
+\item{pdffile}{output file name for the pdf file. [\code{flow_path/flow_details.pdf}]}
 }
 \description{
-plot the flow object
-
-plot_flow.character: works on a flowdef file.
+Plot a flowchart using a flow object or flowdef
 }
 \examples{
 qobj = queue(type="lsf")

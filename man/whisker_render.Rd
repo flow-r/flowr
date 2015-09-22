@@ -2,7 +2,7 @@
 % Please edit documentation in R/submit-job.R
 \name{whisker_render}
 \alias{whisker_render}
-\title{Wrapper around whisker.render with some sugar on it...}
+\title{Wrapper around whisker.render with some additional checks}
 \usage{
 whisker_render(template, data)
 }
@@ -12,6 +12,7 @@ whisker_render(template, data)
 \item{data}{a list with variables to be used to fill in the template.}
 }
 \description{
-This is a wrapper around \link{whisker.render}
+Internal function (used by submit_job), which creates a submission script using
+platform specific templates.
 }
 

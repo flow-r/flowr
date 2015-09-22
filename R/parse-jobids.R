@@ -1,8 +1,11 @@
 
 
-#' parse_jobids
-#' @param jobids output from HPCC upon job submission, as a character vector
-#' @param platform string specifying the platform. This determines how the jobids are parsed
+# Extract jobids from HPCC submission output
+# 
+# Internal function (used by \link{submit_flow}), to extract jobids from hpcc submission output.
+# 
+# @param jobids output from HPCC upon job submission, as a character vector
+# @param platform string specifying the platform. This determines how the jobids are parsed
 #' @importFrom stats na.omit
 parse_jobids <- function(jobids, platform){
 

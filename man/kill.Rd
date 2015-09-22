@@ -30,11 +30,13 @@ it here; fot custom platoforms.}
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
 }
 \description{
-\strong{A pipeline requires files which are created at the end of the submit_flow command}.
+NOTE:
 
-Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd).
-If submit_flow is interrupted, flow_details etc files are not created, thus flowr looses the association
-of jobs with flow instance.
+\strong{This requires files which are created at the end of the \link{submit_flow} command}.
+
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use \code{kill(flow_wd)}.
+If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association
+of jobs with flow instance and cannot monitor, kill or re-run the flow.
 }
 \examples{
 \dontrun{

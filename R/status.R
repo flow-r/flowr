@@ -12,30 +12,38 @@ get_wds <- function(x){
 }
 
 
-#' @title status
-#' @description Summarize status of executed flow(x)
+#' @title Monitor status of flow(s)
+#' 
+#' @description 
+#' Summarize status of a flow OR multiple flows OR a high-level summary of all flows in a folder.
+#' 
+#' 
 #' @aliases status
 #'
 #' @param x path to the flow root folder or a parent folder to summarize several flows.
-#' @param use_cache by default is true. This skips checking status of jobs which have already been created.
-#' To get a more accurate summary, one may turn this off.
-#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html...
+#' @param use_cache This skips checking status of jobs which have already been completed a
+#' and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]
+#' @param out_format passed onto knitr:::kable. supports: markdown, rst, html... [markdown]
 #' @inheritParams to_flow
 #'
 #' @details
 #' basename(x) is used in a wild card search.
 #'
 #' \itemize{
-#' \item If x is a path with a single flow, it outputs the status of one flow.
-#' \item If the path has more than one flow then this could give a summary of **all** of them.
-#' \item Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
+#'   \item Get status of all the flows: 
+#'   (all flows with 'sleep_pipe' in their name are checked and their status is shown)
+#'   <br>
+#'   \code{flowr status x=~/flowr/runs/sleep_pipe*}
+#'   \item Provide a high level summary of ALL flows in a folder:
+#'   <br>
+#'    \code{flowr status x=~/flowr/runs}
 #' }
 #'
-#' Alternatively, x can also be a flow object.
+#' Use \strong{use_cache}=TRUE to speed up checking the status. 
+#' This assumes that no new jobs have been submitted and skips (re-)checking status of 
+#' completed jobs.
 #' 
-#' Use \strong{use_cache} is to speed up checking status of jobs which have already been completed.
-#' Essentially this skips creation of a flow details text file if it already exists
-#' and also skips reading the trigger files for jobs whose exit code was 0, last time this was checked.
+#' Once all the jobs have been submitted to the cluster you may always use \code{use_cache=TRUE}.
 #' 
 #' 
 #'
@@ -288,12 +296,12 @@ summarize_flow_det <- function(x, out_format){
 
 ## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
-#' update_flow_det
-#' @param wd flow working directory
-#' @param mat_cmd a table with details about cmd files
-#' @details
-#'
-#' Get the flow_det files from wd, and update it with new statuses.
+# update_flow_det
+# @param wd flow working directory
+# @param mat_cmd a table with details about cmd files
+#
+# @details
+# Get the flow_det files from wd, and update it with new statuses.
 update_flow_det <- function(wd, mat_cmd){
 	.Deprecated("to_flowdet")
 	flow_det = read_flow_detail_fl(wd)

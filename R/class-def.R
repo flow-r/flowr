@@ -7,7 +7,8 @@
 #### ----------------------- Declaring new classes
 #### ----------------------- This class is a link between cluster and job management
 
-#' @title queue defines the class
+#' @rdname queue
+#' 
 #' @exportClass queue
 setClass("queue", representation(submit_exe = "character", ## submit job
 																 queue = "character", ## type of queue
@@ -52,8 +53,8 @@ setClass("moab", contains = "job")
 setClass("slurm", contains = "job")
 
 
-
-#' flow defines the class
+#' @rdname flow
+#' 
 #' @exportClass flow
 setClass("flow", representation(jobs = "list",
 																flow_run_path = "character",
@@ -66,11 +67,13 @@ setClass("flow", representation(jobs = "list",
 																version = "character",
 																execute = "logical"))
 
-#### ---------------------- Functions to create new classes
-#' Create a \code{queue} object which containg details about how a job is submitted.
+
+#' @rdname queue
+#' 
+#' @title A \code{queue} object defines details regarding how a job is submitted
 #'
-#' This function defines the queue used to submit jobs to the cluster. In essence details about the
-#' computing cluster in use.
+#' @description 
+#' Internal function (used by \link{to_flow}), to define the format used to submit a job.
 #'
 #' @param object this is not used currenlty, ignore.
 #' @param platform Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]
@@ -233,7 +236,9 @@ queue <- function(object,
 ## submission_type: this decides that the cmds to be submittion in which manner
 ## flow_type: if multi dependencies, wait for all or according to order
 
-#' job class
+#' Describing details of the job object
+#' 
+#' Internal function (used by to_flow), which aids in creating a job object.
 #'
 #' @param cmds the commands to run
 #' @param name name of the job
@@ -313,26 +318,21 @@ job <- function(cmds = "",
 	return(object)
 }
 
-#' Flow constructor
+#' Describing the flow class
 #' 
-#' @param x [used by is.flow] a flow object
-#' @param jobs \code{list} A list of jobs to be included in this flow
-#' @param name \code{character} Name of the flow. Defaults to \code{'newname'}
-#' Used in \link{submit_flow} to name the working directories.
-#' @param desc \code{character} Description of the flow
-#' This is used to name folders (when submitting jobs, see \link{submit_flow}).
-#' It is good practice to avoid spaces and other special characters.
-#' An underscore '_' seems like a good word separator.
-#' Defaults to 'my_super_flow'. We usually use this to put sample names of the data.
-#' @param mode \code{character} Mode of submission of the flow.
-#' @param flow_run_path The base path of all the flows you would submit.
-#' Defaults to \code{~/flows}. Best practice to ignore it.
-#' @param trigger_path \code{character}
-#' Defaults to \code{~/flows/trigger}. Best practice to ignore it.
-#' @param flow_path \code{character}
-#' @param status \code{character} Not used at this time
+#' Internal function (used by \link{to_flow}), which aids in creating a flow object.
+#' 
+#' @param jobs \code{list}: A list of jobs to be included in this flow
+#' @param name \code{character}: Name of the flow. ['newflow']
+#' @param desc \code{character} Description of the flow, used to uniquely identify a 
+#' flow instance. ['my_super_flow']
+#' @param mode \code{character} Mode of submission of the flow (depreciated). ['scheduler']
+#' @param flow_run_path The base path of all the flows you would submit. [~/flows]
+#' @param trigger_path \code{character} [\code{~/flows/trigger}].
+#' @param flow_path \code{character}: A unique path identifying a flow instance, populated by \link{submit_flow}.
+#' @param status \code{character}: Status of the flow.
 #' @param version version of flowr used to create and execute this flow.
-#' @param execute executtion status of flow object.
+#' @param execute executtion status of flow object. [FALSE]
 #' @export
 #' @examples
 #' cmds = rep("sleep 5", 10)
@@ -388,11 +388,6 @@ flow <- function(
 	return(object)
 }
 
-#' @rdname flow
-#' @export
-is.flow <- function(x){
-	class(x)[1] == "flow"
-}
 
 
 if (FALSE){

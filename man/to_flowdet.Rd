@@ -5,7 +5,7 @@
 \alias{to_flowdet.character}
 \alias{to_flowdet.flow}
 \alias{to_flowdet.rootdir}
-\title{to_flowdet}
+\title{Create a flow's submission detail file}
 \usage{
 to_flowdet(x, ...)
 
@@ -21,12 +21,13 @@ to_flowdet(x, ...)
 \item{...}{not used}
 }
 \description{
-to_flowdet
-
-get a flow_details file from the directory structure. This has less information than the
-one generated using a flow object. Lacks jobids etc...
+Create a file describing details regarding jobs ids, submission scripts etc.
 }
 \details{
+The path provided should contain a flow_detaits.rds file (which is used to extract all the information).
+
+Incase a parent folder with multiple flows is provided information regarding jobids is omitted.
+
 if x is char. assumed a path, check if flow object exists in it and read it.
 If there is no flow object, try using a simpler function
 }

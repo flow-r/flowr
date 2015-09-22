@@ -1,12 +1,14 @@
 
 #' @rdname check
-#' @title Check consistency of flowdef and flowmat
-#' @description 
-#' Currently checks S3 flowdef & flowmat for consistency.
+#' 
+#' @title 
+#' Check consistency of flowdef and flowmat
+#' 
+#' Check consistency of flowdef and flowmat, using various rules.
 #'
 #' @param x a flowdef or flowmat object
-#' @param verbose be chatty
-#' @param ... suppled to \code{check.classname} function
+#' @param ... Passed onto either \code{check.flowdef} OR \code{check.flowmat} functions
+#' @inheritParams to_flow
 #'
 #' @details 
 #' 

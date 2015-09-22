@@ -4,7 +4,9 @@
 \alias{check}
 \alias{check.flowdef}
 \alias{check.flowmat}
-\title{Check consistency of flowdef and flowmat}
+\title{Check consistency of flowdef and flowmat
+
+Check consistency of flowdef and flowmat, using various rules.}
 \usage{
 check(x, ...)
 
@@ -15,12 +17,16 @@ check(x, ...)
 \arguments{
 \item{x}{a flowdef or flowmat object}
 
-\item{...}{suppled to \code{check.classname} function}
+\item{...}{Passed onto either \code{check.flowdef} OR \code{check.flowmat} functions}
 
-\item{verbose}{be chatty}
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
 }
 \description{
-Currently checks S3 flowdef & flowmat for consistency.
+Check consistency of flowdef and flowmat
+
+Check consistency of flowdef and flowmat, using various rules.
 }
 \details{
 \strong{A typical output from flowdef} with verbose level: 2

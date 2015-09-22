@@ -5,7 +5,8 @@ if(FALSE){
 }
 
 
-#' @title Re-run a pipeline in case of hardware or software failures.
+#' @title 
+#' Re-run a pipeline in case of hardware or software failures.
 #' @description 
 #' 
 #' \itemize{
@@ -36,9 +37,10 @@ if(FALSE){
 #' It reads the \link{flow} object from the flow_details.rds file, and extracts flowdef and flowmat from it 
 #' using \link{to_flowmat} and \link{to_flowdef} functions.
 #' 
-#' \strong{New flowmat / flowdef} for re-run:
+#' \strong{Using new flowmat OR flowdef for re-run}:
 #' 
-#' Optionally, if either of these (flowmat or flowdef) are supplied, supplied ones are used instead for the new submission.
+#' Optionally, if either of flowmat or flowdef are supplied; supplied ones are used instead of those
+#' extracted from previous submission.
 #' 
 #' This functions efficiently updates job details of the latest submission into the previous file; thus information
 #' regarding previous job ids and their status is not lost.
@@ -232,10 +234,10 @@ subset_mods <- function(fobj, start_from, select, ignore){
 	return(mods)
 }
 
-#' subset_fmat
-#'
-#' @param mat a part of flowmat
-#' @param fobj flow object
+# subset_fmat
+#
+# @param mat a part of flowmat
+# @param fobj flow object
 #' @inheritParams rerun
 subset_fmat <- function(fobj, mat, start_from, select, ignore){
 	
@@ -250,11 +252,10 @@ subset_fmat <- function(fobj, mat, start_from, select, ignore){
 
 
 
-#' subset_fdef
-#' @param fobj flow object
-#' @param def flowdef
+# subset_fdef
+# @param fobj flow object
+# @param def flowdef
 #' @inheritParams rerun
-#'
 subset_fdef <- function(fobj, def, start_from, select, ignore){
 	
 	if(missing(def))
@@ -270,11 +271,10 @@ subset_fdef <- function(fobj, def, start_from, select, ignore){
 	return(def)
 }
 
-#' subset flow details file
-#' @param fobj flow object
-#' @param det flowdet
+# subset flow details file
+# @param fobj flow object
+# @param det flowdet
 #' @inheritParams rerun
-#'
 subset_fdet <- function(fobj, det, start_from, select, ignore){
 	
 	if(missing(det))

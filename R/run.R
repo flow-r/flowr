@@ -1,26 +1,58 @@
 
 
-#' run pipelines
+#' Run automated Pipelines
 #'
 #' @description
-#' Running examples flows
-#' This wraps a few steps:
-#' Get all the commands to run (flow_mat)
-#' Create a `flow` object, using flow_mat and a default flowdef (picked from the same folder).
-#' Use `submit_flow()` to submit this to the cluster.
+#' Run complete pipelines, by wrapping several steps into one convinient function:
+#' 
+#' Taking \code{sleep_pipe} as a example.
+#' \itemize{
+#'   \item Use \link{fetch_pipes} to get paths to a Rscript, flowdef file and optionally a configuration file
+#'   with various default options used.
+#'   \item Create a flowmat (using the function defined in the Rscript)
+#'   \item Create a `flow` object, using flowmat created and flowdef (as fetched using fetch_pipes)
+#'   \item Submit the flow to the cluster (using \link{submit_flow})
+#' }
 #'
 #' @param x name of the pipeline to run. This is a function called to create a flow_mat.
 #' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
 #' @param platform what platform to use, overrides flowdef
 #' @param execute TRUE/FALSE
-#' @param ... passed onto the pipeline function specified in x
+#' @param ... passed onto the pipeline function as specified in x
+#'
 #'
 #' @export
 #'
 #' @importFrom params load_opts read_sheet write_sheet
 #'
 #' @aliases run_flow
+#' 
+#' @examples \dontrun{
+#' 
+#' ## Run a short pipeline (dry run)
+#' run("sleep_pipe")
+#' 
+#' ## Run a short pipeline on the local machine
+#' run("sleep_pipe", platform = "local", execute = TRUE)
+#' 
+#' ## Run a short pipeline on the a torque cluster (qsub)
+#' run("sleep_pipe", platform = "torque", execute = TRUE)
+#' 
+#' ## Run a short pipeline on the a MOAB cluster (msub)
+#' run("sleep_pipe", platform = "moab", execute = TRUE)
+#' 
+#' ## Run a short pipeline on the a IBM (LSF) cluster (bsub)
+#' run("sleep_pipe", platform = "lsf", execute = TRUE)
+#' 
+#' ## Run a short pipeline on the a MOAB cluster (msub)
+#' run("sleep_pipe", platform = "moab", execute = TRUE)
+#' 
+#' ## change parameters of the pipeline
+#' ## All extra parameters are passed on to the function function.
+#' run("sleep_pipe", platform = "lsf", execute = TRUE, x = 5)
+#' 
+#' }
 run <- function(x,
 	platform,
 	def,

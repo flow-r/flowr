@@ -6,7 +6,7 @@
 \alias{get_status.data.frame}
 \alias{get_status.flow}
 \alias{status}
-\title{status}
+\title{Monitor status of flow(s)}
 \usage{
 status(x, use_cache = FALSE, verbose = get_opts("verbose"),
   out_format = "markdown")
@@ -22,34 +22,38 @@ get_status(x, ...)
 \arguments{
 \item{x}{path to the flow root folder or a parent folder to summarize several flows.}
 
-\item{use_cache}{by default is true. This skips checking status of jobs which have already been created.
-To get a more accurate summary, one may turn this off.}
+\item{use_cache}{This skips checking status of jobs which have already been completed a
+and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
 [\code{get_opts("verbose")}] [1]}
 
-\item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html...}
+\item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html... [markdown]}
 
 \item{...}{not used}
 }
 \description{
-Summarize status of executed flow(x)
+Summarize status of a flow OR multiple flows OR a high-level summary of all flows in a folder.
 }
 \details{
 basename(x) is used in a wild card search.
 
 \itemize{
-\item If x is a path with a single flow, it outputs the status of one flow.
-\item If the path has more than one flow then this could give a summary of **all** of them.
-\item Instead if x is supplied with paths to more than one flow, then this individually prints status of each.
+  \item Get status of all the flows:
+  (all flows with 'sleep_pipe' in their name are checked and their status is shown)
+  <br>
+  \code{flowr status x=~/flowr/runs/sleep_pipe*}
+  \item Provide a high level summary of ALL flows in a folder:
+  <br>
+   \code{flowr status x=~/flowr/runs}
 }
 
-Alternatively, x can also be a flow object.
+Use \strong{use_cache}=TRUE to speed up checking the status.
+This assumes that no new jobs have been submitted and skips (re-)checking status of
+completed jobs.
 
-Use \strong{use_cache} is to speed up checking status of jobs which have already been completed.
-Essentially this skips creation of a flow details text file if it already exists
-and also skips reading the trigger files for jobs whose exit code was 0, last time this was checked.
+Once all the jobs have been submitted to the cluster you may always use \code{use_cache=TRUE}.
 }
 \examples{
 \dontrun{

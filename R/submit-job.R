@@ -1,8 +1,9 @@
 
 ## --- submit job as part of a flow, this would be called from function flow
 
-#' @title submit_job
-#' @description submit_job
+#' @title Submit a step of a flow
+#' @description 
+#' Internal function (used by submit_flow), which submit a single step of a flow.
 #'
 #' @param jobj Object of calls \link{job}
 #' @param fobj Object of calls \link{flow}
@@ -97,14 +98,13 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 
 
 
-#' render_queue_cmd
-#'
-#' @param file path to the output file
-#' @param jobj job object
-#' @param index If more than one, which command to focus on. Can be from \code{1:length(cmds)}
-#' @param fobj flow object
+# render_queue_cmd
+#
+# @param file path to the output file
+# @param jobj job object
+# @param index If more than one, which command to focus on. Can be from \code{1:length(cmds)}
+# @param fobj flow object
 #' @importFrom utils tail
-#'
 render_queue_cmd <- function(jobj, file, index, fobj){
 	if(get_opts("verbose") > 1)
 		message("Working on ", jobj@name, " with index ", index)
@@ -178,7 +178,12 @@ create_queue_cmd=render_queue_cmd
 #cmd <- .create_queue_cmd(obj, file=files[i], index=i, fobj = fobj)
 
 
-#' @title Wrapper around whisker.render with some sugar on it...
+#' @title 
+#' Wrapper around whisker.render with some additional checks
+#' 
+#' @description 
+#' Internal function (used by submit_job), which creates a submission script using 
+#' platform specific templates.
 #'
 #' @description This is a wrapper around \link{whisker.render}
 #' @param template template used

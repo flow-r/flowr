@@ -2,18 +2,21 @@
 
 #' @rdname plot_flow
 #'
-#' @title plot_flow
-#' @description plot the flow object
+#' @title 
+#' Plot a clean and scalable flowchart describing the (work)flow
+#' 
+#' @description 
+#' Plot a flowchart using a flow object or flowdef
 #'
 #' @aliases plot_flow plot_flow.list plot_flow.flow
 #' @aliases plot
 #'
 #' @param x Object of class \code{flow}, or a list of flow objects or a flowdef
-#' @param detailed include some details
-#' @param pdf create a pdf instead of plotting interactively
-#' @param pdffile output file name for the pdf file
-#' @param type 1 is original, and 2 is a elipse with less details
-#' @param ... experimental
+#' @param detailed include submission and dependency types in the plot [TRUE]
+#' @param pdf create a pdf instead of plotting interactively [FALSE]
+#' @param pdffile output file name for the pdf file. [\code{flow_path/flow_details.pdf}]
+#' @param type 1 is original, and 2 is a elipse with less details [1]
+#' @param ... experimental and only for advanced use.
 #'
 #' @export plot_flow
 #' @import diagram
@@ -48,7 +51,6 @@ plot_flow <- function(x, ...) {
 
 ## ------------- make a flowchart using the object
 #' @rdname plot_flow
-#' @method plot_flow flow
 #' @export
 plot_flow.flow <- function(x, ...){
 	
@@ -62,7 +64,6 @@ plot_flow.flow <- function(x, ...){
 ## compatible with a list of flows as well !
 
 #' @rdname plot_flow
-#' @method plot_flow list
 #' @export
 plot_flow.list <- function(x, ...){ # nocov start
 	tmp <- lapply(x, function(y)
@@ -71,7 +72,6 @@ plot_flow.list <- function(x, ...){ # nocov start
 } # nocov end
 
 #' @rdname plot_flow
-#' @description plot_flow.character: works on a flowdef file.
 #' @export
 plot_flow.character <- function(x, ...){
 	def = as.flowdef(x)
@@ -104,10 +104,10 @@ plot_flow.flowdef <- function(x,
 	invisible(p)
 }
 
-#' split_multi_dep
-#' Split rows with multiple dependencies
-#' @param x this is a flow def
-#' @importFrom utils head
+# split_multi_dep
+# Split rows with multiple dependencies
+# @param x this is a flow def
+# @importFrom utils head
 split_multi_dep <- function(x){
 	## --- handle cases where we have multiple dependencies
 	multi_rows <- grep(",", x$prev_jobs)
@@ -184,10 +184,13 @@ display_mat <- function(x, verbose = get_opts("verbose")){
 	table(x$level)
 }
 
-#' calc_boxdim
-#' @param x number of jobs
-#' @param detailed detailed
-#' @param pdf pdf
+# Calculate Size of the box
+# 
+# Internal function (called by plot_flow), used to calculate size of box.
+# 
+# @param x number of jobs
+# @param detailed detailed
+# @param pdf pdf
 calc_boxdim <- function(x, detailed, pdf){
 	
 	h = dev.size("cm")[2] ## height
@@ -213,10 +216,12 @@ calc_boxdim <- function(x, detailed, pdf){
 	list(wd = wd, ht = ht, detail.offset = detail.offset)
 }
 
-#' Calculate font size based on the size of the window
-#'
-#' @param verbose display verbose messages
-#' @param x box height
+# Calculate font size based on the size of the window
+# 
+# Internal function (called by plot_flow), used to calculate font size.
+#
+# @param verbose display verbose messages
+# @param x box height
 calc_fontsize <- function(x, verbose = get_opts("verbose")){
 	
 	## get height of the window
@@ -231,9 +236,11 @@ calc_fontsize <- function(x, verbose = get_opts("verbose")){
 	list(cex = cex, cex_detail = cex_detail)
 }
 
-#' uses height of the box
-#'
-#' @param x boxht
+# Uses height of the box to calculate size of the shadow
+# 
+# Internal function (called by plot_flow), used to calculate size of box.
+#
+# @param x boxht
 calc_shadowsize <- function(x){
 	## get height of the window
 	sz = x * 0.013
@@ -242,11 +249,13 @@ calc_shadowsize <- function(x){
 }
 
 
-#' Title
-#'
-#' @param pdf creating pdf of displaying interactively
-#' @param verbose display verbose messages
-#' @param x boxht height of the box, as returned by calc_box
+# Calculate size of Arrows
+# 
+# Internal function (called by plot_flow), used to calculate size of arrows.
+#
+# @param pdf creating pdf of displaying interactively
+# @param verbose display verbose messages
+# @param x boxht height of the box, as returned by calc_box
 calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
 	
 	## width of the arrow is 40 times the box ht
