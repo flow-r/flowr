@@ -5,6 +5,7 @@
     - to_flow
     - to_flowmat
     - to_flowdef
+    - check
 -
   section_name: Submiting and managing a flow
   description:
@@ -40,6 +41,6 @@
   topics:
     - get_unique_id
     - to_flowdet
-    - parse_jobids
     - check_args
+    - get_wds
 -

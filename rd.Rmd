@@ -376,6 +376,64 @@ your institutions guide to specify these.</p>
 
 
 
+
+
+## check
+
+<h3>Check consistency of flowdef and flowmat
+
+Check consistency of flowdef and flowmat, using various rules.</h3>
+
+<p class="rd-p">Check consistency of flowdef and flowmat
+Check consistency of flowdef and flowmat, using various rules.</p>
+
+<h4>Usage</h4>
+<pre class="r"><code><div>check(x, ...)</div>
+<div>## method for class 'flowmat'
+check(x, ...)</div>
+<div>## method for class 'flowdef'
+check(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+
+<h4>Arguments</h4>
+<dl class="rd-dl">
+  <dt>x</dt>
+  <dd class="rd-dd">a flowdef or flowmat object</dd>
+  <dt>...</dt>
+  <dd class="rd-dd">Passed onto either <code>check.flowdef</code> OR <code>check.flowmat</code> functions</dd>
+  <dt>verbose</dt>
+  <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
+[<code>get_opts("verbose")</code>] [1]</dd>
+</dl>
+
+  <h4>Details</h4>
+
+  <p class="rd-p"><strong>A typical output from flowdef</strong> with verbose level: 2</p>
+
+  <p class="rd-p"><pre>
+	checking if required columns are present...
+	checking if resources columns are present...
+	checking if dependency column has valid names...
+	checking if submission column has valid names...
+	checking for missing rows in def...
+	checking for extra rows in def...
+	checking submission and dependency types...
+	jobname	prev.sub_type --> dep_type --> sub_type: relationship
+	1: aln1_a	none --> none --> scatter
+	2: aln2_a	scatter --> none --> scatter
+	3: sampe_a	scatter --> serial --> scatter rel: complex one:one
+	4: fixrg_a	scatter --> serial --> scatter rel: complex one:one
+	5: merge_a	scatter --> gather --> serial rel: many:one
+	6: markdup_a	serial --> serial --> serial rel: simple one:one
+	7: target_a	serial --> serial --> serial rel: simple one:one
+	8: realign_a	serial --> burst --> scatter rel: one:many
+	9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
+	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
+	</pre></p>
+
+
+
+
 # Submiting and managing a flow
 
 
@@ -1330,5 +1388,25 @@ are NULL</p>
 
 
 
+
+
+
+## get_wds
+
+<h3>Get all the (sub)directories in a folder</h3>
+
+
+<h4>Usage</h4>
+<pre class="r"><code><div>get_wds(x)</div></code></pre>
+
+<h4>Arguments</h4>
+<dl class="rd-dl">
+  <dt>x</dt>
+  <dd class="rd-dd">path to a folder</dd>
+</dl>
+
+
+
+# 
 
 

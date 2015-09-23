@@ -98,6 +98,7 @@
           <li><a href="#to_flow">to_flow</a></li>
           <li><a href="#to_flowmat">to_flowmat</a></li>
           <li><a href="#to_flowdef">to_flowdef</a></li>
+          <li><a href="#check">check</a></li>
           </ul></li>
           <li><a href="#submiting-and-managing-a-flow">Submiting and managing a flow</a><ul>
           <li><a href="#submit_flow">submit_flow</a></li>
@@ -124,7 +125,9 @@
           <li><a href="#get_unique_id">get_unique_id</a></li>
           <li><a href="#to_flowdet">to_flowdet</a></li>
           <li><a href="#check_args">check_args</a></li>
+          <li><a href="#get_wds">get_wds</a></li>
           </ul></li>
+          <li><a href="#section"></a></li>
           </ul>
         </div>
       </div>
@@ -620,6 +623,75 @@ Additionally, one may customize resource requirements used by each step. The for
 <code>queue</code> the queue to use for job submission [short]
 </li>
 </ul>
+</p>
+</div>
+<div id="check" class="section level2">
+<h2>check</h2>
+<h3>
+<p>Check consistency of flowdef and flowmat</p>
+Check consistency of flowdef and flowmat, using various rules.
+</h3>
+<p class="rd-p">
+Check consistency of flowdef and flowmat Check consistency of flowdef and flowmat, using various rules.
+</p>
+<h4>
+Usage
+</h4>
+<pre class="r"><code><div>check(x, ...)</div>
+<div>## method for class 'flowmat'
+check(x, ...)</div>
+<div>## method for class 'flowdef'
+check(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+<h4>
+Arguments
+</h4>
+<dl class="rd-dl">
+<dt>
+x
+</dt>
+<dd class="rd-dd">
+a flowdef or flowmat object
+</dd>
+<dt>
+…
+</dt>
+<dd class="rd-dd">
+Passed onto either <code>check.flowdef</code> OR <code>check.flowmat</code> functions
+</dd>
+<dt>
+verbose
+</dt>
+<dd class="rd-dd">
+A numeric value indicating the amount of messages to produce. Values are integers varying from 0, 1, 2, 3, …. Please refer to the <a href=#verbose>verbose</a> page for more details. [<code>get_opts(“verbose”)</code>] [1]
+</dd>
+</dl>
+<h4>
+Details
+</h4>
+<p class="rd-p">
+<strong>A typical output from flowdef</strong> with verbose level: 2
+</p>
+<p class="rd-p">
+<pre>
+    checking if required columns are present...
+    checking if resources columns are present...
+    checking if dependency column has valid names...
+    checking if submission column has valid names...
+    checking for missing rows in def...
+    checking for extra rows in def...
+    checking submission and dependency types...
+    jobname prev.sub_type --> dep_type --> sub_type: relationship
+    1: aln1_a   none --> none --> scatter
+    2: aln2_a   scatter --> none --> scatter
+    3: sampe_a  scatter --> serial --> scatter rel: complex one:one
+    4: fixrg_a  scatter --> serial --> scatter rel: complex one:one
+    5: merge_a  scatter --> gather --> serial rel: many:one
+    6: markdup_a    serial --> serial --> serial rel: simple one:one
+    7: target_a serial --> serial --> serial rel: simple one:one
+    8: realign_a    serial --> burst --> scatter rel: one:many
+    9: baserecalib_a    scatter --> serial --> scatter rel: complex one:one
+    10: printreads_a    scatter --> serial --> scatter rel: complex one:one
+    </pre>
 </p>
 </div>
 </div>
@@ -2001,6 +2073,30 @@ Details
 This function has now been moved to params package.
 </p>
 </div>
+<div id="get_wds" class="section level2">
+<h2>get_wds</h2>
+<h3>
+Get all the (sub)directories in a folder
+</h3>
+<h4>
+Usage
+</h4>
+<pre class="r"><code><div>get_wds(x)</div></code></pre>
+<h4>
+Arguments
+</h4>
+<dl class="rd-dl">
+<dt>
+x
+</dt>
+<dd class="rd-dd">
+path to a folder
+</dd>
+</dl>
+</div>
+</div>
+<div id="section" class="section level1">
+<h1></h1>
 </div>
 
 
