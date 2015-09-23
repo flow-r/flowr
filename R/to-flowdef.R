@@ -4,9 +4,9 @@
 
 
 
-#' @rdname flowdef
-#' @name flow_definition
-#' @aliases flowdef to_flowdef
+#' @rdname to_flowdef
+#' @aliases flowdef to_flowdef definition
+#' 
 #' @title
 #' Flow Definition defines how to stich pieces of the (work)flow into a flow.
 #'
@@ -30,7 +30,8 @@
 #' C has a single command, C1.
 #' Consider another step D (with D1-D3), which comes after C.
 #' 
-#' A   ----> B  -----> C -----> D
+#' step (number of sub-processes)
+#' A (10)   ----> B (10)  -----> C (1) -----> D (3)
 #' 
 #' 
 #'  
@@ -38,10 +39,10 @@
 #' \itemize{
 #' \item \code{scatter}: submit all commands as parallel, independent jobs. 
 #' 
-#' 	*Submit A1 through A10 as independent jobs*
+#' 	\emph{Submit A1 through A10 as independent jobs}
 #' 	\item \code{serial}: run these commands sequentially one after the other. 
 #' 	
-#' 	- *Wrap A1 through A10, into a single job.*
+#' 	- \emph{Wrap A1 through A10, into a single job.}
 #'}
 #'
 #' \strong{Dependency types}
@@ -50,14 +51,14 @@
 #' 
 #' \itemize{
 #' \item \code{none}: independent job.
-#' 		\itemize{\item *Initial step A has no dependency*}
-#' 	\item \code{serial}: *one to one* relationship with previous job. 
-#' 	\itemize{\item*B1 can start as soon as A1 completes.*}
-#' 	\item \code{gather}: *many to one*, wait for **all** commands in previous job to finish then start the  current step. 
-#' 	\itemize{\item *All jobs of B (1-10), need to complete before C1 is started*}
-#' 	\item \code{burst}: *one to many* wait for the previous step which has one job and start processing all cmds in the current step. 
+#' 		\itemize{\item \emph{Initial step A has no dependency}}
+#' 	\item \code{serial}: \emph{one to one} relationship with previous job. 
+#' 	\itemize{ \item \emph{B1 can start as soon as A1 completes, and B2 starts just after A2 and so on.}}
+#' 	\item \code{gather}: \emph{many to one}, wait for \strong{all} commands in the previous job to finish then start the  current step. 
+#' 	\itemize{\item \emph{All jobs of B (1-10), need to complete before C1 starts}}
+#' 	\item \code{burst}: \emph{one to many} wait for the previous step which has one job and start processing all cmds in the current step. 
 #' 	
-#' 	- *D1 to D3 are started as soon as C1 finishes.*
+#' 	- \emph{D1 to D3 are started as soon as C1 finishes.}
 #' }
 #' 
 #' @format
@@ -65,28 +66,35 @@
 #' 
 #' \emph{required columns}:<br>
 #' \itemize{
+#' 
 #' \item{\code{jobname}}: Name of the step
+#' 
 #' \item{\code{sub_type}}: Short for submission type, 
 #'  refers to, how should multiple commands of this step be submitted. Possible values are `serial` or `scatter`. 
-#' \item{\code{prev_jobs}}: Short for previous job, this would be jobname of the previous job. 
+#'  
+#' \item{\code{prev_jobs}}: Short for previous job, this would be the jobname of the previous job. 
 #' This can be NA/./none if this is a independent/initial step, and no previous step is required for this to start. 
+#' Additionally, one may use comma(s) to define multiple previous jobs (A,B).
+#' 
 #' \item{\code{dep_type}}: Short for dependency type, 
 #' refers to the relationship of this job with the one defined in `prev_jobs`. 
 #' This can take values `none`, `gather`, `serial` or `burst`.
+#' 
 #' }
 #' 
 #' \emph{resource columns} (recommended):<br>
 #' 
-#' Apart from the above described variables, 
-#' several other variables defining the resource requirements of each step are also available.
-#' These give great amount of flexibility to the user in choosing CPU, wall time, memory and queue 
-#' for each step (and are passed along to the HPCC platform). 
+#' Additionally, one may customize resource requirements used by each step.
+#' The format used varies and depends to the computing platform. Thus its best to refer to 
+#' your institutions guide to specify these.
+#' 
 #' \itemize{
-#' 	\item{\code{cpu_reserved}}
-#'	\item{\code{memory_reserved}}
-#'	\item{\code{nodes}}
-#'	\item{\code{walltime}}
-#'	\item{\code{queue}}
+#' 	\item{\code{cpu_reserved}} integer, specifying number of cores to reserve [1]
+#'	\item{\code{memory_reserved}} Usually in KB [2000]
+#'	\item{\code{nodes}} number of server nodes to reserve, most tools can only use multiple cores on
+#'	a \strong{single} node [1]
+#'	\item{\code{walltime}} maximum time allowed for a step, usually in a HH:MM or HH:MM:SS format. [1:00]
+#'	\item{\code{queue}} the queue to use for job submission [short]
 #' }
 #'
 #' @param x can a path to a flowmat, flomat or flow object.
@@ -101,7 +109,7 @@
 #' @inheritParams to_flow
 #' @param ... not used
 #'
-#' @importFrom knitr kable
+#' @importFrom params kable
 #' 
 #' @export
 to_flowdef <- function(x, ...){
@@ -123,7 +131,7 @@ guess_sub_dep <- function(x){
 	return(lst)
 }
 
-#' @rdname flowdef
+#' @rdname to_flowdef
 #' @export
 to_flowdef.flowmat <- function(x,
 															 sub_type,
@@ -168,7 +176,7 @@ to_flowdef.flowmat <- function(x,
 
 
 
-#' @rdname flowdef
+#' @rdname to_flowdef
 #' @export
 to_flowdef.flow <- function(x, ...){
 	slts = c(jobname = "name",
@@ -195,7 +203,7 @@ to_flowdef.flow <- function(x, ...){
 }
 
 
-#' @rdname flowdef
+#' @rdname to_flowdef
 #' @importFrom utils write.table
 #' @export
 to_flowdef.character <- function(x, ...){
@@ -210,7 +218,7 @@ to_flowdef.character <- function(x, ...){
 }
 
 
-#' @rdname flowdef
+#' @rdname to_flowdef
 #' @export
 as.flowdef <- function(x, ...){
 	## ---- assuming x is a file
@@ -231,7 +239,7 @@ as.flowdef <- function(x, ...){
 }
 
 
-#' @rdname flowdef
+#' @rdname to_flowdef
 #' @export
 is.flowdef <- function(x){
 	class(x)[1] == "flowdef"

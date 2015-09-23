@@ -7,7 +7,7 @@
 \alias{to_flowmat.data.frame}
 \alias{to_flowmat.flow}
 \alias{to_flowmat.list}
-\title{Taking in a named list and returns a two columns data.frame}
+\title{Create a flowmat using a list a commands.}
 \usage{
 to_flowmat(x, ...)
 
@@ -22,11 +22,11 @@ as.flowmat(x, grp_col, jobname_col, cmd_col, ...)
 is.flowmat(x)
 }
 \arguments{
-\item{x}{a named list OR vector. Where name corresponds to the jobname and value is a vector of commands to run}
+\item{x}{a named list, where name corresponds to the jobname and value is a vector of commands to run.}
 
 \item{...}{not used}
 
-\item{samplename}{character of length 1 or that of nrow(x)}
+\item{samplename}{character of length 1 or that of nrow(x) ['samplename']}
 
 \item{grp_col}{column used for grouping, default samplename.}
 
@@ -35,8 +35,35 @@ is.flowmat(x)
 \item{cmd_col}{column specifying commands to run, default cmd}
 }
 \description{
-Taking in a named list and returns a two columns data.frame
+Create a flowmat (data.frame) using a \strong{named} list a commands.
 
 as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.
+}
+\examples{
+## Use this link for a few examples:
+## http://sahilseth.github.io/flowr/flowr/tutorial.html#define_modules
+
+## create a vector of shell commands
+cmds = c("sleep 1", "sleep 2")
+## create a named list
+lst = list("sleep" = cmds)
+## create a flowmat
+flowmat = to_flowmat(lst, samplename = "samp")
+
+## Use flowmat to create a skeleton flowdef
+flowdef = to_flowdef(flowmat)
+
+## use both (flowmat and flowdef) to create a flow
+fobj = to_flow(flowmat, flowdef)
+
+## submit the flow to the cluster (execute=TRUE) or do a dry-run (execute=FALSE)
+\dontrun{
+fobj2 = submit_flow(fobj, execute=FALSE)
+fobj3 = submit_flow(fobj, execute=TRUE)
+
+## Get the status or kill all the jobs
+status(fobj3)
+kill(fobj3)
+}
 }
 

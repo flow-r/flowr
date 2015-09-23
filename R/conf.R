@@ -9,16 +9,16 @@ flowopts = new.env()
 #' 
 #' @aliases set_opts get_opts load_opts
 #' 
-#' @title Default options/params used in ngsflows and flowr
+#' @title Default options/params used in flowr and ngsflows
 #'
 #' @description
-#' There are three helper functions which attempt to manage params used by flowr and ngsflows:
+#' There are three helper functions which attempt to manage parameters used by flowr and ngsflows:
 #' \itemize{
 #' \item \link[params]{get_opts} OR \code{opts_flow\$get()}: show all default options
 #' \item \link[params]{set_opts} OR \code{opts_flow\$set()}: set default options
 #' \item \link[params]{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
 #' }
-#' For more details regarding these funtions refer to \link{params}.
+#' For more details regarding these funtions refer to \link{params} package.
 #'
 #' @param ... \itemize{
 #' \item get: names of options to fetch
@@ -60,6 +60,8 @@ flowopts = new.env()
 #'	|verbose           |FALSE                    |
 #'	}
 #'
+#' @seealso \link{fetch} \link[params]{params} \link[params]{read_sheet}
+#' 
 #' @examples
 #' ## Set options: set_opts()
 #' opts = set_opts(flow_run_path = "~/mypath")

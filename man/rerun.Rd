@@ -53,9 +53,10 @@ This function fetches details regarding the previous execution from the flow wor
 It reads the \link{flow} object from the flow_details.rds file, and extracts flowdef and flowmat from it
 using \link{to_flowmat} and \link{to_flowdef} functions.
 
-\strong{New flowmat / flowdef} for re-run:
+\strong{Using new flowmat OR flowdef for re-run}:
 
-Optionally, if either of these (flowmat or flowdef) are supplied, supplied ones are used instead for the new submission.
+Optionally, if either of flowmat or flowdef are supplied; supplied ones are used instead of those
+extracted from previous submission.
 
 This functions efficiently updates job details of the latest submission into the previous file; thus information
 regarding previous job ids and their status is not lost.

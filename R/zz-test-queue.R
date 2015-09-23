@@ -1,7 +1,14 @@
 
 #' @title test_queue
-#' @description This function attempts to test the submission of a job to the queue.
-#' We would first submit one single job, then submit another with a dependency to see if configuration works. This would create a folder in home called 'flows'.
+#' 
+#' @description 
+#' This function attempts to test the submission of a job to the queue.
+#' We would first submit one single job, then submit another with a dependency to see if configuration works. 
+#' This would create a folder in home called 'flows'.
+#' 
+#' [Depreciated]: This function has been superseded by \code{run("sleep_pipe", platform = "lsf", execute=TRUE)}
+#' 
+#' 
 #' @param q_obj queue object
 #' @param verbose toggle
 #' @param ... These params are passed onto \code{queue}. \code{?queue}, for more information

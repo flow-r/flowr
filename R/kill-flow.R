@@ -5,11 +5,14 @@
 #' 
 #' 
 #' @description 
-#' \strong{A pipeline requires files which are created at the end of the submit_flow command}.
 #' 
-#' Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use kill(flow_wd). 
-#' If submit_flow is interrupted, flow_details etc files are not created, thus flowr looses the association 
-#' of jobs with flow instance.
+#' NOTE:
+#' 
+#' \strong{This requires files which are created at the end of the \link{submit_flow} command}.
+#' 
+#' Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use \code{kill(flow_wd)}. 
+#' If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association 
+#' of jobs with flow instance and cannot monitor, kill or re-run the flow.
 #' 
 #'
 #' @param x either path to flow wd or object of class \link{flow}
@@ -45,15 +48,15 @@ kill <- function(x, ...) {
 
 
 #' @rdname kill
-#' @importFrom knitr kable
+#' @importFrom params kable
 #' @export
 kill.character <- function(x, force = FALSE, ...){
 	x = get_wds(x)
 	if(length(x) > 1 & !force){
-		message("found multiple wds, ",
-						kable(x),
-						"If you want to kill all of them, kill again with force=TRUE")
-		invisible("multi wds")
+		message("found multiple wds:\n",
+						paste(x, collapse = "\n"),
+						"\nIf you want to kill all of them, kill again with force=TRUE")
+		return("multi wds")
 	}
 	for(i in 1:length(x)){
 		fobj = read_fobj(x[i])
@@ -127,7 +130,7 @@ detect_stat_cmd <- function(fobj){
 		lsf = "bjobs",
 		torque = "qstat",
 		sge = "qstat",
-		slurm = "")
+		slurm = "sbatch")
 
 }
 
@@ -140,7 +143,7 @@ detect_kill_cmd <- function(fobj){
 		lsf = "bkill",
 		torque = "qdel",
 		sge = "qdel",
-		slurm = "")
+		slurm = "scancel")
 }
 
 

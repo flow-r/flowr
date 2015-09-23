@@ -15,21 +15,23 @@ fetch_pipes(x, places, last_only = FALSE,
 fetch_conf(x = "flowr.conf", places, ...)
 }
 \arguments{
-\item{x}{name of the file to search for}
+\item{x}{name of the file to search for (without extension).
+By default \link{fetch_pipes} and \link{fetch_conf} search for files ending with
+\code{.R} and \code{.conf} respectively.}
 
-\item{places}{places (paths) to look for it. Its best to use the defaults}
+\item{places}{places (paths) to look for files matching the name. Defaults are already defined in the function.}
 
-\item{urls}{urls to look for, works well for pipelines.}
+\item{urls}{urls to look for, works well for pipelines [not implemented yet]}
 
-\item{verbose}{be chatty?}
+\item{verbose}{}
 
-\item{last_only}{[fetch_pipes only]. If multiple pipelines match the pattern, return the last one.}
+\item{last_only}{fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]}
 
-\item{silent}{[fetch_pipes() only]. logical, be silent even if no such pipeline is available.}
+\item{silent}{fetch_pipes(): logical, be silent even if no such pipeline is available. [FALSE]}
 
-\item{ask}{ask before downloading or copying, not used !}
+\item{ask}{ask before downloading or copying. [not implemented]}
 
-\item{...}{not used}
+\item{...}{[not implemented]}
 }
 \description{
 These functions help in searching for specific files in the user's space.
@@ -37,44 +39,42 @@ These functions help in searching for specific files in the user's space.
 \code{fetch_pipes()}: Fetches pipelines in the following places, in this specific order:
 \itemize{
 \item \strong{user's folder}: \code{~/flowr/pipelines}
-\item \strong{current wd}:
+\item \strong{current wd}: \code{./}
 }
 
-\strong{NOTE:} If same pipeline is availabe in multiple places; one from the later
-folder would be selected up. Such that, giving priority to user's home, and current working
-directories. Which is what, one would intuitiuvely expect.
+\strong{NOTE:} If same pipeline is availabe in multiple places; intitutively, one from the later
+folder would be selected. As such, giving priority to user's home, and current working
+directories.
 
 
-\code{fetch_conf()}: Fetches configuration files in the following places:
+\code{fetch_conf()}: Fetches configuration files in ALL of the following places:
 \itemize{
 \item \strong{package}: \code{conf} folders in flowr and ngsflows packages.
 \item \strong{user's folder}: \code{~/flowr/conf} folder.
-\item \strong{current wd}:
+\item \strong{current wd}: \code{./}
 }
 
 \strong{NOTE:}
 This function would greedily return all matching conf files. One would load all of them
 in the order returned by this functions. If the same variable is
-repeated in multiple files, value from the later files would be final. Thus ( as explained above ), giving
-priority to options defined in user's home and current working directories.
+repeated in multiple files, value from the later files would replace those formerly defined.
+Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
 
 By default flowr loads, \code{flowr.conf} and \code{ngsflows.conf}.
-See the following details sections, for more explanation on this.
+See the details sections, for more explanation on this.
 }
 \details{
 For example flowr has a variable \code{flow_run_path} where it puts all the execution logs etc.
-The default values is picked up from packages's internal \code{flowr.conf} file.
+The default value is picked up from packages's internal \code{flowr.conf} file.
 To redefine this value, one could create a new file called \code{~/flowr/conf/flowr.conf} and
 add a line:
 
 \code{flow_run_path<TAB>my_awesome_path}, where <TAB> is a tab character, since these are tab
 seperated files.
 
-Also at any time you can run, \code{load_conf('super_specific_opts.conf')}; to load custom options.
+Also, at any time you can run, \code{load_conf('super_specific_opts.conf')}; to load custom options.
 }
 \examples{
-{
-
 ## let us find a default conf file
 conf = fetch_conf("flowr.conf");conf
 ## load this
@@ -85,7 +85,8 @@ pip = fetch_pipes("sleep_pipe")
 pip$name
 pip$pipe
 pip$def
-
 }
+\seealso{
+\link{flowopts}
 }
 

@@ -5,13 +5,13 @@
 
 set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
 
-#' parse LSF output files
-#' @param x file
-#' @param scale_time time is usually in seconds, scale of 1/60 shows minutes, 1/3600 shows in hours
-#' @param n how many lines to read; usually resources details are on top. 100 works well. .Depreciated
-#' @param time_format format of time in the execution logs. This should match the format in lsf/torque etc. 
-#' 	shell script templates.
-#' @param verbose produce step-by-step messages
+# parse LSF output files
+# @param x file
+# @param scale_time time is usually in seconds, scale of 1/60 shows minutes, 1/3600 shows in hours
+# @param n how many lines to read; usually resources details are on top. 100 works well. .Depreciated
+# @param time_format format of time in the execution logs. This should match the format in lsf/torque etc. 
+# 	shell script templates.
+# @param verbose produce step-by-step messages
 parse_lsf_out <- function(x,
 	scale_time = 1/3600,
 	n = 100,
@@ -65,20 +65,21 @@ parse_lsf_out <- function(x,
 	return(dat)
 }
 
-#' @title get_resources
-#' @description get_resources currenty this only works on LSF
-#' @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
-#' @param odir Output directory to save the results
-#' @param \dots other arguments sent to \link{get_resources_lsf}
-#' 
-#' @details If \code{x} is a parent level folder, 
-#' then resources are summarized for all its child folders.
-#' 
-#' @export
-#' 
-#' @examples \dontrun{
-#' get_resources(x = x, odir = ~/tmp)
-#' }
+# Extract resources used by each job of a flow
+# 
+# get_resources currenty this only works on LSF
+# @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
+# @param odir Output directory to save the results
+# @param \dots other arguments sent to \link{get_resources_lsf}
+# 
+# @details If \code{x} is a parent level folder, 
+# then resources are summarized for all its child folders.
+# 
+# @export
+# 
+# @examples \dontrun{
+# get_resources(x = x, odir = ~/tmp)
+# }
 get_resources <- function(x, odir, ...){
 	## Suggested packages
 	if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -95,22 +96,22 @@ get_resources <- function(x, odir, ...){
 
 
 
-#' @title get_resources_lsf
-#' @description get_resources_lsf
-#' @inheritParams get_resources
-#' @param wd Path to a flow working directory
-#' @param cores Number of cores to use. [Numeric]
-#' @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
-#' @importFrom tools file_path_sans_ext
-#' @importFrom parallel mclapply
-#' 
-#' @keywords internal
-#' 
-#' @export
-#' 
-#' @examples \dontrun{
-#' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
-#' }
+# get_resources_lsf
+# get_resources_lsf
+# @inheritParams get_resources
+# @param wd Path to a flow working directory
+# @param cores Number of cores to use. [Numeric]
+# @param pattern Pattern to use to get lsf stdout files. Defaults to \code{out$}
+# @importFrom tools file_path_sans_ext
+# @importFrom parallel mclapply
+# 
+# @keywords internal
+# 
+# @export
+# 
+# @examples \dontrun{
+# get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
+# }
 get_resources_lsf <- function(wd, 
 															cores = 4, 
 															pattern = "out$",

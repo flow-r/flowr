@@ -2,27 +2,25 @@ Package: flowr
 Type: Package
 Title: Streamlining Design and Deployment of Complex Workflows
 Description: An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.
-Version: 0.9.7.9025
+Version: 0.9.7.9027
 Date: 2015-08-22
 Depends:
+    R (>= 3.0.2),
     methods,
     params  (>= 0.2.8),
     utils
 Imports:
     diagram,
     whisker,
-    tools,
-    knitr
+    tools
 Suggests:
     reshape2,
+    knitr,
     ggplot2,
     openxlsx,
     testthat
 VignetteBuilder: knitr
 URL: https://github.com/sahilseth/flowr
 BugReports: https://github.com/sahilseth/flowr/issues
-Authors@R: c(
-   person("Sahil", "Seth",
-   role = c("aut", "cre"),
-   email = "me@sahilseth.com"))
+Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
 License: MIT + file LICENSE

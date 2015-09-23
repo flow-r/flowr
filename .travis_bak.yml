@@ -1,0 +1,48 @@
+# a good example: https://github.com/OuhscBbmc/REDCapR/blob/master/.travis.yml
+language: r
+sudo: required
+
+# Be strict when checking our package
+warnings_are_errors: false
+
+# System dependencies for HTTP calling
+# http://docs.travis-ci.com/user/languages/r/
+
+# R
+#r_check_args: --timings --as-cran --no-install
+r_check_args: --no-build-vignettes --no-manual --as-cran rpack
+
+r_packages:
+  - rmarkdown
+
+#r_binary_packages:
+#  - stringi
+#  - digest
+#  - yaml
+#  - bitops
+#  - markdown
+#  - caTools
+#  - lazyeval
+#  - openxlsx
+#  - plyr
+#  - testthat
+#  - reshape2
+#  - scales
+
+## Following to take care of stringi error from travis (temporary)
+r_github_packages:
+  - jimhester/covr
+  - sahilseth/params
+  - sahilseth/staticdocs
+  - sahilseth/packagedocs
+##  - sahilseth/readthedocs
+##  - sahilseth/ngsflows, would work only after this is released
+
+
+  
+after_success:
+  - R CMD INSTALL .
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy2.sh
+  - Rscript -e 'covr::codecov()'
+  
+

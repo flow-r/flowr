@@ -1,7 +1,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
 ^\.git/*
+
+## ignore travis files
+.travis_bak.yml
+.travis.yml
 
 
 misc
@@ -13,6 +16,7 @@ README.Rmd
 README.html
 TODO.md
 cran-comment.md
+
 vignettes/errors.Rmd
 
 ## ignore test files and folders

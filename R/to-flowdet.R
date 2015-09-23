@@ -1,6 +1,20 @@
-#' to_flowdet
+
+
+#' @rdname to_flowdet
+#' 
+#' @title Create a flow's submission detail file
+#' 
+#' @description
+#' Create a file describing details regarding jobs ids, submission scripts etc.
+#' 
 #' @param x this is a wd
 #' @param ... not used
+#' 
+#' @details 
+#' The path provided should contain a flow_detaits.rds file (which is used to extract all the information). 
+#' 
+#' Incase a parent folder with multiple flows is provided information regarding jobids is omitted.
+#' 
 #' @export
 to_flowdet <- function(x, ...) {
 	UseMethod("to_flowdet")
@@ -8,9 +22,6 @@ to_flowdet <- function(x, ...) {
 
 
 #' @rdname to_flowdet
-#' @description
-#' get a flow_details file from the directory structure. This has less information than the
-#' one generated using a flow object. Lacks jobids etc...
 #' @export
 to_flowdet.rootdir <- function(x, ...){
 	## --- get all the cmd files

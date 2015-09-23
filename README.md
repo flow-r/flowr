@@ -39,13 +39,15 @@ across the computing cluster
 
 
 ```r
-## From the official R repository (may be a few versions behind)
+## From the official R repository (updated every month or so)
 install.packages("flowr")
 
-## OR
-
+## OR for a latest stable version (updated every few days):
 install.packages(devtools)
 devtools::install_github("sahilseth/flowr")
+
+## OR cutting edge devel version
+devtools::install_github("sahilseth/flowr", ref = "devel")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
@@ -61,7 +63,7 @@ new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://sahilseth.github.io/flowr/flowr/rd.html)
 page
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
-	designing a *shiny* new flow
+	designing a *shiny* new flow. This provides a good example of the concepts
 
 
 

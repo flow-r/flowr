@@ -3,9 +3,11 @@
 # })
 
 #' @rdname submit_flow
-#' @title submit_flow
-#' @description submit_flow
-#' @aliases submit_flow
+#' 
+#' @title Submit a flow to the cluster
+#' 
+#' @description 
+#' Submit a flow to the cluster or perform a dry-run to check and debug issues.
 #'
 #' @param x a \code{object} of class \code{flow}.
 #' @param execute \code{logical} whether or not to submit the jobs
@@ -17,6 +19,11 @@
 #' @param dump dump all the flow details to the flow path
 #' @param ... Advanced use. Any additional parameters are passed on to \link{submit_job} function.
 #'
+#' @details 
+#' NOTE:
+#' Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use \code{kill(flow_wd)}. 
+#' If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association 
+#' of jobs with flow instance and cannot monitor, kill or re-run the flow.
 #'
 #' @export
 #' @examples

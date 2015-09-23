@@ -2,8 +2,7 @@
 % Please edit documentation in R/check-args.R
 \name{check_args}
 \alias{check_args}
-\title{checks all the arguments in the parent frame.
-None of them should be null.}
+\title{Assert none of the arguemnts of a function are null.}
 \usage{
 check_args(ignore, select)
 }
@@ -13,6 +12,10 @@ check_args(ignore, select)
 \item{select}{optionally only check a few variables of the function.}
 }
 \description{
-This function may be optionally moved to a more generic package.
+Checks all the arguments in the parent function and makes sure that none of them
+are NULL
+}
+\details{
+This function has now been moved to params package.
 }
 

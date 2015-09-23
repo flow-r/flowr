@@ -2,7 +2,7 @@
 % Please edit documentation in R/submit-job.R
 \name{submit_job}
 \alias{submit_job}
-\title{submit_job}
+\title{Submit a step of a flow}
 \usage{
 submit_job(jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ...)
 }
@@ -20,7 +20,7 @@ submit_job(jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ...)
 \item{...}{not used}
 }
 \description{
-submit_job
+Internal function (used by submit_flow), which submit a single step of a flow.
 }
 \examples{
 \dontrun{

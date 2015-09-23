@@ -4,10 +4,10 @@ detect_sub_type <- function(cmds){
 	return(sub_type)
 }
 
-#' detect_dep_type
-#' @param x job object
-#' @param cmds a string of commands
-#' @param prev_job previous job name
+# detect_dep_type
+# @param x job object
+# @param cmds a string of commands
+# @param prev_job previous job name
 detect_dep_type <- function(x, cmds, prev_job){
 	if (length(prev_job) > 1) {
 		dep_type = "gather"
@@ -30,7 +30,10 @@ detect_dep_type <- function(x, cmds, prev_job){
 
 #' @title
 #' Create flow objects
+#' 
 #' @name to_flow
+#' 
+#' @aliases flowr
 #'
 #' @description
 #' Use a set of shell commands and flow definiton to create \link{flow} object.
@@ -57,11 +60,38 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' [\code{get_opts("verbose")}] [1]
 #'
 #' @examples
+#' ## Use this link for a few elaborate examples:
+#' ## http://sahilseth.github.io/flowr/flowr/tutorial.html#define_modules
+#' 
 #' ex = file.path(system.file(package = "flowr"), "pipelines")
 #' flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
 #' flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
 #' fobj = to_flow(x = flowmat, def = flowdef, flowname = "sleep_pipe", platform = "lsf")
 #'
+#' 
+#' ## create a vector of shell commands
+#' cmds = c("sleep 1", "sleep 2")
+#' ## create a named list
+#' lst = list("sleep" = cmds)
+#' ## create a flowmat
+#' flowmat = to_flowmat(lst, samplename = "samp")
+#' 
+#' ## Use flowmat to create a skeleton flowdef
+#' flowdef = to_flowdef(flowmat)
+#' 
+#' ## use both (flowmat and flowdef) to create a flow
+#' fobj = to_flow(flowmat, flowdef)
+#' 
+#' ## submit the flow to the cluster (execute=TRUE) or do a dry-run (execute=FALSE)
+#' \dontrun{
+#' fobj2 = submit_flow(fobj, execute=FALSE)
+#' fobj3 = submit_flow(fobj, execute=TRUE)
+#' 
+#' ## Get the status or kill all the jobs
+#' status(fobj3)
+#' kill(fobj3)
+#' }
+#' 
 #'
 #' @details The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
 #' This is a minimum three column matrix with three columns: samplename, jobname and cmd
@@ -81,12 +111,20 @@ detect_dep_type <- function(x, cmds, prev_job){
 #' \item submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
 #' }
 #' }
+#' 
+#' @seealso \link{to_flowmat}, \link{to_flowdef}, \link{to_flowdet}, \link{flowopts} and \link{submit_flow}
 #'
 #' @export
 to_flow <- function(x, ...) {
 	#message("input x is ", class(x))
 	UseMethod("to_flow")
 	warnings()
+}
+
+#' @rdname to_flow
+#' @export
+is.flow <- function(x){
+	class(x)[1] == "flow"
 }
 
 #' @description vector: a file with flowmat table
@@ -316,7 +354,7 @@ proc_jobs <- function(x,
 #' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
 #' @importFrom utils packageVersion
-#' @importFrom knitr kable
+#' @importFrom params kable
 to_flow.list <- function(x, def, 
 												 flowname, 
 												 flow_run_path, 
@@ -389,17 +427,16 @@ to_flow.list <- function(x, def,
 #setMethod("to_flow", signature(x = "data.frame"), definition = .to_flow.data.frame)
 
 
-#' @title cmds_to_flow: DEPRECIATED
-#' @description Create a \link{flow} object from a list of commands
-#'
-#' @param cmd.list list of commands
-#' @param samplename name of the sample
-#' @param infomat flowdef
-#' @param q_obj queue object
-#' @param flowname name of the flow
-#' @param execute TRUE/FALSE
-#' @param flow_run_path outpath
-#'
+# @title cmds_to_flow: DEPRECIATED
+# @description Create a \link{flow} object from a list of commands
+#
+# @param cmd.list list of commands
+# @param samplename name of the sample
+# @param infomat flowdef
+# @param q_obj queue object
+# @param flowname name of the flow
+# @param execute TRUE/FALSE
+# @param flow_run_path outpath
 cmds_to_flow <- function(cmd.list,
 												 samplename = "",
 												 infomat,

@@ -15,7 +15,10 @@ test_queue(q_obj, verbose = TRUE, ...)
 }
 \description{
 This function attempts to test the submission of a job to the queue.
-We would first submit one single job, then submit another with a dependency to see if configuration works. This would create a folder in home called 'flows'.
+We would first submit one single job, then submit another with a dependency to see if configuration works.
+This would create a folder in home called 'flows'.
+
+[Depreciated]: This function has been superseded by \code{run("sleep_pipe", platform = "lsf", execute=TRUE)}
 }
 \examples{
 \dontrun{

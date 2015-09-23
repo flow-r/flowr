@@ -3,6 +3,7 @@
 #PBS -l nodes={{{NODES}}}:ppn={{{CPU}}}
 #PBS -o {{{STDOUT}}}
 #PBS -e {{{STDOUT}}}
+#PBS -q {{{QUEUE}}}
 #PBS -l walltime={{{WALLTIME}}}
 #PBS -l mem={{{MEMORY}}}
 #PBS -r y

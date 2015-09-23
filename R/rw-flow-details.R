@@ -4,11 +4,11 @@
 ## then check for f_obj and fobj
 
 
-#' read flow object given a flow execution folder
-#' @param x path to a flow execution folder
-#'
-#' @return
-#' if it finds a fobj, returns that. If not return back the path x
+# read flow object given a flow execution folder
+# @param x path to a flow execution folder
+#
+# @return
+# if it finds a fobj, returns that. If not return back the path x
 read_fobj <- function(x){
 	rda = file.path(x, "flow_details.rda")
 	rds = file.path(x, "flow_details.rds")

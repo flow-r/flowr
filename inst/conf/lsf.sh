@@ -7,8 +7,8 @@
 #BSUB -W {{{WALLTIME}}}                                 # Walltime in minutes
 #BSUB -M {{{MEMORY}}}                                   # Memory requirements in Kbytes
 #BSUB –n {{{CPU}}}                                      # CPU reserved
-#BSUB -R rusage[mem={{{MEMORY}}}]                       # memory reserved
 #BSUB -R span[ptile={{{CPU}}}]                          # CPU reserved, all reserved on same node
+#BSUB -R rusage[mem={{{MEMORY}}}]                       # memory reserved
 #BSUB -r                                                # make the jobs re-runnable
 #BSUB {{{DEPENDENCY}}}                                  # Don't remove dependency args come here
 #BSUB {{{EXTRA_OPTS}}}                                  # Any extra arguments passed onto queue()

@@ -4,7 +4,7 @@
 \alias{submit_flow}
 \alias{submit_flow.flow}
 \alias{submit_flow.list}
-\title{submit_flow}
+\title{Submit a flow to the cluster}
 \usage{
 submit_flow(x, verbose = get_opts("verbose"), ...)
 
@@ -32,7 +32,13 @@ Especially useful in case of re-running a flow.}
 \item{.start_jid}{Job to start this submission from. Advanced use, should be 1 by default.}
 }
 \description{
-submit_flow
+Submit a flow to the cluster or perform a dry-run to check and debug issues.
+}
+\details{
+NOTE:
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use \code{kill(flow_wd)}.
+If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association
+of jobs with flow instance and cannot monitor, kill or re-run the flow.
 }
 \examples{
 \dontrun{

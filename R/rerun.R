@@ -5,7 +5,8 @@ if(FALSE){
 }
 
 
-#' @title Re-run a pipeline in case of hardware or software failures.
+#' @title 
+#' Re-run a pipeline in case of hardware or software failures.
 #' @description 
 #' 
 #' \itemize{
@@ -36,9 +37,10 @@ if(FALSE){
 #' It reads the \link{flow} object from the flow_details.rds file, and extracts flowdef and flowmat from it 
 #' using \link{to_flowmat} and \link{to_flowdef} functions.
 #' 
-#' \strong{New flowmat / flowdef} for re-run:
+#' \strong{Using new flowmat OR flowdef for re-run}:
 #' 
-#' Optionally, if either of these (flowmat or flowdef) are supplied, supplied ones are used instead for the new submission.
+#' Optionally, if either of flowmat or flowdef are supplied; supplied ones are used instead of those
+#' extracted from previous submission.
 #' 
 #' This functions efficiently updates job details of the latest submission into the previous file; thus information
 #' regarding previous job ids and their status is not lost.
@@ -78,7 +80,7 @@ rerun.character <- function(x, ...){
 
 #' @rdname rerun
 #' @importFrom utils capture.output
-#' @importFrom knitr kable
+#' @importFrom params kable
 rerun.flow <- function(x, mat, def, 
 											 start_from,
 											 execute = TRUE,
@@ -135,10 +137,10 @@ rerun.flow <- function(x, mat, def,
 	}
 	
 	
-	message("\nSubsetting... get stuff to re-run:\n")
+	message("\nSubsetting... get steps to re-run:")
 	mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from, select, ignore)
 	def = subset_fdef(fobj = fobj, def = def, start_from = start_from, select, ignore)
-	message(paste(def$jobname, collapse = "\n"))
+	message(paste(def$jobname, collapse = "\n"), "\n")
 	
 	
 	## reset few things before we start the new flow
@@ -179,8 +181,10 @@ update.flow <- function(x, child){
 	
 	child_jobs = jobnames(child)
 	## --- for each job in child update ids
+	## updat the whole job, and not just IDs
 	for(j in child_jobs){
-		x@jobs[[j]]@id = child@jobs[[j]]@id
+		#x@jobs[[j]]@id = child@jobs[[j]]@id
+		x@jobs[[j]] = child@jobs[[j]]
 	}
 	return(x)
 	
@@ -217,7 +221,9 @@ subset_mods <- function(fobj, start_from, select, ignore){
 	
 	## subset jobs using, start from, ignore and select
 	if(!missing(start_from) & !all(is.na(start_from)) )
-		mods = mods[which(grepl(start_from, mods)):length(mods)]
+		mods = mods[which(mods == start_from):length(mods)]
+	
+	##mods = mods[which(grepl(start_from, mods)):length(mods)]
 	
 	if(!missing(select) & !all(is.na(select)))
 		mods = mods[mods %in% select]
@@ -228,10 +234,10 @@ subset_mods <- function(fobj, start_from, select, ignore){
 	return(mods)
 }
 
-#' subset_fmat
-#'
-#' @param mat a part of flowmat
-#' @param fobj flow object
+# subset_fmat
+#
+# @param mat a part of flowmat
+# @param fobj flow object
 #' @inheritParams rerun
 subset_fmat <- function(fobj, mat, start_from, select, ignore){
 	
@@ -246,11 +252,10 @@ subset_fmat <- function(fobj, mat, start_from, select, ignore){
 
 
 
-#' subset_fdef
-#' @param fobj flow object
-#' @param def flowdef
+# subset_fdef
+# @param fobj flow object
+# @param def flowdef
 #' @inheritParams rerun
-#'
 subset_fdef <- function(fobj, def, start_from, select, ignore){
 	
 	if(missing(def))
@@ -266,11 +271,10 @@ subset_fdef <- function(fobj, def, start_from, select, ignore){
 	return(def)
 }
 
-#' subset flow details file
-#' @param fobj flow object
-#' @param det flowdet
+# subset flow details file
+# @param fobj flow object
+# @param det flowdet
 #' @inheritParams rerun
-#'
 subset_fdet <- function(fobj, det, start_from, select, ignore){
 	
 	if(missing(det))
