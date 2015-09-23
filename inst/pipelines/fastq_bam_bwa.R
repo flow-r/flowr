@@ -298,6 +298,8 @@ example <- function(){
                    memory_reserved = rep(8000, 5), 
                    queue = rep("medium", 5),
                    platform = rep("moab", 5))
+  #write_sheet(def, "inst/pipelines/fastq_bam_bwa.def")
+  
   
   plot_flow(def)
   

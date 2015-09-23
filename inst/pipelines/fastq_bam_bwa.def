@@ -1,0 +1,6 @@
+jobname	sub_type	prev_jobs	dep_type	queue	memory_reserved	walltime	cpu_reserved	platform	jobid
+aln1	scatter	none	none	medium	8000	2:00	12	moab	1
+aln2	scatter	none	none	medium	8000	2:00	12	moab	2
+sampe	scatter	aln1,aln2	serial	medium	8000	2:00	1	moab	3
+fixrg	scatter	sampe	serial	medium	8000	2:00	1	moab	4
+merge	serial	fixrg	gather	medium	8000	12:00	1	moab	5
