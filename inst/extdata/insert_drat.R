@@ -19,7 +19,9 @@ if(FALSE){
 	## drat for user:
 	library(drat)
 	drat::addRepo("sahilseth")
-	install.packages("flowr")
+	install.packages("params", repos = "http://sahilseth.github.io/drat")
+	install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+	
 	install.packages("ngsflows")
 	
 }
