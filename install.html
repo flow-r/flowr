@@ -1,0 +1,325 @@
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc" />
+
+    <meta name="author" content="Sahil Seth" />
+  
+    <meta name="date" content="2015-09-23" />
+  
+  <title>flowr</title>
+
+    <script src="assets/jquery-1.11.0/jquery.min.js"></script>
+  <link href="assets/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="assets/bootstrap-3.3.2/js/bootstrap.min.js"></script>
+  <script src="assets/bootstrap-3.3.2/shim/html5shiv.min.js"></script>
+  <script src="assets/bootstrap-3.3.2/shim/respond.min.js"></script>
+  <link href="assets/highlight-8.4/tomorrow.css" rel="stylesheet" />
+  <script src="assets/highlight-8.4/highlight.pack.js"></script>
+  <link href="assets/fontawesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+  <script src="assets/stickykit-1.1.1/sticky-kit.min.js"></script>
+  <script src="assets/jqueryeasing-1.3/jquery.easing.min.js"></script>
+  <link href="assets/packagedocs-0.0.1/pd.css" rel="stylesheet" />
+  <script src="assets/packagedocs-0.0.1/pd.js"></script>
+  <script src="assets/packagedocs-0.0.1/pd-sticky-toc.js"></script>
+  
+  
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+  
+  <header class="navbar navbar-white navbar-fixed-top" role="banner" id="header">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+                <a href="index.html" class="navbar-brand page-scroll">
+        flowr - Streamlining Workflows
+        </a>
+      </div>
+            <nav class="collapse navbar-collapse" role="navigation">
+        <ul class="nav nav-pills pull-right">
+<li>
+<a href='docs.html'>Overview</a>
+</li>
+<li>
+<a href='tutorial.html'>Tutorial</a>
+</li>
+<li class="active">
+<a href='install-conf.html'>Install</a>
+</li>
+<li>
+<a href='rd.html'>Help</a>
+</li>
+<li>
+<a href='news.html'>News</a>
+</li>
+<li>
+<a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a>
+</li>
+        </ul>
+      </nav>
+          </div>
+  </header>
+
+  <!-- Begin Body -->
+  <div class="container">
+    <div class="row">
+            <div class="col-md-3" id="sidebar-col">
+        <div id="toc">
+          <ul>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#test">Test</a></li>
+          <li><a href="#advanced-configuration">Advanced Configuration</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9" id="content-col">
+      
+<div id="content-top"></div>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>Requirements:</p>
+<ul>
+<li>R version &gt; 3.1, preferred 3.2</li>
+</ul>
+<pre class="r"><code>## for a latest stable version (updated every few days):
+install.packages(&#39;devtools&#39;)
+devtools::install_github(&quot;sahilseth/params&quot;)
+devtools::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
+<p>After installation run <code>setup()</code>, this will copy the flowr’s helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
+<pre class="r"><code>library(flowr)
+setup()</code></pre>
+<p>Running <code>flowr</code> from the terminal should now show the following:</p>
+<pre><code>Usage: flowr function [arguments]
+
+status          Detailed status of a flow(s).
+rerun           rerun a previously failed flow
+kill            Kill the flow, upon providing working directory
+fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
+
+Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
+<p>From this step on, one has the option of typing commands in a R console OR a bash shell (command line). For brevity we will show examples using the shell.</p>
+</div>
+<div id="test" class="section level1">
+<h1>Test</h1>
+<p><strong>Test a small pipeline on the cluster</strong></p>
+<p>This will run a three step pipeline, testing several different relationships between jobs. Initially, we can test this locally, and later on a specific HPCC platform.</p>
+<pre><code>## This should take about 30 seconds or so.
+flowr run x=sleep_pipe platform=local execute=TRUE
+## corresponding R command:
+run(x=&#39;sleep_pipe&#39;, platform=&#39;local&#39;, execute=TRUE)</code></pre>
+<p>If this completes successfully, we can try this on a computing cluster; where this would submit a few interconnected jobs.</p>
+<p>Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the plaform variable to switch between platforms.</p>
+<pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE
+## other options for platform: torque, moab, sge, slurm, lsf
+## this shows the folder being used as a working directory for this flow.</code></pre>
+<p>Once the submission is complete, we can test the status using <code>status()</code> by supplying it the full path as recovered from the previous step.</p>
+<pre><code>flowr status x=~/flowr/runs/sleep_pipe-samp1-20150923-10-37-17-4WBiLgCm
+
+## we expect to see a table like this when is completes successfully:
+
+|               | total| started| completed| exit_status|status    |
+|:--------------|-----:|-------:|---------:|-----------:|:---------|
+|001.sleep      |     3|       3|         3|           0|completed |
+|002.create_tmp |     3|       3|         3|           0|completed |
+|003.merge      |     1|       1|         1|           0|completed |
+|004.size       |     1|       1|         1|           0|completed |
+
+## Also we expect a few files to be created:
+ls ~/flowr/runs/sleep_pipe-samp1-20150923-10-37-17-4WBiLgCm/tmp
+samp1_merged  samp1_tmp_1  samp1_tmp_2  samp1_tmp_3
+
+## If both these checks are fine, we are all set !</code></pre>
+<p>There are a few places where things may go wrong, you may follow the advanced configuration guide for more details. Feel free to post questions on <a href="https://github.com/sahilseth/flowr/issues">github issues page</a>.</p>
+</div>
+<div id="advanced-configuration" class="section level1">
+<h1>Advanced Configuration</h1>
+<div class="alert alert-warning" role="alert">
+<p>Possible issue: Jobs are not getting submitted</p>
+</div>
+<div class="alert alert-info" role="alert">
+<ol style="list-style-type: decimal">
+<li>Check if the right platform was used for submission.</li>
+<li>Confirm (with your system admin) that you have the privilege to submit jobs.</li>
+<li><strong>Use a custom flowdef</strong>: Many institutions have strict specification on the resource reservations. Make sure that the queue, memory, walltime, etc. requiremets are specified properly</li>
+<li><strong>Use a custom submission template</strong>: There are several parameters in the submission script used to submit jobs to the cluster. You may customize this template to suit your needs.</li>
+</ol>
+</div>
+<p><strong>Use a custom flowdef</strong></p>
+<p>We can copy a example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.</p>
+<pre><code>cd ~/flowr/pipelines
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def
+## check the format
+flowr as.flowdef x=~/flowr/pipelines/sleep_pipe.def</code></pre>
+<p><em>Run the test with a custom flowdef</em>:</p>
+<pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE def=~/flowr/pipelines/sleep_pipe.def</code></pre>
+<p><strong>Use a custom submission template</strong></p>
+<p>If you need to customize the HPCC submission template, copy the <a href="https://github.com/sahilseth/flowr/tree/master/inst/conf">file for your platform</a> and make your desired changes. For example the MOAB based cluster in our institution does <strong>not</strong> accept the <code>queue</code> argument, so we need to comment it out.</p>
+<p><em>Download the template for a specific HPCC platform</em> into <code>~/flowr/conf</code></p>
+<pre><code>cd ~/flowr/conf ## flowr automatically picks up a template from this folder.
+## for MOAB (msub)
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/moab.sh
+## for Torque (qsub)
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/torque.sh
+## for IBM LSF (bsub)
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/lsf.sh
+## for SGE (qsub)
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/sge.sh
+## for SLURM (sbatch) [untested]
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/slurm.sh</code></pre>
+<p>Make the desired changes using your favourite editor and submit again.</p>
+<div class="alert alert-warning" role="alert">
+<p>Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).</p>
+</div>
+<div class="alert alert-info" role="alert">
+<ol style="list-style-type: decimal">
+<li><strong>Confirm jobids are parsing fine</strong>: Flowr parses the computing platform’s output and extracts job IDs of submitted jobs.</li>
+<li><strong>Check dependency string</strong>:</li>
+</ol>
+</div>
+<p><strong>Parsing job ids</strong></p>
+<p>Flowr parses job IDs to keep a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but it may show it in a slightly different fashion. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</p>
+<p>For example LSF may show a string such as:</p>
+<pre><code>Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.
+## test if it parses correctly
+jobid=&quot;Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.&quot;
+set_opts(flow_parse_lsf = &quot;.*(\&lt;[0-9]*\&gt;).*&quot;)
+parse_jobids(jobid, platform=&quot;lsf&quot;)
+[1] &quot;335508&quot;</code></pre>
+<p>In this case <em>335508</em> was the job id and regex worked well !</p>
+<p>Once we identify the correct regex for the platform you may update the configuration file with it.</p>
+<pre><code>cd ~/flowr/conf ## flowr automatically reads this file
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.conf</code></pre>
+<p>Update the regex pattern and submit again.</p>
+<p><strong>Check dependency string</strong></p>
+<p>After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</p>
+<p>Confirm that the dependency parameter is specified correctly in the submission scripts:</p>
+<pre><code>wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
+cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
+<div class="alert alert-warning" role="alert">
+<p>Possible issue: Flowr shows too much OR too little information.</p>
+</div>
+<div class="alert alert-info" role="alert">
+<p>There are several <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
+</div>
+<p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbosity</a> section in the help pages</p>
+<div class="alert alert-warning" role="alert">
+<p>Possible issue: What all resources are supported in the flow definition?</p>
+</div>
+<div class="alert alert-info" role="alert">
+<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.</p>
+</div>
+<p>The following table provides a mapping between the flow definition columns and variables in the submission templates:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">flowdef variable</th>
+<th align="left">submission template variable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">nodes</td>
+<td align="left">NODES</td>
+</tr>
+<tr class="even">
+<td align="left">cpu_reserved</td>
+<td align="left">CPU</td>
+</tr>
+<tr class="odd">
+<td align="left">memory_reserved</td>
+<td align="left">MEMORY</td>
+</tr>
+<tr class="even">
+<td align="left">email</td>
+<td align="left">EMAIL</td>
+</tr>
+<tr class="odd">
+<td align="left">walltime</td>
+<td align="left">WALLTIME</td>
+</tr>
+<tr class="even">
+<td align="left">extra_opts</td>
+<td align="left">EXTRA_OPTS</td>
+</tr>
+<tr class="odd">
+<td align="left">*</td>
+<td align="left">JOBNAME</td>
+</tr>
+<tr class="even">
+<td align="left">*</td>
+<td align="left">STDOUT</td>
+</tr>
+<tr class="odd">
+<td align="left">*</td>
+<td align="left">CWD</td>
+</tr>
+<tr class="even">
+<td align="left">*</td>
+<td align="left">DEPENDENCY</td>
+</tr>
+<tr class="odd">
+<td align="left">*</td>
+<td align="left">TRIGGER</td>
+</tr>
+<tr class="even">
+<td align="left">**</td>
+<td align="left">CMD</td>
+</tr>
+</tbody>
+</table>
+<p><code>* These are generated on the fly</code> and <code>** This is gathered from flow mat</code></p>
+<div class="alert alert-warning" role="alert">
+<p>Possible issue: Need to add a new platform</p>
+</div>
+<div class="alert alert-info" role="alert">
+<p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
+</div>
+<ol style="list-style-type: decimal">
+<li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
+<li><p><strong>parsing job ids</strong>: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</p></li>
+<li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</li>
+<li><p><strong>recognize new platform</strong>: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the <a href="https://github.com/sahilseth/flowr/blob/master/R/class-def.R">job class</a></p></li>
+</ol>
+<p>Essentially this requires us to add a new line like: <code>setClass(&quot;torque&quot;, contains = &quot;job&quot;)</code>.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
+</ol>
+<div class="alert alert-info" role="alert">
+<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
+</div>
+<div class="alert alert-warning" role="alert">
+<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.</p>
+</div>
+<pre><code>cat $wd/002.create_tmp/create_tmp_cmd_1.out</code></pre>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <div class="col-md-6">
+              </div>
+      <div class="col-md-6">
+        <p class="pull-right">created with <a href="https://github.com/hafen/packagedocs">packagedocs</a></p>
+      </div>
+    </div>
+  </div>
+
+  
+</body>
+</html>
