@@ -19,10 +19,10 @@ require(knitr)
 
 
 if(Sys.info()['sysname'] == "Darwin"){
-	outwd = "~/Dropbox/public/github_flowrpages/flowr"
+	outwd = "~/Dropbox/public/github_flowrpages"
 	code_path <- "~/Dropbox/public/github_flow"
 }else{
-	outwd = "gh-pages/flowr"
+	outwd = "gh-pages"
 	code_path <- "../../"
 }
 
@@ -69,6 +69,7 @@ fls = c(
   "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
   "vignettes/build-pipes.Rmd" = "docs.Rmd",
+  "vignettes/install.Rmd" = "install.Rmd",
   "vignettes/tutorial.Rmd" = "tutorial.Rmd"
 )
 
@@ -82,13 +83,12 @@ check_output("index.html")
 
 render("docs.Rmd", output_format = pd_expand)
 check_output("docs.html")
-#system("open docs.html")
 render("tutorial.Rmd", output_format = pd_expand)
-#purl("tutorial.Rmd")
 check_output("tutorial.html")
-
 render("news.Rmd", output_format = pd_expand)
 check_output("news.html")
+render("install.Rmd", output_format = pd_expand)
+check_output("install-conf.html")
 
 dir.create(file.path(code_path, "inst/staticdocs"))
 #undebug(packagedocs:::get_rd_data)
