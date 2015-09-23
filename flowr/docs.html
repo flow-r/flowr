@@ -6,7 +6,11 @@
 
     <meta name="author" content="Sahil Seth" />
   
+<<<<<<< HEAD
     <meta name="date" content="2015-09-23" />
+=======
+    <meta name="date" content="2015-09-22" />
+>>>>>>> origin/gh-pages
   
   <title>flowr</title>
 
@@ -99,7 +103,14 @@
           <li><a href="#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
           <li><a href="#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
           </ul></li>
+<<<<<<< HEAD
           <li><a href="#cluster-support">Cluster Support</a></li>
+=======
+          <li><a href="#available-pipelines">Available Pipelines</a></li>
+          <li><a href="#cluster-support">Cluster Support</a><ul>
+          <li><a href="#adding-a-new-platform">Adding a new platform</a></li>
+          </ul></li>
+>>>>>>> origin/gh-pages
           </ul>
         </div>
       </div>
@@ -111,7 +122,8 @@
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
 <p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
-<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
+<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. ---> 
+
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
 
@@ -123,6 +135,7 @@
 
 Please use &#39;flowr function -h&#39; to obtain further information about the usage.</code></pre>
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
+
 <pre><code>## run the following to confirm that ~/bin is added your PATH variable:
 echo $PATH
 ## if ~/bin is not in your path, run and add the following to your ~/.bashrc
@@ -532,6 +545,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 </tbody>
 </table>
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
+
 <!-- 
 - jobname: is passed as `name` argument to job().
 - prev_jobs: passed as `previous_job` argument  to job().
@@ -545,6 +559,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 - cpu_reserved: Amount of CPU reserved.
 
 Its best to have this as a tab seperated file (with no row.names). -->
+
 <!---
 ### Style 2
 
@@ -583,6 +598,9 @@ dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 --->
+
+
+
 </div>
 </div>
 <div id="submission-types" class="section level1">
@@ -650,6 +668,7 @@ knitr:::kable(dat)
 - so previous job submission: `scatter`, and current job's dependency type `gather`
 
 --->
+
 </div>
 <div id="burst-one-to-many-relationship" class="section level2">
 <h2>Burst: one to many relationship</h2>
@@ -660,6 +679,7 @@ knitr:::kable(dat)
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 
 --->
+
 <p>In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).</p>
 <pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
 ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
@@ -789,6 +809,32 @@ kable(ex2def[, 1:4])</code></pre>
 </ul></li>
 </ul>
 <p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
+<div id="adding-a-new-platform" class="section level2">
+<h2>Adding a new platform</h2>
+<p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
+<ol style="list-style-type: decimal">
+<li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
+<li><strong>parsing job ids</strong>: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</li>
+</ol>
+<p>For example LSF may show a string such as:</p>
+<pre><code>Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.</code></pre>
+<pre><code>jobid=&quot;Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.&quot;
+set_opts(flow_parse_lsf = &quot;.*(\&lt;[0-9]*\&gt;).*  &quot;)
+parse_jobids(jobid, platform=&quot;lsf&quot;)
+[1] &quot;335508&quot;</code></pre>
+<p>In this case <em>335508</em> was the job id and regex worked well !</p>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</li>
+<li><strong>recognize new platform</strong>: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the <a href="https://github.com/sahilseth/flowr/blob/master/R/class-def.R">job class</a></li>
+</ol>
+<p>Essentially this requires us to add a new line like: <code>setClass(&quot;torque&quot;, contains = &quot;job&quot;)</code>.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
+</ol>
+<div class="alert alert-info" role="alert">
+There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a>
+</div>
+</div>
 </div>
 
 
