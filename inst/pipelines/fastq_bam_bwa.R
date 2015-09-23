@@ -190,7 +190,7 @@ picard_rg <- function(x,
   
   ## add RG to the orignal bam name
   bamrg_files = sprintf("%s_rg.bam", tools::file_path_sans_ext(x))
-  cmds = list(fixrg = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar AddOrReplaceReadGroups INPUT=%s OUTPUT=%s SORT_ORDER=coordinate RGID=%s RGLB=%s RGPL=%s RGPU=%s RGSM=%s RGCN=%s VALIDATION_STRINGENCY=LENIENT",
+  cmds = list(fixrg = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar AddOrReplaceReadGroups INPUT=%s OUTPUT=%s SORT_ORDER=coordinate RGID='%s' RGLB='%s' RGPL='%s' RGPU='%s' RGSM='%s' RGCN='%s' VALIDATION_STRINGENCY=LENIENT",
                               java_exe, java_mem, java_tmp, picard_dir, 
                               x, bamrg_files, rgid, rglb, 
                               seq_platform, rgpu, rgsm, center))
@@ -200,7 +200,6 @@ picard_rg <- function(x,
   return(ret)
   
 }
-
 
 
 
@@ -225,7 +224,7 @@ fastq_bam_bwa <- function(fqs1, fqs2,
   
   check_args(ignore = c("outfile", "fqs2"))
   set_opts(samplename = samplename)
-  pipename = match.call()[[1]]
+  pipename = "fastq_bam_bwa"
   message("Generating a ", pipename, " flowmat for sample: ", samplename)
   
   
