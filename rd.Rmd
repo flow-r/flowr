@@ -8,7 +8,7 @@ output:
     toc: true
 rd_page: true
 navpills: |
-  <li><a href='docs.html'>Docs</a></li>
+  <li><a href='docs.html'>Overview</a></li>
   <li><a href='Tutorial.html'>Tutorial</a></li>
   <li><a href='install-conf.html'>Install</a></li>
   <li class="active"><a href='rd.html'>Help</a></li>

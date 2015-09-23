@@ -7,14 +7,15 @@ output: html_document
 packagedocs:
     toc: true
 navpills: |
-  <li><a href='docs.html'>Docs</a></li>
+  <li><a href='docs.html'>Overview</a></li>
   <li><a href='tutorial.html'>Tutorial</a></li>
-  <li><a href='rd.html'>Package Ref</a></li>
+  <li><a href='install-conf.html'>Install</a></li>
+  <li><a href='rd.html'>Help</a></li>
   <li class="active"><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-flowr 0.9.8
+flowr latest
 ----------------------------------------------
 - Modified the output of status function, to add a `status` column. Specifically, 
 this uses information from other columns and summarizes whether a specific step is 
