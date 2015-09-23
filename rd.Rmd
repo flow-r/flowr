@@ -855,6 +855,191 @@ def = as.flowdef(fl, verbose = 2)
 	# 	3: C	scatter --> gather --> serial rel: many:one
 	# 	4: D	serial --> burst --> scatter rel: one:many</code></pre>
 
+# Managing pipelines
+
+
+
+## fetch
+
+<h3>Two generic functions to search for pipelines and configuration files.</h3>
+
+<p class="rd-p">These functions help in searching for specific files in the user's space.
+<code>fetch_pipes()</code>: Fetches pipelines in the following places, in this specific order:
+<ul>
+<li> <strong>user's folder</strong>: <code>~/flowr/pipelines</code>
+</li>
+<li> <strong>current wd</strong>: <code>./</code>
+</li>
+</ul>
+<strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later
+folder would be selected. As such, giving priority to user's home, and current working
+directories.
+<code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
+<ul>
+<li> <strong>package</strong>: <code>conf</code> folders in flowr and ngsflows packages.
+</li>
+<li> <strong>user's folder</strong>: <code>~/flowr/conf</code> folder.
+</li>
+<li> <strong>current wd</strong>: <code>./</code>
+</li>
+</ul>
+<strong>NOTE:</strong>
+This function would greedily return all matching conf files. One would load all of them
+in the order returned by this functions. If the same variable is
+repeated in multiple files, value from the later files would replace those formerly defined.
+Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
+By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
+See the details sections, for more explanation on this.</p>
+
+<h4>Usage</h4>
+<pre class="r"><code><div>fetch(x, places, urls, verbose&nbsp;=&nbsp;get_opts("verbose"))</div>
+<div>fetch_pipes(x, places, last_only&nbsp;=&nbsp;FALSE, urls&nbsp;=&nbsp;get_opts("flowr_pipe_urls"), silent&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ask&nbsp;=&nbsp;TRUE)</div>
+<div>fetch_conf(x&nbsp;=&nbsp;"flowr.conf", places, ...)</div></code></pre>
+
+<h4>Arguments</h4>
+<dl class="rd-dl">
+  <dt>x</dt>
+  <dd class="rd-dd">name of the file to search for (without extension).
+By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> search for files ending with
+<code>.R</code> and <code>.conf</code> respectively.</dd>
+  <dt>places</dt>
+  <dd class="rd-dd">places (paths) to look for files matching the name. Defaults are already defined in the function.</dd>
+  <dt>urls</dt>
+  <dd class="rd-dd">urls to look for, works well for pipelines [not implemented yet]</dd>
+  <dt>verbose</dt>
+  <dd class="rd-dd">These functions help in searching for specific files in the user's space.
+<code>fetch_pipes()</code>: Fetches pipelines in the following places, in this specific order:
+<ul>
+<li> <strong>user's folder</strong>: <code>~/flowr/pipelines</code>
+</li>
+<li> <strong>current wd</strong>: <code>./</code>
+</li>
+</ul>
+<strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later
+folder would be selected. As such, giving priority to user's home, and current working
+directories.
+<code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
+<ul>
+<li> <strong>package</strong>: <code>conf</code> folders in flowr and ngsflows packages.
+</li>
+<li> <strong>user's folder</strong>: <code>~/flowr/conf</code> folder.
+</li>
+<li> <strong>current wd</strong>: <code>./</code>
+</li>
+</ul>
+<strong>NOTE:</strong>
+This function would greedily return all matching conf files. One would load all of them
+in the order returned by this functions. If the same variable is
+repeated in multiple files, value from the later files would replace those formerly defined.
+Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
+By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
+See the details sections, for more explanation on this.</dd>
+  <dt>last_only</dt>
+  <dd class="rd-dd">fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]</dd>
+  <dt>silent</dt>
+  <dd class="rd-dd">fetch_pipes(): logical, be silent even if no such pipeline is available. [FALSE]</dd>
+  <dt>ask</dt>
+  <dd class="rd-dd">ask before downloading or copying. [not implemented]</dd>
+  <dt>...</dt>
+  <dd class="rd-dd">[not implemented]</dd>
+</dl>
+
+  <h4>Details</h4>
+
+  <p class="rd-p">For example flowr has a variable <code>flow_run_path</code> where it puts all the execution logs etc.
+The default value is picked up from packagess internal <code>flowr.conf</code> file.
+To redefine this value, one could create a new file called <code>~/flowr/conf/flowr.conf</code> and
+add a line:</p>
+
+  <p class="rd-p"><code>flow_run_path<TAB>my_awesome_path</code>, where <TAB> is a tab character, since these are tab
+seperated files.</p>
+
+  <p class="rd-p">Also, at any time you can run, <code>load_conf(super_specific_opts.conf)</code>; to load custom options.</p>
+
+
+
+<h4>Examples</h4>
+<pre class="r"><code>## let us find a default conf file
+conf = fetch_conf("flowr.conf");conf
+## load this
+load_opts(conf)
+
+## this returns a list, which prints pretty
+pip = fetch_pipes("sleep_pipe")
+pip$name
+pip$pipe
+pip$def</code></pre>
+
+<h4>See also</h4>
+
+<a href=#opts_flow>flowopts</a>
+
+
+
+
+## run
+
+<h3>Run automated Pipelines</h3>
+
+<p class="rd-p">Run complete pipelines, by wrapping several steps into one convinient function:
+Taking <code>sleep_pipe</code> as a example.
+<ul>
+<li> Use <a href='fetch.html'>fetch_pipes</a> to get paths to a Rscript, flowdef file and optionally a configuration file
+  with various default options used.
+  </li>
+<li> Create a flowmat (using the function defined in the Rscript)
+  </li>
+<li> Create a `flow` object, using flowmat created and flowdef (as fetched using fetch_pipes)
+  </li>
+<li> Submit the flow to the cluster (using <a href='submit_flow.html'>submit_flow</a>)
+</li>
+</ul>
+</p>
+
+<h4>Usage</h4>
+<pre class="r"><code><div>run(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
+
+<h4>Arguments</h4>
+<dl class="rd-dl">
+  <dt>x</dt>
+  <dd class="rd-dd">name of the pipeline to run. This is a function called to create a flow_mat.</dd>
+  <dt>platform</dt>
+  <dd class="rd-dd">what platform to use, overrides flowdef</dd>
+  <dt>def</dt>
+  <dd class="rd-dd">flow definition</dd>
+  <dt>flow_run_path</dt>
+  <dd class="rd-dd">passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs</dd>
+  <dt>execute</dt>
+  <dd class="rd-dd">TRUE/FALSE</dd>
+  <dt>...</dt>
+  <dd class="rd-dd">passed onto the pipeline function as specified in x</dd>
+</dl>
+
+
+<h4>Examples</h4>
+<pre class="r"><code>## Run a short pipeline (dry run)
+run("sleep_pipe")
+
+## Run a short pipeline on the local machine
+run("sleep_pipe", platform = "local", execute = TRUE)
+
+## Run a short pipeline on the a torque cluster (qsub)
+run("sleep_pipe", platform = "torque", execute = TRUE)
+
+## Run a short pipeline on the a MOAB cluster (msub)
+run("sleep_pipe", platform = "moab", execute = TRUE)
+
+## Run a short pipeline on the a IBM (LSF) cluster (bsub)
+run("sleep_pipe", platform = "lsf", execute = TRUE)
+
+## Run a short pipeline on the a MOAB cluster (msub)
+run("sleep_pipe", platform = "moab", execute = TRUE)
+
+## change parameters of the pipeline
+## All extra parameters are passed on to the function function.
+run("sleep_pipe", platform = "lsf", execute = TRUE, x = 5)</code></pre>
+
 # Details on flowr's classes
 
 

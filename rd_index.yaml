@@ -22,6 +22,12 @@
     - setup
     - verbose
 -
+  section_name: Managing pipelines
+  description:
+  topics:
+    - fetch
+    - run
+-
   section_name: Details on flowr's classes
   description:
   topics:
