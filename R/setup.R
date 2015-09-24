@@ -15,7 +15,8 @@
 setup <- function(bin = "~/bin", 
 									flow_base_path = get_opts("flow_base_path"),
 									flow_run_path = get_opts("flow_run_path"),
-									flow_conf_path = get_opts("flow_conf_path")){
+									flow_conf_path = get_opts("flow_conf_path"),
+									flow_pipe_path = get_opts("flow_pipe_paths")){
 	pkg = "flowr"
 	if(!file.exists(bin)) dir.create(bin) ## create bin, if it does not exist
 	script = file.path(bin, pkg)
@@ -31,7 +32,8 @@ setup <- function(bin = "~/bin",
 	dir.create(flow_base_path, showWarnings = FALSE)
 	dir.create(flow_conf_path, showWarnings = FALSE)
 	dir.create(flow_run_path, showWarnings = FALSE)
-	
+	dir.create(flow_pipe_path, showWarnings = FALSE)
+
 	## fetch conf files and copy them, if they exist show warning
 	confs = sapply(c("flowr","ngsflows"), function(x) fetch_conf(x, verbose = 0)[1])
 	tmp2 = file.copy(confs, flow_conf_path, overwrite = FALSE)
