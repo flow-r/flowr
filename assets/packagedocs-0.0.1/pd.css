@@ -128,3 +128,8 @@ blockquote {
   opacity: 0.7;
 }
 
+.table {
+  width: 75% !important;
+  margin: 0 auto 25 auto !important;
+}
+
