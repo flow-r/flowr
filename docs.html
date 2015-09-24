@@ -115,13 +115,12 @@
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
 
-  run             Running predefined pipelines; try flowr avail x=&quot;pipelines&quot;
-  fetch_pipes     Checking what modules and pipelines are available; avail x=modules OR avail x=pipelines
-  status          Detailed status of a flow (s).
-  rerun           rerun a previously failed flow
-  kill            Kill the flow, upon providing working directory
+status          Detailed status of a flow(s).
+rerun           rerun a previously failed flow
+kill            Kill the flow, upon providing working directory
+fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
 
-Please use &#39;flowr function -h&#39; to obtain further information about the usage.</code></pre>
+Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 <pre><code>## run the following to confirm that ~/bin is added your PATH variable:
 echo $PATH
