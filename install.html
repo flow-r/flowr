@@ -145,8 +145,10 @@ samp1_merged  samp1_tmp_1  samp1_tmp_2  samp1_tmp_3
 </div>
 <div id="advanced-configuration" class="section level1">
 <h1>Advanced Configuration</h1>
+<div id="errors-in-job-submission" class="section level4">
+<h4>Errors in job submission</h4>
 <div class="alert alert-warning" role="alert">
-Possible issue: Jobs are not getting submitted
+<p>Possible issue: Jobs are not getting submitted</p>
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -156,7 +158,7 @@ Possible issue: Jobs are not getting submitted
 <li><strong>Use a custom submission template</strong>: There are several parameters in the submission script used to submit jobs to the cluster. You may customize this template to suit your needs.</li>
 </ol>
 </div>
-<p><strong>Use a custom flowdef</strong></p>
+<p><strong>3. Use a custom flowdef</strong></p>
 <p>We can copy a example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.</p>
 <pre><code>cd ~/flowr/pipelines
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def
@@ -164,7 +166,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sle
 flowr as.flowdef x=~/flowr/pipelines/sleep_pipe.def</code></pre>
 <p><em>Run the test with a custom flowdef</em>:</p>
 <pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE def=~/flowr/pipelines/sleep_pipe.def</code></pre>
-<p><strong>Use a custom submission template</strong></p>
+<p><strong>4. Use a custom submission template</strong></p>
 <p>If you need to customize the HPCC submission template, copy the <a href="https://github.com/sahilseth/flowr/tree/master/inst/conf">file for your platform</a> and make your desired changes. For example the MOAB based cluster in our institution does <strong>not</strong> accept the <code>queue</code> argument, so we need to comment it out.</p>
 <p><em>Download the template for a specific HPCC platform</em> into <code>~/flowr/conf</code></p>
 <pre><code>cd ~/flowr/conf ## flowr automatically picks up a template from this folder.
@@ -180,7 +182,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/sge.sh
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/slurm.sh</code></pre>
 <p>Make the desired changes using your favourite editor and submit again.</p>
 <div class="alert alert-warning" role="alert">
-Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).
+<p>Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).</p>
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -188,7 +190,7 @@ Possible issue: Jobs for subsequent steps are not submitting (though first step 
 <li><strong>Check dependency string</strong>:</li>
 </ol>
 </div>
-<p><strong>Parsing job ids</strong></p>
+<p><strong>1. Parsing job ids</strong></p>
 <p>Flowr parses job IDs to keep a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but it may show it in a slightly different fashion. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</p>
 <p>For example LSF may show a string such as:</p>
 <pre><code>Job &lt;335508&gt; is submitted to queue &lt;transfer&gt;.
@@ -202,23 +204,27 @@ parse_jobids(jobid, platform=&quot;lsf&quot;)
 <pre><code>cd ~/flowr/conf ## flowr automatically reads this file
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.conf</code></pre>
 <p>Update the regex pattern and submit again.</p>
-<p><strong>Check dependency string</strong></p>
+<p><strong>2. Check dependency string</strong></p>
 <p>After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</p>
 <p>Confirm that the dependency parameter is specified correctly in the submission scripts:</p>
 <pre><code>wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
+</div>
+<div id="flowr-configuration-file" class="section level4">
+<h4>Flowr Configuration file</h4>
 <div class="alert alert-warning" role="alert">
-Possible issue: Flowr shows too much OR too little information.
+<p>Possible issue: Flowr shows too much OR too little information.</p>
 </div>
-<div class="alert alert-info" role="alert">
-There are several <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)
-</div>
+<p>There are several <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
 <p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbosity</a> section in the help pages</p>
+</div>
+<div id="flowdef-resource-columns" class="section level4">
+<h4>Flowdef resource columns</h4>
 <div class="alert alert-warning" role="alert">
-Possible issue: What all resources are supported in the flow definition?
+<p>Possible issue: What all resources are supported in the flow definition?</p>
 </div>
 <div class="alert alert-info" role="alert">
-The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.
+<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.</p>
 </div>
 <p>The following table provides a mapping between the flow definition columns and variables in the submission templates:</p>
 <table>
@@ -280,11 +286,14 @@ The resource requirement columns of flow definition are passed along to the fina
 </tbody>
 </table>
 <p><code>* These are generated on the fly</code> and <code>** This is gathered from flow mat</code></p>
+</div>
+<div id="adding-a-new-platform" class="section level4">
+<h4>Adding a new platform</h4>
 <div class="alert alert-warning" role="alert">
-Possible issue: Need to add a new platform
+<p>Possible issue: Need to add a new platform</p>
 </div>
 <div class="alert alert-info" role="alert">
-Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.
+<p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
 </div>
 <ol style="list-style-type: decimal">
 <li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
@@ -297,12 +306,13 @@ Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issue
 <li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
 </ol>
 <div class="alert alert-info" role="alert">
-There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a>
+<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
 </div>
 <div class="alert alert-warning" role="alert">
-Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.
+<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.</p>
 </div>
 <pre><code>cat $wd/002.create_tmp/create_tmp_cmd_1.out</code></pre>
+</div>
 </div>
 
 

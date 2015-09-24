@@ -565,7 +565,7 @@ if(class(pipes) != "try-error")
 
 # Cluster Support
 
-Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box.
+Support for several popular cluster platforms are built-in. There is a template, for each platform, which should out of the box.
 Further, one may copy and edit them (and save to `~/flowr/conf`) in case some changes are required. Templates from this folder (`~/flowr/conf`), would override defaults.
 
 Here are links to latest templates on github:
@@ -576,6 +576,17 @@ Here are links to latest templates on github:
 - [sge](https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh)
 - [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
 
+
+**Not sure what platform you have?**
+
+You may check the version by running ONE of the following commands:
+
+```
+msub --version
+## Version: **moab** client 8.1.1
+man bsub
+##Submits a job to **LSF** by running the specified
+```
 
 
 As of now we have tested this on the following clusters:

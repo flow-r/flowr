@@ -111,8 +111,7 @@
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
 <p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
-<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. ---> 
-
+<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
 
@@ -123,7 +122,6 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 
 Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
-
 <pre><code>## run the following to confirm that ~/bin is added your PATH variable:
 echo $PATH
 ## if ~/bin is not in your path, run and add the following to your ~/.bashrc
@@ -135,7 +133,7 @@ flowr</code></pre>
 <p><img src="files/toy.png" /></p>
 <p>Consider, a simple example where we have <strong>three</strong> instances of the <code>sleep</code> command running ( which basically stalls the terminal for few seconds and does nothing ). After its completion <strong>three</strong> tmp files are created with some random data. After this, a merge step follows, which combines them into one big file. Next we use <code>du</code> to calculate the size of the resulting file. This flow is shown in the above described figure.</p>
 <div class="alert alert-info" role="alert">
-<strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
+<p><strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.</p>
 </div>
 <p>To create this flow in flowr, we need the actual commands to run; and some kind of a configuration file to describe which ones go first.</p>
 <p>Here is a table with the commands we would like to run ( or <code>flow mat</code> ).</p>
@@ -192,7 +190,7 @@ flowr</code></pre>
 </table>
 <p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition">flow_def</a>. Each row in a flow mat relates to one job.</p>
 <div class="alert alert-info" role="alert">
-Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.
+<p>Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.</p>
 </div>
 <table>
 <thead>
@@ -276,7 +274,7 @@ Notice how jobname column is being used a key throught the two tables. And how p
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
 <div class="alert alert-info" role="alert">
-<b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.
+<p><b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.</p>
 </div>
 <pre class="r"><code>submit_flow(fobj)</code></pre>
 <pre><code>Test Successful!
@@ -286,7 +284,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
 <div id="submit-it" class="section level2">
 <h2>Submit it</h2>
 <div class="alert alert-info" role="alert">
-Submit to the cluster !
+<p>Submit to the cluster !</p>
 </div>
 <pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
@@ -298,7 +296,7 @@ flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
 <h2>Check its status</h2>
 <p>One may periodically run <code>status</code> to monitor the status of a flow.</p>
 <div class="alert alert-info" role="alert">
-<b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).
+<p><b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).</p>
 </div>
 <pre><code>flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 
@@ -320,7 +318,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 |003.merge |     3|       3|         1|           0|   pending|
 |004.size  |     3|       3|         1|           0|   pending|</code></pre>
 <div class="alert alert-success" role="alert">
-<b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.
+<p><b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.</p>
 </div>
 </div>
 <div id="kill-it" class="section level2">
@@ -329,7 +327,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 <p>kill one flow:</p>
 <pre><code>flowr kill_flow x=flow_wd</code></pre>
 <div class="alert alert-warning" role="alert">
-One may instruct flowr to kill multiple flows, but flowr would confirm before killing.
+<p>One may instruct flowr to kill multiple flows, but flowr would confirm before killing.</p>
 </div>
 <pre><code>kill(x=&#39;fastq_haplotyper*&#39;)
 Flowr: streamlining workflows
@@ -340,7 +338,7 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 <p>To kill multiple, set force=TRUE:</p>
 <pre><code>kill(x=&#39;fastq_haplotyper*&#39;, force = TRUE)</code></pre>
 <div class="alert alert-warning" role="alert">
-While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.
+<p>While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.</p>
 </div>
 <pre><code>## manual killing:
 jobids=$(qstat | grep &#39;mypattern&#39;)
@@ -459,11 +457,11 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <li><code>queue</code></li>
 </ul>
 <div class="alert alert-info" role="alert">
-This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.
+<p>This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.</p>
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
 <div class="alert alert-info" role="alert">
-If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section below.
+<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section below.</p>
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
 <table>
@@ -533,7 +531,6 @@ If these (resource requirements) columns are not included in the flow definition
 </tbody>
 </table>
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
-
 <!-- 
 - jobname: is passed as `name` argument to job().
 - prev_jobs: passed as `previous_job` argument  to job().
@@ -547,7 +544,6 @@ If these (resource requirements) columns are not included in the flow definition
 - cpu_reserved: Amount of CPU reserved.
 
 Its best to have this as a tab seperated file (with no row.names). -->
-
 <!---
 ### Style 2
 
@@ -586,9 +582,6 @@ dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 --->
-
-
-
 </div>
 </div>
 <div id="submission-types" class="section level1">
@@ -656,7 +649,6 @@ knitr:::kable(dat)
 - so previous job submission: `scatter`, and current job's dependency type `gather`
 
 --->
-
 </div>
 <div id="burst-one-to-many-relationship" class="section level2">
 <h2>Burst: one to many relationship</h2>
@@ -667,7 +659,6 @@ knitr:::kable(dat)
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 
 --->
-
 <p>In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).</p>
 <pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
 ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
@@ -712,13 +703,13 @@ kable(ex2def[, 1:4])</code></pre>
 <pre class="r"><code>plot_flow(fobj)</code></pre>
 <p><img src="docs_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-There is a darker more prominent shadow to indicate scatter steps.
+<p>There is a darker more prominent shadow to indicate scatter steps.</p>
 </div>
 </div>
 </div>
 <div id="cluster-support" class="section level1">
 <h1>Cluster Support</h1>
-<p>Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
+<p>Support for several popular cluster platforms are built-in. There is a template, for each platform, which should out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
 <p>Here are links to latest templates on github:</p>
 <ul>
 <li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">torque</a></li>
@@ -727,6 +718,12 @@ There is a darker more prominent shadow to indicate scatter steps.
 <li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh">sge</a></li>
 <li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh">slurm</a>, needs testing</li>
 </ul>
+<p><strong>Not sure what platform you have?</strong></p>
+<p>You may check the version by running ONE of the following commands:</p>
+<pre><code>msub --version
+## Version: **moab** client 8.1.1
+man bsub
+##Submits a job to **LSF** by running the specified</code></pre>
 <p>As of now we have tested this on the following clusters:</p>
 <table>
 <thead>
