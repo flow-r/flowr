@@ -515,14 +515,14 @@ regarding previous job ids and their status is not lost.</p>
 
 <p class="rd-p">There are three helper functions which attempt to manage params used by flowr and ngsflows:
 <ul>
-<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params'>get_opts</a> OR <code>opts_flow\$get()</code>: show all default options
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>get_opts</a> OR <code>opts_flow\$get()</code>: show all default options
 </li>
-<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params'>set_opts</a> OR <code>opts_flow\$set()</code>: set default options
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>set_opts</a> OR <code>opts_flow\$set()</code>: set default options
 </li>
-<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params'>load_opts</a> OR <code>opts_flow\$load()</code>: load options specified in a tab seperated text file
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>load_opts</a> OR <code>opts_flow\$load()</code>: load options specified in a tab seperated text file
 </li>
 </ul>
-For more details regarding these funtions refer to <a href='http://rpackages.ianhowson.com/cran/params/man/params'>params</a>.</p>
+For more details regarding these funtions refer to <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>params</a>.</p>
 
 <h4>Usage</h4>
 <pre class="r"><code>flowopts
