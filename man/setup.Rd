@@ -6,7 +6,8 @@
 \usage{
 setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"),
   flow_run_path = get_opts("flow_run_path"),
-  flow_conf_path = get_opts("flow_conf_path"))
+  flow_conf_path = get_opts("flow_conf_path"),
+  flow_pipe_path = get_opts("flow_pipe_paths"))
 }
 \arguments{
 \item{bin}{path to bin folder}

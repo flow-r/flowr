@@ -132,7 +132,7 @@ bwa.backtrack <- function(
 #' @param java_exe 
 #' @param java_mem 
 #' @param java_tmp 
-#' @param picard_dir 
+#' @param picard_jar 
 #'
 #' @export
 picard_merge <- function(x, 
@@ -141,7 +141,7 @@ picard_merge <- function(x,
                          java_exe = get_opts("java_exe"),
                          java_mem = get_opts("java_mem"),
                          java_tmp = get_opts("java_tmp"),
-                         picard_dir = get_opts("picard_dir")){
+                         picard_jar = get_opts("picard_jar")){
   
   ## -----  check if any of the params are null
   #   params = lapply(names(formals()), function(zzz) get(zzz))
@@ -151,8 +151,8 @@ picard_merge <- function(x,
   check_args()  
   
   bam_list = paste("INPUT=", x, sep = "", collapse = " ")
-  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",
-                              java_exe, java_mem, java_tmp, picard_dir, bam_list, mergedbam))
+  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",
+                              java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
   
   ## --- INPUT is a NAMED list
   flowmat = to_flowmat(cmds, samplename)
@@ -171,7 +171,7 @@ picard_rg <- function(x,
                       java_exe = get_opts("java_exe"),
                       java_mem = get_opts("java_mem"),
                       java_tmp = get_opts("java_tmp"),
-                      picard_dir = get_opts("picard_dir")
+											picard_jar = get_opts("picard_jar")
 ){
   
   
@@ -190,8 +190,8 @@ picard_rg <- function(x,
   
   ## add RG to the orignal bam name
   bamrg_files = sprintf("%s_rg.bam", tools::file_path_sans_ext(x))
-  cmds = list(fixrg = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s/picard.jar AddOrReplaceReadGroups INPUT=%s OUTPUT=%s SORT_ORDER=coordinate RGID='%s' RGLB='%s' RGPL='%s' RGPU='%s' RGSM='%s' RGCN='%s' VALIDATION_STRINGENCY=LENIENT",
-                              java_exe, java_mem, java_tmp, picard_dir, 
+  cmds = list(fixrg = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s AddOrReplaceReadGroups INPUT=%s OUTPUT=%s SORT_ORDER=coordinate RGID='%s' RGLB='%s' RGPL='%s' RGPU='%s' RGSM='%s' RGCN='%s' VALIDATION_STRINGENCY=LENIENT",
+                              java_exe, java_mem, java_tmp, picard_jar, 
                               x, bamrg_files, rgid, rglb, 
                               seq_platform, rgpu, rgsm, center))
   
