@@ -41,7 +41,7 @@ as.flowmat(): reads a file and checks for required columns. If x is data.frame c
 }
 \examples{
 ## Use this link for a few examples:
-## http://sahilseth.github.io/flowr/flowr/tutorial.html#define_modules
+## http://docs.flowr.space/flowr/tutorial.html#define_modules
 
 ## create a vector of shell commands
 cmds = c("sleep 1", "sleep 2")

@@ -61,7 +61,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #'
 #' @examples
 #' ## Use this link for a few elaborate examples:
-#' ## http://sahilseth.github.io/flowr/flowr/tutorial.html#define_modules
+#' ## http://docs.flowr.space/flowr/tutorial.html#define_modules
 #' 
 #' ex = file.path(system.file(package = "flowr"), "pipelines")
 #' flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))

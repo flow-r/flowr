@@ -103,6 +103,12 @@ if(Sys.info()['sysname'] == "Darwin"){
 }
 
 
+if(Sys.info()['sysname'] == "Darwin"){
+	setwd("~/Dropbox/public/github_flowrpages")
+	system("git commit -a -m 'update website'")
+	system("git push")
+}
+
 ## ---- create a PDF manual as well
 if(FALSE){
 	#setwd("~/Dropbox/public/github_flowrpages/flowr")
