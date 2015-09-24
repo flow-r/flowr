@@ -146,7 +146,7 @@ samp1_merged  samp1_tmp_1  samp1_tmp_2  samp1_tmp_3
 <div id="advanced-configuration" class="section level1">
 <h1>Advanced Configuration</h1>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Jobs are not getting submitted</p>
+Possible issue: Jobs are not getting submitted
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -180,7 +180,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/sge.sh
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/slurm.sh</code></pre>
 <p>Make the desired changes using your favourite editor and submit again.</p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).</p>
+Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -208,17 +208,17 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.co
 <pre><code>wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Flowr shows too much OR too little information.</p>
+Possible issue: Flowr shows too much OR too little information.
 </div>
 <div class="alert alert-info" role="alert">
-<p>There are several <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
+There are several <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)
 </div>
 <p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbosity</a> section in the help pages</p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: What all resources are supported in the flow definition?</p>
+Possible issue: What all resources are supported in the flow definition?
 </div>
 <div class="alert alert-info" role="alert">
-<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.</p>
+The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.
 </div>
 <p>The following table provides a mapping between the flow definition columns and variables in the submission templates:</p>
 <table>
@@ -281,10 +281,10 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 </table>
 <p><code>* These are generated on the fly</code> and <code>** This is gathered from flow mat</code></p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Need to add a new platform</p>
+Possible issue: Need to add a new platform
 </div>
 <div class="alert alert-info" role="alert">
-<p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
+Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.
 </div>
 <ol style="list-style-type: decimal">
 <li><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</li>
@@ -297,10 +297,10 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <li><strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
 </ol>
 <div class="alert alert-info" role="alert">
-<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
+There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a>
 </div>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.</p>
+Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.
 </div>
 <pre><code>cat $wd/002.create_tmp/create_tmp_cmd_1.out</code></pre>
 </div>

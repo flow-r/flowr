@@ -15,7 +15,7 @@ $(document).ready(function() {
   $('#toc ul:first ul').addClass("nav nav-stacked")
 
   // table styling
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.header').parent('thead').parent('table').addClass('table table-striped table-condensed');
 
   var $body     = $(document.body);
   var navHeight = $('.navbar').outerHeight(true) + 40;

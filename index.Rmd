@@ -82,7 +82,7 @@ page
 
 
 
-Aknowledgements
+Acknowledgements
 ---------------
 
 -   Jianhua Zhang
