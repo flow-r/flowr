@@ -56,12 +56,13 @@ setup() ## copy flowr bash script; and create a folder flowr under home.
 ## Resources
 - For a quick overview, you may browse through,
  these [introductory slides](http://sahilseth.github.io/slides/flowrintro).
-- The [documentation](http://sahilseth.github.io/flowr/flowr/docs.html) provides additional details regarding
+- The [overview](http://sahilseth.github.io/flowr/docs.html) provides additional details regarding
 the ideas and concepts used in flowr
-- We have a [tutorial](http://sahilseth.github.io/flowr/flowr/tutorial.html) which can walk you through creating a
+- We have a [tutorial](http://sahilseth.github.io/flowr/tutorial.html) which can walk you through creating a
 new pipeline
-- Additionally, a subset of important functions are described in the [package reference](http://sahilseth.github.io/flowr/flowr/rd.html)
+- Additionally, a subset of important functions are described in the [package reference](http://sahilseth.github.io/flowr/rd.html)
 page
+- You may follow detailed instructions on [installing and configuring](http://sahilseth.github.io/flowr/install-conf.html)
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 

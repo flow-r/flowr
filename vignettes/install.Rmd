@@ -69,7 +69,7 @@ Initially, we can test this locally, and later on a specific HPCC platform.
 
 
 ```
-## This should take about 30 seconds or so.
+## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
 run(x='sleep_pipe', platform='local', execute=TRUE)
