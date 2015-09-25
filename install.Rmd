@@ -164,6 +164,7 @@ Here are some helpful guides and details on the platforms:
 
 [Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
 
+## FAQs and help on Solving Issues
 
 #### Errors in job submission
 <div class="alert alert-warning" role="alert">
