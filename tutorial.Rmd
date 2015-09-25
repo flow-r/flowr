@@ -64,7 +64,7 @@ fobj = run("sleep_pipe", execute = TRUE);
 
 
 
-### Creating Modules/Pipelines
+## Creating Modules/Pipelines
 
 
 <div class="alert alert-info" role="alert">
@@ -98,7 +98,7 @@ kable(flowmat)
 
 Next, we need a flow definition.
 
-### Creating flow definition
+## Creating flow definition
 
 flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function
 to_flowdef, accepts a `flowmat` and creates a flow definition. 

@@ -79,6 +79,8 @@
         <div id="toc">
           <ul>
           <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
+          <li><a href="#creating-modulespipelines">Creating Modules/Pipelines</a></li>
+          <li><a href="#creating-flow-definition">Creating flow definition</a></li>
           <li><a href="#create-flow-submit-to-cluster">Create flow, submit to cluster</a></li>
           </ul></li>
           </ul>
@@ -102,8 +104,8 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cl
 
 ## OR assuming we have these three files in the ~/pipelines folder:
 fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); </code></pre>
-<div id="creating-modulespipelines" class="section level3">
-<h3>Creating Modules/Pipelines</h3>
+<div id="creating-modulespipelines" class="section level2">
+<h2>Creating Modules/Pipelines</h2>
 <div class="alert alert-info" role="alert">
 <p><strong>module</strong> A R function which creates a flow mat, is a module. Using <code>module + flowdef</code>, we can run a pipeline.</p>
 </div>
@@ -138,17 +140,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 1 &amp;&amp; sleep 1;echo ‘hello’</td>
+<td align="left">sleep 13 &amp;&amp; sleep 7;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 1;echo ‘hello’</td>
+<td align="left">sleep 19 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 9 &amp;&amp; sleep 11;echo ‘hello’</td>
+<td align="left">sleep 7 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -179,8 +181,8 @@ flowmat = out$flowmat</code></pre>
 </table>
 <p>Next, we need a flow definition.</p>
 </div>
-<div id="creating-flow-definition" class="section level3">
-<h3>Creating flow definition</h3>
+<div id="creating-flow-definition" class="section level2">
+<h2>Creating flow definition</h2>
 <p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a <code>flowmat</code> and creates a flow definition.</p>
 <div class="alert alert-info" role="alert">
 <p>The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency.</p>
