@@ -123,7 +123,7 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
 run(x=&#39;sleep_pipe&#39;, platform=&#39;local&#39;, execute=TRUE)</code></pre>
 <p>If this completes successfully, we can try this on a computing cluster; where this would submit a few interconnected jobs.</p>
-<p>Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the plaform variable to switch between platforms.</p>
+<p>Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the platform variable to switch between platforms.</p>
 <pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE
 ## other options for platform: torque, moab, sge, slurm, lsf
 ## this shows the folder being used as a working directory for this flow.</code></pre>
