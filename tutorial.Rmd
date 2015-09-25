@@ -13,6 +13,7 @@ vignette: >
     \usepackage[utf8]{inputenc}
 packagedocs:
     toc: true
+    toc_depth: 4
 navpills: |
   <li><a href='docs.html'>Overview</a></li>
   <li class="active"><a href='Tutorial.html'>Tutorial</a></li>
