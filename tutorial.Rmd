@@ -44,8 +44,7 @@ These three files are available under the [pipelines](https://github.com/sahilse
 ~/flowr/pipelines/
             |--- sleep_pipe.R      A R script, with sleep_pipe(), which creates a flowmat
             |--- sleep_pipe.def    A tab-delimited flow definition file
-            |--- sleep_pipe.conf   An *optional* tab-delimited configuration file,
-                                     defining default parameters
+            |--- sleep_pipe.conf   An *optional* tab-delim conf file, defining default params
 ```
 
 
