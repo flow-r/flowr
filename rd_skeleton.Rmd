@@ -16,4 +16,6 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
+<div class="alert alert-success" role="alert">
 You may download a PDF version of this manual [here](manual.pdf)
+</div>
