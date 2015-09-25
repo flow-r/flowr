@@ -104,9 +104,9 @@
           <li><a href="#dependency-types">Dependency types</a></li>
           <li><a href="#relationships">Relationships</a><ul>
           <li><a href="#one-to-one-serial">One to One (serial)</a></li>
-          </ul></li>
           <li><a href="#many-to-one-gather">Many to One (gather)</a></li>
           <li><a href="#one-to-many-burst">One to Many (Burst)</a></li>
+          </ul></li>
           <li><a href="#cluster-support">Cluster Support</a></li>
           </ul>
         </div>
@@ -132,8 +132,8 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 <div id="toy-example" class="section level2">
 <h2>Toy example</h2>
-<p><div id="htmlwidget-829" style="width:480px;height:144px;" class="DiagrammeR"></div>
-<script type="application/json" data-for="htmlwidget-829">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script></p>
+<p><div id="htmlwidget-7125" style="width:480px;height:144px;" class="DiagrammeR"></div>
+<script type="application/json" data-for="htmlwidget-7125">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script></p>
 <!--![](files/toy.png)-->
 <p>Consider, a simple example where we have <strong>three</strong> instances of linux’s <code>sleep</code> command. After its completion <strong>three</strong> tmp files are created with some random data. Then, a merging step follows, combining the tmp files into one big file. Next, we use <code>du</code> to calculate the size of the merged file.</p>
 <div class="alert alert-info" role="alert">
@@ -641,9 +641,8 @@ knitr:::kable(dat)
 <p>A (A1 through A10) are submitted as scatter. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also, B1 through B10 are independent of each other.</p>
 <p><img src="docs_files/figure-html/plot_one_one-1.png" title="" alt="" width="624" /></p>
 </div>
-</div>
-<div id="many-to-one-gather" class="section level1">
-<h1>Many to One (gather)</h1>
+<div id="many-to-one-gather" class="section level2">
+<h2>Many to One (gather)</h2>
 <pre><code>            B1 ----\ 
             B2 -----\
             ..        -----&gt; C1
@@ -660,8 +659,8 @@ knitr:::kable(dat)
 
 --->
 </div>
-<div id="one-to-many-burst" class="section level1">
-<h1>One to Many (Burst)</h1>
+<div id="one-to-many-burst" class="section level2">
+<h2>One to Many (Burst)</h2>
 <pre><code>                    /------&gt; D1
             C1 ------------&gt; D2
                     \------&gt; D3
@@ -719,6 +718,7 @@ kable(ex2def[, 1:4])</code></pre>
 <p><img src="docs_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
 <p>There is a darker more prominent shadow to indicate scatter steps.</p>
+</div>
 </div>
 </div>
 <div id="cluster-support" class="section level1">

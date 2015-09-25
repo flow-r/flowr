@@ -479,7 +479,7 @@ D <- job(name = "D", cmds = "sleep2", q_obj = qobj,
 pab <- plot_flow(flow(jobs = list(A, B)))
 ```
 
-# Many to One (gather)
+## Many to One (gather)
 
 ```
             B1 ----\ 
@@ -512,7 +512,7 @@ plot_flow(fobj)
 ```
 --->
 
-# One to Many (Burst)
+## One to Many (Burst)
 
 ```
                     /------> D1
