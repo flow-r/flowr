@@ -92,23 +92,27 @@
 <div id="tutorial-building-a-pipeline" class="section level1">
 <h1>Tutorial: building a pipeline</h1>
 <p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="http://docs.flowr.space/docs.html#flow_mat">flowmat</a>. Additionally, we need a <a href="http://docs.flowr.space/docs.html#flow_definition">flow definition</a>, which descibes flow of the pipeline. These three files are available under the <a href="https://github.com/sahilseth/flowr/tree/master/inst/pipelines">pipelines</a> folder on github.</p>
-<pre><code>~/flowr/pipelines/
-            |--- sleep_pipe.R      A R script, with sleep_pipe(), which creates a flowmat
-            |--- sleep_pipe.def    A tab-delimited flow definition file
-            |--- sleep_pipe.conf   An *optional* tab-delim conf file, defining default params</code></pre>
+<pre><code>## to follow this tutorial, you may download them:
+url=https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines
+cd ~/flowr/pipelines
+wget $url/sleep_pipe.R             ## A R script, with sleep_pipe(), which creates a flowmat
+wget $url/sleep_pipe.def           ## A tab-delimited flow definition file
+wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, defining default params</code></pre>
 <p>To run the aforementioned pipeline, we would follow through these steps:</p>
-<pre class="r"><code>load_opts(&quot;sleep_pipe.conf&quot;) ## optionally, load default parameters
+<pre class="r"><code>## ONE step run this pipelines
+fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
+
+setwd(&quot;~/flowr/pipelines&quot;)
+## behind the scenes, run does the following:
+load_opts(&quot;sleep_pipe.conf&quot;) ## optionally, load default parameters
 source(&quot;sleep_pipe.R&quot;) ## get sleep_pipe() function
 flowmat = sleep_pipe() ## create a flowmat
 flowdef = as.flowdef(&quot;sleep_pipe.def&quot;) ## read a flow definition.
-fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster
-
-## OR assuming we have these three files in the ~/pipelines folder:
-fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); </code></pre>
+fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster</code></pre>
 <div id="creating-modulespipelines" class="section level2">
 <h2>Creating Modules/Pipelines</h2>
 <div class="alert alert-info" role="alert">
-<p><strong>module</strong> A R function which creates a flow mat, is a module. Using <code>module + flowdef</code>, we can run a pipeline.</p>
+<p><strong>module:</strong> A R function which creates a flow mat, is a module. Using <strong>module + flowdef</strong>, we can run a pipeline.</p>
 </div>
 <p>The <code>sleep_pipe</code> calls the three other functions (<strong>modules</strong>); fetches flowmat from each, then rbinds them, creating a larger flowmat. You may refer to the <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R">sleep_pipe.R</a> file for the source.</p>
 <pre class="r"><code>#&#39; @param x number of files to make
@@ -141,17 +145,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 2 &amp;&amp; sleep 9;echo ‘hello’</td>
+<td align="left">sleep 13 &amp;&amp; sleep 15;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 14 &amp;&amp; sleep 7;echo ‘hello’</td>
+<td align="left">sleep 4 &amp;&amp; sleep 18;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 13 &amp;&amp; sleep 4;echo ‘hello’</td>
+<td align="left">sleep 8 &amp;&amp; sleep 7;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
