@@ -78,7 +78,9 @@
             <div class="col-md-3" id="sidebar-col">
         <div id="toc">
           <ul>
-          <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a></li>
+          <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
+          <li><a href="#create-flow-submit-to-cluster">Create flow, submit to cluster</a></li>
+          </ul></li>
           </ul>
         </div>
       </div>
@@ -136,17 +138,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 10;echo ‘hello’</td>
+<td align="left">sleep 1 &amp;&amp; sleep 1;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 5;echo ‘hello’</td>
+<td align="left">sleep 10 &amp;&amp; sleep 1;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 16 &amp;&amp; sleep 4;echo ‘hello’</td>
+<td align="left">sleep 9 &amp;&amp; sleep 11;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -267,6 +269,9 @@ kable(def)</code></pre>
 <div class="alert alert-info" role="alert">
 <p><strong>Tip:</strong> Alternatively, one may write this to a file (<code>write_sheet(def, &quot;sleep_pipe.def&quot;)</code>), make changes in a text editor and read it again (<code>as.flowdef(&quot;sleep_pipe.def&quot;)</code>.</p>
 </div>
+</div>
+<div id="create-flow-submit-to-cluster" class="section level2">
+<h2>Create flow, submit to cluster</h2>
 <p><strong>Next, we create a flow object:</strong></p>
 <pre class="r"><code>fobj = to_flow(flowmat, def, flowname = &quot;sleep_pipe&quot;)</code></pre>
 <p><strong>Finally, we can submit this to the cluster:</strong></p>
