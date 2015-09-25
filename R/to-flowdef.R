@@ -97,7 +97,7 @@
 #'	\item{\code{queue}} the queue to use for job submission [short]
 #' }
 #'
-#' @param x can a path to a flowmat, flomat or flow object.
+#' @param x can a path to a flowmat, flowmat or flow object.
 #' @param sub_type submission type, one of: scatter, serial. Character, of length one or same as the number of jobnames
 #' @param dep_type dependency type, one of: gather, serial or burst. Character, of length one or same as the number of jobnames
 #' @param prev_jobs previous job name

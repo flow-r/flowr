@@ -7,7 +7,8 @@
 #' 
 #' @param bin path to bin folder
 #' @param flow_base_path The base of flowr configuration and execution folders.
-#' @param flow_conf_path Flowr configuration folder
+#' @param flow_conf_path Flowr configuration folder, used by \link{fetch_conf}.
+#' @param flow_pipe_path Folder with all pipelines, used by \link{fetch_pipes}.
 #' @inheritParams to_flow
 #'
 #' @details Will add more to this, to identify cluster and aid in other things.

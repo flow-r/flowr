@@ -23,7 +23,9 @@ By default \link{fetch_pipes} and \link{fetch_conf} search for files ending with
 
 \item{urls}{urls to look for, works well for pipelines [not implemented yet]}
 
-\item{verbose}{}
+\item{verbose}{A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
+[\code{get_opts("verbose")}] [1]}
 
 \item{last_only}{fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]}
 

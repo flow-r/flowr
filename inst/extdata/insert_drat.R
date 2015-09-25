@@ -17,8 +17,8 @@ out = drat::insertPackage(pkg, "~/Dropbox/public/github_drat")
 
 if(FALSE){
 	## drat for user:
-	library(drat)
-	drat::addRepo("sahilseth")
+	#library(drat)
+	#drat::addRepo("sahilseth")
 	install.packages("params", repos = "http://sahilseth.github.io/drat")
 	install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 	

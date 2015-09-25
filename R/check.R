@@ -4,6 +4,7 @@
 #' @title 
 #' Check consistency of flowdef and flowmat
 #' 
+#' @description 
 #' Check consistency of flowdef and flowmat, using various rules.
 #'
 #' @param x a flowdef or flowmat object

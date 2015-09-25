@@ -4,9 +4,7 @@
 \alias{check}
 \alias{check.flowdef}
 \alias{check.flowmat}
-\title{Check consistency of flowdef and flowmat
-
-Check consistency of flowdef and flowmat, using various rules.}
+\title{Check consistency of flowdef and flowmat}
 \usage{
 check(x, ...)
 
@@ -24,8 +22,6 @@ check(x, ...)
 [\code{get_opts("verbose")}] [1]}
 }
 \description{
-Check consistency of flowdef and flowmat
-
 Check consistency of flowdef and flowmat, using various rules.
 }
 \details{

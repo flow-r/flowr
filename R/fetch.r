@@ -41,12 +41,11 @@
 #' 
 #' @param silent fetch_pipes(): logical, be silent even if no such pipeline is available. [FALSE]
 #' @param last_only fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]
-#' 
-#' @param verbose @inheritParams to_flow
-#' 
 #' @param urls urls to look for, works well for pipelines [not implemented yet]
 #' @param ask ask before downloading or copying. [not implemented]
 #' @param ... [not implemented]
+#' 
+#' @inheritParams to_flow
 #'
 #' @details 
 #' 

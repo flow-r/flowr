@@ -59,7 +59,7 @@ setwd(outwd)
 # set some options
 pd <- package_docs(lib_dir = "assets", toc = FALSE)
 pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE)
-pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE)
+pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2)
 knitr::opts_knit$set(root.dir = normalizePath("."))
 
 # generate index.html, get new from template !
@@ -68,9 +68,9 @@ unlink("assets", recursive = TRUE)
 fls = c(
   "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
-  "vignettes/build-pipes.Rmd" = "docs.Rmd",
-  "vignettes/install.Rmd" = "install.Rmd",
-  "vignettes/tutorial.Rmd" = "tutorial.Rmd"
+  "vignettes/flowr_overview.Rmd" = "docs.Rmd",
+  "vignettes/flowr_install.Rmd" = "install.Rmd",
+  "vignettes/flowr_tutorial.Rmd" = "tutorial.Rmd"
 )
 
 unlink(fls)
@@ -91,9 +91,10 @@ render("install.Rmd", output_format = pd_expand)
 check_output("install-conf.html")
 
 dir.create(file.path(code_path, "inst/staticdocs"))
-#undebug(packagedocs:::get_rd_data)
-#load_all("~/Dropbox/public/github_packagedocs/")
+#devtools::load_all("~/Dropbox/public/github_packagedocs/")
+#debug(packagedocs:::get_rd_data)
 #debug(rd_template)
+#undebug(staticdocs:::to_html.Rd_content)
 render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
 
@@ -105,6 +106,7 @@ if(Sys.info()['sysname'] == "Darwin"){
 
 if(Sys.info()['sysname'] == "Darwin"){
 	setwd("~/Dropbox/public/github_flowrpages")
+	system("rm manual.pdf;R CMD Rd2pdf -o manual.pdf ~/Dropbox/public/github_flow")
 	system("git commit -a -m 'update website'")
 	system("git push")
 }

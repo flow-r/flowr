@@ -316,6 +316,7 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 
 Please use 'flowr -h function' to obtain further information about the usage of a specific function.
 
+Note: Please make sure to include `x=` etc. to explicitly define the variable.
 
 Examples:
 ## Run a small pipeline
