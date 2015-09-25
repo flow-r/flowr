@@ -83,7 +83,7 @@ run(x='sleep_pipe', platform='local', execute=TRUE)
 If this completes successfully, we can try this on a computing cluster; where this would submit
 a few interconnected jobs. 
 
-Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the plaform variable
+Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the platform variable
 to switch between platforms.
 
 ```

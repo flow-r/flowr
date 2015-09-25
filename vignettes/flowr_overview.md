@@ -43,8 +43,8 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 ## Toy example
 
 
-<!--html_preserve--><div id="htmlwidget-5006" style="width:480px;height:144px;" class="DiagrammeR"></div>
-<script type="application/json" data-for="htmlwidget-5006">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-4323" style="width:480px;height:144px;" class="DiagrammeR"></div>
+<script type="application/json" data-for="htmlwidget-4323">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script><!--/html_preserve-->
 
 <!--![](files/toy.png)-->
 
@@ -444,10 +444,10 @@ Using the above submission and dependency types one can create several types of 
 
 
 ```
-            A1 --------> B1
-            A2 --------> B1
-            .. --------> ..
-           A10 --------> B10
+                A1 --------> B1
+                A2 --------> B1
+                .. --------> ..
+               A10 --------> B10
  dependency submission  dependency submission   
     none     scatter      serial     scatter
                  relationship
@@ -459,14 +459,14 @@ A (A1 through A10) are submitted as scatter. Further B1, requires A1 to complete
 
 ![](flowr_overview_files/figure-html/plot_one_one-1.png) 
 
-# Many to One (gather)
+## Many to One (gather)
 
 ```
-            B1 ----\ 
-            B2 -----\
-            ..        -----> C1
-            B9 ------/
-            B10-----/
+                B1 ----\ 
+                B2 -----\
+                ..        -----> C1
+                B9 ------/
+                B10-----/
  dependency submission  dependency submission   
     serial     scatter    gather     serial
                  relationship
@@ -484,12 +484,12 @@ Since C is a single command which requires all steps of B to complete, intuitive
 
 --->
 
-# One to Many (Burst)
+## One to Many (Burst)
 
 ```
-                    /------> D1
-            C1 ------------> D2
-                    \------> D3
+                     /-----> D1
+                C1 --------> D2
+                     \-----> D3
  dependency submission  dependency submission   
     gather   serial       burst     scatter
                  relationship
