@@ -54,7 +54,7 @@ wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, definin
 To run the aforementioned pipeline, we would follow through these steps:
 
 ```{r eval=FALSE}
-## ONE step run this pipelines
+## ONE step run:
 fobj = run("sleep_pipe", execute = TRUE); 
 
 setwd("~/flowr/pipelines")

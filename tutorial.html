@@ -99,7 +99,7 @@ wget $url/sleep_pipe.R             ## A R script, with sleep_pipe(), which creat
 wget $url/sleep_pipe.def           ## A tab-delimited flow definition file
 wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, defining default params</code></pre>
 <p>To run the aforementioned pipeline, we would follow through these steps:</p>
-<pre class="r"><code>## ONE step run this pipelines
+<pre class="r"><code>## ONE step run:
 fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
 
 setwd(&quot;~/flowr/pipelines&quot;)
@@ -145,17 +145,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 13 &amp;&amp; sleep 15;echo ‘hello’</td>
+<td align="left">sleep 6 &amp;&amp; sleep 3;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 18;echo ‘hello’</td>
+<td align="left">sleep 6 &amp;&amp; sleep 5;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 8 &amp;&amp; sleep 7;echo ‘hello’</td>
+<td align="left">sleep 2 &amp;&amp; sleep 6;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
