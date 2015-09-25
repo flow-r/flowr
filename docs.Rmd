@@ -413,7 +413,7 @@ step:       A   ----> B  -----> C -----> D
 # of cmds  10        10         1        3
 ```
 
-## Submission types
+# Submission types
 
 Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1.
 
@@ -426,7 +426,7 @@ Consider another step D (with D1-D3), which comes after C.
 - `serial`: run these commands sequentially one after the other. 
 	- *Wrap A1 through A10, into a single job.*
 
-## Dependency types
+# Dependency types
 
 > *This refers to the dep_type column in flow definition.*
 
@@ -440,12 +440,12 @@ Consider another step D (with D1-D3), which comes after C.
 	- *D1 to D3 are started as soon as C1 finishes.*
 
 
-## Relationships
+# Relationships
 
 Using the above submission and dependency types one can create several types of relationships between former and later jobs. Here are a few pipelines of relationships one may typically use.
 
 
-### One to One (serial)
+## One to One (serial)
 
 
 ```
@@ -479,7 +479,7 @@ D <- job(name = "D", cmds = "sleep2", q_obj = qobj,
 pab <- plot_flow(flow(jobs = list(A, B)))
 ```
 
-## Many to One (gather)
+# Many to One (gather)
 
 ```
             B1 ----\ 
@@ -512,7 +512,7 @@ plot_flow(fobj)
 ```
 --->
 
-## One to Many (Burst)
+# One to Many (Burst)
 
 ```
                     /------> D1
