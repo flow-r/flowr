@@ -53,7 +53,7 @@ across the computing cluster
 ### A few lines, to get started:
 
 ``` {r, eval=FALSE}
-## Latest stable release
+## Latest stable release (0.9.7.9031)
 install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## OR for a latest stable version (updated every few days):
