@@ -80,7 +80,7 @@
           <ul>
           <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
           <li><a href="#creating-modulespipelines">Creating Modules/Pipelines</a></li>
-          <li><a href="#creating-flow-definition">Creating flow definition</a></li>
+          <li><a href="#creating-flow-definition">Creating Flow Definition</a></li>
           <li><a href="#create-flow-submit-to-cluster">Create flow, submit to cluster</a></li>
           </ul></li>
           </ul>
@@ -92,9 +92,9 @@
 <div id="tutorial-building-a-pipeline" class="section level1">
 <h1>Tutorial: building a pipeline</h1>
 <p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="http://docs.flowr.space/docs.html#flow_mat">flowmat</a>. Additionally, we need a <a href="http://docs.flowr.space/docs.html#flow_definition">flow definition</a>, which descibes flow of the pipeline. These three files are available under the <a href="https://github.com/sahilseth/flowr/tree/master/inst/pipelines">pipelines</a> folder on github.</p>
-<pre><code>|--- sleep_pipe.R                     A R script, with function sleep_pipe(), which creates a flowmat
-|--- sleep_pipe.def                   A tab-delimited flow definition file: describes the flow of the pipeline
-|--- sleep_pipe.conf                  An *optional* tab-delimited configuration file, define default parameters</code></pre>
+<pre><code>|--- sleep_pipe.R      A R script, with function sleep_pipe(); which creates a flowmat
+|--- sleep_pipe.def    A tab-delimited flow definition file, describing the flow of this pipeline
+|--- sleep_pipe.conf   An *optional* tab-delimited configuration file, defining default parameters</code></pre>
 <p>To run the aforementioned pipeline, we would follow through these steps:</p>
 <pre class="r"><code>load_opts(&quot;sleep_pipe.conf&quot;) ## optionally, load default parameters
 source(&quot;sleep_pipe.R&quot;) ## get sleep_pipe() function
@@ -140,17 +140,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 13 &amp;&amp; sleep 7;echo ‘hello’</td>
+<td align="left">sleep 19 &amp;&amp; sleep 3;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 19 &amp;&amp; sleep 8;echo ‘hello’</td>
+<td align="left">sleep 1 &amp;&amp; sleep 12;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 7 &amp;&amp; sleep 8;echo ‘hello’</td>
+<td align="left">sleep 17 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -182,7 +182,7 @@ flowmat = out$flowmat</code></pre>
 <p>Next, we need a flow definition.</p>
 </div>
 <div id="creating-flow-definition" class="section level2">
-<h2>Creating flow definition</h2>
+<h2>Creating Flow Definition</h2>
 <p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a <code>flowmat</code> and creates a flow definition.</p>
 <div class="alert alert-info" role="alert">
 <p>The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency.</p>

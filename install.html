@@ -80,7 +80,9 @@
           <ul>
           <li><a href="#installation">Installation</a></li>
           <li><a href="#test">Test</a></li>
-          <li><a href="#advanced-configuration">Advanced Configuration</a></li>
+          <li><a href="#advanced-configuration">Advanced Configuration</a><ul>
+          <li><a href="#hpcc-support-overview">HPCC Support Overview</a></li>
+          </ul></li>
           </ul>
         </div>
       </div>
@@ -145,6 +147,45 @@ samp1_merged  samp1_tmp_1  samp1_tmp_2  samp1_tmp_3
 </div>
 <div id="advanced-configuration" class="section level1">
 <h1>Advanced Configuration</h1>
+<div id="hpcc-support-overview" class="section level2">
+<h2>HPCC Support Overview</h2>
+<p>Support for several popular cluster platforms is built-in. There is a template, for each platform, which should work out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
+<p>Here are links to latest templates on github:</p>
+<ul>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">torque</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh">lsf</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh">moab</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh">sge</a></li>
+<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh">slurm</a>, needs testing</li>
+</ul>
+<p><strong>Not sure what platform you have?</strong></p>
+<p>You may check the version by running ONE of the following commands:</p>
+<pre><code>msub --version
+## Version: **moab** client 8.1.1
+man bsub
+##Submits a job to **LSF** by running the specified
+qsub --help</code></pre>
+<p>Here are some helpful guides and details on the platforms:</p>
+<ul>
+<li>PBS: <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a></li>
+<li>Torque: <a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
+<ul>
+<li>MD Anderson</li>
+<li><a href="http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html">University of Houston</a></li>
+</ul></li>
+<li>LSF <a href="http://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
+<ul>
+<li>Harvard Medicla School uses: <a href="https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF">LSF HPC 7</a></li>
+<li>Also used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a></li>
+</ul></li>
+<li>SGE <a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
+<ul>
+<li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a></li>
+<li>Another from <a href="http://www.biostat.jhsph.edu/bit/cluster-usage.html">JHSPH</a></li>
+<li>Dependecy info <a href="https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies">here</a></li>
+</ul></li>
+</ul>
+<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 <div id="errors-in-job-submission" class="section level4">
 <h4>Errors in job submission</h4>
 <div class="alert alert-warning" role="alert">
@@ -215,8 +256,8 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: Flowr shows too much OR too little information.</p>
 </div>
-<p>There are several <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
-<p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose">verbosity</a> section in the help pages</p>
+<p>There are several <a href="http://docs.flowr.space/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
+<p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="http://docs.flowr.space/rd.html#verbose">verbosity</a> section in the help pages for more details.</p>
 </div>
 <div id="flowdef-resource-columns" class="section level4">
 <h4>Flowdef resource columns</h4>
@@ -312,6 +353,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.</p>
 </div>
 <pre><code>cat $wd/002.create_tmp/create_tmp_cmd_1.out</code></pre>
+</div>
 </div>
 </div>
 

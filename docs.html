@@ -23,6 +23,14 @@
   <link href="assets/packagedocs-0.0.1/pd.css" rel="stylesheet" />
   <script src="assets/packagedocs-0.0.1/pd.js"></script>
   <script src="assets/packagedocs-0.0.1/pd-sticky-toc.js"></script>
+  <script src="assets/htmlwidgets-0.5/htmlwidgets.js"></script>
+  <script src="assets/d3-3.3.8/d3.min.js"></script>
+  <script src="assets/dagre-0.4.0/dagre-d3.min.js"></script>
+  <link href="assets/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+  <script src="assets/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+  <link href="assets/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+  <script src="assets/chromatography-0.1/chromatography.js"></script>
+  <script src="assets/DiagrammeR-binding-0.7/DiagrammeR.js"></script>
   
   
   
@@ -89,15 +97,13 @@
           <li><a href="#re-run-a-flow">Re-run a flow</a></li>
           </ul></li>
           <li><a href="#ingredients-for-building-a-pipeline">Ingredients for building a pipeline</a><ul>
-          <li><a href="#flow-mat">1. Flow mat</a></li>
+          <li><a href="#flow-matrix">1. Flow matrix</a></li>
           <li><a href="#flow-definition">2. Flow definition</a></li>
-          </ul></li>
           <li><a href="#submission-types">Submission types</a></li>
           <li><a href="#dependency-types">Dependency types</a></li>
-          <li><a href="#relationships">Relationships</a><ul>
-          <li><a href="#serial-one-to-one-relationship">Serial: one to one relationship</a></li>
-          <li><a href="#gather-many-to-one-relationship">Gather: many to one relationship</a></li>
-          <li><a href="#burst-one-to-many-relationship">Burst: one to many relationship</a></li>
+          <li><a href="#relationships">Relationships</a></li>
+          <li><a href="#many-to-one-gather">Many to One (gather)</a></li>
+          <li><a href="#one-to-many-burst">One to Many (Burst)</a></li>
           </ul></li>
           <li><a href="#cluster-support">Cluster Support</a></li>
           </ul>
@@ -110,7 +116,7 @@
 <h1>Get started</h1>
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
-<p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
+<p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable. For more details refer to <a href="http://docs.flowr.space/rd.html#setup">setup’s help section</a>.</p>
 <!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
@@ -122,20 +128,16 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 
 Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
-<pre><code>## run the following to confirm that ~/bin is added your PATH variable:
-echo $PATH
-## if ~/bin is not in your path, run and add the following to your ~/.bashrc
-export PATH=$PATH:~/bin
-## now run the following from the terminal, to check if setup worked fine.
-flowr</code></pre>
 <div id="toy-example" class="section level2">
 <h2>Toy example</h2>
-<p><img src="files/toy.png" /></p>
-<p>Consider, a simple example where we have <strong>three</strong> instances of the <code>sleep</code> command running ( which basically stalls the terminal for few seconds and does nothing ). After its completion <strong>three</strong> tmp files are created with some random data. After this, a merge step follows, which combines them into one big file. Next we use <code>du</code> to calculate the size of the resulting file. This flow is shown in the above described figure.</p>
+<p><div id="htmlwidget-5421" style="width:480px;height:144px;" class="DiagrammeR"></div>
+<script type="application/json" data-for="htmlwidget-5421">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script></p>
+<!--![](files/toy.png)-->
+<p>Consider, a simple example where we have <strong>three</strong> instances of linux’s <code>sleep</code> command. After its completion <strong>three</strong> tmp files are created with some random data. Then, a merging step follows, combining the tmp files into one big file. Next, we use <code>du</code> to calculate the size of the merged file.</p>
 <div class="alert alert-info" role="alert">
 <p><strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.</p>
 </div>
-<p>To create this flow in flowr, we need the actual commands to run; and some kind of a configuration file to describe which ones go first.</p>
+<p>To create this flow in flowr, we need the actual commands to run; and a set of instructions regarding how to stich the individual steps into a coherent pipeline.</p>
 <p>Here is a table with the commands we would like to run ( or <code>flow mat</code> ).</p>
 <table>
 <thead>
@@ -188,10 +190,7 @@ flowr</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition">flow_def</a>. Each row in a flow mat relates to one job.</p>
-<div class="alert alert-info" role="alert">
-<p>Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to complete before the one described in that row starts.</p>
-</div>
+<p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://docs.flowr.space/docs.html#flow-definition">flow_def</a>.</p>
 <table>
 <thead>
 <tr class="header">
@@ -258,28 +257,36 @@ flowr</code></pre>
 </tr>
 </tbody>
 </table>
+<div class="alert alert-info" role="alert">
+<p><strong>Note:</strong> Each row in a flow mat relates to one job. Jobname column is used to link flow definition with flow mat. Also, values in previous jobs (prev_jobs) are derived from jobnames.</p>
+</div>
 </div>
 <div id="stitch-it" class="section level2">
 <h2>Stitch it</h2>
-<p>We use the two files descirbed above and stich them to create a <code>flow object</code>, which contains all the information we need for submission to the cluster. Additionally we can give a name to this flow, using flowname argument and also override the platform described in <code>flow def</code>. Look at <code>to_flow</code> <a href="docs.flowr.space/rd.html#to_flow">help file</a> for more information.</p>
-<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
-    flowname = &quot;example1&quot;, platform = &quot;lsf&quot;)</code></pre>
+<p>We use the two files descirbed above and stich them to create a <code>flow object</code> (which contains all the information we need for cluster submission).</p>
+<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, 
+                                def = flow_def,
+                                flowname = &quot;example1&quot;, ## give it a name
+                                platform = &quot;lsf&quot;)      ## override platform mentioned in flow def</code></pre>
+<p>Refer to <a href="docs.flowr.space/rd.html#to_flow">to_flow’s help section</a> for more details.</p>
 </div>
 <div id="plot-it" class="section level2">
 <h2>Plot it</h2>
-<p>We can use <code>plot_flow</code> to quickly visualize the flow; this really helps when developing complex workflows. Additionally, this function also works on the <code>flow definition</code> table as well (<code>plot_flow(flow_def</code>).</p>
-<pre class="r"><code>plot_flow(fobj) # ?plot_flow for more information</code></pre>
+<p>We can use <code>plot_flow</code> to quickly visualize the flow; this really helps when developing complex workflows.</p>
+<pre class="r"><code>plot_flow(fobj)     # ?plot_flow for more information
+plot_flow(flow_def) # plot_flow works on flow definition as well</code></pre>
 <p><img src="docs_files/figure-html/plotit-1.png" title="Flow chart describing process for example 1" alt="Flow chart describing process for example 1" width="624" /></p>
+<p>Refer to <a href="docs.flowr.space/rd.html#plot_flow">plot_flow’s help section</a> for more details.</p>
 </div>
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
 <div class="alert alert-info" role="alert">
-<p><b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. User’s may spend some time checking the <code>*.sh</code> files for each of the jobs along with pdf of the flow etc.</p>
+<p><b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. This helps in debugging etc.</p>
 </div>
 <pre class="r"><code>submit_flow(fobj)</code></pre>
 <pre><code>Test Successful!
 You may check this folder for consistency. Also you may re-run submit with execute=TRUE
- ~/flowr/type1-20150520-15-18-27-5mSd32G0</code></pre>
+ ~/flowr/sleep_pipe-20150520-15-18-27-5mSd32G0</code></pre>
 </div>
 <div id="submit-it" class="section level2">
 <h2>Submit it</h2>
@@ -288,29 +295,24 @@ You may check this folder for consistency. Also you may re-run submit with execu
 </div>
 <pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
-flowr::status(x=&quot;~/flowr/type1-20150520-15-18-46-sySOzZnE&quot;)
-OR
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
+<p>Refer to <a href="docs.flowr.space/rd.html#submit_flow">submit_flow’s help section</a> for more details.</p>
 </div>
 <div id="check-its-status" class="section level2">
 <h2>Check its status</h2>
 <p>One may periodically run <code>status</code> to monitor the status of a flow.</p>
-<div class="alert alert-info" role="alert">
-<p><b>Note</b>: Please make sure to include <code>x=~</code> in status, to expicitly define the variable. Also unlike other command line tools you may skip adding “-” in from of each argument ( no need of <code>-x=~</code>).</p>
-</div>
-<pre><code>flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+<pre><code>flowr status x=~/flowr/runs/sleep_pipe-20150520*
 
-Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
 |          | total| started| completed| exit_status|    status|
 |:---------|-----:|-------:|---------:|-----------:|---------:|
 |001.sleep |    10|      10|        10|           0| completed|
 |002.tmp   |    10|      10|        10|           0| completed|
 |003.merge |     1|       1|         1|           0| completed|
 |004.size  |     1|       1|         1|           0| completed|</code></pre>
-<p>Alternatively, to check a summarized status of several flows, skip the full path, and mention only the parent direcotry, for example:</p>
-<pre><code>flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+<p>Alternatively, to check a summarized status of several flows, use the parent folder, for example:</p>
+<pre><code>flowr status x=~/flowr/runs
 
-Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
+Showing status of: ~/flowr/runs
 |          | total| started| completed| exit_status|    status|
 |:---------|-----:|-------:|---------:|-----------:|---------:|
 |001.sleep |    30|      30|        10|           0|processing|
@@ -320,6 +322,7 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 <div class="alert alert-success" role="alert">
 <p><b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.</p>
 </div>
+<p>Refer to <a href="docs.flowr.space/rd.html#status">status’s help section</a> for more details.</p>
 </div>
 <div id="kill-it" class="section level2">
 <h2>Kill it</h2>
@@ -329,21 +332,14 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 <div class="alert alert-warning" role="alert">
 <p>One may instruct flowr to kill multiple flows, but flowr would confirm before killing.</p>
 </div>
-<pre><code>kill(x=&#39;fastq_haplotyper*&#39;)
-Flowr: streamlining workflows
+<pre><code>flowr kill x=&#39;~/flowr/runs/sleep_pipe&#39;
 found multiple wds:
-./fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
-/fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+  ~/flowr/runs/sleep_pipe-20150825-16-24-04-0Lv1PbpI
+  ~/flowr/runs/sleep_pipe-20150825-17-47-52-5vFIkrMD
 Really kill all of them ? kill again with force=TRUE</code></pre>
-<p>To kill multiple, set force=TRUE:</p>
-<pre><code>kill(x=&#39;fastq_haplotyper*&#39;, force = TRUE)</code></pre>
-<div class="alert alert-warning" role="alert">
-<p>While submission is in progress, and you figure, you want to kill the flow; its best to let <code>submit_flow</code> do its job, when done simply use <code>kill(flow_wd)</code>. If <code>submit_flow</code> is interrupted, files with details regarding job ids etc are not created, thus flowr can’t associate submitted jobs with flow instance ( hence can’t kill them ). In such a situation you may resort to killing them manually.</p>
-</div>
-<pre><code>## manual killing:
-jobids=$(qstat | grep &#39;mypattern&#39;)
-qdel $jobids
-</code></pre>
+<p>To kill multiple flow, set force=TRUE:</p>
+<pre><code>kill(x=&#39;~/flowr/runs/sleep_pipe*&#39;, force = TRUE)</code></pre>
+<p>Refer to <a href="docs.flowr.space/rd.html#kill">kill’s help section</a> for more details.</p>
 </div>
 <div id="re-run-a-flow" class="section level2">
 <h2>Re-run a flow</h2>
@@ -352,26 +348,22 @@ qdel $jobids
 <li><strong>hardware failure</strong>: no change to the pipeline is required, simply rerun it: <code>rerun(x=flow_wd, start_from=&lt;intermediate step&gt;)</code></li>
 <li><strong>software failure</strong>: either a change to flowmat or flowdef has been made: <code>rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef, start_from=&lt;intermediate step&gt;)</code></li>
 </ul>
-<p>In either case there are two things which are always required, a <code>flow_wd</code> (the folder created by flowr which contains execution logs) and name of the step from where we want to start execution. Refer to the <a href="http://docs.flowr.space/en/latest/rd/topics/complete-help.html">help section</a> for more details.</p>
+<p>Refer to <a href="docs.flowr.space/rd.html#rerun">rerun’s help section</a> for more details.</p>
 </div>
 </div>
 <div id="ingredients-for-building-a-pipeline" class="section level1">
 <h1>Ingredients for building a pipeline</h1>
-<p>An easy and quick way to build a workflow is create to create a set of two tab delimited files. First is a table with commands to run (for each module of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively (as introduced in the above sections).</p>
-<p>We could read in, examples of both of these files to understand their structure.</p>
-<pre class="r"><code>## ------ load some example data
-ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
+<p>An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as <code>flow_mat</code> and <code>flow_def</code> respectively (as introduced in the previous sections).</p>
+<p>We could read in, examples of both these files to understand their structure.</p>
+<pre class="r"><code>ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
 flow_mat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
 flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
-<blockquote>
-<p>Both these files have a <code>jobname</code> column connects them to each other.</p>
-</blockquote>
-<div id="flow-mat" class="section level2">
-<h2>1. Flow mat</h2>
-<blockquote>
-<p>describes commands to run.</p>
-</blockquote>
+<div id="flow-matrix" class="section level2">
+<h2>1. Flow matrix</h2>
+<div class="alert alert-info" role="alert">
+<p>describes commands to run:</p>
 <p>Each row in flow mat describes one shell command, with additional information regarding the name of the step etc.</p>
+</div>
 <p>Essentially, this is a tab delimited file with three columns:</p>
 <ul>
 <li><code>samplename</code>: A grouping column. The table is split using this column and each subset is treated as an individual flow. Thus we may have one flowmat for a series of samples, and the whole set would be submitted as a batch.
@@ -436,10 +428,10 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 </div>
 <div id="flow-definition" class="section level2">
 <h2>2. Flow definition</h2>
-<blockquote>
-<p>defines how to stich pieces of the (work)flow</p>
-</blockquote>
+<div class="alert alert-info" role="alert">
+<p>defines how to stich pieces of the (work)flow:</p>
 <p>Each row in this table refers to one step of the pipeline. It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it.</p>
+</div>
 <p>It is a tab separated file, with a minimum of 4 columns:</p>
 <ul>
 <li><code>jobname</code>: Name of the step</li>
@@ -460,8 +452,8 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <p>This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.</p>
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
-<div class="alert alert-info" role="alert">
-<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section below.</p>
+<div class="alert alert-success" role="alert">
+<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.</p>
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
 <table>
@@ -582,13 +574,14 @@ dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 --->
-</div>
-</div>
-<div id="submission-types" class="section level1">
-<h1>Submission types</h1>
 <div id="example" class="section level3">
 <h3>Example:</h3>
-<p>A —-&gt; B —–&gt; C —–&gt; D</p>
+<pre><code>step:       A   ----&gt; B  -----&gt; C -----&gt; D
+# of cmds  10        10         1        3</code></pre>
+</div>
+</div>
+<div id="submission-types" class="section level2">
+<h2>Submission types</h2>
 <p>Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1.</p>
 <p>Consider another step D (with D1-D3), which comes after C.</p>
 <blockquote>
@@ -605,9 +598,8 @@ knitr:::kable(dat)
 </ul></li>
 </ul>
 </div>
-</div>
-<div id="dependency-types" class="section level1">
-<h1>Dependency types</h1>
+<div id="dependency-types" class="section level2">
+<h2>Dependency types</h2>
 <blockquote>
 <p><em>This refers to the dep_type column in flow definition.</em></p>
 </blockquote>
@@ -630,19 +622,34 @@ knitr:::kable(dat)
 </ul></li>
 </ul>
 </div>
-<div id="relationships" class="section level1">
-<h1>Relationships</h1>
+<div id="relationships" class="section level2">
+<h2>Relationships</h2>
 <p>Using the above submission and dependency types one can create several types of relationships between former and later jobs. Here are a few pipelines of relationships one may typically use.</p>
-<div id="serial-one-to-one-relationship" class="section level2">
-<h2>Serial: one to one relationship</h2>
-<p>[scatter] —serial—&gt; [scatter]</p>
-<p>A is submitted as scatter, A1 through A10. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also B1 through B10 are independent of each other.</p>
-<p>To set this up, A and B would have <code>sub_type</code> <code>scatter</code> and B would have <code>dep_type</code> as <code>serial</code>. Further, since A is an initial step its <code>dep_type</code> and <code>prev_job</code> would defined as <code>none</code>.</p>
+<div id="one-to-one-serial" class="section level3">
+<h3>One to One (serial)</h3>
+<pre><code>            A1 --------&gt; B1
+            A2 --------&gt; B1
+            .. --------&gt; ..
+           A10 --------&gt; B10
+ dependency submission  dependency submission   
+    none     scatter      serial     scatter
+                 relationship
+                  ONE-to-ONE</code></pre>
+<p>A (A1 through A10) are submitted as scatter. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also, B1 through B10 are independent of each other.</p>
 <p><img src="docs_files/figure-html/plot_one_one-1.png" title="" alt="" width="624" /></p>
 </div>
-<div id="gather-many-to-one-relationship" class="section level2">
-<h2>Gather: many to one relationship</h2>
-<p>[scatter] —gather—&gt; [serial]</p>
+</div>
+<div id="many-to-one-gather" class="section level2">
+<h2>Many to One (gather)</h2>
+<pre><code>            B1 ----\ 
+            B2 -----\
+            ..        -----&gt; C1
+            B9 ------/
+            B10-----/
+ dependency submission  dependency submission   
+    serial     scatter    gather     serial
+                 relationship
+                  MANY-to-ONE</code></pre>
 <p>Since C is a single command which requires all steps of B to complete, intuitively it needs to <code>gather</code> pieces of data generated by B. In this case <code>dep_type</code> would be <code>gather</code> and <code>sub_type</code> type would be <code>serial</code> since it is a single command.</p>
 <!---
 - makes sense when previous job had many commands running in parallel and current job would wait for all
@@ -650,9 +657,15 @@ knitr:::kable(dat)
 
 --->
 </div>
-<div id="burst-one-to-many-relationship" class="section level2">
-<h2>Burst: one to many relationship</h2>
-<p>[serial] —burst—&gt; [scatter]</p>
+<div id="one-to-many-burst" class="section level2">
+<h2>One to Many (Burst)</h2>
+<pre><code>                    /------&gt; D1
+            C1 ------------&gt; D2
+                    \------&gt; D3
+ dependency submission  dependency submission   
+    gather   serial       burst     scatter
+                 relationship
+                  ONE-to-MANY</code></pre>
 <p>Further, D is a set of three commands (D1-D3), which need to wait for a single process (C1) to complete. They would be submitted as <code>scatter</code> after waiting on C in a <code>burst</code> type dependency.</p>
 <!---
 - makes sense when previous job had one command current job would split and submit several jobs in parallel
@@ -662,7 +675,6 @@ knitr:::kable(dat)
 <p>In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).</p>
 <pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
 ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
-fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])</code></pre>
 <table>
 <thead>
@@ -700,7 +712,7 @@ kable(ex2def[, 1:4])</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>plot_flow(fobj)</code></pre>
+<pre class="r"><code>plot_flow(ex2def)</code></pre>
 <p><img src="docs_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
 <p>There is a darker more prominent shadow to indicate scatter steps.</p>
@@ -709,21 +721,6 @@ kable(ex2def[, 1:4])</code></pre>
 </div>
 <div id="cluster-support" class="section level1">
 <h1>Cluster Support</h1>
-<p>Support for several popular cluster platforms are built-in. There is a template, for each platform, which should out of the box. Further, one may copy and edit them (and save to <code>~/flowr/conf</code>) in case some changes are required. Templates from this folder (<code>~/flowr/conf</code>), would override defaults.</p>
-<p>Here are links to latest templates on github:</p>
-<ul>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">torque</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh">lsf</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh">moab</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh">sge</a></li>
-<li><a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh">slurm</a>, needs testing</li>
-</ul>
-<p><strong>Not sure what platform you have?</strong></p>
-<p>You may check the version by running ONE of the following commands:</p>
-<pre><code>msub --version
-## Version: **moab** client 8.1.1
-man bsub
-##Submits a job to **LSF** by running the specified</code></pre>
 <p>As of now we have tested this on the following clusters:</p>
 <table>
 <thead>
@@ -773,27 +770,7 @@ man bsub
 </tr>
 </tbody>
 </table>
-<p>Here are some helpful guides and details on the platforms:</p>
-<ul>
-<li>PBS: <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a></li>
-<li>Torque: <a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
-<ul>
-<li>MD Anderson</li>
-<li><a href="http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html">University of Houston</a></li>
-</ul></li>
-<li>LSF <a href="http://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
-<ul>
-<li>Harvard Medicla School uses: <a href="https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF">LSF HPC 7</a></li>
-<li>Also Used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a></li>
-</ul></li>
-<li>SGE <a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
-<ul>
-<li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a></li>
-<li>Another from <a href="http://www.biostat.jhsph.edu/bit/cluster-usage.html">JHSPH</a></li>
-<li>Dependecy info <a href="https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies">here</a></li>
-</ul></li>
-</ul>
-<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
+<p>For more details, refer to the <a href="http://docs.flowr.space/install.html#cluster">configuration section</a></p>
 </div>
 
 

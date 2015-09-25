@@ -41,9 +41,9 @@ Additionally, we need a [flow definition](http://docs.flowr.space/docs.html#flow
 These three files are available under the [pipelines](https://github.com/sahilseth/flowr/tree/master/inst/pipelines) folder on github.
 
 ```
-|--- sleep_pipe.R                     A R script, with function sleep_pipe(), which creates a flowmat
-|--- sleep_pipe.def                   A tab-delimited flow definition file: describes the flow of the pipeline
-|--- sleep_pipe.conf                  An *optional* tab-delimited configuration file, define default parameters
+|--- sleep_pipe.R      A R script, with function sleep_pipe(); which creates a flowmat
+|--- sleep_pipe.def    A tab-delimited flow definition file, describing the flow of this pipeline
+|--- sleep_pipe.conf   An *optional* tab-delimited configuration file, defining default parameters
 ```
 
 
@@ -98,7 +98,7 @@ kable(flowmat)
 
 Next, we need a flow definition.
 
-## Creating flow definition
+## Creating Flow Definition
 
 flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function
 to_flowdef, accepts a `flowmat` and creates a flow definition. 

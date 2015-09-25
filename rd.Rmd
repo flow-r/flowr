@@ -16,6 +16,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
+You may download a PDF version of this manual [here](manual.pdf)
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
@@ -385,12 +386,9 @@ your institutions guide to specify these.</p>
 
 ## check
 
-<h3>Check consistency of flowdef and flowmat
+<h3>Check consistency of flowdef and flowmat</h3>
 
-Check consistency of flowdef and flowmat, using various rules.</h3>
-
-<p class="rd-p">Check consistency of flowdef and flowmat
-Check consistency of flowdef and flowmat, using various rules.</p>
+<p class="rd-p">Check consistency of flowdef and flowmat, using various rules.</p>
 
 <h4>Usage</h4>
 <pre class="r"><code><div>check(x, ...)</div>

@@ -120,6 +120,51 @@ Feel free to post questions on [github issues page](https://github.com/sahilseth
 
 # Advanced Configuration
 
+## HPCC Support Overview
+
+Support for several popular cluster platforms is built-in. There is a template, for each platform, which should work out of the box.
+Further, one may copy and edit them (and save to `~/flowr/conf`) in case some changes are required. Templates from this folder (`~/flowr/conf`), would override defaults.
+
+Here are links to latest templates on github:
+
+- [torque](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh)
+- [lsf](https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh)
+- [moab](https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh)
+- [sge](https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh)
+- [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
+
+
+**Not sure what platform you have?**
+
+You may check the version by running ONE of the following commands:
+
+```
+msub --version
+## Version: **moab** client 8.1.1
+man bsub
+##Submits a job to **LSF** by running the specified
+qsub --help
+```
+
+
+
+Here are some helpful guides and details on the platforms:
+
+- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System)
+- Torque: [wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
+	- MD Anderson
+	- [University of Houston](http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html)
+- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF):
+	- Harvard Medicla School uses: [LSF HPC 7](https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF)
+	- Also used at [Broad](https://www.broadinstitute.org/gatk/guide/article?id=1311)
+- SGE [wiki](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
+	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
+	- Another from [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html)
+	- Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
+
+[Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
+
+
 #### Errors in job submission
 <div class="alert alert-warning" role="alert">
 Possible issue: Jobs are not getting submitted
@@ -232,10 +277,10 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh
 Possible issue: Flowr shows too much OR too little information.
 </div>
 
-There are several [verbose levels](file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose) available (0, 1, 2, 3, ...)
+There are several [verbose levels](http://docs.flowr.space/rd.html#verbose) available (0, 1, 2, 3, ...)
 
-One can change the verbose levels in this file (`~/flowr/conf/flowr.conf`) and check [verbosity](file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose) section in the 
-help pages
+One can change the verbose levels in this file (`~/flowr/conf/flowr.conf`) 
+and check [verbosity](http://docs.flowr.space/rd.html#verbose) section in the help pages for more details.
 
 
 
