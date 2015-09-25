@@ -92,9 +92,11 @@
 <div id="tutorial-building-a-pipeline" class="section level1">
 <h1>Tutorial: building a pipeline</h1>
 <p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="http://docs.flowr.space/docs.html#flow_mat">flowmat</a>. Additionally, we need a <a href="http://docs.flowr.space/docs.html#flow_definition">flow definition</a>, which descibes flow of the pipeline. These three files are available under the <a href="https://github.com/sahilseth/flowr/tree/master/inst/pipelines">pipelines</a> folder on github.</p>
-<pre><code>|--- sleep_pipe.R      A R script, with function sleep_pipe(); which creates a flowmat
-|--- sleep_pipe.def    A tab-delimited flow definition file, describing the flow of this pipeline
-|--- sleep_pipe.conf   An *optional* tab-delimited configuration file, defining default parameters</code></pre>
+<pre><code>~/flowr/pipelines/
+            |--- sleep_pipe.R      A R script, with sleep_pipe(), which creates a flowmat
+            |--- sleep_pipe.def    A tab-delimited flow definition file
+            |--- sleep_pipe.conf   An *optional* tab-delimited configuration file,
+                                     defining default parameters</code></pre>
 <p>To run the aforementioned pipeline, we would follow through these steps:</p>
 <pre class="r"><code>load_opts(&quot;sleep_pipe.conf&quot;) ## optionally, load default parameters
 source(&quot;sleep_pipe.R&quot;) ## get sleep_pipe() function
@@ -140,17 +142,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 0;echo ‘hello’</td>
+<td align="left">sleep 6 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 6 &amp;&amp; sleep 16;echo ‘hello’</td>
+<td align="left">sleep 0 &amp;&amp; sleep 1;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 2 &amp;&amp; sleep 7;echo ‘hello’</td>
+<td align="left">sleep 1 &amp;&amp; sleep 3;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
