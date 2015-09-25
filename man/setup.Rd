@@ -17,7 +17,9 @@ setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"),
 \item{flow_run_path}{Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
 [\code{~/flowr/runs}].}
 
-\item{flow_conf_path}{Flowr configuration folder}
+\item{flow_conf_path}{Flowr configuration folder, used by \link{fetch_conf}.}
+
+\item{flow_pipe_path}{Folder with all pipelines, used by \link{fetch_pipes}.}
 }
 \description{
 This functions creates a directory structure in user's home directory.

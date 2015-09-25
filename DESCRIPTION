@@ -1,8 +1,13 @@
 Package: flowr
 Type: Package
 Title: Streamlining Design and Deployment of Complex Workflows
-Description: An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.
-Version: 0.9.7.9029
+Description: 
+  This framework allows you to design and implement complex pipelines, and
+  deploy them on your institution's computing cluster. This has been built
+  keeping in mind the needs of bioinformatics workflows. However, it is
+  easily extendable to any field where a series of steps (shell commands)
+  are to be executed in a (work)flow.
+Version: 0.9.7.9030
 Date: 2015-08-22
 Depends:
     R (>= 3.0.2),

@@ -6,8 +6,10 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_document: 
     keep_md: yes
+    toc: true
+    toc_depth: 4
 vignette: >
-  %\VignetteIndexEntry{Installation}
+  %\VignetteIndexEntry{Flowr Installation, Configuration and FAQs}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 packagedocs:
@@ -21,6 +23,9 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
+```{r echo=FALSE, message=FALSE}
+library(flowr)
+```
 
 # Installation
 
@@ -115,6 +120,53 @@ Feel free to post questions on [github issues page](https://github.com/sahilseth
 
 # Advanced Configuration
 
+## HPCC Support Overview
+
+Support for several popular cluster platforms is built-in. There is a template, for each platform, which should work out of the box.
+Further, one may copy and edit them (and save to `~/flowr/conf`) in case some changes are required. Templates from this folder (`~/flowr/conf`), would override defaults.
+
+Here are links to latest templates on github:
+
+- [torque](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh)
+- [lsf](https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh)
+- [moab](https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh)
+- [sge](https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh)
+- [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
+
+
+**Not sure what platform you have?**
+
+You may check the version by running ONE of the following commands:
+
+```
+msub --version
+## Version: **moab** client 8.1.1
+man bsub
+##Submits a job to **LSF** by running the specified
+qsub --help
+```
+
+
+
+Here are some helpful guides and details on the platforms:
+
+- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System)
+- Torque: [wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
+	- MD Anderson
+	- [University of Houston](http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html)
+- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF):
+	- Harvard Medicla School uses: [LSF HPC 7](https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF)
+	- Also used at [Broad](https://www.broadinstitute.org/gatk/guide/article?id=1311)
+- SGE [wiki](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
+	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
+	- Another from [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html)
+	- Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
+
+[Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
+
+## FAQs and help on Solving Issues
+
+#### Errors in job submission
 <div class="alert alert-warning" role="alert">
 Possible issue: Jobs are not getting submitted
 </div>
@@ -130,7 +182,7 @@ used to submit jobs to the cluster. You may customize this template to suit your
 </div>
 
 
-**Use a custom flowdef**
+**3. Use a custom flowdef**
 
 We can copy a example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.
 
@@ -147,7 +199,7 @@ flowr as.flowdef x=~/flowr/pipelines/sleep_pipe.def
 flowr run x=sleep_pipe platform=lsf execute=TRUE def=~/flowr/pipelines/sleep_pipe.def
 ```
 
-**Use a custom submission template**
+**4. Use a custom submission template**
 
 If you need to customize the HPCC submission template, copy the [file for your platform](https://github.com/sahilseth/flowr/tree/master/inst/conf) and make your desired changes. 
 For example the MOAB based cluster in our institution does **not** accept the `queue` argument, 
@@ -183,7 +235,7 @@ extracts job IDs of submitted jobs.
 </div>
 
 
-**Parsing job ids**
+**1. Parsing job ids**
 
 Flowr parses job IDs to keep a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but it may show it in a slightly different fashion. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf).
 
@@ -210,7 +262,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.co
 Update the regex pattern and submit again.
 
 
-**Check dependency string**
+**2. Check dependency string**
 
 After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent
 jobs. This is handled by [render_dependency.PLATFORM](https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R) functions.
@@ -221,19 +273,19 @@ Confirm that the dependency parameter is specified correctly in the submission s
 wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh
 ```
-
+#### Flowr Configuration file
 <div class="alert alert-warning" role="alert">
 Possible issue: Flowr shows too much OR too little information.
 </div>
 
-<div class="alert alert-info" role="alert">
-There are several [verbose levels](file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose) available (0, 1, 2, 3, ...)
-</div>
+There are several [verbose levels](http://docs.flowr.space/rd.html#verbose) available (0, 1, 2, 3, ...)
 
-One can change the verbose levels in this file (`~/flowr/conf/flowr.conf`) and check [verbosity](file:///Users/sahilseth/Dropbox2/Dropbox/public/github_flowrpages/flowr/rd.html#verbose) section in the 
-help pages
+One can change the verbose levels in this file (`~/flowr/conf/flowr.conf`) 
+and check [verbosity](http://docs.flowr.space/rd.html#verbose) section in the help pages for more details.
 
 
+
+#### Flowdef resource columns
 
 <div class="alert alert-warning" role="alert">
 Possible issue: 
@@ -250,13 +302,14 @@ The following table provides a mapping between the flow definition columns and v
 
 ```{r build_pipe_flow_def_cols, echo=FALSE, message=FALSE}
 #extdata = file.path(system.file(package = "flowr"), "extdata")
-mat = params::read_sheet("files/flow_def_columns.txt")
+mat = read_sheet("files/flow_def_columns.txt")
 kable(mat, col.names = c("flowdef variable", "submission template variable"))
 ```
 
 `* These are generated on the fly` and `** This is gathered from flow mat`
 
 
+#### Adding a new platform
 
 <div class="alert alert-warning" role="alert">
 Possible issue: Need to add a new platform
@@ -287,9 +340,6 @@ quite easy if we have access to them. Your favourite not in the list?
 re-open this issue, with details on the platform:
 [adding platforms](https://github.com/sahilseth/flowr/issues/7)
 </div>
-
-
-
 
 
 

@@ -53,8 +53,8 @@ across the computing cluster
 ### A few lines, to get started:
 
 ``` {r, eval=FALSE}
-## From the official R repository (updated every month or so)
-install.packages("flowr")
+## Latest stable release
+install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## OR for a latest stable version (updated every few days):
 install.packages(devtools)

@@ -61,7 +61,7 @@ as.flowdef(x, ...)
 is.flowdef(x)
 }
 \arguments{
-\item{x}{can a path to a flowmat, flomat or flow object.}
+\item{x}{can a path to a flowmat, flowmat or flow object.}
 
 \item{...}{not used}
 

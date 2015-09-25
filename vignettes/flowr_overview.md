@@ -1,44 +1,25 @@
----
-title: "flowr"
-subtitle: "Streamlining Workflows"
-author: Sahil Seth
-date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_document: 
-    keep_md: yes
-vignette: >
-  %\VignetteIndexEntry{Overview}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-packagedocs:
-    toc: true
-navpills: |
-  <li class="active"><a href='docs.html'>Overview</a></li>
-  <li><a href='tutorial.html'>Tutorial</a></li>
-  <li><a href='install.html'>Install</a></li>
-  <li><a href='rd.html'>Help</a></li>
-  <li><a href='news.html'>News</a></li>
-  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
----
+# flowr
+Sahil Seth  
+`r Sys.Date()`  
 
 
-```{r libs, echo = FALSE, message = FALSE}
-library(knitr)
-library(flowr)
-```
+
 
 # Get started
 
 
 
-```{r, message=FALSE}
+
+```r
 library(flowr)
 ```
 
-```{r eval=FALSE}
+
+```r
 setup()
 ```
-This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable.
+This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
+For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
 
 <!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. ---> 
 
@@ -55,103 +36,107 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 Please use 'flowr -h function' to obtain further information about the usage of a specific function.
 ```
 
+
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 
-```
-## run the following to confirm that ~/bin is added your PATH variable:
-echo $PATH
-## if ~/bin is not in your path, run and add the following to your ~/.bashrc
-export PATH=$PATH:~/bin
-## now run the following from the terminal, to check if setup worked fine.
-flowr
-```
 
 ## Toy example
 
 
-```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
-library(DiagrammeR)
-mermaid("
-graph LR
-A(sleep)-->B(create_few_files) 
-B-->C{merge them}
-C-->D[get size]
-")
-```
+<!--html_preserve--><div id="htmlwidget-5006" style="width:480px;height:144px;" class="DiagrammeR"></div>
+<script type="application/json" data-for="htmlwidget-5006">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script><!--/html_preserve-->
 
-![](files/toy.png)
+<!--![](files/toy.png)-->
 
 
-```{r echo=FALSE, message=FALSE}
-ex = file.path(system.file(package = "flowr"), "pipelines")
-flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
-flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
-```
 
-Consider, a simple example where we have **three** instances of the `sleep` command running ( which basically stalls the terminal for few seconds and does nothing ). After its completion **three** tmp files are created with some random data. After this, a merge step follows, which combines them into one big file. Next we use `du` to calculate the size of the resulting file. This flow is shown in the above described figure.
+
+Consider, a simple example where we have **three** instances of linux's `sleep` command. After its completion **three** tmp files are created with some random data. Then, a merging step follows, combining the tmp files into one big file. Next, we use `du` to calculate the size of the merged file.
 
 <div class="alert alert-info" role="alert">
 **NGS context** This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
 </div>
 
-To create this flow in flowr, we need the actual commands to run; and some kind of a configuration file to describe which ones go first.
+To create this flow in flowr, we need the actual commands to run; and a set of instructions regarding how to stich the individual steps
+into a coherent pipeline.
 
 Here is a table with the commands we would like to run ( or `flow mat` ).
 
-```{r echo=FALSE}
-kable(flow_mat)
-```
 
-Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#flow-definition). Each row in a flow mat relates to one job. 
+samplename   jobname      cmd                                                            
+-----------  -----------  ---------------------------------------------------------------
+sample1      sleep        sleep 10 && sleep 2;echo hello                                 
+sample1      sleep        sleep 11 && sleep 8;echo hello                                 
+sample1      sleep        sleep 11 && sleep 17;echo hello                                
+sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
+sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
+sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    
+sample1      merge        cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged 
+sample1      size         du -sh sample1_merged; echo MY shell: $SHELL                   
 
+Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](http://docs.flowr.space/docs.html#flow-definition). 
+
+
+
+jobname      sub_type   prev_jobs    dep_type   queue    memory_reserved  walltime    cpu_reserved  platform    jobid
+-----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
+sleep        scatter    none         none       short               2000  1:00                   1  torque          1
+create_tmp   scatter    sleep        serial     short               2000  1:00                   1  torque          2
+merge        serial     create_tmp   gather     short               2000  1:00                   1  torque          3
+size         serial     merge        serial     short               2000  1:00                   1  torque          4
 
 <div class="alert alert-info" role="alert">
-Notice how jobname column is being used a key throught the two tables. And how prev_jobs (previous jobs) defines what jobs need to 
-complete before the one described in that row starts.
+**Note:** Each row in a flow mat relates to one job. Jobname column is used to link flow definition with flow mat.
+Also, values in previous jobs (prev_jobs) are derived from jobnames.
 </div>
-
-```{r, message=FALSE, echo=FALSE}
-kable(flow_def)
-```
-
 
 ## Stitch it
 
-We use the two files descirbed above and stich them to create a `flow object`, which contains all the information we
-need for submission to the cluster. Additionally we can give a name to this flow, using flowname argument and also override the 
-platform described in `flow def`. Look at `to_flow` [help file](docs.flowr.space/rd.html#to_flow) for more information.
+We use the two files descirbed above and stich them to create a `flow object` (which contains all the information we
+need for cluster submission). 
 
-```{r, message=FALSE}
-fobj <- to_flow(x = flow_mat, def = as.flowdef(flow_def), 
-	flowname = "example1", platform = "lsf")
+
+
+```r
+fobj <- to_flow(x = flow_mat, 
+								def = flow_def,
+								flowname = "example1", ## give it a name
+								platform = "lsf")      ## override platform mentioned in flow def
 ```
+
+Refer to [to_flow's help section](docs.flowr.space/rd.html#to_flow) for more details.
 
 ## Plot it
 
 We can use `plot_flow` to quickly visualize the flow; this really helps when developing complex workflows. 
-Additionally, this function also works on 
-the `flow definition` table as well (`plot_flow(flow_def`).
 
-```{r plotit, fig.cap="Flow chart describing process for example 1", message=FALSE}
-plot_flow(fobj) # ?plot_flow for more information
+
+```r
+plot_flow(fobj)     # ?plot_flow for more information
+plot_flow(flow_def) # plot_flow works on flow definition as well
 ```
+
+![Flow chart describing process for example 1](flowr_overview_files/figure-html/plotit-1.png) 
+
+Refer to [plot_flow's help section](docs.flowr.space/rd.html#plot_flow) for more details.
 
 
 ## Dry Run
 
 <div class="alert alert-info" role="alert">
 <b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission 
-to the cluster. User's may spend some time checking the `*.sh` files for each of the jobs along with pdf of the flow etc.
+to the cluster. This helps in debugging etc.
 </div>
 
-```{r eval=FALSE}
+
+```r
 submit_flow(fobj)
 ```
 
 ```
 Test Successful!
 You may check this folder for consistency. Also you may re-run submit with execute=TRUE
- ~/flowr/type1-20150520-15-18-27-5mSd32G0
+ ~/flowr/sleep_pipe-20150520-15-18-27-5mSd32G0
 ```
 
 ## Submit it
@@ -161,32 +146,27 @@ Submit to the cluster !
 </div>
 
 
-```{r eval=FALSE}
+
+```r
 submit_flow(fobj, execute = TRUE)
 ```
 
 ```
 Flow has been submitted. Track it from terminal using:
-flowr::status(x="~/flowr/type1-20150520-15-18-46-sySOzZnE")
-OR
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 ```
+
+Refer to [submit_flow's help section](docs.flowr.space/rd.html#submit_flow) for more details.
 
 
 ## Check its status
 
 One may periodically run `status` to monitor the status of a flow.
 
-<div class="alert alert-info" role="alert">
-<b>Note</b>: Please make sure to include `x=~` in status, to 
-expicitly define the variable. Also unlike other command line tools
-you may skip adding "-" in from of each argument ( no need of `-x=~`).
-</div>
 
 ```
-flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+flowr status x=~/flowr/runs/sleep_pipe-20150520*
 
-Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
 |          | total| started| completed| exit_status|    status|
 |:---------|-----:|-------:|---------:|-----------:|---------:|
 |001.sleep |    10|      10|        10|           0| completed|
@@ -195,13 +175,12 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 |004.size  |     1|       1|         1|           0| completed|
 ```
 
-Alternatively, to check a summarized status of several flows, skip the full path, and mention 
-only the parent direcotry, for example:
+Alternatively, to check a summarized status of several flows, use the parent folder, for example:
 
 ```
-flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
+flowr status x=~/flowr/runs
 
-Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-sySOzZnE
+Showing status of: ~/flowr/runs
 |          | total| started| completed| exit_status|    status|
 |:---------|-----:|-------:|---------:|-----------:|---------:|
 |001.sleep |    30|      30|        10|           0|processing|
@@ -214,6 +193,9 @@ Showing status of: /rsrch2/iacs/iacs_dep/sseth/flowr/type1-20150520-15-18-46-syS
 <b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of 
 flows.
 </div>
+
+Refer to [status's help section](docs.flowr.space/rd.html#status) for more details.
+
 
 ## Kill it
 
@@ -230,77 +212,61 @@ One may instruct flowr to kill multiple flows,  but flowr would confirm before k
 </div>
 
 ```
-kill(x='fastq_haplotyper*')
-Flowr: streamlining workflows
+flowr kill x='~/flowr/runs/sleep_pipe'
 found multiple wds:
-./fastq_haplotyper-MS132-20150825-16-24-04-0Lv1PbpI
-/fastq_haplotyper-MS132-20150825-17-47-52-5vFIkrMD
+  ~/flowr/runs/sleep_pipe-20150825-16-24-04-0Lv1PbpI
+  ~/flowr/runs/sleep_pipe-20150825-17-47-52-5vFIkrMD
 Really kill all of them ? kill again with force=TRUE
 ```
 
-To kill multiple, set force=TRUE:
-```
-kill(x='fastq_haplotyper*', force = TRUE)
-```
-
-<div class="alert alert-warning" role="alert">
-While submission is in progress, and you figure, you want to kill the flow; its best to let `submit_flow` do its job, 
-when done simply use `kill(flow_wd)`. 
-If `submit_flow` is interrupted, files with details regarding job ids etc are not created, thus flowr can't associate 
-submitted jobs with flow instance ( hence can't kill them ). In such a situation you may resort to killing them manually.
-</div>
+To kill multiple flow, set force=TRUE:
 
 ```
-## manual killing:
-jobids=$(qstat | grep 'mypattern')
-qdel $jobids
-
+kill(x='~/flowr/runs/sleep_pipe*', force = TRUE)
 ```
+
+Refer to [kill's help section](docs.flowr.space/rd.html#kill) for more details.
+
 
 ## Re-run a flow
 
 flowr also enables you to re-run a pipeline in case of hardware or software failures.
 
-- **hardware failure**: no change to the pipeline is required, simply rerun it: `rerun(x=flow_wd, start_from=<intermediate step>)`
-- **software failure**: either a change to flowmat or flowdef has been made: `rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef, start_from=<intermediate step>)`
+- **hardware failure**: no change to the pipeline is required, simply rerun it: 
+  `rerun(x=flow_wd, start_from=<intermediate step>)`
+- **software failure**: either a change to flowmat or flowdef has been made: 
+  `rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef, start_from=<intermediate step>)`
 
-In either case there are two things which are always required, a `flow_wd` 
-(the folder created by flowr which contains execution logs) and name of the step from where 
-we want to start execution. 
-Refer to the [help section](http://docs.flowr.space/en/latest/rd/topics/complete-help.html) for more details.
+Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details.
 
 
 
 
 # Ingredients for building a pipeline
 
-An easy and quick way to build a workflow is create to create a set of two tab delimited files. First is a table with commands to run (for each module of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as flow_mat and flow_def respectively (as introduced in the above sections).
+An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as `flow_mat` and `flow_def` respectively (as introduced in the previous sections).
 
-We could read in, examples of both of these files to understand their structure.
+We could read in, examples of both these files to understand their structure.
 
-```{r build_pipe_exdata, message=FALSE}
-## ------ load some example data
+
+```r
 ex = file.path(system.file(package = "flowr"), "pipelines")
 flow_mat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
 flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
 ```
 
-> Both these files have a `jobname` column connects them to each other.
-
-```{r build_pipe_ex1, eval=FALSE, echo=FALSE}
-#flow_def = read_sheet(file.path(exdata, "example1_flow_def2.txt"))
-fobj = suppressMessages(to_flow(flow_mat, def = flow_def, platform = "torque"))
-fobj@jobs[[1]]@nodes
-#debug(submit_flow)
-fobj = submit_flow(fobj)
-```
 
 
-## 1. Flow mat
 
-> describes commands to run.
+
+## 1. Flow matrix
+
+<div class="alert alert-info" role="alert">
+describes commands to run:
 
 Each row in flow mat describes one shell command, with additional information regarding the name of the step etc.
+</div>
+
 
 Essentially, this is a tab delimited file with three columns:
 
@@ -314,16 +280,27 @@ Here is an example [flow_mat](https://github.com/sahilseth/flowr/blob/master/ins
 flowr described above.
 
 
-```{r build_pipe_exmat, echo=FALSE}
-kable(subset(flow_mat, samplename == "sample1"))
-```
+
+samplename   jobname      cmd                                                            
+-----------  -----------  ---------------------------------------------------------------
+sample1      sleep        sleep 10 && sleep 2;echo hello                                 
+sample1      sleep        sleep 11 && sleep 8;echo hello                                 
+sample1      sleep        sleep 11 && sleep 17;echo hello                                
+sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
+sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
+sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    
+sample1      merge        cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged 
+sample1      size         du -sh sample1_merged; echo MY shell: $SHELL                   
 
 ## 2. Flow definition
 
-> defines how to stich pieces of the (work)flow
+<div class="alert alert-info" role="alert">
+defines how to stich pieces of the (work)flow:
 
 Each row in this table refers to one step of the pipeline. 
 It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it.
+</div>
+
 
 
 It is a tab separated file, with a minimum of 4 columns:
@@ -349,18 +326,22 @@ This is especially useful for genomics pipelines, since each step may use differ
 
 Most cluster platforms accept these resource arguments. Essentially a file like [this](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh) is used as a template, and variables defined in curly braces ( ex. `{{{CPU}}}` ) are filled up using the flow definition file.
 
-<div class="alert alert-info" role="alert">
+<div class="alert alert-success" role="alert">
 If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the [submission template](https://github.com/sahilseth/flowr/blob/master/inst/conf).
-One may customize the templates as described in the [cluster support](#cluster-support) section below.
+One may customize the templates as described in the [cluster support](#cluster-support) section.
 </div>
 
 
 Here is an example of a typical [flow_def](https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def) file.
 
 
-```{r build_pipe_exdef, echo=FALSE}
-kable(head(flow_def))
-```
+
+jobname      sub_type   prev_jobs    dep_type   queue    memory_reserved  walltime    cpu_reserved  platform    jobid
+-----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
+sleep        scatter    none         none       short               2000  1:00                   1  torque          1
+create_tmp   scatter    sleep        serial     short               2000  1:00                   1  torque          2
+merge        serial     create_tmp   gather     short               2000  1:00                   1  torque          3
+size         serial     merge        serial     short               2000  1:00                   1  torque          4
 
 
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
@@ -393,13 +374,15 @@ Here instead of seperating cmds and definitions one defines them step by step in
 
 Currently we support LSF, Torque and SGE. Let us use LSF for this example.
 
-```{r getqobj, eval=FALSE}
+
+```r
 qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 ```
 
 Let us stitch a simple flow with three jobs, which are submitted one after the other.
 
-```{r plot_simpleflow, eval=FALSE}
+
+```r
 job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
 job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
 job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
@@ -409,7 +392,8 @@ plot_flow(fobj)
 
 The above translates to a flow definition which looks like this:
 
-```{r, eval=FALSE}
+
+```r
 dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
@@ -417,11 +401,14 @@ knitr:::kable(dat)
 
 
 
-# Submission types
-
 ### Example:
 
-A   ----> B  -----> C -----> D
+```
+step:       A   ----> B  -----> C -----> D
+# of cmds  10        10         1        3
+```
+
+# Submission types
 
 Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1.
 
@@ -453,87 +440,97 @@ Consider another step D (with D1-D3), which comes after C.
 Using the above submission and dependency types one can create several types of relationships between former and later jobs. Here are a few pipelines of relationships one may typically use.
 
 
-## Serial: one to one relationship
+## One to One (serial)
 
-[scatter] ---serial---> [scatter]
 
-A is submitted as scatter, A1 through A10. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also B1 through B10 are independent of each other.
-
-To set this up, A and B would have `sub_type` `scatter` and B would have `dep_type` as `serial`. Further, since A is an initial step its `dep_type` and `prev_job` would defined as `none`.
-
-```{r plot_one_one, echo=FALSE, message=FALSE}
-qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
-A <- job(name = "A", cmds = "sleep1", q_obj = qobj, 
-				 submission_type = "scatter")
-B <- job(name = "B", cmds = "sleep2", q_obj = qobj,
-				 previous_job = "A", 
-				 dependency_type = "serial", submission_type = "scatter")
-C <- job(name = "C", cmds = "sleep2", q_obj = qobj,
-				 previous_job = "B", 
-				 dependency_type = "gather", submission_type = "serial")
-D <- job(name = "D", cmds = "sleep2", q_obj = qobj,
-				 previous_job = "C", 
-				 dependency_type = "burst", submission_type = "scatter")
-
-pab <- plot_flow(flow(jobs = list(A, B)))
+```
+            A1 --------> B1
+            A2 --------> B1
+            .. --------> ..
+           A10 --------> B10
+ dependency submission  dependency submission   
+    none     scatter      serial     scatter
+                 relationship
+                  ONE-to-ONE
 ```
 
-## Gather: many to one relationship
+A (A1 through A10) are submitted as scatter. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also, B1 through B10 are independent of each other.
 
-[scatter] ---gather---> [serial]
+
+![](flowr_overview_files/figure-html/plot_one_one-1.png) 
+
+# Many to One (gather)
+
+```
+            B1 ----\ 
+            B2 -----\
+            ..        -----> C1
+            B9 ------/
+            B10-----/
+ dependency submission  dependency submission   
+    serial     scatter    gather     serial
+                 relationship
+                  MANY-to-ONE
+```
+
 
 Since C is a single command which requires all steps of B to complete, intuitively it needs to `gather` pieces of data generated by B. In this case `dep_type` would be `gather` and `sub_type` type would be `serial` since it is a single command.
 
-```{r plot_many_one, echo=FALSE, message=FALSE, eval=FALSE}
-pbc <- plot_flow(flow(jobs = list(B, C)))
-```
+
 
 <!---
 - makes sense when previous job had many commands running in parallel and current job would wait for all
 - so previous job submission: `scatter`, and current job's dependency type `gather`
-```{r, eval=FALSE, echo=FALSE}
-jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
-             dependency_type = "gather", previous_job = "job1")
-fobj <- flow(jobs = list(jobj1, jobj2))
-plot_flow(fobj)
-```
+
 --->
 
-## Burst: one to many relationship
+# One to Many (Burst)
 
-[serial] ---burst---> [scatter]
-
+```
+                    /------> D1
+            C1 ------------> D2
+                    \------> D3
+ dependency submission  dependency submission   
+    gather   serial       burst     scatter
+                 relationship
+                  ONE-to-MANY
+```
 
 Further, D is a set of three commands (D1-D3), which need to wait for a single process (C1) to complete. They would be submitted as `scatter` after waiting on C in a `burst` type dependency.
 
-```{r plot_one_many, echo=FALSE, message=FALSE, eval=FALSE}
-pcd <- plot_flow(flow(jobs = list(C, D)))
-```
+
 
 
 <!---
 - makes sense when previous job had one command current job would split and submit several jobs in parallel
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
-```{r, eval=FALSE, echo=FALSE}
-jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
-jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
-             dependency_type = "burst", previous_job = "job1")
-fobj <- flow(jobs = list(jobj1, jobj2))
-plot_flow(fobj)
-```
+
 --->
 
 In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).
 
 
-```{r plot_abcd, message=FALSE}
+
+```r
 ex2def = as.flowdef(file.path(ex, "abcd.def"))
 ex2mat = as.flowmat(file.path(ex, "abcd.tsv"))
-fobj = suppressMessages(to_flow(x = ex2mat, def = ex2def))
 kable(ex2def[, 1:4])
-plot_flow(fobj)
 ```
+
+
+
+jobname   sub_type   prev_jobs   dep_type 
+--------  ---------  ----------  ---------
+A         scatter    none        none     
+B         scatter    A           serial   
+C         serial     B           gather   
+D         scatter    C           burst    
+
+```r
+plot_flow(ex2def)
+```
+
+![](flowr_overview_files/figure-html/plot_abcd-1.png) 
 
 <div class="alert alert-info" role="alert">
 There is a darker more prominent shadow to indicate 
@@ -542,22 +539,7 @@ scatter steps.
 
 
 
-```{r echo=FALSE, results='asis', message=TRUE, eval=FALSE}
-# Available Pipelines
 
-Here are some of the available pipelines along with their respective locations
-
-pipes = try(fetch_pipes(silent = TRUE))
-#message(pipes)
-if(class(pipes) != "try-error")
-	if(nrow(pipes) > 0){
-		pipes$pipe = basename(pipes$pipe)
-		pipes$def = basename(pipes$def)
-		pipes$conf = basename(pipes$conf)
-		params::kable(pipes)
-	}
-
-```
 
 
 
@@ -565,43 +547,18 @@ if(class(pipes) != "try-error")
 
 # Cluster Support
 
-Support for several popular cluster platforms are built-in. There is a template, for each platform, which should would out of the box.
-Further, one may copy and edit them (and save to `~/flowr/conf`) in case some changes are required. Templates from this folder (`~/flowr/conf`), would override defaults.
-
-Here are links to latest templates on github:
-
-- [torque](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh)
-- [lsf](https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh)
-- [moab](https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh)
-- [sge](https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh)
-- [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
-
-
-
 As of now we have tested this on the following clusters:
 
-```{r echo=FALSE}
-#exdata = file.path(system.file(package = "flowr"), "extdata")
-plat <- params::read_sheet("files/platforms_supported.txt", id_column = "Platform")
-kable(plat)
-```
+
+Platform   command   status   queue.type 
+---------  --------  -------  -----------
+LSF 7      bsub      Beta     lsf        
+LSF 9.1    bsub      Stable   lsf        
+Torque     qsub      Stable   torque     
+Moab       msub      Stable   moab       
+SGE        qsub      Beta     sge        
+SLURM      sbatch    alpha    slurm      
 
 
-Here are some helpful guides and details on the platforms:
-
-- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System)
-- Torque: [wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
-	- MD Anderson
-	- [University of Houston](http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html)
-- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF):
-	- Harvard Medicla School uses: [LSF HPC 7](https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF)
-	- Also Used at [Broad](https://www.broadinstitute.org/gatk/guide/article?id=1311)
-- SGE [wiki](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
-	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
-	- Another from [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html)
-	- Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
-
-[Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
-
-
+For more details, refer to the [configuration section](http://docs.flowr.space/install.html#cluster)
 
