@@ -6,6 +6,7 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_document: 
     keep_md: yes
+    toc: true
 vignette: >
     %\VignetteIndexEntry{Tutorial on Building Pipelines}
     %\VignetteEngine{knitr::rmarkdown}
@@ -32,24 +33,145 @@ library(flowr)
 read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
 ```
 
-A pipeline consists of several pieces, most essential of which is a function which generates a [flowmat](#flow_mat).
-In a multi-step pipeline, we need to know what steps come before others, we would describe them in a a [flow definition](#flow_mat) file.
-
-For the sake of giving names, lets call a function which generates a flow mat, a module. 
-One may generate this table using R, python, Java or any other language.
-
-<div class="alert alert-info" role="alert">
-**module** A R function which creates a flow mat, is a module. Further a module with a flow definition is a pipeline.
-</div>
-
-Let us follow through an example, providing more details regarding this process. 
-Here are a few examples of modules, three functions `sleep`, `create_tmp` and `merge_size` each returning a flowmat.
 
 
-## Define modules
-```{r define_modules}
+A pipeline consists of several pieces, most essential of which is a function which generates a [flowmat](http://docs.flowr.space/docs.html#flow_mat).
+Additionally, we need a [flow definition](http://docs.flowr.space/docs.html#flow_definition), which descibes flow of the pipeline. 
+These three files are available under the [pipelines](https://github.com/sahilseth/flowr/tree/master/inst/pipelines) folder on github.
 
 ```
+|--- sleep_pipe.R                     A R script, with function sleep_pipe(), which creates a flowmat
+|--- sleep_pipe.def                   A tab-delimited flow definition file: describes the flow of the pipeline
+|--- sleep_pipe.conf                  An *optional* tab-delimited configuration file, define default parameters
+```
+
+
+
+To run the aforementioned pipeline, we would follow through these steps:
+
+```{r eval=FALSE}
+load_opts("sleep_pipe.conf") ## optionally, load default parameters
+source("sleep_pipe.R") ## get sleep_pipe() function
+flowmat = sleep_pipe() ## create a flowmat
+flowdef = as.flowdef("sleep_pipe.def") ## read a flow definition.
+fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster
+
+## OR assuming we have these three files in the ~/pipelines folder:
+fobj = run("sleep_pipe", execute = TRUE); 
+```
+
+
+
+
+### Creating Modules/Pipelines
+
+
+<div class="alert alert-info" role="alert">
+**module** A R function which creates a flow mat, is a module. Using `module + flowdef`, we can run a pipeline.
+</div>
+
+
+The `sleep_pipe` calls the three other functions (**modules**); fetches flowmat from each, then rbinds them,
+creating a larger flowmat. You may refer to the [sleep_pipe.R](https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R)
+file for the source.
+
+```{r define_modules, echo=FALSE}
+
+```
+
+```{r define_pipeline}
+
+```
+
+
+```{r}
+## create a flow matrix
+out = sleep_pipe(x = 3, "sample1")
+flowmat = out$flowmat
+```
+
+```{r, echo=FALSE}
+kable(flowmat)
+```
+
+
+Next, we need a flow definition.
+
+### Creating flow definition
+
+flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function
+to_flowdef, accepts a `flowmat` and creates a flow definition. 
+
+<div class="alert alert-info" role="alert">
+The default skeleton takes a very conservative approach, creating all submissions as `serial` and all dependencies as `gather`. This ensures robustness, compromising efficiency. 
+</div>
+
+```{r plot_skeleton_def, message=FALSE}
+def = to_flowdef(flowmat) ## create a skeleton flow definition
+suppressMessages(plot_flow(def))
+```
+
+We can make the following changes to make this more efficient (run steps in parallel):
+
+
+- multiple sleep commands would run as `scatter`/parallel (`none`)
+- For each sleep, create_tmp creates a tmp file (`serial`)
+- All tmp files are merged; when all are complete (`gather`)
+- Then we get size on the resulting file (`serial`)
+
+*dependencies mentioned in ()*
+
+
+```{r message=FALSE}
+def$sub_type = c("scatter", "scatter", "serial", "serial")
+def$dep_type = c("none", "serial", "gather", "serial")
+kable(def)
+```
+
+```{r plot_tweaked_def, message=FALSE, echo = FALSE}
+suppressMessages(plot_flow(def))
+```
+
+
+<div class="alert alert-info" role="alert">
+**Tip:** Alternatively, one may write this to a file 
+(`write_sheet(def, "sleep_pipe.def")`), make changes in a text editor and read it again (`as.flowdef("sleep_pipe.def")`.
+</div>
+
+**Next, we create a flow object:**
+
+```{r, message=FALSE}
+fobj = to_flow(flowmat, def, flowname = "sleep_pipe")
+```
+
+**Finally, we can submit this to the cluster:**
+```{r eval=FALSE}
+plot_flow(fobj)
+submit_flow(fobj) ## dry run
+fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
+
+## after submission, we can use the following:
+status(fobj2) ## check status
+rerun(fobj2)  ## re-run from a intermediate step
+kill(fobj2)   ## kill it!
+```
+
+
+<!----
+
+
+We then define another function `sleep_pipe` which calls the above defined **modules**; fetches flowmat from each, 
+creating a larger flowmat. This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
+module to a pipeline.
+
+
+This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
+module to a pipeline.
+
+
+
+
+Here are a few examples of modules, three functions `sleep`, `create_tmp` and `merge_size` each returning a flowmat.
 
 We believe pipeline and modules may be interchangeble, in the sense that a *smaller* pipeline may be 
 included as part of a larger pipeline.
@@ -62,89 +184,4 @@ As such, creating a flow definition for a module enables flowr
 to run it, hence a module **elevates**, becoming a pipeline.
 This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
 </div>
-
-
-We then define another function `sleep_pipe` which calls the above defined **modules**; fetches flowmat from each, 
-creating a larger flowmat. This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
-module to a pipeline.
-
-## Define the pipeline
-```{r define_pipeline}
-
-```
-
-## Generate a flowmat
-
-Here is how the generated flowmat looks like.
-
-```{r}
-out = sleep_pipe(x = 3, "sample1")
-flowmat = out$flowmat
-```
-
-```{r, echo=FALSE}
-kable(flowmat)
-```
-
-## Create flow definition
-
-flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function
-to_flowdef, accepts a flowmat and creates a flow definition. The default skeleton takes a very conservative approach, creating all submissions as `serial` and all dependencies as `gather`. This ensures robustness, compromising efficiency. Thus we will enable parallel process where possible, making this into a better pipeline.
-
-Here is how it looks presently:
-
-```{r plot_skeleton_def, message=FALSE}
-def = to_flowdef(flowmat)
-suppressMessages(plot_flow(def))
-```
-
-After making the desired changes, the new pipeline looks better. Alternatively, one may write this to a file and make
-other desired changes in resource requirements.
-
-Pipeline follows the following steps, with dependencies mentioned in ():
-
-- multiple sleep commands would run in parallel (none, first step)
-- For each sleep, create_tmp creates a tmp file (serial)
-- All tmp files are merged; when all are complete (gather)
-- Then we get size on the resulting file (serial)
-
-```{r message=FALSE}
-def$sub_type = c("scatter", "scatter", "serial", "serial")
-def$dep_type = c("none", "serial", "gather", "serial")
-kable(def)
-```
-
-```{r plot_tweaked_def, message=FALSE, echo = FALSE}
-suppressMessages(plot_flow(def))
-```
-
-Let us now create flow object from this.
-
-```{r}
-fobj = to_flow(flowmat, def, flowname = "sleep_pipe")
-```
-
-Now we we use a host of function on this, including:
-
-```{r eval=FALSE}
-plot_flow(fobj)
-submit_flow(fobj) ## dry run
-fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
-
-## after submission, we can use the following:
-status(fobj2)
-rerun(fobj2)
-kill(fobj2)
-```
-
-One may need to change the platform and resource columns of the flowdef to suite your platform. 
-The easiest way might be to write these to a file, and then edit using your favoroite text editor. 
-You only need to do this once for a pipeline.
-
-```{r, eval=FALSE}
-write_sheet(def, "sleep_pipe.def")
-## now make all the changes you need to,
-## and then read it back using: 
-def = as.flowdef("sleep_pipe.def")
-```
-
+-->

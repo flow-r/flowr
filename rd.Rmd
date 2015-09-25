@@ -19,11 +19,16 @@ navpills: |
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.7.9029</p>
+<p><strong>Version:</strong> 0.9.7.9030</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
-<p>An interface to streamline design of complex workflows and their deployment to a High Performance Computing Cluster.</p>
+<p>
+This framework allows you to design and implement complex pipelines, and
+deploy them on your institution's computing cluster. This has been built
+keeping in mind the needs of bioinformatics workflows. However, it is
+easily extendable to any field where a series of steps (shell commands)
+are to be executed in a (work)flow.</p>
 
 <h4>Depends</h4>
 <p>
@@ -843,7 +848,9 @@ Additionally it creates a shortcut to the <code>flowr</code> helper script in <c
   <dd class="rd-dd">Path to a folder. Main operating folder for this flow. [<code>get_opts("flow_run_path")</code>]
 [<code>~/flowr/runs</code>].</dd>
   <dt>flow_conf_path</dt>
-  <dd class="rd-dd">Flowr configuration folder</dd>
+  <dd class="rd-dd">Flowr configuration folder, used by <a href=#fetch>fetch_conf</a>.</dd>
+  <dt>flow_pipe_path</dt>
+  <dd class="rd-dd">Folder with all pipelines, used by <a href=#fetch>fetch_pipes</a>.</dd>
 </dl>
 
   <h4>Details</h4>
@@ -965,33 +972,9 @@ By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> sear
   <dt>urls</dt>
   <dd class="rd-dd">urls to look for, works well for pipelines [not implemented yet]</dd>
   <dt>verbose</dt>
-  <dd class="rd-dd">These functions help in searching for specific files in the user's space.
-<code>fetch_pipes()</code>: Fetches pipelines in the following places, in this specific order:
-<ul>
-<li> <strong>user's folder</strong>: <code>~/flowr/pipelines</code>
-</li>
-<li> <strong>current wd</strong>: <code>./</code>
-</li>
-</ul>
-<strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later
-folder would be selected. As such, giving priority to user's home, and current working
-directories.
-<code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
-<ul>
-<li> <strong>package</strong>: <code>conf</code> folders in flowr and ngsflows packages.
-</li>
-<li> <strong>user's folder</strong>: <code>~/flowr/conf</code> folder.
-</li>
-<li> <strong>current wd</strong>: <code>./</code>
-</li>
-</ul>
-<strong>NOTE:</strong>
-This function would greedily return all matching conf files. One would load all of them
-in the order returned by this functions. If the same variable is
-repeated in multiple files, value from the later files would replace those formerly defined.
-Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
-By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
-See the details sections, for more explanation on this.</dd>
+  <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
+ Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
+[<code>get_opts("verbose")</code>] [1]</dd>
   <dt>last_only</dt>
   <dd class="rd-dd">fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]</dd>
   <dt>silent</dt>
