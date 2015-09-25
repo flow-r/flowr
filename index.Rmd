@@ -15,6 +15,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
+<br>
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
@@ -65,6 +66,9 @@ devtools::install_github("sahilseth/flowr", ref = "devel")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
+
+## Run a example pipeline
+flowr run x=sleep_pipe platform=local execute=TRUE
 ```
 
 ## Resources

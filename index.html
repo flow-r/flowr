@@ -76,6 +76,7 @@
             <div class="col-md-12">
       
 <div id="content-top"></div>
+<p><br></p>
 <p><a href="https://travis-ci.org/sahilseth/flowr"><img src="https://travis-ci.org/sahilseth/flowr.svg?branch=master" alt="Build Status" /></a> <a href="http://cran.rstudio.com/web/packages/flowr/index.html"><img src="http://www.r-pkg.org/badges/version/flowr" alt="cran" /></a> <a href="http://codecov.io/github/sahilseth/flowr?branch=devel"><img src="http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel" alt="codecov.io" /></a> <img src="http://cranlogs.r-pkg.org/badges/grand-total/flowr" alt="downloads" /></p>
 <p>This framework allows you to design and implement complex pipelines, and deploy them on your institution’s computing cluster. This has been built keeping in mind the needs of bioinformatics workflows. However, it is easily extendable to any field where a series of steps (shell commands) are to be executed in a (work)flow.</p>
 <div id="highlights" class="section level2">
@@ -110,7 +111,10 @@ devtools::install_github(&quot;sahilseth/flowr&quot;)
 devtools::install_github(&quot;sahilseth/flowr&quot;, ref = &quot;devel&quot;)
 
 library(flowr) ## load the library
-setup() ## copy flowr bash script; and create a folder flowr under home.</code></pre>
+setup() ## copy flowr bash script; and create a folder flowr under home.
+
+## Run a example pipeline
+flowr run x=sleep_pipe platform=local execute=TRUE</code></pre>
 </div>
 </div>
 <div id="resources" class="section level2">
