@@ -9,7 +9,7 @@ output:
     toc: true
     toc_depth: 4
 vignette: >
-  %\VignetteIndexEntry{Flowr Installation, Configuration and FAQs}
+  %\VignetteIndexEntry{Installation, Configuration and FAQs}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 packagedocs:

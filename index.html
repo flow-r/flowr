@@ -77,7 +77,7 @@
       
 <div id="content-top"></div>
 <p><br></p>
-<p><a href="https://travis-ci.org/sahilseth/flowr"><img src="https://travis-ci.org/sahilseth/flowr.svg?branch=master" alt="Build Status" /></a> <a href="http://cran.rstudio.com/web/packages/flowr/index.html"><img src="http://www.r-pkg.org/badges/version/flowr" alt="cran" /></a> <a href="http://codecov.io/github/sahilseth/flowr?branch=devel"><img src="http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel" alt="codecov.io" /></a> <img src="http://cranlogs.r-pkg.org/badges/grand-total/flowr" alt="downloads" /></p>
+<p><a href="https://travis-ci.org/sahilseth/flowr"><embed src="https://travis-ci.org/sahilseth/flowr.svg?branch=master" /></a> <a href="http://cran.rstudio.com/web/packages/flowr/index.html"><img src="http://www.r-pkg.org/badges/version/flowr" alt="cran" /></a> <a href="http://codecov.io/github/sahilseth/flowr?branch=devel"><embed src="http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel" /></a> <img src="http://cranlogs.r-pkg.org/badges/grand-total/flowr" alt="downloads" /></p>
 <p>This framework allows you to design and implement complex pipelines, and deploy them on your institution’s computing cluster. This has been built keeping in mind the needs of bioinformatics workflows. However, it is easily extendable to any field where a series of steps (shell commands) are to be executed in a (work)flow.</p>
 <div id="highlights" class="section level2">
 <h2>Highlights</h2>
@@ -100,12 +100,8 @@
 </ul>
 <div id="a-few-lines-to-get-started" class="section level3">
 <h3>A few lines, to get started:</h3>
-<pre class="r"><code>## Latest stable release (0.9.7.9031)
+<pre class="r"><code>## Latest stable release (0.9.7.9031) from DRAT
 install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)
-
-## OR for a latest stable version (updated every few days):
-install.packages(devtools)
-devtools::install_github(&quot;sahilseth/flowr&quot;)
 
 ## OR cutting edge devel version
 devtools::install_github(&quot;sahilseth/flowr&quot;, ref = &quot;devel&quot;)
@@ -136,9 +132,11 @@ flowr run x=sleep_pipe platform=local execute=TRUE</code></pre>
 <li>Kadir Akdemir</li>
 <li>Ethan Mao</li>
 <li>Henry Song</li>
-<li>An excellent resource for writing your own R packages: <a href="r-pkgs.had.co.nz" class="uri">r-pkgs.had.co.nz</a></li>
+<li>An excellent resource for writing your own R packages: <a href="r-pkgs.had.co.nz">r-pkgs.had.co.nz</a></li>
 </ul>
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
+
+
 </div>
 
 
