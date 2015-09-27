@@ -1,5 +1,5 @@
 
-message("installing required packages....", getwd(), paste(list.files(), collapse = "\n"))
+message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
 if(!require(drat))
 	install.packages("drat")
@@ -66,7 +66,7 @@ knitr::opts_knit$set(root.dir = normalizePath("."))
 # generate index.html, get new from template !
 unlink("assets", recursive = TRUE)
 
-message("Copying RMD files ....", getwd(), paste(list.files(), collapse = "\n"))
+message("Copying RMD files ....", getwd())
 fls = c(
   "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
@@ -80,7 +80,7 @@ file.copy(from = file.path(code_path, names(fls)), to = fls)
 dir.create("files")
 file.copy(file.path(code_path, "vignettes/files"), to = ".", recursive = TRUE)
 
-message("rendering RMD files ....", getwd(), paste(list.files(), collapse = "\n"))
+message("rendering RMD files ....", getwd())
 
 render("index.Rmd", output_format = pd)
 check_output("index.html")
@@ -93,7 +93,7 @@ check_output("news.html")
 render("install.Rmd", output_format = pd_expand)
 check_output("install-conf.html")
 
-message("rendering RD files ....", getwd(), paste(list.files(), collapse = "\n"))
+message("rendering RD files ....", getwd())
 dir.create(file.path(code_path, "inst/staticdocs"))
 #devtools::load_all("~/Dropbox/public/github_packagedocs/")
 #debug(packagedocs:::get_rd_data)

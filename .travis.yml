@@ -56,7 +56,6 @@ install:
   - mkdir -p ~/Rlib
   - echo 'R_LIBS=~/Rlib' > .Renviron
   - echo 'options(repos = "http://cran.rstudio.com")' > .Rprofile
-  - echo '.travis.yml' > .Rbuildignore
   - Rscript -e 'if(!"devtools" %in% rownames(installed.packages())) { install.packages("devtools", dependencies = TRUE) }'
   - Rscript -e 'if(!"covr" %in% rownames(installed.packages())) { install.packages("covr", dependencies = TRUE) }'
   - Rscript -e 'if(!requireNamespace("staticdocs")) devtools::install_github("sahilseth/staticdocs")'
@@ -67,11 +66,11 @@ install:
    
 # Build and check package
 script:
-  - Rscript -e 'devtools::build()'
+  - R CMD build . --no-build-vignettes --no-manual
   - PKG_FILE_NAME=$(ls -1t ../*.tar.gz | head -n 1)
   - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran rpack
   
-#  - R CMD build . --no-build-vignettes --no-manual
+#  - Rscript -e 'devtools::build()'
 
 after_success:
   - R CMD INSTALL .
