@@ -300,9 +300,7 @@ The following table provides a mapping between the flow definition columns and v
 Possible issue: Need to add a new platform
 </div>
 
-<div class="alert alert-info" role="alert">
 Adding a new platform involves [a few steps](https://github.com/sahilseth/flowr/issues/7), briefly we need to consider the following steps where changes would be necessary.
-</div>
 
 1. **job submission**: One needs to add a new template for the new platform. Several [examples](https://github.com/sahilseth/flowr/blob/master/inst/conf) are available as described in the previous section.
 2. **parsing job ids**: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf).
@@ -318,13 +316,11 @@ Essentially this requires us to add a new line like: `setClass("torque", contain
 
 
 
-<div class="alert alert-info" role="alert">
 There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems
 available and we try to support the major players. Adding support is
 quite easy if we have access to them. Your favourite not in the list?
 re-open this issue, with details on the platform:
 [adding platforms](https://github.com/sahilseth/flowr/issues/7)
-</div>
 
 
 

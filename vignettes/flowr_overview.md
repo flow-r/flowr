@@ -43,10 +43,9 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 ## Toy example
 
 
-<!--html_preserve--><div id="htmlwidget-4323" style="width:480px;height:144px;" class="DiagrammeR"></div>
-<script type="application/json" data-for="htmlwidget-4323">{"x":{"diagram":"\ngraph LR\nA(sleep)-->B(create_few_files) \nB-->C{merge them}\nC-->D[get size]\n"},"evals":[]}</script><!--/html_preserve-->
 
-<!--![](files/toy.png)-->
+
+![](files/toy.png)
 
 
 

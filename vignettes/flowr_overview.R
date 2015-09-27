@@ -8,14 +8,14 @@ library(flowr)
 ## ----eval=FALSE----------------------------------------------------------
 #  setup()
 
-## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5-------------
-library(DiagrammeR)
-mermaid("
-graph LR
-A(sleep)-->B(create_few_files) 
-B-->C{merge them}
-C-->D[get size]
-")
+## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE----
+#  library(DiagrammeR)
+#  mermaid("
+#  graph LR
+#  A(sleep)-->B(create_few_files)
+#  B-->C{merge them}
+#  C-->D[get size]
+#  ")
 
 ## ----echo=FALSE, message=FALSE-------------------------------------------
 ex = file.path(system.file(package = "flowr"), "pipelines")
