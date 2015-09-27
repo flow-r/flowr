@@ -90,10 +90,8 @@ img {
 <ul>
 <li>R version &gt; 3.1, preferred 3.2</li>
 </ul>
-<pre class="r"><code>## for a latest stable version (updated every few days):
-install.packages('devtools')
-devtools::install_github(&quot;sahilseth/params&quot;)
-devtools::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
+<pre class="r"><code>## for a latest stable version (from DRAT):
+install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)</code></pre>
 <p>After installation run <code>setup()</code>, this will copy the flowr’s helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
 <pre class="r"><code>library(flowr)
 setup()</code></pre>
@@ -262,9 +260,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: What all resources are supported in the flow definition?</p>
 </div>
-<div class="alert alert-info" role="alert">
-<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in the <code>cpu_reserved</code> column would be populated in the <code>{{{CPU}}}</code> submission template.</p>
-</div>
+<p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in <code>cpu_reserved</code> column would be populated as <code>{{{CPU}}}</code> in the submission template.</p>
 <p>The following table provides a mapping between the flow definition columns and variables in the submission templates:</p>
 <table>
 <thead>

@@ -13,10 +13,8 @@ Requirements:
 
 
 ```r
-## for a latest stable version (updated every few days):
-install.packages('devtools')
-devtools::install_github("sahilseth/params")
-devtools::install_github("sahilseth/flowr")
+## for a latest stable version (from DRAT):
+install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 ```
 
 After installation run `setup()`, this will copy the flowr's helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable.
@@ -271,10 +269,8 @@ Possible issue:
 What all resources are supported in the flow definition?
 </div>
 
-<div class="alert alert-info" role="alert">
 The resource requirement columns of flow definition are passed along to the final (cluster) submission script. 
-For example values in the `cpu_reserved` column would be populated in the `{{{CPU}}}` submission template.
-</div>
+For example values in `cpu_reserved` column would be populated as `{{{CPU}}}` in the submission template.
 
 The following table provides a mapping between the flow definition columns and variables in the submission templates:
 

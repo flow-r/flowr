@@ -106,7 +106,7 @@ if(Sys.info()['sysname'] == "Darwin"){
 
 if(Sys.info()['sysname'] == "Darwin"){
 	setwd("~/Dropbox/public/github_flowrpages")
-	system("rm manual.pdf;R CMD Rd2pdf -o manual.pdf ~/Dropbox/public/github_flow")
+	system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")
 	system("git commit -a -m 'update website'")
 	system("git push")
 }
