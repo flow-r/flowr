@@ -1,6 +1,7 @@
 body {
   position: relative;
   padding-top: 60px;
+  font-size: 16px;
 }
 
 html {
@@ -85,6 +86,10 @@ pre.r-output {
   border-left: 5px solid #F1F1F1;
 }
 
+pre {
+	font-size:12px;
+}
+
 #header {
   opacity: 0.96;
 }
@@ -127,4 +132,5 @@ blockquote {
   font-style: italic;
   opacity: 0.7;
 }
+
 
