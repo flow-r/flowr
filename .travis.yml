@@ -68,7 +68,7 @@ install:
 # Build and check package
 script:
   - Rscript -e 'devtools::build()'
-  - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
+  - PKG_FILE_NAME=$(ls -1t ../*.tar.gz | head -n 1)
   - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran rpack
   
 #  - R CMD build . --no-build-vignettes --no-manual
