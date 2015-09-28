@@ -1,17 +1,15 @@
 .Rproj.user
 .Rhistory
 .RData
-site
-*_cache
-
-vignettes/.DS_Store
 
 .DS_Store
+vignettes/.DS_Store
+
 
 README.html
 
+Rplots.pdf
 tests/testthat/Rplots.pdf
 tests/testthat/sleep_pipe*
 
 
-Rplots.pdf

@@ -65,7 +65,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 ## Toy example
 
 
-```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5}
+```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
 library(DiagrammeR)
 mermaid("
 graph LR
@@ -75,7 +75,7 @@ C-->D[get size]
 ")
 ```
 
-<!--![](files/toy.png)-->
+![](files/toy.png)
 
 
 ```{r echo=FALSE, message=FALSE}
@@ -449,10 +449,10 @@ Using the above submission and dependency types one can create several types of 
 
 
 ```
-            A1 --------> B1
-            A2 --------> B1
-            .. --------> ..
-           A10 --------> B10
+                A1 --------> B1
+                A2 --------> B1
+                .. --------> ..
+               A10 --------> B10
  dependency submission  dependency submission   
     none     scatter      serial     scatter
                  relationship
@@ -482,11 +482,11 @@ pab <- plot_flow(flow(jobs = list(A, B)))
 ## Many to One (gather)
 
 ```
-            B1 ----\ 
-            B2 -----\
-            ..        -----> C1
-            B9 ------/
-            B10-----/
+                B1 ----\ 
+                B2 -----\
+                ..        -----> C1
+                B9 ------/
+                B10-----/
  dependency submission  dependency submission   
     serial     scatter    gather     serial
                  relationship
@@ -515,9 +515,9 @@ plot_flow(fobj)
 ## One to Many (Burst)
 
 ```
-                    /------> D1
-            C1 ------------> D2
-                    \------> D3
+                     /-----> D1
+                C1 --------> D2
+                     \-----> D3
  dependency submission  dependency submission   
     gather   serial       burst     scatter
                  relationship

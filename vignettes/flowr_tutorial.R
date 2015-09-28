@@ -6,14 +6,16 @@ library(flowr)
 read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
 
 ## ----eval=FALSE----------------------------------------------------------
+#  ## ONE step run:
+#  fobj = run("sleep_pipe", execute = TRUE);
+#  
+#  setwd("~/flowr/pipelines")
+#  ## behind the scenes, run does the following:
 #  load_opts("sleep_pipe.conf") ## optionally, load default parameters
 #  source("sleep_pipe.R") ## get sleep_pipe() function
 #  flowmat = sleep_pipe() ## create a flowmat
 #  flowdef = as.flowdef("sleep_pipe.def") ## read a flow definition.
 #  fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster
-#  
-#  ## OR assuming we have these three files in the ~/pipelines folder:
-#  fobj = run("sleep_pipe", execute = TRUE);
 
 ## ----define_modules, echo=FALSE------------------------------------------
 #' @param x number of sleep commands

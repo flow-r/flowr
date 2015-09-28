@@ -1,4 +1,5 @@
 
+message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
 if(!require(drat))
 	install.packages("drat")
@@ -23,7 +24,7 @@ if(Sys.info()['sysname'] == "Darwin"){
 	code_path <- "~/Dropbox/public/github_flow"
 }else{
 	outwd = "gh-pages"
-	code_path <- "../../"
+	code_path <- "../"
 }
 
 if(!file.exists(outwd))
@@ -65,6 +66,7 @@ knitr::opts_knit$set(root.dir = normalizePath("."))
 # generate index.html, get new from template !
 unlink("assets", recursive = TRUE)
 
+message("Copying RMD files ....", getwd())
 fls = c(
   "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
@@ -78,9 +80,10 @@ file.copy(from = file.path(code_path, names(fls)), to = fls)
 dir.create("files")
 file.copy(file.path(code_path, "vignettes/files"), to = ".", recursive = TRUE)
 
+message("rendering RMD files ....", getwd())
+
 render("index.Rmd", output_format = pd)
 check_output("index.html")
-
 render("docs.Rmd", output_format = pd_expand)
 check_output("docs.html")
 render("tutorial.Rmd", output_format = pd_expand)
@@ -90,6 +93,7 @@ check_output("news.html")
 render("install.Rmd", output_format = pd_expand)
 check_output("install-conf.html")
 
+message("rendering RD files ....", getwd())
 dir.create(file.path(code_path, "inst/staticdocs"))
 #devtools::load_all("~/Dropbox/public/github_packagedocs/")
 #debug(packagedocs:::get_rd_data)
@@ -97,16 +101,14 @@ dir.create(file.path(code_path, "inst/staticdocs"))
 #undebug(staticdocs:::to_html.Rd_content)
 render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
-
 check_output("rd.html")
+
+
+## stuff for MAC ONLY
 if(Sys.info()['sysname'] == "Darwin"){
 	system("open index.html")
-}
-
-
-if(Sys.info()['sysname'] == "Darwin"){
 	setwd("~/Dropbox/public/github_flowrpages")
-	system("rm manual.pdf;R CMD Rd2pdf -o manual.pdf ~/Dropbox/public/github_flow")
+	system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")
 	system("git commit -a -m 'update website'")
 	system("git push")
 }

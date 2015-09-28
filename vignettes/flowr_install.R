@@ -2,10 +2,8 @@
 library(flowr)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  ## for a latest stable version (updated every few days):
-#  install.packages('devtools')
-#  devtools::install_github("sahilseth/params")
-#  devtools::install_github("sahilseth/flowr")
+#  ## for a latest stable version (from DRAT):
+#  install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(flowr)

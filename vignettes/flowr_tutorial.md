@@ -15,9 +15,12 @@ Additionally, we need a [flow definition](http://docs.flowr.space/docs.html#flow
 These three files are available under the [pipelines](https://github.com/sahilseth/flowr/tree/master/inst/pipelines) folder on github.
 
 ```
-|--- sleep_pipe.R      A R script, with function sleep_pipe(); which creates a flowmat
-|--- sleep_pipe.def    A tab-delimited flow definition file, describing the flow of this pipeline
-|--- sleep_pipe.conf   An *optional* tab-delimited configuration file, defining default parameters
+## to follow this tutorial, you may download them:
+url=https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines
+cd ~/flowr/pipelines
+wget $url/sleep_pipe.R             ## A R script, with sleep_pipe(), which creates a flowmat
+wget $url/sleep_pipe.def           ## A tab-delimited flow definition file
+wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, defining default params
 ```
 
 
@@ -26,14 +29,16 @@ To run the aforementioned pipeline, we would follow through these steps:
 
 
 ```r
+## ONE step run:
+fobj = run("sleep_pipe", execute = TRUE); 
+
+setwd("~/flowr/pipelines")
+## behind the scenes, run does the following:
 load_opts("sleep_pipe.conf") ## optionally, load default parameters
 source("sleep_pipe.R") ## get sleep_pipe() function
 flowmat = sleep_pipe() ## create a flowmat
 flowdef = as.flowdef("sleep_pipe.def") ## read a flow definition.
 fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster
-
-## OR assuming we have these three files in the ~/pipelines folder:
-fobj = run("sleep_pipe", execute = TRUE); 
 ```
 
 
@@ -43,7 +48,7 @@ fobj = run("sleep_pipe", execute = TRUE);
 
 
 <div class="alert alert-info" role="alert">
-**module** A R function which creates a flow mat, is a module. Using `module + flowdef`, we can run a pipeline.
+**module:** A R function which creates a flow mat, is a module. Using **module + flowdef**, we can run a pipeline.
 </div>
 
 
@@ -83,9 +88,9 @@ flowmat = out$flowmat
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 29 && sleep 1;echo 'hello'                               
-sample1      sleep        sleep 3 && sleep 9;echo 'hello'                                
-sample1      sleep        sleep 12 && sleep 3;echo 'hello'                               
+sample1      sleep        sleep 3 && sleep 5;echo 'hello'                                
+sample1      sleep        sleep 22 && sleep 3;echo 'hello'                               
+sample1      sleep        sleep 3 && sleep 2;echo 'hello'                                
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    

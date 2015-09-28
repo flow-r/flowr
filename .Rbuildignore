@@ -12,12 +12,10 @@ inst/extdata/*
 inst/staticdocs
 
 ## ignoring extra markdown files
-README.Rmd
-README.html
-TODO.md
-cran-comment.md
-
-vignettes/errors.Rmd
+README\.Rmd
+README\.html
+TODO\.md
+cran\-comment\.md
 
 ## ignore test files and folders
 tests/testthat/Rplots.pdf
