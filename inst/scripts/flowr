@@ -228,9 +228,9 @@ parse_params <- function(func, paramPairs, verbose = FALSE){
 render_funr <- function(x, max_rows = 100){
 	
 	out = try(x$value, silent = TRUE)
-	if(class(out) == "try-error")
-		return(cat(""))
-	
+	if(class(out)[1] == "try-error")
+		stop(1)
+
 	vis = ifelse(length(x$visible) == 0, FALSE, x$visible)
 	
 	#message("visible status: ", vis)
