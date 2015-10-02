@@ -64,6 +64,9 @@ check_args <- function(ignore, select){
 				 "The file <mypipeline>.conf sits in the same place as the pipeline itself. ",
 				 "Try fetch_pipes() for examples and help(fetch_pipes) for more details.")
 	}
+	lst <- lapply(args, get, env)
+	names(lst) = args
+	invisible(lst)
 }
 
 

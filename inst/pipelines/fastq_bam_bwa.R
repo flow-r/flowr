@@ -56,7 +56,6 @@ bwa.backtrack <- function(
   fqs2,
   paired_end, ## auto detect it fastq2, is available
   samplename = get_opts("samplename"),
-  
   bwa_exe = get_opts("bwa_exe"), 
   ref_bwa = get_opts("ref_bwa"),
   bwa_aln_opts = get_opts("bwa_aln_opts"),
@@ -76,7 +75,7 @@ bwa.backtrack <- function(
   
   #source('~/Dropbox/public/github_flow/R/checkmat_assert.R')
   ## no arguments should be NULL
-  check_args()
+  check_args(ignore = "fqs2")
   
   ##  ------- Set up all the files which would be used.
   sai_files1 = file.path(gsub(chkfq$ext, "sai", basename(fqs1)))
@@ -220,14 +219,11 @@ fastq_bam_bwa <- function(fqs1, fqs2,
   
   
   ## --- all subsequent steps would use this samplename
-  
-  
   check_args(ignore = c("outfile", "fqs2"))
   set_opts(samplename = samplename)
   pipename = "fastq_bam_bwa"
   message("Generating a ", pipename, " flowmat for sample: ", samplename)
-  
-  
+
   ## Calling modules, each returns
   ##   - a vector of outfiles
   ##   - a flowmat, which we need to rbind and are done !
@@ -239,7 +235,7 @@ fastq_bam_bwa <- function(fqs1, fqs2,
   
   out_merge = picard_merge(out_rg$outfiles, mergedbam = outfile)
   
-  ##--- merging three flowmats
+  ##  merging three flowmats ---
   flowmat = rbind(out_bwa$flowmat, out_rg$flowmat, out_merge$flowmat)
   
   return(list(outfile = outfile, flowmat = flowmat))
@@ -248,7 +244,7 @@ fastq_bam_bwa <- function(fqs1, fqs2,
 ## ---------------------- 
 
 if(FALSE){
-  
+	## example
   require(flowr)
   load_opts(fetch_conf("fastq_bam_bwa.conf"))
   
@@ -263,44 +259,16 @@ if(FALSE){
                            fqs2 = rep("hello.fq", 11),
                            samplename = "smp")
   
-  
+  ## this works
   out = fastq_bam_bwa(fqs1 = rep("hello.fq", 10),
                       fqs2 = rep("hello.fq", 10),
                       samplename = "smp")
   
-  
-}
-
-
-example <- function(){
-  
-  require(flowr)
-  pip = fetch_pipes("fastq_bam_bwa")[1, ]
-  load_opts(pip$conf)
-  
-  set_opts(rg_center = "Intitute", 
-           rg_lane = "1")
-  
-  out = fastq_bam_bwa(
-    fqs1 = rep("hello.fq", 10),
-    fqs2 = rep("hello.fq", 10),
-    samplename = "smp")
-  
-  flowmat =  out$flowmat
-  
-  def = to_flowdef(flowmat, 
-                   sub_type = c("scatter", "scatter", "scatter", "scatter", "serial"),
-                   dep_type = c("none", "none", "serial", "serial", "gather"),
-                   prev_jobs = c("none", "none", "aln1,aln2", "sampe", "fixrg"),
-                   cpu_reserved = c(12, 12, 1, 1, 1), 
-                   walltime = c("2:00", "2:00", "2:00", "2:00", "12:00"),
-                   memory_reserved = rep(8000, 5), 
-                   queue = rep("medium", 5),
-                   platform = rep("moab", 5))
-  #write_sheet(def, "inst/pipelines/fastq_bam_bwa.def")
+  debug(bwa.backtrack)
+  out = fastq_bam_bwa(fqs1 = rep("hello.fq", 10),
+  										samplename = "smp")
   
   
-  plot_flow(def)
   
 }
 

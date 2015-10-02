@@ -98,9 +98,9 @@ flowmat = out$flowmat
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 1 && sleep 6;echo 'hello'                                
-sample1      sleep        sleep 6 && sleep 24;echo 'hello'                               
-sample1      sleep        sleep 1 && sleep 7;echo 'hello'                                
+sample1      sleep        sleep 4 && sleep 5;echo 'hello'                                
+sample1      sleep        sleep 15 && sleep 5;echo 'hello'                               
+sample1      sleep        sleep 3 && sleep 14;echo 'hello'                               
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    

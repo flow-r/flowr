@@ -1,4 +1,4 @@
-## ----libs, echo = FALSE, message = FALSE---------------------------------
+## ----libs_tut, echo = FALSE, message = FALSE-----------------------------
 library(knitr)
 library(flowr)
 
