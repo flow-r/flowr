@@ -35,8 +35,15 @@ Requirements:
 
 
 ```{r eval=FALSE}
-## for a latest stable version (from DRAT):
+## for a latest stable version (from CRAN)
+install.packages("flowr")
+
+## Latest stable release from DRAT (updated every other week)[recommended]
 install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+
+## OR cutting edge devel version
+devtools::install_github("sahilseth/flowr", ref = "devel")
+
 ```
 
 After installation run `setup()`, this will copy the flowr's helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable.
@@ -342,3 +349,16 @@ Possible issue: For other issues upload the error shown in the out files to [git
 ```
 cat $wd/002.create_tmp/create_tmp_cmd_1.out
 ```
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68378910-1', 'auto');
+  ga('send', 'pageview');
+
+</script>

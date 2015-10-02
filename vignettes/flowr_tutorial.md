@@ -98,9 +98,9 @@ flowmat = out$flowmat
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 4 && sleep 5;echo 'hello'                                
-sample1      sleep        sleep 15 && sleep 5;echo 'hello'                               
-sample1      sleep        sleep 3 && sleep 14;echo 'hello'                               
+sample1      sleep        sleep 2 && sleep 2;echo 'hello'                                
+sample1      sleep        sleep 2 && sleep 23;echo 'hello'                               
+sample1      sleep        sleep 18 && sleep 6;echo 'hello'                               
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    
@@ -213,3 +213,15 @@ to run it, hence a module **elevates**, becoming a pipeline.
 This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
 </div>
 -->
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-68378910-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
