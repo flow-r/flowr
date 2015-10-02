@@ -15,7 +15,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
   <a href="http://docs.flowr.space">
-  <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -3px;'>
+  <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
   </a>
 ---
 
