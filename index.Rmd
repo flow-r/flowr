@@ -15,7 +15,8 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-<br>
+
+[![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space)
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
@@ -49,17 +50,13 @@ across the computing cluster
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...)
+-   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), AWS OR a local machine.
 
 ### A few lines, to get started:
 
 ``` {r, eval=FALSE}
-## Latest stable release (0.9.7.9031)
+## Latest stable release (0.9.7.9031) from DRAT
 install.packages("flowr", repos = "http://sahilseth.github.io/drat")
-
-## OR for a latest stable version (updated every few days):
-install.packages(devtools)
-devtools::install_github("sahilseth/flowr")
 
 ## OR cutting edge devel version
 devtools::install_github("sahilseth/flowr", ref = "devel")
