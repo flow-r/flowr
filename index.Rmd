@@ -60,7 +60,7 @@ across the computing cluster
 ### A few lines, to get started:
 
 ``` {r, eval=FALSE}
-## Latest stable release from CRAN (updated every other month)
+## Latest stable release from CRAN (updated every other month) [0.9.8]
 install.packages("flowr")
 
 library(flowr) ## load the library
