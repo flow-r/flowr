@@ -6,7 +6,7 @@
 
   
   
-  <title>flowr</title>
+  <title></title>
 
     <script src="assets/jquery-1.11.0/jquery.min.js"></script>
   <link href="assets/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" />
@@ -42,7 +42,7 @@
           <span class="icon-bar"></span>
         </button>
                 <a href="index.html" class="navbar-brand page-scroll">
-        flowr - Streamlining Workflows
+        
         </a>
       </div>
             <nav class="collapse navbar-collapse" role="navigation">
@@ -81,11 +81,13 @@
   <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
   </a>
 -->
-<!--[![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space)-->
+<div id="docs.flowr.space-streamlining-computing-workflows" class="section level3">
+<h3><a href="http://docs.flowr.space"><img src="https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png" alt="docs.flowr.space" /></a> Streamlining Computing workflows</h3>
 <p><a href="https://travis-ci.org/sahilseth/flowr"><img src="https://travis-ci.org/sahilseth/flowr.svg?branch=master" alt="Build Status" /></a> <a href="http://cran.rstudio.com/web/packages/flowr/index.html"><img src="http://www.r-pkg.org/badges/version/flowr" alt="cran" /></a> <a href="http://codecov.io/github/sahilseth/flowr?branch=devel"><img src="http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel" alt="codecov.io" /></a> <img src="http://cranlogs.r-pkg.org/badges/grand-total/flowr" alt="downloads" /></p>
 <p>This framework allows you to design and implement complex pipelines, and deploy them on your institution’s computing cluster. This has been built keeping in mind the needs of bioinformatics workflows. However, it is easily extendable to any field where a series of steps (shell commands) are to be executed in a (work)flow.</p>
-<div id="highlights" class="section level2">
-<h2>Highlights</h2>
+</div>
+<div id="highlights" class="section level3">
+<h3>Highlights</h3>
 <ul>
 <li>Effectively process a <strong>multi-step pipeline</strong>, spawning it across the computing cluster</li>
 <li>Example:
@@ -103,9 +105,11 @@
 <li><strong>Lean</strong> and <strong>Portable</strong>, with easy installation</li>
 <li>Supports <strong>multiple cluster computing platforms</strong> (torque, lsf, sge, slurm …), AWS OR a local machine.</li>
 </ul>
+</div>
 <div id="a-few-lines-to-get-started" class="section level3">
-<h3>A few lines, to get started:</h3>
+<h3>A few lines, to get started</h3>
 <pre class="r"><code>## Latest stable release from CRAN (updated every other month)
+## visit docs.flowr.space/install for more details
 install.packages(&quot;flowr&quot;)
 
 library(flowr) ## load the library
@@ -114,9 +118,8 @@ setup() ## copy flowr bash script; and create a folder flowr under home.
 ## Run an example pipeline
 flowr run x=sleep_pipe platform=local execute=TRUE</code></pre>
 </div>
-</div>
-<div id="resources" class="section level2">
-<h2>Resources</h2>
+<div id="resources" class="section level3">
+<h3>Resources</h3>
 <ul>
 <li>For a quick overview, you may browse through, these <a href="http://sahilseth.github.io/slides/flowrintro">introductory slides</a>.</li>
 <li>The <a href="http://docs.flowr.space/docs.html">overview</a> provides additional details regarding the ideas and concepts used in flowr</li>
@@ -126,15 +129,15 @@ flowr run x=sleep_pipe platform=local execute=TRUE</code></pre>
 <li>You can use <a href="https://sseth.shinyapps.io/flow_creator">flow creator</a>, a shiny app to aid in designing a <em>shiny</em> new flow. This provides a good example of the concepts</li>
 </ul>
 </div>
-<div id="talksslides" class="section level2">
-<h2>Talks/Slides</h2>
+<div id="talksslides" class="section level3">
+<h3>Talks/Slides</h3>
 <ul>
 <li>Updated <a href="http://sahilseth.github.io/slides/flowrintro/index.html">introduction</a> (Sep, 2015)</li>
 <li>An earlier <a href="http://sahilseth.github.io/slides/flowrintro/index_20150706">introduction</a> at MD Anderson Comp. Biology meeting (July, 2015)</li>
 </ul>
 </div>
-<div id="acknowledgements" class="section level2">
-<h2>Acknowledgements</h2>
+<div id="acknowledgements" class="section level3">
+<h3>Acknowledgements</h3>
 <ul>
 <li>Jianhua Zhang</li>
 <li>Samir Amin</li>
