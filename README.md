@@ -6,6 +6,9 @@
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
+<div class="alert alert-info" role="alert">
+[docs.flowr.space](http://docs.flowr.space)
+</div>
 
 This framework allows you to design and implement complex pipelines, and
 deploy them on your institution's computing cluster. This has been built
@@ -33,24 +36,23 @@ across the computing cluster
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...)
+-   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), AWS OR a local machine.
 
 ### A few lines, to get started:
 
 
 ```r
-## From the official R repository (updated every month or so)
-install.packages("flowr")
-
-## OR for a latest stable version (updated every few days):
-install.packages(devtools)
-devtools::install_github("sahilseth/flowr")
+## Latest stable release (0.9.7.9031) from DRAT
+install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## OR cutting edge devel version
 devtools::install_github("sahilseth/flowr", ref = "devel")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
+
+## Run an example pipeline
+flowr run x=sleep_pipe platform=local execute=TRUE
 ```
 
 ## Resources
