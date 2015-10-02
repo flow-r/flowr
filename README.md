@@ -1,14 +1,13 @@
 # flowr
 
 
+[![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space)
+
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
-<div class="alert alert-info" role="alert">
-[docs.flowr.space](http://docs.flowr.space)
-</div>
 
 This framework allows you to design and implement complex pipelines, and
 deploy them on your institution's computing cluster. This has been built
