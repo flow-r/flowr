@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "flowr"
 subtitle: "Streamlining Workflows"
 output: 
     html_document: 
