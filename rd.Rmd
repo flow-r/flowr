@@ -22,7 +22,7 @@ You may download a PDF version of this manual [here](manual.pdf)
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.7.9031</p>
+<p><strong>Version:</strong> 0.9.8</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
@@ -52,7 +52,8 @@ reshape2,
 knitr,
 ggplot2,
 openxlsx,
-testthat</p>
+testthat,
+funr</p>
 
 <h4>Enhances</h4>
 <p>(none)</p>
@@ -108,7 +109,7 @@ This over-rides the platform column in flowdef. (optional)</dd>
   <dt>execute</dt>
   <dd class="rd-dd">Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]</dd>
   <dt>qobj</dt>
-  <dd class="rd-dd">Depreciated, modify <a href = http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface>cluster templates</a> instead.  A object of class <a href=#queue>queue</a>.</dd>
+  <dd class="rd-dd">Depreciated, modify <a href = http://docs.flowr.space/docs.html#cluster-support>cluster templates</a> instead.  A object of class <a href=#queue>queue</a>.</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
