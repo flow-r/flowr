@@ -15,7 +15,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-flowr latest
+flowr 0.9.8
 ----------------------------------------------
 - Modified the output of status function, to add a `status` column. Specifically, 
 this uses information from other columns and summarizes whether a specific step is 
