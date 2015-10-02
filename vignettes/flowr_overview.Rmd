@@ -460,7 +460,8 @@ Using the above submission and dependency types one can create several types of 
                   ONE-to-ONE
 ```
 
-A (A1 through A10) are submitted as scatter. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also, B1 through B10 are independent of each other.
+Relationship between steps A and B is best defined as `serial`. Step A (A1 through A10) is submitted as scatter. Further, $i^th$ jobs of B depends on $i^th$ jobs of A. i.e. B1 requires A1 to complete; B2 requires A2 and so on. Also, we note that defining dependency as serial, makes sure that B does not wait for all elements of A to complete.
+
 
 
 ```{r plot_one_one, echo=FALSE, message=FALSE}
@@ -544,7 +545,7 @@ plot_flow(fobj)
 ```
 --->
 
-In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).
+In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):
 
 
 ```{r plot_abcd, message=FALSE}

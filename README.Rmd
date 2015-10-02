@@ -49,7 +49,7 @@ across the computing cluster
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...)
+-   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), AWS OR a local machine.
 
 ### A few lines, to get started:
 
