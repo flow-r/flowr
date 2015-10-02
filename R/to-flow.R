@@ -54,7 +54,7 @@ detect_dep_type <- function(x, cmds, prev_job){
 #'
 #' @param submit Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]
 #' @param execute Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]
-#' @param qobj Depreciated, modify \href{http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#cluster-interface}{cluster templates} instead.  A object of class \link{queue}.
+#' @param qobj Depreciated, modify \href{http://docs.flowr.space/docs.html#cluster-support}{cluster templates} instead.  A object of class \link{queue}.
 #' @param verbose A numeric value indicating the amount of messages to produce.
 #'  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
 #' [\code{get_opts("verbose")}] [1]

@@ -1,5 +1,10 @@
 # flowr
 
+<!--brand: |-
+  <a href="http://docs.flowr.space">
+  <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
+  </a>
+-->
 
 <!--[![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space)-->
 
@@ -63,10 +68,15 @@ the ideas and concepts used in flowr
 new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://docs.flowr.space/rd.html)
 page
-- You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install-conf.html)
+- You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install.html)
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 
+
+## Talks/Slides
+- Updated [introduction](http://sahilseth.github.io/slides/flowrintro/index.html) (Sep, 2015)
+- An earlier [introduction](http://sahilseth.github.io/slides/flowrintro/index_20150706) at 
+MD Anderson Comp. Biology meeting (July, 2015)
 
 
 Acknowledgements

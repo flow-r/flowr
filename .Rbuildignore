@@ -15,7 +15,7 @@ inst/staticdocs
 README\.Rmd
 README\.html
 TODO\.md
-cran\-comment\.md
+cran\-comments\.md
 
 ## ignore test files and folders
 tests/testthat/Rplots.pdf

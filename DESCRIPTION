@@ -7,7 +7,7 @@ Description:
   keeping in mind the needs of bioinformatics workflows. However, it is
   easily extendable to any field where a series of steps (shell commands)
   are to be executed in a (work)flow.
-Version: 0.9.7.9031
+Version: 0.9.8
 Depends:
     R (>= 3.0.2),
     methods,
@@ -22,7 +22,8 @@ Suggests:
     knitr,
     ggplot2,
     openxlsx,
-    testthat
+    testthat,
+    funr
 VignetteBuilder: knitr
 URL: https://github.com/sahilseth/flowr
 BugReports: https://github.com/sahilseth/flowr/issues

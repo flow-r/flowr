@@ -81,6 +81,7 @@ rerun.character <- function(x, ...){
 #' @rdname rerun
 #' @importFrom utils capture.output
 #' @importFrom params kable
+#' @export
 rerun.flow <- function(x, mat, def, 
 											 start_from,
 											 execute = TRUE,

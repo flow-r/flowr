@@ -11,7 +11,7 @@ set_opts(verbose = 0)
 
 context("\n\nTesting running a pipeline from scratch")
 
-pip = fetch_pipes("sleep_pipe", silent = TRUE)
+pip = fetch_pipes("sleep_pipe", silent = TRUE)[1,]
 
 if(verbose) print(pip)
 
@@ -94,6 +94,7 @@ context("Test flowr on multiple platform, including creation, status, rerun and 
 
 plats = c("lsf", "sge", "torque")
 for(plat in plats){
+	
 	qobj <- queue(platform = plat, submit_exe = "echo")
 	
 	#set_opts(verbose = 0)
