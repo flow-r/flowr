@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-09-29" />
+    <meta name="date" content="2015-10-02" />
   
   <title>flowr</title>
 
@@ -99,16 +99,26 @@ wget $url/sleep_pipe.R             ## A R script, with sleep_pipe(), which creat
 wget $url/sleep_pipe.def           ## A tab-delimited flow definition file
 wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, defining default params</code></pre>
 <p>To run the aforementioned pipeline, we would follow through these steps:</p>
-<pre class="r"><code>## ONE step run:
+<pre class="r"><code>## Single step submission:
 fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
 
+## Details of the above step:
 setwd(&quot;~/flowr/pipelines&quot;)
 ## behind the scenes, run does the following:
-load_opts(&quot;sleep_pipe.conf&quot;) ## optionally, load default parameters
-source(&quot;sleep_pipe.R&quot;) ## get sleep_pipe() function
-flowmat = sleep_pipe() ## create a flowmat
-flowdef = as.flowdef(&quot;sleep_pipe.def&quot;) ## read a flow definition.
-fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster</code></pre>
+## optionally, load default parameters
+load_opts(&quot;sleep_pipe.conf&quot;) 
+
+## get sleep_pipe() function
+source(&quot;sleep_pipe.R&quot;) 
+
+## create a flowmat
+flowmat = sleep_pipe()
+
+## read a flow definition.
+flowdef = as.flowdef(&quot;sleep_pipe.def&quot;)
+
+## create flow and submit to cluster
+fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 <div id="creating-modulespipelines" class="section level2">
 <h2>Creating Modules/Pipelines</h2>
 <div class="alert alert-info" role="alert">
@@ -145,17 +155,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 16 &amp;&amp; sleep 8;echo ‘hello’</td>
+<td align="left">sleep 5 &amp;&amp; sleep 2;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 8 &amp;&amp; sleep 11;echo ‘hello’</td>
+<td align="left">sleep 3 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 3 &amp;&amp; sleep 8;echo ‘hello’</td>
+<td align="left">sleep 5 &amp;&amp; sleep 4;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>

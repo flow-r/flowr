@@ -320,7 +320,7 @@ It is a tab separated file, with a minimum of 4 columns:
 - `jobname`: Name of the step
 - `sub_type`: Short for [submission type](#submission-types), refers to, how should multiple commands of this step be submitted. Possible values are `serial` or `scatter`. 
 - `prev_job`: Short for previous job, this would be jobname of the previous job. This can be NA/./none if this is a independent/initial step, and no previous step is required for this to start. 
-- `dep_type`: Short for [dependency type](#dependency-type), refers to the relationship of this job with the one defined in `prev_job`. This can take values `none`, `gather`, `serial` or `burst`.
+- `dep_type`: Short for [dependency type](#dependency-types), refers to the relationship of this job with the one defined in `prev_job`. This can take values `none`, `gather`, `serial` or `burst`.
 
 These would be explained in detail, below.
 
@@ -333,7 +333,7 @@ Apart from the above described variables, several others defining the resource r
 - `queue`
 
 <div class="alert alert-info" role="alert">
-This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in a typical setup, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage and high cluster load (even when actual CPU usage may be low). Being able to tune them, makes this setup quite efficient.
+This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in other frameworks, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage of those cores. Flowr prevents this, by being able to tune resources granurly. Example, one may submit few short steps in `short` queue, and longer steps of the same pipeline in say `long` queue.
 </div>
 
 Most cluster platforms accept these resource arguments. Essentially a file like [this](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh) is used as a template, and variables defined in curly braces ( ex. `{{{CPU}}}` ) are filled up using the flow definition file.
@@ -408,6 +408,10 @@ knitr:::kable(dat)
 
 ### Example:
 
+Let us use an example flow, to understand submission and dependency types.
+
+Consider three steps A, B and C, where A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1. Consider another step D (with D1-D3), which comes after C.
+
 ```
 step:       A   ----> B  -----> C -----> D
 # of cmds  10        10         1        3
@@ -415,11 +419,8 @@ step:       A   ----> B  -----> C -----> D
 
 # Submission types
 
-Consider an example with three steps A, B and C. A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and C has a single command, C1.
 
-Consider another step D (with D1-D3), which comes after C.
-
-> *This refers to the sub_type column in flow definition.*
+*This refers to the sub_type column in flow definition.*
 
 - `scatter`: submit all commands as parallel, independent jobs. 
 	- *Submit A1 through A10 as independent jobs*
@@ -428,7 +429,7 @@ Consider another step D (with D1-D3), which comes after C.
 
 # Dependency types
 
-> *This refers to the dep_type column in flow definition.*
+*This refers to the dep_type column in flow definition.*
 
 - `none`: independent job. 
 	- *Initial step A has no dependency*
@@ -442,7 +443,7 @@ Consider another step D (with D1-D3), which comes after C.
 
 # Relationships
 
-Using the above submission and dependency types one can create several types of relationships between former and later jobs. Here are a few pipelines of relationships one may typically use.
+Using the above submission and dependency types one can create several types of relationships between former and later jobs. Here are a few examples of relationships one may typically use.
 
 
 ## One to One (serial)
@@ -459,7 +460,8 @@ Using the above submission and dependency types one can create several types of 
                   ONE-to-ONE
 ```
 
-A (A1 through A10) are submitted as scatter. Further B1, requires A1 to complete; B2 requires A2 and so on, but they need not wait for all of step A jobs to complete. Also, B1 through B10 are independent of each other.
+Relationship between steps A and B is best defined as `serial`. Step A (A1 through A10) is submitted as scatter. Further, $i^th$ jobs of B depends on $i^th$ jobs of A. i.e. B1 requires A1 to complete; B2 requires A2 and so on. Also, we note that defining dependency as serial, makes sure that B does not wait for all elements of A to complete.
+
 
 
 ```{r plot_one_one, echo=FALSE, message=FALSE}
@@ -543,7 +545,7 @@ plot_flow(fobj)
 ```
 --->
 
-In essence and example flow_def would look like as follows (with additional resource requirements not shown for brevity).
+In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):
 
 
 ```{r plot_abcd, message=FALSE}
