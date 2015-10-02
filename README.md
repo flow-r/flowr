@@ -46,7 +46,10 @@ across the computing cluster
 
 
 ```r
-## Latest stable release (0.9.7.9031) from DRAT
+## Latest stable release from CRAN
+install.packages("flowr")
+
+## Latest stable release from DRAT
 install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## OR cutting edge devel version

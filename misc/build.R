@@ -104,6 +104,7 @@ render_rd("rd_skeleton.Rmd", "flowr", code_path,
 check_output("rd.html")
 
 
+
 ## stuff for MAC ONLY
 if(Sys.info()['sysname'] == "Darwin"){
 	system("open index.html")
