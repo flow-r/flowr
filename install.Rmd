@@ -67,6 +67,8 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 Please use 'flowr -h function' to obtain further information about the usage of a specific function.
 ```
 
+If you interested, visit [funr's github page for more details](https://github.com/sahilseth/funr)
+
 From this step on, one has the option of typing commands in a R console OR a bash shell (command line). 
 For brevity we will show examples using the shell.
 
@@ -189,7 +191,7 @@ used to submit jobs to the cluster. You may customize this template to suit your
 
 **3. Use a custom flowdef**
 
-We can copy a example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.
+We can copy an example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.
 
 ```
 cd ~/flowr/pipelines
@@ -201,7 +203,7 @@ flowr as.flowdef x=~/flowr/pipelines/sleep_pipe.def
 *Run the test with a custom flowdef*:
 
 ```
-flowr run x=sleep_pipe platform=lsf execute=TRUE def=~/flowr/pipelines/sleep_pipe.def
+flowr run x=sleep_pipe execute=TRUE def=~/flowr/pipelines/sleep_pipe.def ## platform=lsf [optional, picked up from flowdef]
 ```
 
 **4. Use a custom submission template**
@@ -260,8 +262,10 @@ In this case *335508* was the job id and regex worked well !
 Once we identify the correct regex for the platform you may update the configuration file with it.
 
 ```
-cd ~/flowr/conf ## flowr automatically reads this file
+cd ~/flowr/conf 
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.conf
+## flowr automatically reads from this location, if you prefer to put it elsewhere, use
+load_opts("flowr.conf") ## visit sahilseth.github.io/params for more details.
 ```
 
 Update the regex pattern and submit again.
@@ -300,7 +304,7 @@ What all resources are supported in the flow definition?
 The resource requirement columns of flow definition are passed along to the final (cluster) submission script. 
 For example values in `cpu_reserved` column would be populated as `{{{CPU}}}` in the submission template.
 
-The following table provides a mapping between the flow definition columns and variables in the submission templates:
+The following table provides a mapping between the flow definition columns and variables in the [submission templates](https://github.com/sahilseth/flowr/blob/master/inst/conf):
 
 
 ```{r build_pipe_flow_def_cols, echo=FALSE, message=FALSE}
@@ -343,11 +347,16 @@ re-open this issue, with details on the platform:
 
 
 <div class="alert alert-warning" role="alert">
-Possible issue: For other issues upload the error shown in the out files to [github](https://github.com/sahilseth/flowr/issues).
+Possible issue: For other issues upload the error shown in the out files to 
+[github issues tracker](https://github.com/sahilseth/flowr/issues).
 </div>
 
 ```
+## outfiles end with .out, and are placed in a folder like 00X.<jobname>/
+## here is one example:
 cat $wd/002.create_tmp/create_tmp_cmd_1.out
+## final script:
+cat $wd/002.create_tmp/create_tmp_cmd_1.sh
 ```
 
 
