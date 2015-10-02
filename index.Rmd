@@ -1,4 +1,6 @@
 ---
+title: "flowr"
+subtitle: "Streamlining Workflows"
 output: 
     html_document: 
        keep_md: yes
@@ -20,9 +22,8 @@ navpills: |
 -->
 
 
-
-### [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space) Streamlining Computing workflows
-
+<!-- ### [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
+-->
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
