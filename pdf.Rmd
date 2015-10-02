@@ -1,13 +1,14 @@
 ---  
-title: My Report  
+title: flowr
+subtitle: Streamlining Computing Workflows
+author: Sahil Seth
+date: Flowr documentation, version (`r packageVersion('flowr')`)
 output: 
   pdf_document:
     toc: yes 
 ---
 
 
-```{r child = 'index.Rmd'}
-```
 
 ```{r child = 'docs.Rmd'}
 ```
