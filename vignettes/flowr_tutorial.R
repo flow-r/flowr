@@ -1,4 +1,4 @@
-## ----libs, echo = FALSE, message = FALSE---------------------------------
+## ----libs_tut, echo = FALSE, message = FALSE-----------------------------
 library(knitr)
 library(flowr)
 
@@ -6,16 +6,26 @@ library(flowr)
 read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
 
 ## ----eval=FALSE----------------------------------------------------------
-#  ## ONE step run:
+#  ## Single step submission:
 #  fobj = run("sleep_pipe", execute = TRUE);
 #  
+#  ## Details of the above step:
 #  setwd("~/flowr/pipelines")
 #  ## behind the scenes, run does the following:
-#  load_opts("sleep_pipe.conf") ## optionally, load default parameters
-#  source("sleep_pipe.R") ## get sleep_pipe() function
-#  flowmat = sleep_pipe() ## create a flowmat
-#  flowdef = as.flowdef("sleep_pipe.def") ## read a flow definition.
-#  fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster
+#  ## optionally, load default parameters
+#  load_opts("sleep_pipe.conf")
+#  
+#  ## get sleep_pipe() function
+#  source("sleep_pipe.R")
+#  
+#  ## create a flowmat
+#  flowmat = sleep_pipe()
+#  
+#  ## read a flow definition.
+#  flowdef = as.flowdef("sleep_pipe.def")
+#  
+#  ## create flow and submit to cluster
+#  fobj = to_flow(flowmat, flowdef, execute = TRUE)
 
 ## ----define_modules, echo=FALSE------------------------------------------
 #' @param x number of sleep commands

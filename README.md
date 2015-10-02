@@ -1,5 +1,12 @@
 # flowr
 
+<!--brand: |-
+  <a href="http://docs.flowr.space">
+  <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
+  </a>
+-->
+
+<!--[![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space)-->
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
@@ -33,24 +40,23 @@ across the computing cluster
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...)
+-   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), AWS OR a local machine.
 
 ### A few lines, to get started:
 
 
 ```r
-## From the official R repository (updated every month or so)
-install.packages("flowr")
-
-## OR for a latest stable version (updated every few days):
-install.packages(devtools)
-devtools::install_github("sahilseth/flowr")
+## Latest stable release (0.9.7.9031) from DRAT
+install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## OR cutting edge devel version
 devtools::install_github("sahilseth/flowr", ref = "devel")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
+
+## Run an example pipeline
+flowr run x=sleep_pipe platform=local execute=TRUE
 ```
 
 ## Resources
@@ -62,10 +68,15 @@ the ideas and concepts used in flowr
 new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://docs.flowr.space/rd.html)
 page
-- You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install-conf.html)
+- You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install.html)
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 
+
+## Talks/Slides
+- Updated [introduction](http://sahilseth.github.io/slides/flowrintro/index.html) (Sep, 2015)
+- An earlier [introduction](http://sahilseth.github.io/slides/flowrintro/index_20150706) at 
+MD Anderson Comp. Biology meeting (July, 2015)
 
 
 Acknowledgements

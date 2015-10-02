@@ -29,16 +29,26 @@ To run the aforementioned pipeline, we would follow through these steps:
 
 
 ```r
-## ONE step run:
+## Single step submission:
 fobj = run("sleep_pipe", execute = TRUE); 
 
+## Details of the above step:
 setwd("~/flowr/pipelines")
 ## behind the scenes, run does the following:
-load_opts("sleep_pipe.conf") ## optionally, load default parameters
-source("sleep_pipe.R") ## get sleep_pipe() function
-flowmat = sleep_pipe() ## create a flowmat
-flowdef = as.flowdef("sleep_pipe.def") ## read a flow definition.
-fobj = to_flow(flowmat, flowdef, execute = TRUE) ## create flow and submit to cluster
+## optionally, load default parameters
+load_opts("sleep_pipe.conf") 
+
+## get sleep_pipe() function
+source("sleep_pipe.R") 
+
+## create a flowmat
+flowmat = sleep_pipe()
+
+## read a flow definition.
+flowdef = as.flowdef("sleep_pipe.def")
+
+## create flow and submit to cluster
+fobj = to_flow(flowmat, flowdef, execute = TRUE)
 ```
 
 
@@ -88,9 +98,9 @@ flowmat = out$flowmat
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 3 && sleep 5;echo 'hello'                                
-sample1      sleep        sleep 22 && sleep 3;echo 'hello'                               
-sample1      sleep        sleep 3 && sleep 2;echo 'hello'                                
+sample1      sleep        sleep 4 && sleep 5;echo 'hello'                                
+sample1      sleep        sleep 15 && sleep 5;echo 'hello'                               
+sample1      sleep        sleep 3 && sleep 14;echo 'hello'                               
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    

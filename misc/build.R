@@ -91,7 +91,7 @@ check_output("tutorial.html")
 render("news.Rmd", output_format = pd_expand)
 check_output("news.html")
 render("install.Rmd", output_format = pd_expand)
-check_output("install-conf.html")
+check_output("install.html")
 
 message("rendering RD files ....", getwd())
 dir.create(file.path(code_path, "inst/staticdocs"))
