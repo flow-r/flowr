@@ -6,11 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-<<<<<<< HEAD
     <meta name="date" content="2015-10-01" />
-=======
-    <meta name="date" content="2015-10-02" />
->>>>>>> origin/gh-pages
   
   <title>flowr</title>
 
@@ -126,7 +122,7 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 <div id="creating-modulespipelines" class="section level2">
 <h2>Creating Modules/Pipelines</h2>
 <div class="alert alert-info" role="alert">
-<strong>module:</strong> A R function which creates a flow mat, is a module. Using <strong>module + flowdef</strong>, we can run a pipeline.
+<p><strong>module:</strong> A R function which creates a flow mat, is a module. Using <strong>module + flowdef</strong>, we can run a pipeline.</p>
 </div>
 <p>The <code>sleep_pipe</code> calls the three other functions (<strong>modules</strong>); fetches flowmat from each, then rbinds them, creating a larger flowmat. You may refer to the <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R">sleep_pipe.R</a> file for the source.</p>
 <pre class="r"><code>#&#39; @param x number of files to make
@@ -159,29 +155,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<<<<<<< HEAD
-<td align="left">sleep 8 &amp;&amp; sleep 2;echo ‘hello’</td>
-=======
-<td align="left">sleep 17 &amp;&amp; sleep 24;echo ‘hello’</td>
->>>>>>> origin/gh-pages
+<td align="left">sleep 11 &amp;&amp; sleep 9;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<<<<<<< HEAD
-<td align="left">sleep 20 &amp;&amp; sleep 2;echo ‘hello’</td>
-=======
-<td align="left">sleep 12 &amp;&amp; sleep 4;echo ‘hello’</td>
->>>>>>> origin/gh-pages
+<td align="left">sleep 10 &amp;&amp; sleep 15;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<<<<<<< HEAD
-<td align="left">sleep 9 &amp;&amp; sleep 6;echo ‘hello’</td>
-=======
-<td align="left">sleep 4 &amp;&amp; sleep 17;echo ‘hello’</td>
->>>>>>> origin/gh-pages
+<td align="left">sleep 13 &amp;&amp; sleep 1;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -216,7 +200,7 @@ flowmat = out$flowmat</code></pre>
 <h2>Creating Flow Definition</h2>
 <p>flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function to_flowdef, accepts a <code>flowmat</code> and creates a flow definition.</p>
 <div class="alert alert-info" role="alert">
-The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency.
+<p>The default skeleton takes a very conservative approach, creating all submissions as <code>serial</code> and all dependencies as <code>gather</code>. This ensures robustness, compromising efficiency.</p>
 </div>
 <pre class="r"><code>def = to_flowdef(flowmat) ## create a skeleton flow definition
 suppressMessages(plot_flow(def))</code></pre>
@@ -300,7 +284,7 @@ kable(def)</code></pre>
 </table>
 <p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<strong>Tip:</strong> Alternatively, one may write this to a file (<code>write_sheet(def, &quot;sleep_pipe.def&quot;)</code>), make changes in a text editor and read it again (<code>as.flowdef(&quot;sleep_pipe.def&quot;)</code>.
+<p><strong>Tip:</strong> Alternatively, one may write this to a file (<code>write_sheet(def, &quot;sleep_pipe.def&quot;)</code>), make changes in a text editor and read it again (<code>as.flowdef(&quot;sleep_pipe.def&quot;)</code>.</p>
 </div>
 </div>
 <div id="create-flow-submit-to-cluster" class="section level2">
@@ -344,8 +328,6 @@ to run it, hence a module **elevates**, becoming a pipeline.
 This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
 </div>
 -->
-
-
 </div>
 </div>
 
