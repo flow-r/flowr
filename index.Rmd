@@ -60,11 +60,8 @@ across the computing cluster
 ### A few lines, to get started:
 
 ``` {r, eval=FALSE}
-## Latest stable release (0.9.7.9031) from DRAT
-install.packages("flowr", repos = "http://sahilseth.github.io/drat")
-
-## OR cutting edge devel version
-devtools::install_github("sahilseth/flowr", ref = "devel")
+## Latest stable release from CRAN (updated every other month)
+install.packages("flowr")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
