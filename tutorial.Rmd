@@ -23,7 +23,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-```{r libs, echo = FALSE, message = FALSE}
+```{r libs_tut, echo = FALSE, message = FALSE}
 library(knitr)
 library(flowr)
 ```

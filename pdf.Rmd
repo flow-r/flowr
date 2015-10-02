@@ -11,3 +11,12 @@ output:
 
 ```{r child = 'docs.Rmd'}
 ```
+
+```{r child = 'install.Rmd'}
+```
+
+```{r child = 'tutorial.Rmd'}
+```
+
+```{r child = 'rd.Rmd'}
+```
