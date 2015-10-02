@@ -15,7 +15,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-flowr latest
+flowr 0.9.8 (blueberries)
 ----------------------------------------------
 - Modified the output of status function, to add a `status` column. Specifically, 
 this uses information from other columns and summarizes whether a specific step is 
@@ -78,7 +78,7 @@ fetching statuses of previously completed jobs; this really speeding things up.
 
 - Several detailed changes to the documentation.
 
-flowr (apples) 0.9.7.10
+flowr 0.9.7.10 (apples)
 ----------------------------------------------
 > 2015-08-22
 
