@@ -256,17 +256,21 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <div id="stitch-it" class="section level2">
 <h2>Stitch it</h2>
 <p>We use the two files descirbed above and stich them to create a <code>flow object</code> (which contains all the information we need for cluster submission).</p>
-<pre class="r"><code>fobj &lt;- to_flow(x = flow_mat, 
-                                def = flow_def,
-                                flowname = &quot;example1&quot;, ## give it a name
-                                platform = &quot;lsf&quot;)      ## override platform mentioned in flow def</code></pre>
+<pre class="r"><code>ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
+flowmat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
+flowdef = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))
+
+fobj &lt;- to_flow(x = flowmat, 
+                 def = flowdef,
+                 flowname = &quot;example1&quot;, ## give it a name
+                 platform = &quot;lsf&quot;)      ## override platform mentioned in flow def</code></pre>
 <p>Refer to <a href="docs.flowr.space/rd.html#to_flow">to_flow’s help section</a> for more details.</p>
 </div>
 <div id="plot-it" class="section level2">
 <h2>Plot it</h2>
 <p>We can use <code>plot_flow</code> to quickly visualize the flow; this really helps when developing complex workflows.</p>
 <pre class="r"><code>plot_flow(fobj)     # ?plot_flow for more information
-plot_flow(flow_def) # plot_flow works on flow definition as well</code></pre>
+plot_flow(flowdef) # plot_flow works on flow definition as well</code></pre>
 <p><img src="docs_files/figure-html/plotit-1.png" title="Flow chart describing process for example 1" alt="Flow chart describing process for example 1" width="624" /></p>
 <p>Refer to <a href="docs.flowr.space/rd.html#plot_flow">plot_flow’s help section</a> for more details.</p>
 </div>
