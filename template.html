@@ -1,0 +1,168 @@
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc" />
+
+  $for(author-meta)$
+  <meta name="author" content="$author-meta$" />
+  $endfor$
+
+  $if(date-meta)$
+  <meta name="date" content="$date-meta$" />
+  $endif$
+
+  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+
+  $for(header-includes)$
+  $header-includes$
+  $endfor$
+
+  $if(highlightjs)$
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet"
+        href="$highlightjs$/$if(highlightjs-theme)$$highlightjs-theme$$else$default$endif$.css"
+        $if(html5)$$else$type="text/css" $endif$/>
+  <script src="$highlightjs$/highlight.js"></script>
+  <style type="text/css">
+    pre:not([class]) {
+      background-color: white;
+    }
+  </style>
+
+  <script type="text/javascript">
+  if (window.hljs && document.readyState && document.readyState === "complete") {
+     window.setTimeout(function() {
+        hljs.initHighlighting();
+     }, 0);
+  }
+  </script>
+  $endif$
+
+  $if(highlighting-css)$
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+  $highlighting-css$
+  </style>
+  <style type="text/css">
+    pre:not([class]) {
+      background-color: white;
+    }
+  </style>
+  $endif$
+
+  $if(rd_page)$
+  <style type="text/css">
+  .section h1 {
+    margin-top: 50px;
+    margin-bottom: 70px;
+    text-align: center;
+    border-bottom: 0px;
+    font-size: 35px;
+    font-weight: 400;
+    font-family: "PT Mono","Georgia",Arial,sans-serif;
+  }
+
+  .section h2 {
+    margin-left: -10px !important;
+    border-bottom: 3px solid #5d9fea;
+  }
+
+  </style>
+  $endif$
+
+  $for(css)$
+  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+  $endfor$
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+
+  $for(include-before)$
+  $include-before$
+  $endfor$
+
+  <header class="navbar navbar-white navbar-fixed-top" role="banner" id="header">
+    <div class="container">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        $if(brand)$
+        <span class="navbar-brand">
+$brand$
+        </span>
+        $endif$
+        <a href="index.html" class="navbar-brand page-scroll">
+<!--        $title$$if(subtitle)$ - $subtitle$$endif$ only subtitle-->
+            $subtitle$
+        </a>
+      </div>
+      $if(navpills)$
+      <nav class="collapse navbar-collapse" role="navigation">
+        <ul class="nav nav-pills pull-right">
+$navpills$
+        </ul>
+      </nav>
+      $endif$
+    </div>
+  </header>
+
+  <!-- Begin Body -->
+  <div class="container">
+    <div class="row">
+      $if(toc)$
+      <div class="col-md-3" id="sidebar-col">
+        <div id="toc">
+          $toc$
+        </div>
+      </div>
+      <div class="col-md-9" id="content-col">
+      $else$
+      <div class="col-md-12">
+      $endif$
+
+<div id="content-top"></div>
+$body$
+
+$for(include-after)$
+$include-after$
+$endfor$
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <div class="col-md-6">
+        $if(copyright)$
+        <p>&copy; $copyright$, $current_year$</p>
+        $endif$
+      </div>
+      <div class="col-md-6">
+        <p class="pull-right">created with <a href="https://github.com/hafen/packagedocs">packagedocs</a></p>
+      </div>
+    </div>
+  </div>
+
+  $if(mathjax-url)$
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "$mathjax-url$";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+  $endif$
+
+</body>
+</html>
+
