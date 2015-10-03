@@ -43,8 +43,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
+                <span class="navbar-brand">
+<a href="http://docs.flowr.space"> <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'> </a>
+        </span>
                 <a href="index.html" class="navbar-brand page-scroll">
-        flowr - Streamlining Workflows
+<!--        flowr - Streamlining Workflows only subtitle-->
+            Streamlining Workflows
         </a>
       </div>
             <nav class="collapse navbar-collapse" role="navigation">
@@ -111,8 +115,7 @@
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
 <p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable. For more details refer to <a href="http://docs.flowr.space/rd.html#setup">setup’s help section</a>.</p>
-<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. ---> 
-
+<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
 
@@ -123,8 +126,6 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 
 Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
-
-
 <div id="toy-example" class="section level2">
 <h2>Toy example</h2>
 <p><img src="files/toy.png" /></p>
@@ -522,7 +523,6 @@ If these (resource requirements) columns are not included in the flow definition
 </tbody>
 </table>
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
-
 <!-- 
 - jobname: is passed as `name` argument to job().
 - prev_jobs: passed as `previous_job` argument  to job().
@@ -536,7 +536,6 @@ If these (resource requirements) columns are not included in the flow definition
 - cpu_reserved: Amount of CPU reserved.
 
 Its best to have this as a tab seperated file (with no row.names). -->
-
 <!---
 ### Style 2
 
@@ -575,9 +574,6 @@ dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
 --->
-
-
-
 <div id="example" class="section level3">
 <h3>Example:</h3>
 <p>Let us use an example flow, to understand submission and dependency types.</p>
@@ -656,7 +652,6 @@ knitr:::kable(dat)
 - so previous job submission: `scatter`, and current job's dependency type `gather`
 
 --->
-
 </div>
 <div id="one-to-many-burst" class="section level2">
 <h2>One to Many (Burst)</h2>
@@ -673,7 +668,6 @@ knitr:::kable(dat)
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 
 --->
-
 <p>In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):</p>
 <pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
 ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
@@ -783,8 +777,6 @@ There is a darker more prominent shadow to indicate scatter steps.
   ga('send', 'pageview');
 
 </script>
-
-
 </div>
 
 

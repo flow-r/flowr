@@ -1,6 +1,6 @@
 ---
-title: "flowr"
-subtitle: "Streamlining Workflows"
+title: ""
+subtitle: ""
 output: 
     html_document: 
        keep_md: yes
@@ -15,19 +15,14 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
-<!--brand: |-
-  <a href="http://docs.flowr.space">
-  <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
-  </a>
--->
-
-<!--### [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
--->
-
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
+
+<center> <h4><font color="#D3003A">
+[![docs.flowr.space](files/logo_blue.png) Streamlining Workflows](http://docs.flowr.space)
+</font></h4> </center>
 
 
 This framework allows you to design and implement complex pipelines, and

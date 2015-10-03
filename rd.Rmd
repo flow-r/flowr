@@ -14,6 +14,10 @@ navpills: |
   <li class="active"><a href='rd.html'>Help</a></li>
   <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+brand: |-
+  <a href="http://docs.flowr.space">
+  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'>
+  </a>
 ---
 
 <div class="alert alert-success" role="alert">
@@ -71,20 +75,16 @@ vector: a file with flowmat table
 a named list of commands for a sample. Its best to supply a flowmat instead.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>to_flow(x, ...)
-
-is.flow(x)
-
-to_flowcharacter(x, def, grp_col, jobname_col, cmd_col, ...)
-
-to_flowflowmat(x, def, grp_col, jobname_col, cmd_col, flowname,
-  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj,
-  verbose = get_opts("verbose"), ...)
-
-to_flowdata.frame(x, ...)
-
-to_flowlist(x, def, flowname, flow_run_path, desc, qobj,
-  verbose = get_opts("verbose"), ...)</code></pre>
+<pre class="r"><code><div>to_flow(x, ...)</div>
+<div>is.flow(x)</div>
+<div>## method for class 'character'
+to_flow(x, def, grp_col, jobname_col, cmd_col, ...)</div>
+<div>## method for class 'flowmat'
+to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+<div>## method for class 'data.frame'
+to_flow(x, ...)</div>
+<div>## method for class 'list'
+to_flow(x, def, flowname, flow_run_path, desc, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -197,17 +197,15 @@ kill(fobj3)</code></pre>
 as.flowmat(): reads a file and checks for required columns. If x is data.frame checks for required columns.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>to_flowmat(x, ...)
-
-to_flowmatlist(x, samplename, ...)
-
-to_flowmatdata.frame(x, ...)
-
-to_flowmatflow(x, ...)
-
-as.flowmat(x, grp_col, jobname_col, cmd_col, ...)
-
-is.flowmat(x)</code></pre>
+<pre class="r"><code><div>to_flowmat(x, ...)</div>
+<div>## method for class 'list'
+to_flowmat(x, samplename, ...)</div>
+<div>## method for class 'data.frame'
+to_flowmat(x, ...)</div>
+<div>## method for class 'flow'
+to_flowmat(x, ...)</div>
+<div>as.flowmat(x, grp_col, jobname_col, cmd_col, ...)</div>
+<div>is.flowmat(x)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -304,6 +302,17 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 </ul>
 </p>
 
+<h4>Usage</h4>
+<pre class="r"><code><div>to_flowdef(x, ...)</div>
+<div>## method for class 'flowmat'
+to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+<div>## method for class 'flow'
+to_flowdef(x, ...)</div>
+<div>## method for class 'character'
+to_flowdef(x, ...)</div>
+<div>as.flowdef(x, ...)</div>
+<div>is.flowdef(x)</div></code></pre>
+
 <h4>Arguments</h4>
 <dl class="rd-dl">
   <dt>x</dt>
@@ -388,6 +397,13 @@ your institutions guide to specify these.</p>
 
 <p class="rd-p">Check consistency of flowdef and flowmat, using various rules.</p>
 
+<h4>Usage</h4>
+<pre class="r"><code><div>check(x, ...)</div>
+<div>## method for class 'flowmat'
+check(x, ...)</div>
+<div>## method for class 'flowdef'
+check(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+
 <h4>Arguments</h4>
 <dl class="rd-dl">
   <dt>x</dt>
@@ -439,12 +455,11 @@ your institutions guide to specify these.</p>
 <p class="rd-p">Submit a flow to the cluster or perform a dry-run to check and debug issues.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>submit_flow(x, verbose = get_opts("verbose"), ...)
-
-submit_flowlist(x, verbose = get_opts("verbose"), ...)
-
-submit_flowflow(x, verbose = get_opts("verbose"),
-  execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1, ...)</code></pre>
+<pre class="r"><code><div>submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+<div>## method for class 'list'
+submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+<div>## method for class 'flow'
+submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), execute&nbsp;=&nbsp;FALSE, uuid, plot&nbsp;=&nbsp;TRUE, dump&nbsp;=&nbsp;TRUE, .start_jid&nbsp;=&nbsp;1, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -488,16 +503,15 @@ of jobs with flow instance and cannot monitor, kill or re-run the flow.</p>
 <p class="rd-p">Plot a flowchart using a flow object or flowdef</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>plot_flow(x, ...)
-
-plot_flowflow(x, ...)
-
-plot_flowlist(x, ...)
-
-plot_flowcharacter(x, ...)
-
-plot_flowflowdef(x, detailed = TRUE, type = c("1", "2"),
-  pdf = FALSE, pdffile, ...)</code></pre>
+<pre class="r"><code><div>plot_flow(x, ...)</div>
+<div>## method for class 'flow'
+plot_flow(x, ...)</div>
+<div>## method for class 'list'
+plot_flow(x, ...)</div>
+<div>## method for class 'character'
+plot_flow(x, ...)</div>
+<div>## method for class 'flowdef'
+plot_flow(x, detailed&nbsp;=&nbsp;TRUE, type&nbsp;=&nbsp;c("1", "2"), pdf&nbsp;=&nbsp;FALSE, pdffile, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -548,16 +562,14 @@ plot_flow(fobj)</code></pre>
 <p class="rd-p">Summarize status of a flow OR multiple flows OR a high-level summary of all flows in a folder.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>status(x, use_cache = FALSE, verbose = get_opts("verbose"),
-  out_format = "markdown")
-
-get_status(x, ...)
-
-get_statusflow(x, verbose, use_cache, out_format, ...)
-
-get_statuscharacter(x, verbose, use_cache, out_format, ...)
-
-get_statusdata.frame(x, verbose, use_cache, ...)</code></pre>
+<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), out_format&nbsp;=&nbsp;"markdown")</div>
+<div>get_status(x, ...)</div>
+<div>## method for class 'flow'
+get_status(x, verbose, use_cache, out_format, ...)</div>
+<div>## method for class 'character'
+get_status(x, verbose, use_cache, out_format, ...)</div>
+<div>## method for class 'data.frame'
+get_status(x, verbose, use_cache, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -618,12 +630,11 @@ If submit_flow is interrupted, files like flow_details.rds etc are not created, 
 of jobs with flow instance and cannot monitor, kill or re-run the flow.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>kill(x, ...)
-
-killcharacter(x, force = FALSE, ...)
-
-killflow(x, kill_cmd, verbose = get_opts("verbose"),
-  jobid_col = "job_sub_id", ...)</code></pre>
+<pre class="r"><code><div>kill(x, ...)</div>
+<div>## method for class 'character'
+kill(x, force&nbsp;=&nbsp;FALSE, ...)</div>
+<div>## method for class 'flow'
+kill(x, kill_cmd, verbose&nbsp;=&nbsp;get_opts("verbose"), jobid_col&nbsp;=&nbsp;"job_sub_id", ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -675,12 +686,11 @@ kill(x='fastq_haplotyper*', force = TRUE)</code></pre>
 <em>flow_wd</em>: flow working directory, same input as used for <a href='status.html'>status</a></p>
 
 <h4>Usage</h4>
-<pre class="r"><code>rerun(x, ...)
-
-reruncharacter(x, ...)
-
-rerunflow(x, mat, def, start_from, execute = TRUE, kill = TRUE,
-  select, ignore, verbose = get_opts("verbose"), ...)</code></pre>
+<pre class="r"><code><div>rerun(x, ...)</div>
+<div>## method for class 'character'
+rerun(x, ...)</div>
+<div>## method for class 'flow'
+rerun(x, mat, def, start_from, execute&nbsp;=&nbsp;TRUE, kill&nbsp;=&nbsp;TRUE, select, ignore, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -748,11 +758,10 @@ regarding previous job ids and their status is not lost.</p>
 For more details regarding these funtions refer to <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>params</a> package.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>flowopts
-
-get_opts(...)
+<pre class="r"><code><div>flowopts</div>
+<div>get_opts(...)
 set_opts(...)
-load_opts(...)</code></pre>
+load_opts(...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -831,6 +840,9 @@ get_opts()</code></pre>
 <p class="rd-p">This functions creates a directory structure in user's home directory.
 Additionally it creates a shortcut to the <code>flowr</code> helper script in <code>~/bin</code>.</p>
 
+<h4>Usage</h4>
+<pre class="r"><code><div>setup(bin&nbsp;=&nbsp;"~/bin", flow_base_path&nbsp;=&nbsp;get_opts("flow_base_path"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), flow_conf_path&nbsp;=&nbsp;get_opts("flow_conf_path"), flow_pipe_path&nbsp;=&nbsp;get_opts("flow_pipe_paths"))</div></code></pre>
+
 <h4>Arguments</h4>
 <dl class="rd-dl">
   <dt>bin</dt>
@@ -876,7 +888,7 @@ One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>
 	the configurations files: <code>~/flowr/conf/flowr.conf</code> OR <code>~/flowr/conf/ngsflows.conf</code>.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>verbose</code></pre>
+<pre class="r"><code><div>verbose</div></code></pre>
 
   <h4>Format</h4>
 
@@ -950,13 +962,9 @@ By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
 See the details sections, for more explanation on this.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>fetch(x, places, urls, verbose = get_opts("verbose"))
-
-fetch_pipes(x, places, last_only = FALSE,
-  urls = get_opts("flowr_pipe_urls"), silent = FALSE,
-  verbose = get_opts("verbose"), ask = TRUE)
-
-fetch_conf(x = "flowr.conf", places, ...)</code></pre>
+<pre class="r"><code><div>fetch(x, places, urls, verbose&nbsp;=&nbsp;get_opts("verbose"))</div>
+<div>fetch_pipes(x, places, last_only&nbsp;=&nbsp;FALSE, urls&nbsp;=&nbsp;get_opts("flowr_pipe_urls"), silent&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ask&nbsp;=&nbsp;TRUE)</div>
+<div>fetch_conf(x&nbsp;=&nbsp;"flowr.conf", places, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1035,11 +1043,8 @@ Taking <code>sleep_pipe</code> as a example.
 </p>
 
 <h4>Usage</h4>
-<pre class="r"><code>run(x, platform, def, flow_run_path = get_opts("flow_run_path"),
-  execute = FALSE, ...)
-
-run_pipe(x, platform, def, flow_run_path = get_opts("flow_run_path"),
-  execute = FALSE, ...)</code></pre>
+<pre class="r"><code><div>run(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1092,11 +1097,7 @@ run("sleep_pipe", platform = "lsf", execute = TRUE, x = 5)</code></pre>
 <p class="rd-p">Internal function (used by <a href='to_flow.html'>to_flow</a>), to define the format used to submit a job.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
-  format = "", queue = "long", walltime, memory, cpu = 1,
-  extra_opts = "", submit_exe, nodes = "1", jobname = "name",
-  email = Sys.getenv("USER"), dependency = list(), server = "localhost",
-  verbose = FALSE, cwd = "", stderr = "", stdout = "", ...)</code></pre>
+<pre class="r"><code><div>queue(object, platform&nbsp;=&nbsp;c("local", "lsf", "torque", "sge", "moab"), format&nbsp;=&nbsp;"", queue&nbsp;=&nbsp;"long", walltime, memory, cpu&nbsp;=&nbsp;1, extra_opts&nbsp;=&nbsp;"", submit_exe, nodes&nbsp;=&nbsp;"1", jobname&nbsp;=&nbsp;"name", email&nbsp;=&nbsp;Sys.getenv("USER"), dependency&nbsp;=&nbsp;list(), server&nbsp;=&nbsp;"localhost", verbose&nbsp;=&nbsp;FALSE, cwd&nbsp;=&nbsp;"", stderr&nbsp;=&nbsp;"", stdout&nbsp;=&nbsp;"", ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1168,9 +1169,7 @@ The platform variable defines the format, and submit_exe; however these two are 
 <p class="rd-p">Internal function (used by to_flow), which aids in creating a job object.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>job(cmds = "", name = "myjob", q_obj = new("queue"), previous_job = "",
-  cpu = 1, memory, walltime, submission_type = c("scatter", "serial"),
-  dependency_type = c("none", "gather", "serial", "burst"), ...)</code></pre>
+<pre class="r"><code><div>job(cmds&nbsp;=&nbsp;"", name&nbsp;=&nbsp;"myjob", q_obj&nbsp;=&nbsp;new("queue"), previous_job&nbsp;=&nbsp;"", cpu&nbsp;=&nbsp;1, memory, walltime, submission_type&nbsp;=&nbsp;c("scatter", "serial"), dependency_type&nbsp;=&nbsp;c("none", "gather", "serial", "burst"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1233,10 +1232,7 @@ submit_flow(fobj, execute = TRUE)</code></pre>
 <p class="rd-p">Internal function (used by <a href='to_flow.html'>to_flow</a>), which aids in creating a flow object.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code>flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
-  mode = c("scheduler", "trigger", "R"),
-  flow_run_path = get_opts("flow_run_path"), trigger_path = "",
-  flow_path = "", version = "0.0", status = "created", execute = "")</code></pre>
+<pre class="r"><code><div>flow(jobs&nbsp;=&nbsp;list(new("job")), name&nbsp;=&nbsp;"newflow", desc&nbsp;=&nbsp;"my_super_flow", mode&nbsp;=&nbsp;c("scheduler", "trigger", "R"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), trigger_path&nbsp;=&nbsp;"", flow_path&nbsp;=&nbsp;"", version&nbsp;=&nbsp;"0.0", status&nbsp;=&nbsp;"created", execute&nbsp;=&nbsp;"")</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1301,7 +1297,7 @@ submit_flow(fobj, execute = TRUE)</code></pre>
 
 
 <h4>Usage</h4>
-<pre class="r"><code>get_unique_id(prefix = "id", suffix = "", random_length = 8)</code></pre>
+<pre class="r"><code><div>get_unique_id(prefix&nbsp;=&nbsp;"id", suffix&nbsp;=&nbsp;"", random_length&nbsp;=&nbsp;8)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1324,6 +1320,15 @@ submit_flow(fobj, execute = TRUE)</code></pre>
 <h3>Create a flow's submission detail file</h3>
 
 <p class="rd-p">Create a file describing details regarding jobs ids, submission scripts etc.</p>
+
+<h4>Usage</h4>
+<pre class="r"><code><div>to_flowdet(x, ...)</div>
+<div>## method for class 'rootdir'
+to_flowdet(x, ...)</div>
+<div>## method for class 'character'
+to_flowdet(x, ...)</div>
+<div>## method for class 'flow'
+to_flowdet(x, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1354,6 +1359,9 @@ If there is no flow object, try using a simpler function</p>
 <p class="rd-p">Checks all the arguments in the parent function and makes sure that none of them
 are NULL</p>
 
+<h4>Usage</h4>
+<pre class="r"><code><div>check_args(ignore, select)</div></code></pre>
+
 <h4>Arguments</h4>
 <dl class="rd-dl">
   <dt>ignore</dt>
@@ -1375,6 +1383,9 @@ are NULL</p>
 
 <h3>Get all the (sub)directories in a folder</h3>
 
+
+<h4>Usage</h4>
+<pre class="r"><code><div>get_wds(x)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
