@@ -68,7 +68,7 @@ unlink("assets", recursive = TRUE)
 
 message("Copying RMD files ....", getwd())
 fls = c(
-  "README.Rmd" = "index.Rmd",
+#  "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
   "vignettes/flowr_overview.Rmd" = "docs.Rmd",
   "vignettes/flowr_install.Rmd" = "install.Rmd",
@@ -124,4 +124,6 @@ if(FALSE){
 	system("pandoc -f html -t markdown rd.html > rd2.md")
 	render("pdf.Rmd", pdf_document())
 }
+
+setwd(code_path)
 
