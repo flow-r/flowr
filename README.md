@@ -71,6 +71,13 @@ page
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 
+### Updates
+This package is under active-development, 
+you may watch for changes using
+the [watch link above](https://help.github.com/articles/watching-repositories/).
+
+### Feedback
+Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/issues) with questions and comments.
 
 ### Acknowledgements
 
