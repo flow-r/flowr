@@ -1,3 +1,4 @@
+#!/usr/bin Rscript
 
 message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
