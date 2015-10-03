@@ -35,10 +35,10 @@ Requirements:
 
 
 ```{r eval=FALSE}
-## for a latest stable version (from CRAN)
-install.packages("flowr")
+## for a latest official version (from CRAN)
+install.packages("flowr", repos = "http://cran.rstudio.com")
 
-## Latest stable release from DRAT (updated every other week)[recommended]
+## Latest stable release from DRAT (updated every other week)
 install.packages("flowr", repos = "http://sahilseth.github.io/drat")
 
 ## OR cutting edge devel version
