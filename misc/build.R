@@ -1,4 +1,4 @@
-#!/usr/bin Rscript
+#!/usr/bin/env Rscript
 
 message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
@@ -59,9 +59,9 @@ setwd(outwd)
 # └── vignettes/build-pipes.Rmd
 
 # set some options
-pd <- package_docs(lib_dir = "assets", toc = FALSE)
-pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE)
-pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2)
+pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template = "template.html")
+pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html")
+pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html")
 knitr::opts_knit$set(root.dir = normalizePath("."))
 
 # generate index.html, get new from template !
