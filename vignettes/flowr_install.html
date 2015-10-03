@@ -90,8 +90,14 @@ img {
 <ul>
 <li>R version &gt; 3.1, preferred 3.2</li>
 </ul>
-<pre class="r"><code>## for a latest stable version (from DRAT):
-install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)</code></pre>
+<pre class="r"><code>## for a latest stable version (from CRAN)
+install.packages(&quot;flowr&quot;)
+
+## Latest stable release from DRAT (updated every other week)[recommended]
+install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)
+
+## OR cutting edge devel version
+devtools::install_github(&quot;sahilseth/flowr&quot;, ref = &quot;devel&quot;)</code></pre>
 <p>After installation run <code>setup()</code>, this will copy the flowr’s helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
 <pre class="r"><code>library(flowr)
 setup()</code></pre>
@@ -104,6 +110,7 @@ kill            Kill the flow, upon providing working directory
 fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
 
 Please use 'flowr -h function' to obtain further information about the usage of a specific function.</code></pre>
+<p>If you interested, visit <a href="https://github.com/sahilseth/funr">funr’s github page for more details</a></p>
 <p>From this step on, one has the option of typing commands in a R console OR a bash shell (command line). For brevity we will show examples using the shell.</p>
 </div>
 <div id="test" class="section level1">
@@ -196,13 +203,13 @@ qsub --help</code></pre>
 </ol>
 </div>
 <p><strong>3. Use a custom flowdef</strong></p>
-<p>We can copy a example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.</p>
+<p>We can copy an example flow definition and customize it to suit our needs. This a tab delimited text file, so make sure that the format is correct after you make any changes.</p>
 <pre><code>cd ~/flowr/pipelines
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def
 ## check the format
 flowr as.flowdef x=~/flowr/pipelines/sleep_pipe.def</code></pre>
 <p><em>Run the test with a custom flowdef</em>:</p>
-<pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE def=~/flowr/pipelines/sleep_pipe.def</code></pre>
+<pre><code>flowr run x=sleep_pipe execute=TRUE def=~/flowr/pipelines/sleep_pipe.def ## platform=lsf [optional, picked up from flowdef]</code></pre>
 <p><strong>4. Use a custom submission template</strong></p>
 <p>If you need to customize the HPCC submission template, copy the <a href="https://github.com/sahilseth/flowr/tree/master/inst/conf">file for your platform</a> and make your desired changes. For example the MOAB based cluster in our institution does <strong>not</strong> accept the <code>queue</code> argument, so we need to comment it out.</p>
 <p><em>Download the template for a specific HPCC platform</em> into <code>~/flowr/conf</code></p>
@@ -238,8 +245,10 @@ parse_jobids(jobid, platform=&quot;lsf&quot;)
 [1] &quot;335508&quot;</code></pre>
 <p>In this case <em>335508</em> was the job id and regex worked well !</p>
 <p>Once we identify the correct regex for the platform you may update the configuration file with it.</p>
-<pre><code>cd ~/flowr/conf ## flowr automatically reads this file
-wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.conf</code></pre>
+<pre><code>cd ~/flowr/conf 
+wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/flowr.conf
+## flowr automatically reads from this location, if you prefer to put it elsewhere, use
+load_opts(&quot;flowr.conf&quot;) ## visit sahilseth.github.io/params for more details.</code></pre>
 <p>Update the regex pattern and submit again.</p>
 <p><strong>2. Check dependency string</strong></p>
 <p>After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</p>
@@ -261,7 +270,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <p>Possible issue: What all resources are supported in the flow definition?</p>
 </div>
 <p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in <code>cpu_reserved</code> column would be populated as <code>{{{CPU}}}</code> in the submission template.</p>
-<p>The following table provides a mapping between the flow definition columns and variables in the submission templates:</p>
+<p>The following table provides a mapping between the flow definition columns and variables in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission templates</a>:</p>
 <table>
 <thead>
 <tr class="header">
@@ -340,9 +349,13 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 </ol>
 <p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github</a>.</p>
+<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.</p>
 </div>
-<pre><code>cat $wd/002.create_tmp/create_tmp_cmd_1.out</code></pre>
+<pre><code>## outfiles end with .out, and are placed in a folder like 00X.&lt;jobname&gt;/
+## here is one example:
+cat $wd/002.create_tmp/create_tmp_cmd_1.out
+## final script:
+cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -1,17 +1,19 @@
-# flowr
 
 <!--brand: |-
   <a href="http://docs.flowr.space">
   <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
   </a>
 -->
-
-<!--[![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png)](http://docs.flowr.space)-->
-
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
+
+
+## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
+
+**Latest documentation: [docs.flowr.space](docs.flowr.space)**
+
 
 
 This framework allows you to design and implement complex pipelines, and
@@ -20,8 +22,7 @@ keeping in mind the needs of bioinformatics workflows. However, it is
 easily extendable to any field where a series of steps (shell commands)
 are to be executed in a (work)flow.
 
-Highlights
-----------
+### Highlights
 
 - Effectively process a **multi-step pipeline**, spawning it
 across the computing cluster
@@ -40,20 +41,15 @@ across the computing cluster
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), AWS OR a local machine.
+-   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 
-### A few lines, to get started:
+### A few lines, to get started
 
 
 ```r
-## Latest stable release from CRAN
+## Latest stable release from CRAN (updated every other month)
+## visit docs.flowr.space/install for more details
 install.packages("flowr")
-
-## Latest stable release from DRAT
-install.packages("flowr", repos = "http://sahilseth.github.io/drat")
-
-## OR cutting edge devel version
-devtools::install_github("sahilseth/flowr", ref = "devel")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
@@ -62,7 +58,7 @@ setup() ## copy flowr bash script; and create a folder flowr under home.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ```
 
-## Resources
+### Resources
 - For a quick overview, you may browse through,
  these [introductory slides](http://sahilseth.github.io/slides/flowrintro).
 - The [overview](http://docs.flowr.space/docs.html) provides additional details regarding
@@ -76,14 +72,7 @@ page
 	designing a *shiny* new flow. This provides a good example of the concepts
 
 
-## Talks/Slides
-- Updated [introduction](http://sahilseth.github.io/slides/flowrintro/index.html) (Sep, 2015)
-- An earlier [introduction](http://sahilseth.github.io/slides/flowrintro/index_20150706) at 
-MD Anderson Comp. Biology meeting (July, 2015)
-
-
-Acknowledgements
----------------
+### Acknowledgements
 
 -   Jianhua Zhang
 -   Samir Amin

@@ -29,14 +29,18 @@ kable(flow_mat)
 kable(flow_def)
 
 ## ---- message=FALSE------------------------------------------------------
-fobj <- to_flow(x = flow_mat, 
-								def = flow_def,
-								flowname = "example1", ## give it a name
-								platform = "lsf")      ## override platform mentioned in flow def
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
+
+fobj <- to_flow(x = flowmat, 
+                 def = flowdef,
+                 flowname = "example1", ## give it a name
+                 platform = "lsf")      ## override platform mentioned in flow def
 
 ## ----plotit, fig.cap="Flow chart describing process for example 1", message=FALSE----
 plot_flow(fobj)     # ?plot_flow for more information
-plot_flow(flow_def) # plot_flow works on flow definition as well
+plot_flow(flowdef) # plot_flow works on flow definition as well
 
 ## ----eval=FALSE----------------------------------------------------------
 #  submit_flow(fobj)
