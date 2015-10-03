@@ -97,10 +97,14 @@ need for cluster submission).
 
 
 ```r
-fobj <- to_flow(x = flow_mat, 
-								def = flow_def,
-								flowname = "example1", ## give it a name
-								platform = "lsf")      ## override platform mentioned in flow def
+ex = file.path(system.file(package = "flowr"), "pipelines")
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
+
+fobj <- to_flow(x = flowmat, 
+                 def = flowdef,
+                 flowname = "example1", ## give it a name
+                 platform = "lsf")      ## override platform mentioned in flow def
 ```
 
 Refer to [to_flow's help section](docs.flowr.space/rd.html#to_flow) for more details.
@@ -112,7 +116,7 @@ We can use `plot_flow` to quickly visualize the flow; this really helps when dev
 
 ```r
 plot_flow(fobj)     # ?plot_flow for more information
-plot_flow(flow_def) # plot_flow works on flow definition as well
+plot_flow(flowdef) # plot_flow works on flow definition as well
 ```
 
 ![Flow chart describing process for example 1](flowr_overview_files/figure-html/plotit-1.png) 

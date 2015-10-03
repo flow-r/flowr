@@ -107,7 +107,7 @@ plot_flow.flowdef <- function(x,
 # split_multi_dep
 # Split rows with multiple dependencies
 # @param x this is a flow def
-# @importFrom utils head
+#' @importFrom utils head
 split_multi_dep <- function(x){
 	## --- handle cases where we have multiple dependencies
 	multi_rows <- grep(",", x$prev_jobs)
@@ -191,6 +191,7 @@ display_mat <- function(x, verbose = get_opts("verbose")){
 # @param x number of jobs
 # @param detailed detailed
 # @param pdf pdf
+#' @importFrom grDevices dev.size
 calc_boxdim <- function(x, detailed, pdf){
 	
 	h = dev.size("cm")[2] ## height
@@ -222,6 +223,7 @@ calc_boxdim <- function(x, detailed, pdf){
 #
 # @param verbose display verbose messages
 # @param x box height
+#' @importFrom grDevices dev.size
 calc_fontsize <- function(x, verbose = get_opts("verbose")){
 	
 	## get height of the window

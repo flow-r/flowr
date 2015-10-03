@@ -17,6 +17,8 @@ navpills: |
 
 flowr 0.9.8 (blueberries)
 ----------------------------------------------
+> 2015-10-02
+
 - Modified the output of status function, to add a `status` column. Specifically, 
 this uses information from other columns and summarizes whether a specific step is 
 `pending`, `processing`, `completed` or `errored`.

@@ -2,8 +2,15 @@
 library(flowr)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  ## for a latest stable version (from DRAT):
+#  ## for a latest stable version (from CRAN)
+#  install.packages("flowr")
+#  
+#  ## Latest stable release from DRAT (updated every other week)[recommended]
 #  install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+#  
+#  ## OR cutting edge devel version
+#  devtools::install_github("sahilseth/flowr", ref = "devel")
+#  
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(flowr)
