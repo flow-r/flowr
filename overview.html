@@ -92,7 +92,7 @@
           <li><a href="#kill-it">Kill it</a></li>
           <li><a href="#re-run-a-flow">Re-run a flow</a></li>
           </ul></li>
-          <li><a href="#ingredients-for-building-a-pipeline">Ingredients for building a pipeline</a><ul>
+          <li><a href="#input-files">Input files</a><ul>
           <li><a href="#flow-matrix">1. Flow matrix</a></li>
           <li><a href="#flow-definition">2. Flow definition</a></li>
           </ul></li>
@@ -351,8 +351,8 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 <p>Refer to <a href="docs.flowr.space/rd.html#rerun">rerun’s help section</a> for more details.</p>
 </div>
 </div>
-<div id="ingredients-for-building-a-pipeline" class="section level1">
-<h1>Ingredients for building a pipeline</h1>
+<div id="input-files" class="section level1">
+<h1>Input files</h1>
 <p>An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as <code>flow_mat</code> and <code>flow_def</code> respectively (as introduced in the previous sections).</p>
 <p>We could read in, examples of both these files to understand their structure.</p>
 <pre class="r"><code>ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
