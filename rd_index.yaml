@@ -19,7 +19,7 @@
   section_name: Managing parameters
   description:
   topics:
-    - opts_flow
+    - flowopts
     - setup
     - verbose
 -

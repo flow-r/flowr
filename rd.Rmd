@@ -742,6 +742,97 @@ regarding previous job ids and their status is not lost.</p>
 
 
 
+## flowopts
+
+<h3>Default options/params used in flowr and ngsflows</h3>
+
+<p class="rd-p">There are three helper functions which attempt to manage parameters used by flowr and ngsflows:
+<ul>
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>get_opts</a> OR <code>opts_flow\$get()</code>: show all default options
+</li>
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>set_opts</a> OR <code>opts_flow\$set()</code>: set default options
+</li>
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>load_opts</a> OR <code>opts_flow\$load()</code>: load options specified in a tab seperated text file
+</li>
+</ul>
+For more details regarding these funtions refer to <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>params</a> package.</p>
+
+<h4>Usage</h4>
+<pre class="r"><code><div>flowopts</div>
+<div>get_opts(...)
+set_opts(...)
+load_opts(...)</div></code></pre>
+
+<h4>Arguments</h4>
+<dl class="rd-dl">
+  <dt>...</dt>
+  <dd class="rd-dd"><ul>
+<li> get: names of options to fetch
+</li>
+<li> set: a set of options in a name=value format seperated by commas
+</li>
+</ul>
+</dd>
+</dl>
+
+  <h4>Format</h4>
+
+  <p class="rd-p"><code>opts_flow</code></p>
+
+
+  <h4>Details</h4>
+
+  <p class="rd-p">By default flowr loads, <code>~/flowr/conf/flowr.conf</code> and <code>~/flowr/conf/ngsflows.conf</code></p>
+
+  <p class="rd-p">Below is a list of default flowr options, retrieved via</p>
+
+  <p class="rd-p"><code>opts_flow$get()</code>:
+<pre>
+	|name              |value                    |
+	|:-----------------|:------------------------|
+	|default_regex     |(.*)                     |
+	|flow_base_path    |~/flowr                  |
+	|flow_conf_path    |~/flowr/conf             |
+	|flow_parse_lsf    |.*(\<[0-9]*\>).*         |
+	|flow_parse_moab   |(.*)                     |
+	|flow_parse_sge    |(.*)                     |
+	|flow_parse_slurm  |(.*)                     |
+	|flow_parse_torque |(.?)\..*                 |
+	|flow_pipe_paths   |~/flowr/pipelines        |
+	|flow_pipe_urls    |~/flowr/pipelines        |
+	|flow_platform     |local                    |
+	|flow_run_path     |~/flowr/runs             |
+	|my_conf_path      |~/flowr/conf             |
+	|my_dir            |path/to/a/folder         |
+	|my_path           |~/flowr                  |
+	|my_tool_exe       |/usr/bin/ls              |
+	|time_format       |%a %b %e %H:%M:%S CDT %Y |
+	|verbose           |FALSE                    |
+	</pre></p>
+
+
+
+<h4>Examples</h4>
+<pre class="r"><code>## Set options: set_opts()
+opts = set_opts(flow_run_path = "~/mypath")
+## OR if you would like to supply a long list of options:
+opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
+
+## load options from a configuration file: load_opts()
+conffile = fetch_conf("flowr.conf")
+load_opts(conffile)
+
+## Fetch options: get_opts()
+get_opts("flow_run_path")
+get_opts()</code></pre>
+
+<h4>See also</h4>
+
+<a href=#fetch>fetch</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/params>params</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/read_sheet>read_sheet</a>
+
+
+
+
 ## setup
 
 <h3>Setup and initialize flowr</h3>
@@ -1304,5 +1395,7 @@ are NULL</p>
 </dl>
 
 
+
+# 
 
 
