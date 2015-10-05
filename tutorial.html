@@ -157,17 +157,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 3;echo ‘hello’</td>
+<td align="left">sleep 9 &amp;&amp; sleep 19;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 13 &amp;&amp; sleep 5;echo ‘hello’</td>
+<td align="left">sleep 13 &amp;&amp; sleep 2;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 2 &amp;&amp; sleep 16;echo ‘hello’</td>
+<td align="left">sleep 13 &amp;&amp; sleep 4;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -213,12 +213,11 @@ suppressMessages(plot_flow(def))</code></pre>
 <p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
 <p>We can make a few changes to make this pipeline a little more efficient. Briefly, we would run a few steps in a <strong>scatter</strong> fashion (in parallel).</p>
 <ul>
-<li>multiple sleep commands would run as <code>scatter</code>/parallel, with <code>none</code> as the dependency.</li>
-<li>For each sleep, <code>create_tmp</code> creates a tmp file as <code>scatter</code>, using a <code>serial</code> type dependency. One <code>create_tmp</code> for one <code>sleep</code> (one-to-one relationship).</li>
-<li>Then all tmp files are merged. Intuitively, since this is a single step, we run it as <code>serial</code> and as all tmp files are required, we use a <code>gather</code> type dependency.</li>
-<li>Lastly, we need to check the file of the resulting merged file. Again, since this is a single step, we run is as <code>serial</code>. More so since the previous step also had a single command, we use a <code>serial</code> type dependency.</li>
+<li>multiple <em>sleep</em> commands would run as <code>scatter</code>/parallel, with <code>none</code> as the dependency.</li>
+<li>For each <em>sleep</em>, <em>create_tmp</em> creates a tmp file as <code>scatter</code>, using a <code>serial</code> type dependency. One <code>create_tmp</code> for one <code>sleep</code> (one-to-one relationship).</li>
+<li>Then all tmp files are <em>merged</em>. Intuitively, since this is a single step, we run it as <code>serial</code> and as all tmp files are required, we use a <code>gather</code> type dependency.</li>
+<li>Lastly, we need to check the <em>size</em> of the resulting merged file. Again, since this is a single step, we run is as <code>serial</code>. More so since the previous step also had a single command, we use a <code>serial</code> type dependency.</li>
 </ul>
-<p><em>dependencies mentioned in ()</em></p>
 <pre class="r"><code>def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
 def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
 kable(def)</code></pre>

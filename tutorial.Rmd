@@ -142,13 +142,11 @@ suppressMessages(plot_flow(def))
 
 We can make a few changes to make this pipeline a little more efficient. Briefly, we would run a few steps in a **scatter** fashion (in parallel).
 
-- multiple sleep commands would run as `scatter`/parallel, with `none` as the dependency.
-- For each sleep, `create_tmp` creates a tmp file as `scatter`, using a `serial` type dependency. One `create_tmp` for one `sleep` (one-to-one relationship).
-- Then all tmp files are merged. Intuitively, since this is a single step, we run it as `serial` and as all tmp files are required, we use a `gather` type dependency.
-- Lastly, we need to check the file of the resulting merged file.
+- multiple *sleep* commands would run as `scatter`/parallel, with `none` as the dependency.
+- For each *sleep*, *create_tmp* creates a tmp file as `scatter`, using a `serial` type dependency. One `create_tmp` for one `sleep` (one-to-one relationship).
+- Then all tmp files are *merged*. Intuitively, since this is a single step, we run it as `serial` and as all tmp files are required, we use a `gather` type dependency.
+- Lastly, we need to check the *size* of the resulting merged file.
 Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.
-
-*dependencies mentioned in ()*
 
 
 ```{r message=FALSE}
