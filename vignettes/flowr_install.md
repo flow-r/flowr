@@ -152,6 +152,7 @@ Here are some helpful guides and details on the platforms:
 ## FAQs and help on Solving Issues
 
 #### Errors in job submission
+
 <div class="alert alert-warning" role="alert">
 Possible issue: Jobs are not getting submitted
 </div>

@@ -15,7 +15,7 @@ vignette: >
 packagedocs:
     toc: true
 navpills: |
-  <li class="active"><a href='docs.html'>Overview</a></li>
+  <li class="active"><a href='overview.html'>Overview</a></li>
   <li><a href='install.html'>Install</a></li>
   <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
@@ -25,6 +25,7 @@ brand: |-
   <a href="http://docs.flowr.space">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'>
   </a>
+copyright: Licence MIT
 ---
 
 

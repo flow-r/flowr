@@ -71,7 +71,7 @@ message("Copying RMD files ....", getwd())
 fls = c(
 #  "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
-  "vignettes/flowr_overview.Rmd" = "docs.Rmd",
+  "vignettes/flowr_overview.Rmd" = "overview.Rmd",
   "vignettes/flowr_install.Rmd" = "install.Rmd",
   "vignettes/flowr_tutorial.Rmd" = "tutorial.Rmd"
 )
@@ -85,8 +85,8 @@ message("rendering RMD files ....", getwd())
 
 render("index.Rmd", output_format = pd)
 check_output("index.html")
-render("docs.Rmd", output_format = pd_expand)
-check_output("docs.html")
+render("overview.Rmd", output_format = pd_expand)
+check_output("overview.html")
 render("tutorial.Rmd", output_format = pd_expand)
 check_output("tutorial.html")
 render("news.Rmd", output_format = pd_expand)
