@@ -26,7 +26,7 @@ navpills: |
 
 ## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
 
-**Latest documentation: [docs.flowr.space](docs.flowr.space)**
+**Latest documentation: [docs.flowr.space](http://docs.flowr.space)**
 
 
 
