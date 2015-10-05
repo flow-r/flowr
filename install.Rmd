@@ -26,7 +26,7 @@ brand: |-
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'>
   </a>
 copyright: Licence MIT
-source: flowr_install.Rmd
+source: https://github.com/sahilseth/flowr/tree/devel/vignettes/flowr_install.Rmd
 ---
 
 ```{r echo=FALSE, message=FALSE}
