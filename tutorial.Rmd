@@ -131,7 +131,7 @@ Flowr enables us to quickly create a skeleton flow definition using a flowmat, w
 `to_flowdef`, accepts a `flowmat` and creates a flow definition. 
 
 <div class="alert alert-info" role="alert">
-The default skeleton takes a very conservative approach, creating all submissions as **serial** and all dependencies as **gather**. This ensures robustness, compromising efficiency. 
+The default skeleton takes a very conservative approach, creating all submissions as **serial** and all dependencies as **gather**. This ensures robustness, compromising efficiency. So we make customize this to make it super efficient.
 </div>
 
 ```{r plot_skeleton_def, message=FALSE}
