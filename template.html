@@ -141,21 +141,26 @@ $endfor$
   <div id="footer">
     <div class="container">
       <div class="col-md-6">
+      	<p>
+      	<left>
         $if(copyright)$
-        <p>&copy; $copyright$, $current_year$
+        &copy; $copyright$, $current_year$
         $endif$
-        </p>
-      </div>
-        <center><p>  
+      	</left>
+      	
+        <center>
         Edit this page on <a href="https://github.com/sahilseth/flowr/tree/devel/vignettes">Github<i class='fa fa-github'></i></a>.
-        </p></center>
-      <div class="col-md-6">
-        <p class="pull-right">
+        </center>
+        
+        <right>
         	This site was made possible by
         <a href="https://github.com/rstudio/rmarkdown">rmarkdown</a>, 
         <a href="https://github.com/hadley/staticdocs">staticdocs</a> and
         <a href="https://github.com/hafen/packagedocs">packagedocs</a>
-        </p>
+        </right>
+        
+	</p>
+
       </div>
     </div>
   </div>
