@@ -755,7 +755,7 @@ regarding previous job ids and their status is not lost.</p>
 <li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>load_opts</a> OR <code>opts_flow\$load()</code>: load options specified in a tab seperated text file
 </li>
 </ul>
-For more details regarding these funtions refer to <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>params</a> package.</p>
+For more details regarding these funtions refer to <a href = 'http://sahilseth.com/params'>params</a> package.</p>
 
 <h4>Usage</h4>
 <pre class="r"><code><div>flowopts</div>
