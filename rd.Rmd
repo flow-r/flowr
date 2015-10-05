@@ -994,14 +994,14 @@ By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> sear
   <h4>Details</h4>
 
   <p class="rd-p">For example flowr has a variable <code>flow_run_path</code> where it puts all the execution logs etc.
-The default value is picked up from the internal <strong>flowr.conf file</strong>.
+The default value is picked up from the internal <strong>flowr.conf</strong> file.
 To redefine this value, one could create a new file called <strong>~/flowr/conf/flowr.conf</strong> and
 add a line:</p>
 
   <p class="rd-p"><code>flow_run_path TAB my_awesome_path</code>, where <code>TAB</code> is a tab character, since these are tab
 seperated files.</p>
 
-  <p class="rd-p">Also, at any time you can run, load_conf; to load custom options.</p>
+  <p class="rd-p">Also, at any time you can run, <a href=#opts_flow>load_opts</a>; to load custom options.</p>
 
 
 
