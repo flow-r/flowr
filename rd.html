@@ -112,7 +112,6 @@
           <li><a href="#rerun">rerun</a></li>
           </ul></li>
           <li><a href="#managing-parameters">Managing parameters</a><ul>
-          <li><a href="#flowopts">flowopts</a></li>
           <li><a href="#setup">setup</a></li>
           <li><a href="#verbose">verbose</a></li>
           </ul></li>
@@ -131,7 +130,6 @@
           <li><a href="#check_args">check_args</a></li>
           <li><a href="#get_wds">get_wds</a></li>
           </ul></li>
-          <li><a href="#section"></a></li>
           </ul>
         </div>
       </div>
@@ -361,7 +359,7 @@ kill(fobj3)</code></pre>
 <h4>
 See also
 </h4>
-<p><a href=#to_flowmat>to_flowmat</a>, <a href=#to_flowdef>to_flowdef</a>, <a href=#to_flowdet>to_flowdet</a>, <a href=#opts_flow>flowopts</a> and <a href=#submit_flow>submit_flow</a></p>
+<p><a href=#to_flowmat>to_flowmat</a>, <a href=#to_flowdef>to_flowdef</a>, <a href=#to_flowdet>to_flowdet</a>, <a href=#flowopts>flowopts</a> and <a href=#submit_flow>submit_flow</a></p>
 </div>
 <div id="to_flowmat" class="section level2">
 <h2>to_flowmat</h2>
@@ -1140,111 +1138,6 @@ Examples
 </div>
 <div id="managing-parameters" class="section level1">
 <h1>Managing parameters</h1>
-<div id="flowopts" class="section level2">
-<h2>flowopts</h2>
-<h3>
-Default options/params used in flowr and ngsflows
-</h3>
-<p class="rd-p">
-There are three helper functions which attempt to manage parameters used by flowr and ngsflows:
-<ul>
-<li>
-<a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>get_opts</a> OR <code>opts_flow$get()</code>: show all default options
-</li>
-<li>
-<a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>set_opts</a> OR <code>opts_flow$set()</code>: set default options
-</li>
-<li>
-<a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>load_opts</a> OR <code>opts_flow$load()</code>: load options specified in a tab seperated text file
-</li>
-</ul>
-For more details regarding these funtions refer to <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>params</a> package.
-</p>
-<h4>
-Usage
-</h4>
-<pre class="r"><code><div>flowopts</div>
-<div>get_opts(...)
-set_opts(...)
-load_opts(...)</div></code></pre>
-<h4>
-Arguments
-</h4>
-<dl class="rd-dl">
-<dt>
-…
-</dt>
-<dd class="rd-dd">
-<ul>
-<li>
-get: names of options to fetch
-</li>
-<li>
-set: a set of options in a name=value format seperated by commas
-</li>
-</ul>
-</dd>
-</dl>
-<h4>
-Format
-</h4>
-<p class="rd-p">
-<code>opts_flow</code>
-</p>
-<h4>
-Details
-</h4>
-<p class="rd-p">
-By default flowr loads, <code>~/flowr/conf/flowr.conf</code> and <code>~/flowr/conf/ngsflows.conf</code>
-</p>
-<p class="rd-p">
-Below is a list of default flowr options, retrieved via
-</p>
-<p class="rd-p">
-<code>opts_flow$get()</code>:
-<pre>
-    |name              |value                    |
-    |:-----------------|:------------------------|
-    |default_regex     |(.*)                     |
-    |flow_base_path    |~/flowr                  |
-    |flow_conf_path    |~/flowr/conf             |
-    |flow_parse_lsf    |.*(\<[0-9]*\>).*         |
-    |flow_parse_moab   |(.*)                     |
-    |flow_parse_sge    |(.*)                     |
-    |flow_parse_slurm  |(.*)                     |
-    |flow_parse_torque |(.?)\..*                 |
-    |flow_pipe_paths   |~/flowr/pipelines        |
-    |flow_pipe_urls    |~/flowr/pipelines        |
-    |flow_platform     |local                    |
-    |flow_run_path     |~/flowr/runs             |
-    |my_conf_path      |~/flowr/conf             |
-    |my_dir            |path/to/a/folder         |
-    |my_path           |~/flowr                  |
-    |my_tool_exe       |/usr/bin/ls              |
-    |time_format       |%a %b %e %H:%M:%S CDT %Y |
-    |verbose           |FALSE                    |
-    </pre>
-</p>
-<h4>
-Examples
-</h4>
-<pre class="r"><code>## Set options: set_opts()
-opts = set_opts(flow_run_path = "~/mypath")
-## OR if you would like to supply a long list of options:
-opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
-
-## load options from a configuration file: load_opts()
-conffile = fetch_conf("flowr.conf")
-load_opts(conffile)
-
-## Fetch options: get_opts()
-get_opts("flow_run_path")
-get_opts()</code></pre>
-<h4>
-See also
-</h4>
-<p><a href=#fetch>fetch</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/params>params</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/read_sheet>read_sheet</a></p>
-</div>
 <div id="setup" class="section level2">
 <h2>setup</h2>
 <h3>
@@ -1464,7 +1357,7 @@ For example flowr has a variable <code>flow_run_path</code> where it puts all th
 <code>flow_run_path TAB my_awesome_path</code>, where <code>TAB</code> is a tab character, since these are tab seperated files.
 </p>
 <p class="rd-p">
-Also, at any time you can run, <a href=#opts_flow>load_opts</a>; to load custom options.
+Also, at any time you can run, <a href=#flowopts>load_opts</a>; to load custom options.
 </p>
 <h4>
 Examples
@@ -1482,7 +1375,7 @@ pip$def</code></pre>
 <h4>
 See also
 </h4>
-<p><a href=#opts_flow>flowopts</a></p>
+<p><a href=#flowopts>flowopts</a></p>
 </div>
 <div id="run" class="section level2">
 <h2>run</h2>
@@ -2085,9 +1978,6 @@ path to a folder
 </dd>
 </dl>
 </div>
-</div>
-<div id="section" class="section level1">
-<h1></h1>
 </div>
 
 
