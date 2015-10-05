@@ -157,17 +157,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 3;echo ‘hello’</td>
+<td align="left">sleep 6 &amp;&amp; sleep 10;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 15 &amp;&amp; sleep 8;echo ‘hello’</td>
+<td align="left">sleep 4 &amp;&amp; sleep 13;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 12 &amp;&amp; sleep 2;echo ‘hello’</td>
+<td align="left">sleep 1 &amp;&amp; sleep 2;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -204,13 +204,13 @@ flowmat = out$flowmat</code></pre>
 <div id="creating-flow-definition" class="section level2">
 <h2>Creating Flow Definition</h2>
 <p>Flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function <code>to_flowdef</code>, accepts a <code>flowmat</code> and creates a flow definition.</p>
-<div class="alert alert-info" role="alert">
-The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So we make customize this to make it super efficient.
-</div>
 <pre class="r"><code>## create a skeleton flow definition
 def = to_flowdef(flowmat) 
 suppressMessages(plot_flow(def))</code></pre>
 <p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
+<div class="alert alert-info" role="alert">
+The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.
+</div>
 <p>We can make a few changes to make this pipeline a little more efficient. Briefly, we would run a few steps in a <strong>scatter</strong> fashion (in parallel).</p>
 <ul>
 <li>multiple <em>sleep</em> commands would run as <code>scatter</code>/parallel, with <code>none</code> as the dependency.</li>
