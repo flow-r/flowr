@@ -48,7 +48,7 @@ These functions help in searching for specific files in the user's space.
 folder would be selected. As such, giving priority to user's home, and current working
 directories.
 
-
+<br>
 \code{fetch_conf()}: Fetches configuration files in ALL of the following places:
 \itemize{
 \item \strong{package}: \code{conf} folders in flowr and ngsflows packages.
@@ -58,8 +58,8 @@ directories.
 
 \strong{NOTE:}
 This function would greedily return all matching conf files. One would load all of them
-in the order returned by this functions. If the same variable is
-repeated in multiple files, value from the later files would replace those formerly defined.
+in the order returned by this function. If the same variable is
+repeated in multiple files, value from later files would replace those formerly defined.
 Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
 
 By default flowr loads, \code{flowr.conf} and \code{ngsflows.conf}.
@@ -67,14 +67,14 @@ See the details sections, for more explanation on this.
 }
 \details{
 For example flowr has a variable \code{flow_run_path} where it puts all the execution logs etc.
-The default value is picked up from packages's internal \code{flowr.conf} file.
-To redefine this value, one could create a new file called \code{~/flowr/conf/flowr.conf} and
+The default value is picked up from the internal \strong{flowr.conf} file.
+To redefine this value, one could create a new file called \strong{~/flowr/conf/flowr.conf} and
 add a line:
 
-\code{flow_run_path<TAB>my_awesome_path}, where <TAB> is a tab character, since these are tab
+\code{flow_run_path TAB my_awesome_path}, where \code{TAB} is a tab character, since these are tab
 seperated files.
 
-Also, at any time you can run, \code{load_conf('super_specific_opts.conf')}; to load custom options.
+Also, at any time you can run, \link{load_opts}; to load custom options.
 }
 \examples{
 ## let us find a default conf file

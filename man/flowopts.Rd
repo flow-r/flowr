@@ -29,7 +29,7 @@ There are three helper functions which attempt to manage parameters used by flow
 \item \link[params]{set_opts} OR \code{opts_flow\$set()}: set default options
 \item \link[params]{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
 }
-For more details regarding these funtions refer to \link{params} package.
+For more details regarding these funtions refer to \href{http://sahilseth.com/params}{params} package.
 }
 \details{
 By default flowr loads, \code{~/flowr/conf/flowr.conf} and \code{~/flowr/conf/ngsflows.conf}
