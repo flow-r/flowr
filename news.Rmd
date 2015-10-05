@@ -20,6 +20,11 @@ brand: |-
 copyright: Licence MIT
 ---
 
+flowr latest
+----------------------------------------------
+
+- New option local_cores, which determines (max) number of cores to use when running local jobs.
+
 flowr 0.9.8 (blueberries)
 ----------------------------------------------
 > 2015-10-02
