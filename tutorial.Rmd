@@ -164,7 +164,7 @@ suppressMessages(plot_flow(def))
 
 <div class="alert alert-info" role="alert">
 **Tip:** Alternatively, one may write this to a file 
-(`write_sheet(def, "sleep_pipe.def")`), make changes in a text editor and read it again (`as.flowdef("sleep_pipe.def")`.
+(**write_sheet(def, "sleep_pipe.def")**), make changes in a text editor and read it again (**as.flowdef("sleep_pipe.def")**.
 </div>
 
 ## Create flow, submit to cluster
