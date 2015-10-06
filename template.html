@@ -51,6 +51,10 @@
   </style>
   $endif$
 
+  $for(css)$
+  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
+  $endfor$
+
   $if(rd_page)$
   <style type="text/css">
   .section h1 {
@@ -58,7 +62,7 @@
     margin-bottom: 70px;
     text-align: center;
     border-bottom: 0px;
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 400;
     font-family: "PT Mono","Georgia",Arial,sans-serif;
   }
@@ -72,9 +76,6 @@
   </style>
   $endif$
 
-  $for(css)$
-  <link rel="stylesheet" href="$css$" $if(html5)$$else$type="text/css" $endif$/>
-  $endfor$
 
 	<!-- custom size -->
 	<style>
