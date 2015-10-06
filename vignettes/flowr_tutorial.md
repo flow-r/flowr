@@ -101,9 +101,9 @@ flowmat = out$flowmat
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 1 && sleep 0;echo 'hello'                                
-sample1      sleep        sleep 13 && sleep 12;echo 'hello'                              
-sample1      sleep        sleep 21 && sleep 11;echo 'hello'                              
+sample1      sleep        sleep 2 && sleep 7;echo 'hello'                                
+sample1      sleep        sleep 3 && sleep 14;echo 'hello'                               
+sample1      sleep        sleep 5 && sleep 20;echo 'hello'                               
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    
@@ -222,14 +222,5 @@ This lets the user mix and match several modules/pipelines to create a customize
 </div>
 -->
 
+<script src = "files/googl.js"></script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-68378910-1', 'auto');
-  ga('send', 'pageview');
-
-</script>

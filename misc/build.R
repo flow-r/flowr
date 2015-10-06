@@ -58,10 +58,16 @@ setwd(outwd)
 # ├── man/*Rd
 # └── vignettes/build-pipes.Rmd
 
+theme="flatly"
+theme = list(htmltools::htmlDependency(name = "bootswatch",
+													version = "3.3.5",
+													src = system.file("html_assets/bootswatch", theme, package = "packagedocs"),
+													stylesheet = "bootstrap.css"))
+
 # set some options
-pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template = "template.html")
-pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html")
-pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html")
+pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html", extra_dependencies = theme)
+pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template = "template.html", extra_dependencies = theme)
+pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html", extra_dependencies = theme)
 knitr::opts_knit$set(root.dir = normalizePath("."))
 
 # generate index.html, get new from template !
@@ -83,8 +89,9 @@ file.copy(file.path(code_path, "vignettes/files"), to = ".", recursive = TRUE)
 
 message("rendering RMD files ....", getwd())
 
+#undebug(rmarkdown:::html_extras_for_document)
 render("index.Rmd", output_format = pd)
-check_output("index.html")
+check_output("index.html"); #system("open index.html")
 render("overview.Rmd", output_format = pd_expand)
 check_output("overview.html")
 render("tutorial.Rmd", output_format = pd_expand)

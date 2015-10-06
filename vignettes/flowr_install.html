@@ -10,7 +10,7 @@
 
 <meta name="author" content="Sahil Seth" />
 
-<meta name="date" content="2015-10-05" />
+<meta name="date" content="2015-10-06" />
 
 <title>flowr</title>
 
@@ -65,7 +65,7 @@ img {
 <h1 class="title">flowr</h1>
 <h3 class="subtitle"><em>Streamlining Workflows</em></h3>
 <h4 class="author"><em>Sahil Seth</em></h4>
-<h4 class="date"><em>2015-10-05</em></h4>
+<h4 class="date"><em>2015-10-06</em></h4>
 </div>
 
 <div id="TOC">
@@ -192,7 +192,7 @@ qsub --help</code></pre>
 <div id="errors-in-job-submission" class="section level4">
 <h4>Errors in job submission</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Jobs are not getting submitted</p>
+Possible issue: Jobs are not getting submitted
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -226,7 +226,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/sge.sh
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/slurm.sh</code></pre>
 <p>Make the desired changes using your favourite editor and submit again.</p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).</p>
+Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -259,7 +259,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div id="flowr-configuration-file" class="section level4">
 <h4>Flowr Configuration file</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Flowr shows too much OR too little information.</p>
+Possible issue: Flowr shows too much OR too little information.
 </div>
 <p>There are several <a href="http://docs.flowr.space/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
 <p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="http://docs.flowr.space/rd.html#verbose">verbosity</a> section in the help pages for more details.</p>
@@ -267,7 +267,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div id="flowdef-resource-columns" class="section level4">
 <h4>Flowdef resource columns</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: What all resources are supported in the flow definition?</p>
+Possible issue: What all resources are supported in the flow definition?
 </div>
 <p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in <code>cpu_reserved</code> column would be populated as <code>{{{CPU}}}</code> in the submission template.</p>
 <p>The following table provides a mapping between the flow definition columns and variables in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission templates</a>:</p>
@@ -334,7 +334,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div id="adding-a-new-platform" class="section level4">
 <h4>Adding a new platform</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Need to add a new platform</p>
+Possible issue: Need to add a new platform
 </div>
 <p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
 <ol style="list-style-type: decimal">
@@ -349,23 +349,14 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 </ol>
 <p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.</p>
+Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.
 </div>
 <pre><code>## outfiles end with .out, and are placed in a folder like 00X.&lt;jobname&gt;/
 ## here is one example:
 cat $wd/002.create_tmp/create_tmp_cmd_1.out
 ## final script:
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-68378910-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
+<script src="data:application/x-javascript,%20%20%28function%28i%2Cs%2Co%2Cg%2Cr%2Ca%2Cm%29%7Bi%5B%27GoogleAnalyticsObject%27%5D%3Dr%3Bi%5Br%5D%3Di%5Br%5D%7C%7Cfunction%28%29%7B%0A%20%20%28i%5Br%5D%2Eq%3Di%5Br%5D%2Eq%7C%7C%5B%5D%29%2Epush%28arguments%29%7D%2Ci%5Br%5D%2El%3D1%2Anew%20Date%28%29%3Ba%3Ds%2EcreateElement%28o%29%2C%0A%20%20m%3Ds%2EgetElementsByTagName%28o%29%5B0%5D%3Ba%2Easync%3D1%3Ba%2Esrc%3Dg%3Bm%2EparentNode%2EinsertBefore%28a%2Cm%29%0A%20%20%7D%29%28window%2Cdocument%2C%27script%27%2C%27%2F%2Fwww%2Egoogle%2Danalytics%2Ecom%2Fanalytics%2Ejs%27%2C%27ga%27%29%3B%0A%0A%20%20ga%28%27create%27%2C%20%27UA%2D68378910%2D1%27%2C%20%27auto%27%29%3B%0A%20%20ga%28%27send%27%2C%20%27pageview%27%29%3B%0A"></script>
 </div>
 </div>
 </div>

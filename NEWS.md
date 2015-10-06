@@ -7,7 +7,7 @@ output: html_document
 packagedocs:
     toc: true
 navpills: |
-  <li><a href='docs.html'>Overview</a></li>
+  <li><a href='overview.html'>Overview</a></li>
   <li><a href='install.html'>Install</a></li>
   <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
@@ -15,10 +15,12 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
   <a href="http://docs.flowr.space">
-  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'>
+  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -30px'>
   </a>
 copyright: Licence MIT
 ---
+
+<br>
 
 flowr latest
 ----------------------------------------------
@@ -194,3 +196,5 @@ flowr 0.85
   make plot type 1 as default
 - get_flow_status():
   -exit_status: reports number of exited jobs (not sum of exit codes)
+
+<script src = "files/googl.js"></script>

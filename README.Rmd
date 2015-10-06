@@ -104,3 +104,5 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
     [r-pkgs.had.co.nz](r-pkgs.had.co.nz)
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
+<script src = "vignettes/files/googl.js"></script>
+
