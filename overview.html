@@ -41,7 +41,7 @@
     margin-top: 30px;
     margin-bottom: 20px;
     border-bottom: 0px;
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 400;
   }
 
@@ -49,7 +49,7 @@
     margin-top: 20px;
     margin-bottom: 10px;
     border-bottom: 0px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 400;
   }
   
@@ -484,7 +484,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <p>This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in other frameworks, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage of those cores. Flowr prevents this, by being able to tune resources granurly. Example, one may submit few short steps in <code>short</code> queue, and longer steps of the same pipeline in say <code>long</code> queue.</p>
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
-<div class="alert alert-success" role="alert">
+<div class="alert alert-warning" role="alert">
 <p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.</p>
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>

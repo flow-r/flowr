@@ -348,7 +348,7 @@ This is especially useful for genomics pipelines, since each step may use differ
 
 Most cluster platforms accept these resource arguments. Essentially a file like [this](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh) is used as a template, and variables defined in curly braces ( ex. `{{{CPU}}}` ) are filled up using the flow definition file.
 
-<div class="alert alert-success" role="alert">
+<div class="alert alert-warning" role="alert">
 If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the [submission template](https://github.com/sahilseth/flowr/blob/master/inst/conf).
 One may customize the templates as described in the [cluster support](#cluster-support) section.
 </div>
