@@ -1,7 +1,7 @@
 
 
 ## start small, might become more interesting
-run_local <- function(x, jobj, cores = 1, execute){
+run_local <- function(x, jobj, cores = get_opts("local_cores"), execute){
 	message("\nWorking on: ", jobj@name)
 	if(!execute)
 		return(rep(0, length(x)))

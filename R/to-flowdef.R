@@ -106,9 +106,20 @@
 #' @param memory_reserved amount of memory required.
 #' @param cpu_reserved number of cpu's required
 #' @param walltime amount of walltime required
+#' @param guess should the function, guess submission and dependency types. See details. 
 #' @inheritParams to_flow
 #' @param ... not used
 #'
+#' @details 
+#' 
+#' \strong{NOTE:} Guessing is a experimental feature, please check the definition carefully, 
+#' and its provided to help and not replace best your best judgement. <br>
+#' 
+#' Optionally, one may provide the previous jobs and flowr can try guessing the appropriate 
+#' submission and dependency types. If there are multiple commands, default is submitting them as 
+#' scatter, else as serial. Further, if previous job has multiple commands and current job has single;
+#' its assumed that all of the previous need to complete, suggesting a gather type dependency.
+#' 
 #' @importFrom params kable
 #' 
 #' @export
@@ -119,16 +130,52 @@ to_flowdef <- function(x, ...){
 }
 
 
-guess_sub_dep <- function(x){
+detect_sub_type <- function(cmds){
+	sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
+	return(sub_type)
+}
 
-	lst <- lapply(1:nrow(x), function(i){
-		cmds = "";
-		prev_job = ""
+# detect_dep_type
+# @param x job object
+# @param cmds a string of commands
+# @param prev_job previous job name
+detect_dep_type <- function(cmds, prev_job, prev_cmds){
+	
+	if (length(prev_job) > 1) {
+		dep_type = "gather"
+	}else if (prev_job == "none") {
+		dep_type = "none"
+	}else if (length(x[[prev_job]]) == length(cmds)) {
+		## if same length, serial
+		dep_type = "serial"
+	}else if (length(x[[prev_job]]) > length(cmds) & length(cmds) == 1  ) {
+		## --- if prevous job were more than current
+		dep_type = "gather"
+	}else if (length(x[[prev_job]]) == 1 & length(cmds) > 1) {
+		## previous was only one, and current are a few
+		dep_type = "burst"
+	}
+	
+	return(dep_type)
+	
+}
+
+guess_sub_dep <- function(mat, def){
+
+	lst <- lapply(1:nrow(def), function(i){
+		jobnm = def$jobname[i]
+		prev_job = def$prev_jobs[i]
+		cmds = subset(mat, jobname==jobnm)
 		d_sub_type <- detect_sub_type(cmds = cmds)
 		d_dep_type <- detect_dep_type(prev_job = prev_job, cmds = cmds)
 		list(sub_type = d_sub_type, dep_type = d_dep_type)
 	})
-	return(lst)
+	tmp = do.call(rbind, lst)
+	
+	def$sub_type = tmp$sub_type
+	def$dep_type = tmp$def_type
+	
+	return(def)
 }
 
 #' @rdname to_flowdef
@@ -142,6 +189,7 @@ to_flowdef.flowmat <- function(x,
 															 memory_reserved = "2000", ## in MB
 															 cpu_reserved = "1",
 															 walltime = "1:00",
+															 guess = TRUE,
 															 verbose = get_opts("verbose"), ...){
 
 	if(verbose)
@@ -158,6 +206,7 @@ to_flowdef.flowmat <- function(x,
 		sub_type = "serial"
 	if(missing(prev_jobs))
 		prev_jobs = c("none", jobnames[-njobs])
+	
 
 	def <- data.frame(jobname = jobnames,
 										sub_type = sub_type,
@@ -171,6 +220,11 @@ to_flowdef.flowmat <- function(x,
 										stringsAsFactors = FALSE)
 
 	def = as.flowdef(def)
+	
+	## use sub and dep detection, if prev_jobs is given:
+# 	if(guess)
+# 		def <- guess_sub_dep(x, def)
+
 	return(def)
 }
 

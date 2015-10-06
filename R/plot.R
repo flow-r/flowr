@@ -442,5 +442,10 @@ calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
 	if (pdf) dev.off()
 }
 
+#' @rdname plot_flow
+#' @export
+plot.flowdef = plot_flow.flowdef
 
-
+#' @rdname plot_flow
+#' @export
+plot.flow = plot_flow.flow

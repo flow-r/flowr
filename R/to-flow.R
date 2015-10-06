@@ -1,30 +1,4 @@
 
-detect_sub_type <- function(cmds){
-	sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
-	return(sub_type)
-}
-
-# detect_dep_type
-# @param x job object
-# @param cmds a string of commands
-# @param prev_job previous job name
-detect_dep_type <- function(x, cmds, prev_job){
-	if (length(prev_job) > 1) {
-		dep_type = "gather"
-	}else if (length(x[[prev_job]]) == 0) {
-		dep_type = "none"
-	}else if (length(x[[prev_job]]) == length(cmds)) {
-		## if same length, serial
-		dep_type = "serial"
-	}else if (length(x[[prev_job]]) > length(cmds) & length(cmds) == 1  ) {
-		## --- if prevous job were more than current
-		dep_type = "gather"
-	}else if (length(x[[prev_job]]) == 1 & length(cmds) > 1) {
-		## previous was only one, and current are a few
-		dep_type = "burst"
-	}
-	return(dep_type)
-}
 
 
 

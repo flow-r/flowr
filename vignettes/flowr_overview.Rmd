@@ -15,12 +15,18 @@ vignette: >
 packagedocs:
     toc: true
 navpills: |
-  <li class="active"><a href='docs.html'>Overview</a></li>
+  <li class="active"><a href='overview.html'>Overview</a></li>
   <li><a href='install.html'>Install</a></li>
   <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
   <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+brand: |-
+  <a href="http://docs.flowr.space">
+  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'>
+  </a>
+copyright: Licence MIT
+source: github.com/sahilseth/flowr/tree/devel/vignettes/flowr_overview.Rmd
 ---
 
 
@@ -261,7 +267,7 @@ Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details
 
 
 
-# Ingredients for building a pipeline
+# Input files
 
 An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as `flow_mat` and `flow_def` respectively (as introduced in the previous sections).
 

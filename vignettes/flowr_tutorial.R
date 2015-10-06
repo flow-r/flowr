@@ -6,25 +6,24 @@ library(flowr)
 read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
 
 ## ----eval=FALSE----------------------------------------------------------
-#  ## Single step submission:
+#  ## 1. Single step submission:
 #  fobj = run("sleep_pipe", execute = TRUE);
 #  
-#  ## Details of the above step:
+#  ## 2a. Details of the above step:
 #  setwd("~/flowr/pipelines")
 #  ## behind the scenes, run does the following:
 #  ## optionally, load default parameters
 #  load_opts("sleep_pipe.conf")
 #  
-#  ## get sleep_pipe() function
+#  ## 2b. get sleep_pipe() function
 #  source("sleep_pipe.R")
-#  
 #  ## create a flowmat
 #  flowmat = sleep_pipe()
 #  
-#  ## read a flow definition.
+#  ## 2c. read a flow definition.
 #  flowdef = as.flowdef("sleep_pipe.def")
 #  
-#  ## create flow and submit to cluster
+#  ## 2d. create flow and submit to cluster
 #  fobj = to_flow(flowmat, flowdef, execute = TRUE)
 
 ## ----define_modules, echo=FALSE------------------------------------------
@@ -89,7 +88,8 @@ flowmat = out$flowmat
 kable(flowmat)
 
 ## ----plot_skeleton_def, message=FALSE------------------------------------
-def = to_flowdef(flowmat) ## create a skeleton flow definition
+## create a skeleton flow definition
+def = to_flowdef(flowmat) 
 suppressMessages(plot_flow(def))
 
 ## ----message=FALSE-------------------------------------------------------

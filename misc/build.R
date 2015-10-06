@@ -1,4 +1,4 @@
-#!/usr/bin Rscript
+#!/usr/bin/env Rscript
 
 message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
@@ -59,9 +59,9 @@ setwd(outwd)
 # └── vignettes/build-pipes.Rmd
 
 # set some options
-pd <- package_docs(lib_dir = "assets", toc = FALSE)
-pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE)
-pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2)
+pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template = "template.html")
+pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html")
+pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html")
 knitr::opts_knit$set(root.dir = normalizePath("."))
 
 # generate index.html, get new from template !
@@ -71,7 +71,7 @@ message("Copying RMD files ....", getwd())
 fls = c(
 #  "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
-  "vignettes/flowr_overview.Rmd" = "docs.Rmd",
+  "vignettes/flowr_overview.Rmd" = "overview.Rmd",
   "vignettes/flowr_install.Rmd" = "install.Rmd",
   "vignettes/flowr_tutorial.Rmd" = "tutorial.Rmd"
 )
@@ -85,8 +85,8 @@ message("rendering RMD files ....", getwd())
 
 render("index.Rmd", output_format = pd)
 check_output("index.html")
-render("docs.Rmd", output_format = pd_expand)
-check_output("docs.html")
+render("overview.Rmd", output_format = pd_expand)
+check_output("overview.html")
 render("tutorial.Rmd", output_format = pd_expand)
 check_output("tutorial.html")
 render("news.Rmd", output_format = pd_expand)

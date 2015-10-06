@@ -1,11 +1,11 @@
 
 
-#' @rdname opts_flow
+#' @rdname flowopts
 #' @format \code{opts_flow}
 #' @export
 flowopts = new.env()
 
-#' @rdname opts_flow
+#' @rdname flowopts
 #' 
 #' @aliases set_opts get_opts load_opts
 #' 
@@ -18,7 +18,7 @@ flowopts = new.env()
 #' \item \link[params]{set_opts} OR \code{opts_flow\$set()}: set default options
 #' \item \link[params]{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
 #' }
-#' For more details regarding these funtions refer to \link{params} package.
+#' For more details regarding these funtions refer to \href{http://sahilseth.com/params}{params} package.
 #'
 #' @param ... \itemize{
 #' \item get: names of options to fetch

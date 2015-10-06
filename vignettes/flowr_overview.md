@@ -245,7 +245,7 @@ Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details
 
 
 
-# Ingredients for building a pipeline
+# Input files
 
 An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as `flow_mat` and `flow_def` respectively (as introduced in the previous sections).
 
