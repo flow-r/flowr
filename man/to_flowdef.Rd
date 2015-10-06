@@ -49,8 +49,8 @@ to_flowdef(x, ...)
 
 \method{to_flowdef}{flowmat}(x, sub_type, dep_type, prev_jobs,
   queue = "short", platform = "torque", memory_reserved = "2000",
-  cpu_reserved = "1", walltime = "1:00", verbose = get_opts("verbose"),
-  ...)
+  cpu_reserved = "1", walltime = "1:00", guess = TRUE,
+  verbose = get_opts("verbose"), ...)
 
 \method{to_flowdef}{flow}(x, ...)
 
@@ -80,6 +80,8 @@ is.flowdef(x)
 \item{cpu_reserved}{number of cpu's required}
 
 \item{walltime}{amount of walltime required}
+
+\item{guess}{should the function, guess submission and dependency types. See details.}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
@@ -135,5 +137,14 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 
 	- \emph{D1 to D3 are started as soon as C1 finishes.}
 }
+}
+\details{
+\strong{NOTE:} Guessing is a experimental feature, please check the definition carefully,
+and its provided to help and not replace best your best judgement. <br>
+
+Optionally, one may provide the previous jobs and flowr can try guessing the appropriate
+submission and dependency types. If there are multiple commands, default is submitting them as
+scatter, else as serial. Further, if previous job has multiple commands and current job has single;
+its assumed that all of the previous need to complete, suggesting a gather type dependency.
 }
 
