@@ -26,7 +26,7 @@ source: github.com/sahilseth/flowr/tree/gh-pages/index.Rmd
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <center> <h4><font color="#D3003A">
-[![docs.flowr.space](files/logo_blue.png) Streamlining Workflows](http://docs.flowr.space)
+[![docs.flowr.space](files/logo_green.png) Streamlining Workflows](http://docs.flowr.space)
 </font></h4> </center>
 
 
