@@ -112,7 +112,6 @@
           <li><a href="#rerun">rerun</a></li>
           </ul></li>
           <li><a href="#managing-parameters">Managing parameters</a><ul>
-          <li><a href="#flowopts">flowopts</a></li>
           <li><a href="#setup">setup</a></li>
           <li><a href="#verbose">verbose</a></li>
           </ul></li>
@@ -131,7 +130,6 @@
           <li><a href="#check_args">check_args</a></li>
           <li><a href="#get_wds">get_wds</a></li>
           </ul></li>
-          <li><a href="#section"></a></li>
           </ul>
         </div>
       </div>
@@ -139,7 +137,7 @@
       
 <div id="content-top"></div>
 <div class="alert alert-success" role="alert">
-<p>You may download a PDF version of this manual <a href="manual.pdf">here</a></p>
+You may download a PDF version of this manual <a href="manual.pdf">here</a>
 </div>
 <h1>
 Streamlining Design and Deployment of Complex Workflows
@@ -1140,111 +1138,6 @@ Examples
 </div>
 <div id="managing-parameters" class="section level1">
 <h1>Managing parameters</h1>
-<div id="flowopts" class="section level2">
-<h2>flowopts</h2>
-<h3>
-Default options/params used in flowr and ngsflows
-</h3>
-<p class="rd-p">
-There are three helper functions which attempt to manage parameters used by flowr and ngsflows:
-<ul>
-<li>
-<a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>get_opts</a> OR <code>opts_flow$get()</code>: show all default options
-</li>
-<li>
-<a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>set_opts</a> OR <code>opts_flow$set()</code>: set default options
-</li>
-<li>
-<a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>load_opts</a> OR <code>opts_flow$load()</code>: load options specified in a tab seperated text file
-</li>
-</ul>
-For more details regarding these funtions refer to <a href = 'http://sahilseth.com/params'>params</a> package.
-</p>
-<h4>
-Usage
-</h4>
-<pre class="r"><code><div>flowopts</div>
-<div>get_opts(...)
-set_opts(...)
-load_opts(...)</div></code></pre>
-<h4>
-Arguments
-</h4>
-<dl class="rd-dl">
-<dt>
-…
-</dt>
-<dd class="rd-dd">
-<ul>
-<li>
-get: names of options to fetch
-</li>
-<li>
-set: a set of options in a name=value format seperated by commas
-</li>
-</ul>
-</dd>
-</dl>
-<h4>
-Format
-</h4>
-<p class="rd-p">
-<code>opts_flow</code>
-</p>
-<h4>
-Details
-</h4>
-<p class="rd-p">
-By default flowr loads, <code>~/flowr/conf/flowr.conf</code> and <code>~/flowr/conf/ngsflows.conf</code>
-</p>
-<p class="rd-p">
-Below is a list of default flowr options, retrieved via
-</p>
-<p class="rd-p">
-<code>opts_flow$get()</code>:
-<pre>
-    |name              |value                    |
-    |:-----------------|:------------------------|
-    |default_regex     |(.*)                     |
-    |flow_base_path    |~/flowr                  |
-    |flow_conf_path    |~/flowr/conf             |
-    |flow_parse_lsf    |.*(\<[0-9]*\>).*         |
-    |flow_parse_moab   |(.*)                     |
-    |flow_parse_sge    |(.*)                     |
-    |flow_parse_slurm  |(.*)                     |
-    |flow_parse_torque |(.?)\..*                 |
-    |flow_pipe_paths   |~/flowr/pipelines        |
-    |flow_pipe_urls    |~/flowr/pipelines        |
-    |flow_platform     |local                    |
-    |flow_run_path     |~/flowr/runs             |
-    |my_conf_path      |~/flowr/conf             |
-    |my_dir            |path/to/a/folder         |
-    |my_path           |~/flowr                  |
-    |my_tool_exe       |/usr/bin/ls              |
-    |time_format       |%a %b %e %H:%M:%S CDT %Y |
-    |verbose           |FALSE                    |
-    </pre>
-</p>
-<h4>
-Examples
-</h4>
-<pre class="r"><code>## Set options: set_opts()
-opts = set_opts(flow_run_path = "~/mypath")
-## OR if you would like to supply a long list of options:
-opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
-
-## load options from a configuration file: load_opts()
-conffile = fetch_conf("flowr.conf")
-load_opts(conffile)
-
-## Fetch options: get_opts()
-get_opts("flow_run_path")
-get_opts()</code></pre>
-<h4>
-See also
-</h4>
-<p><a href=#fetch>fetch</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/params>params</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/read_sheet>read_sheet</a></p>
-</div>
 <div id="setup" class="section level2">
 <h2>setup</h2>
 <h3>
@@ -1381,7 +1274,7 @@ These functions help in searching for specific files in the user’s space. <cod
 <strong>current wd</strong>: <code>./</code>
 </li>
 </ul>
-<strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later folder would be selected. As such, giving priority to user’s home, and current working directories. <br> <code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
+<strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later folder would be selected. As such, giving priority to user’s home, and current working directories. <code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
 <ul>
 <li>
 <strong>package</strong>: <code>conf</code> folders in flowr and ngsflows packages.
@@ -1393,7 +1286,7 @@ These functions help in searching for specific files in the user’s space. <cod
 <strong>current wd</strong>: <code>./</code>
 </li>
 </ul>
-<strong>NOTE:</strong> This function would greedily return all matching conf files. One would load all of them in the order returned by this function. If the same variable is repeated in multiple files, value from later files would replace those formerly defined. Thus ( as explained above ), giving priority to options defined in user’s home and current working directories. By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>. See the details sections, for more explanation on this.
+<strong>NOTE:</strong> This function would greedily return all matching conf files. One would load all of them in the order returned by this functions. If the same variable is repeated in multiple files, value from the later files would replace those formerly defined. Thus ( as explained above ), giving priority to options defined in user’s home and current working directories. By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>. See the details sections, for more explanation on this.
 </p>
 <h4>
 Usage
@@ -1458,13 +1351,13 @@ ask before downloading or copying. [not implemented]
 Details
 </h4>
 <p class="rd-p">
-For example flowr has a variable <code>flow_run_path</code> where it puts all the execution logs etc. The default value is picked up from the internal <strong>flowr.conf</strong> file. To redefine this value, one could create a new file called <strong>~/flowr/conf/flowr.conf</strong> and add a line:
+For example flowr has a variable <code>flow_run_path</code> where it puts all the execution logs etc. The default value is picked up from packagess internal <code>flowr.conf</code> file. To redefine this value, one could create a new file called <code>~/flowr/conf/flowr.conf</code> and add a line:
 </p>
 <p class="rd-p">
-<code>flow_run_path TAB my_awesome_path</code>, where <code>TAB</code> is a tab character, since these are tab seperated files.
+<code>flow_run_path<TAB>my_awesome_path</code>, where <TAB> is a tab character, since these are tab seperated files.
 </p>
 <p class="rd-p">
-Also, at any time you can run, <a href=#flowopts>load_opts</a>; to load custom options.
+Also, at any time you can run, <code>load_conf(super_specific_opts.conf)</code>; to load custom options.
 </p>
 <h4>
 Examples
@@ -2085,9 +1978,6 @@ path to a folder
 </dd>
 </dl>
 </div>
-</div>
-<div id="section" class="section level1">
-<h1></h1>
 </div>
 
 

@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-10-05" />
+    <meta name="date" content="2015-10-06" />
   
   <title>flowr</title>
 
@@ -105,46 +105,9 @@ wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, definin
 <p>These three files are available under the <a href="https://github.com/sahilseth/flowr/tree/master/inst/pipelines">pipelines</a> folder on github.</p>
 <p>Here is a pipeline and mentioned in the <a href="http://docs.flowr.space/docs">overview</a> as well where we sleep for a few seconds, create temporary files, merge them etc.</p>
 <p>One may use a <code>run</code> function to create the flowmat, fetch the flowdef and execute the pipeline in a single step. Here we would focus more on each of these steps in detail.</p>
-<pre class="r"><code>## 1. Single step submission:
-fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
-
-## 2a. Details of the above step:
-setwd(&quot;~/flowr/pipelines&quot;)
-## behind the scenes, run does the following:
-## optionally, load default parameters
-load_opts(&quot;sleep_pipe.conf&quot;) 
-
-## 2b. get sleep_pipe() function
-source(&quot;sleep_pipe.R&quot;) 
-## create a flowmat
-flowmat = sleep_pipe()
-
-## 2c. read a flow definition.
-flowdef = as.flowdef(&quot;sleep_pipe.def&quot;)
-
-## 2d. create flow and submit to cluster
-fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 <div id="creating-modulespipelines" class="section level2">
 <h2>Creating Modules/Pipelines</h2>
 <p>The <code>sleep_pipe</code> calls the three other functions (<strong>modules</strong>); fetches flowmat from each, then rbinds them, creating a larger flowmat. You may refer to the <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R">sleep_pipe.R</a> file for the source.</p>
-<pre class="r"><code>#&#39; @param x number of files to make
-sleep_pipe &lt;- function(x = 3, samplename = &quot;samp1&quot;){
-
-    ## call the modules one by one...
-    out_sleep = sleep(x, samplename)
-    out_create_tmp = create_tmp(x, samplename)
-    out_merge_size = merge_size(out_create_tmp$outfiles, samplename)
-
-    ## row bind all the commands
-    flowmat = rbind(out_sleep$flowmat,
-        out_create_tmp$flowmat,
-        out_merge_size$flowmat)
-
-    return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
-}</code></pre>
-<pre class="r"><code>## create a flow matrix
-out = sleep_pipe(x = 3, &quot;sample1&quot;)
-flowmat = out$flowmat</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -157,17 +120,17 @@ flowmat = out$flowmat</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 13;echo ‘hello’</td>
+<td align="left">sleep 13 &amp;&amp; sleep 7;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 7 &amp;&amp; sleep 5;echo ‘hello’</td>
+<td align="left">sleep 2 &amp;&amp; sleep 17;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 6 &amp;&amp; sleep 21;echo ‘hello’</td>
+<td align="left">sleep 2 &amp;&amp; sleep 15;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -198,18 +161,15 @@ flowmat = out$flowmat</code></pre>
 </table>
 <p>Next, we need a flow definition.</p>
 <div class="alert alert-info" role="alert">
-<p><strong>module:</strong> A R function which creates a flow mat, is a module. Using <strong>module + flowdef</strong>, we can run a pipeline.</p>
+<strong>module:</strong> A R function which creates a flow mat, is a module. Using <strong>module + flowdef</strong>, we can run a pipeline.
 </div>
 </div>
 <div id="creating-flow-definition" class="section level2">
 <h2>Creating Flow Definition</h2>
 <p>Flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function <code>to_flowdef</code>, accepts a <code>flowmat</code> and creates a flow definition.</p>
-<pre class="r"><code>## create a skeleton flow definition
-def = to_flowdef(flowmat) 
-suppressMessages(plot_flow(def))</code></pre>
 <p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p>The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.</p>
+The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.
 </div>
 <p>We can make a few changes to make this pipeline a little more efficient. Briefly, we would run a few steps in a <strong>scatter</strong> fashion (in parallel).</p>
 <ul>
@@ -218,9 +178,6 @@ suppressMessages(plot_flow(def))</code></pre>
 <li>Then all tmp files are <em>merged</em>. Intuitively, since this is a single step, we run it as <code>serial</code> and as all tmp files are required, we use a <code>gather</code> type dependency.</li>
 <li>Lastly, we need to check the <em>size</em> of the resulting merged file. Again, since this is a single step, we run is as <code>serial</code>. More so since the previous step also had a single command, we use a <code>serial</code> type dependency.</li>
 </ul>
-<pre class="r"><code>def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
-def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
-kable(def)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -289,22 +246,13 @@ kable(def)</code></pre>
 </table>
 <p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p><strong>Tip:</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.</p>
+<strong>Tip:</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.
 </div>
 </div>
 <div id="create-flow-submit-to-cluster" class="section level2">
 <h2>Create flow, submit to cluster</h2>
 <p><strong>Next, we create a flow object:</strong></p>
-<pre class="r"><code>fobj = to_flow(flowmat, def, flowname = &quot;sleep_pipe&quot;)</code></pre>
 <p><strong>Finally, we can submit this to the cluster:</strong></p>
-<pre class="r"><code>plot_flow(fobj)
-submit_flow(fobj) ## dry run
-fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
-
-## after submission, we can use the following:
-status(fobj2) ## check status
-rerun(fobj2)  ## re-run from a intermediate step
-kill(fobj2)   ## kill it!</code></pre>
 <!----
 
 
