@@ -194,3 +194,5 @@ flowr 0.85
   make plot type 1 as default
 - get_flow_status():
   -exit_status: reports number of exited jobs (not sum of exit codes)
+
+<script src = "files/googl.js"></script>

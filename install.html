@@ -100,7 +100,17 @@
 <ul>
 <li>R version &gt; 3.1, preferred 3.2</li>
 </ul>
+<pre class="r"><code>## for a latest official version (from CRAN)
+install.packages(&quot;flowr&quot;, repos = &quot;http://cran.rstudio.com&quot;)
+
+## Latest stable release from DRAT (updated every other week)
+install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)
+
+## OR cutting edge devel version
+devtools::install_github(&quot;sahilseth/flowr&quot;, ref = &quot;devel&quot;)</code></pre>
 <p>After installation run <code>setup()</code>, this will copy the flowr’s helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable.</p>
+<pre class="r"><code>library(flowr)
+setup()</code></pre>
 <p>Running <code>flowr</code> from the terminal should now show the following:</p>
 <pre><code>Usage: flowr function [arguments]
 

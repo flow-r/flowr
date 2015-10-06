@@ -100,3 +100,4 @@ MD Anderson Comp. Biology meeting (July, 2015)
     [r-pkgs.had.co.nz](r-pkgs.had.co.nz)
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
+<script src = "files/googl.js"></script>

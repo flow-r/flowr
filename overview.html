@@ -112,6 +112,8 @@
 <div id="content-top"></div>
 <div id="get-started" class="section level1">
 <h1>Get started</h1>
+<pre class="r"><code>library(flowr)</code></pre>
+<pre class="r"><code>setup()</code></pre>
 <p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable. For more details refer to <a href="http://docs.flowr.space/rd.html#setup">setup’s help section</a>.</p>
 <!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
 <p>Running flowr from the terminal will fetch you the following:</p>
@@ -258,11 +260,21 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <div id="stitch-it" class="section level2">
 <h2>Stitch it</h2>
 <p>We use the two files descirbed above and stich them to create a <code>flow object</code> (which contains all the information we need for cluster submission).</p>
+<pre class="r"><code>ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
+flowmat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
+flowdef = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))
+
+fobj &lt;- to_flow(x = flowmat, 
+                 def = flowdef,
+                 flowname = &quot;example1&quot;, ## give it a name
+                 platform = &quot;lsf&quot;)      ## override platform mentioned in flow def</code></pre>
 <p>Refer to <a href="docs.flowr.space/rd.html#to_flow">to_flow’s help section</a> for more details.</p>
 </div>
 <div id="plot-it" class="section level2">
 <h2>Plot it</h2>
 <p>We can use <code>plot_flow</code> to quickly visualize the flow; this really helps when developing complex workflows.</p>
+<pre class="r"><code>plot_flow(fobj)     # ?plot_flow for more information
+plot_flow(flowdef) # plot_flow works on flow definition as well</code></pre>
 <p><img src="overview_files/figure-html/plotit-1.png" title="Flow chart describing process for example 1" alt="Flow chart describing process for example 1" width="624" /></p>
 <p>Refer to <a href="docs.flowr.space/rd.html#plot_flow">plot_flow’s help section</a> for more details.</p>
 </div>
@@ -271,6 +283,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <div class="alert alert-info" role="alert">
 <b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. This helps in debugging etc.
 </div>
+<pre class="r"><code>submit_flow(fobj)</code></pre>
 <pre><code>Test Successful!
 You may check this folder for consistency. Also you may re-run submit with execute=TRUE
  ~/flowr/sleep_pipe-20150520-15-18-27-5mSd32G0</code></pre>
@@ -280,6 +293,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
 <div class="alert alert-info" role="alert">
 Submit to the cluster !
 </div>
+<pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
 <p>Refer to <a href="docs.flowr.space/rd.html#submit_flow">submit_flow’s help section</a> for more details.</p>
@@ -341,6 +355,9 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 <h1>Input files</h1>
 <p>An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as <code>flow_mat</code> and <code>flow_def</code> respectively (as introduced in the previous sections).</p>
 <p>We could read in, examples of both these files to understand their structure.</p>
+<pre class="r"><code>ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
+flow_mat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
+flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <div id="flow-matrix" class="section level2">
 <h2>1. Flow matrix</h2>
 <div class="alert alert-info" role="alert">
@@ -534,14 +551,28 @@ Here instead of seperating cmds and definitions one defines them step by step in
 Currently we support LSF, Torque and SGE. Let us use LSF for this example.
 
 
+```r
+qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
+```
 
 Let us stitch a simple flow with three jobs, which are submitted one after the other.
 
 
+```r
+job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
+job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
+job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
+fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
+plot_flow(fobj)
+```
 
 The above translates to a flow definition which looks like this:
 
 
+```r
+dat <- flowr:::create_jobs_mat(fobj)
+knitr:::kable(dat)
+```
 --->
 <div id="example" class="section level3">
 <h3>Example:</h3>
@@ -638,6 +669,9 @@ The above translates to a flow definition which looks like this:
 
 --->
 <p>In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):</p>
+<pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
+ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))
+kable(ex2def[, 1:4])</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -674,6 +708,7 @@ The above translates to a flow definition which looks like this:
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>plot_flow(ex2def)</code></pre>
 <p><img src="overview_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
 There is a darker more prominent shadow to indicate scatter steps.

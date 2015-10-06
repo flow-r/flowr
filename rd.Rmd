@@ -23,6 +23,7 @@ brand: |-
 <div class="alert alert-success" role="alert">
 You may download a PDF version of this manual [here](manual.pdf)
 </div>
+<script src = "files/googl.js"></script>
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
@@ -305,7 +306,7 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 <h4>Usage</h4>
 <pre class="r"><code><div>to_flowdef(x, ...)</div>
 <div>## method for class 'flowmat'
-to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;TRUE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
 <div>## method for class 'flow'
 to_flowdef(x, ...)</div>
 <div>## method for class 'character'
@@ -335,6 +336,8 @@ to_flowdef(x, ...)</div>
   <dd class="rd-dd">number of cpus required</dd>
   <dt>walltime</dt>
   <dd class="rd-dd">amount of walltime required</dd>
+  <dt>guess</dt>
+  <dd class="rd-dd">should the function, guess submission and dependency types. See details.</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
@@ -385,6 +388,17 @@ your institutions guide to specify these.</p>
 <li><code>queue</code> the queue to use for job submission [short]
 </li>
 </ul></p>
+
+
+  <h4>Details</h4>
+
+  <p class="rd-p"><strong>NOTE:</strong> Guessing is a experimental feature, please check the definition carefully,
+and its provided to help and not replace best your best judgement. <br></p>
+
+  <p class="rd-p">Optionally, one may provide the previous jobs and flowr can try guessing the appropriate
+submission and dependency types. If there are multiple commands, default is submitting them as
+scatter, else as serial. Further, if previous job has multiple commands and current job has single;
+its assumed that all of the previous need to complete, suggesting a gather type dependency.</p>
 
 
 
@@ -511,7 +525,11 @@ plot_flow(x, ...)</div>
 <div>## method for class 'character'
 plot_flow(x, ...)</div>
 <div>## method for class 'flowdef'
-plot_flow(x, detailed&nbsp;=&nbsp;TRUE, type&nbsp;=&nbsp;c("1", "2"), pdf&nbsp;=&nbsp;FALSE, pdffile, ...)</div></code></pre>
+plot_flow(x, detailed&nbsp;=&nbsp;TRUE, type&nbsp;=&nbsp;c("1", "2"), pdf&nbsp;=&nbsp;FALSE, pdffile, ...)</div>
+<div>## method for class 'flowdef'
+plot(x, detailed&nbsp;=&nbsp;TRUE, type&nbsp;=&nbsp;c("1", "2"), pdf&nbsp;=&nbsp;FALSE, pdffile, ...)</div>
+<div>## method for class 'flow'
+plot(x, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -742,6 +760,97 @@ regarding previous job ids and their status is not lost.</p>
 
 
 
+## flowopts
+
+<h3>Default options/params used in flowr and ngsflows</h3>
+
+<p class="rd-p">There are three helper functions which attempt to manage parameters used by flowr and ngsflows:
+<ul>
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>get_opts</a> OR <code>opts_flow\$get()</code>: show all default options
+</li>
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>set_opts</a> OR <code>opts_flow\$set()</code>: set default options
+</li>
+<li> <a href='http://rpackages.ianhowson.com/cran/params/man/params.html'>load_opts</a> OR <code>opts_flow\$load()</code>: load options specified in a tab seperated text file
+</li>
+</ul>
+For more details regarding these funtions refer to <a href = 'http://sahilseth.com/params'>params</a> package.</p>
+
+<h4>Usage</h4>
+<pre class="r"><code><div>flowopts</div>
+<div>get_opts(...)
+set_opts(...)
+load_opts(...)</div></code></pre>
+
+<h4>Arguments</h4>
+<dl class="rd-dl">
+  <dt>...</dt>
+  <dd class="rd-dd"><ul>
+<li> get: names of options to fetch
+</li>
+<li> set: a set of options in a name=value format seperated by commas
+</li>
+</ul>
+</dd>
+</dl>
+
+  <h4>Format</h4>
+
+  <p class="rd-p"><code>opts_flow</code></p>
+
+
+  <h4>Details</h4>
+
+  <p class="rd-p">By default flowr loads, <code>~/flowr/conf/flowr.conf</code> and <code>~/flowr/conf/ngsflows.conf</code></p>
+
+  <p class="rd-p">Below is a list of default flowr options, retrieved via</p>
+
+  <p class="rd-p"><code>opts_flow$get()</code>:
+<pre>
+	|name              |value                    |
+	|:-----------------|:------------------------|
+	|default_regex     |(.*)                     |
+	|flow_base_path    |~/flowr                  |
+	|flow_conf_path    |~/flowr/conf             |
+	|flow_parse_lsf    |.*(\<[0-9]*\>).*         |
+	|flow_parse_moab   |(.*)                     |
+	|flow_parse_sge    |(.*)                     |
+	|flow_parse_slurm  |(.*)                     |
+	|flow_parse_torque |(.?)\..*                 |
+	|flow_pipe_paths   |~/flowr/pipelines        |
+	|flow_pipe_urls    |~/flowr/pipelines        |
+	|flow_platform     |local                    |
+	|flow_run_path     |~/flowr/runs             |
+	|my_conf_path      |~/flowr/conf             |
+	|my_dir            |path/to/a/folder         |
+	|my_path           |~/flowr                  |
+	|my_tool_exe       |/usr/bin/ls              |
+	|time_format       |%a %b %e %H:%M:%S CDT %Y |
+	|verbose           |FALSE                    |
+	</pre></p>
+
+
+
+<h4>Examples</h4>
+<pre class="r"><code>## Set options: set_opts()
+opts = set_opts(flow_run_path = "~/mypath")
+## OR if you would like to supply a long list of options:
+opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
+
+## load options from a configuration file: load_opts()
+conffile = fetch_conf("flowr.conf")
+load_opts(conffile)
+
+## Fetch options: get_opts()
+get_opts("flow_run_path")
+get_opts()</code></pre>
+
+<h4>See also</h4>
+
+<a href=#fetch>fetch</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/params>params</a> <a href=#http://rpackages.ianhowson.com/cran/params/man/read_sheet>read_sheet</a>
+
+
+
+
 ## setup
 
 <h3>Setup and initialize flowr</h3>
@@ -853,6 +962,7 @@ def = as.flowdef(fl, verbose = 2)
 <strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later
 folder would be selected. As such, giving priority to user's home, and current working
 directories.
+<br>
 <code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
 <ul>
 <li> <strong>package</strong>: <code>conf</code> folders in flowr and ngsflows packages.
@@ -864,8 +974,8 @@ directories.
 </ul>
 <strong>NOTE:</strong>
 This function would greedily return all matching conf files. One would load all of them
-in the order returned by this functions. If the same variable is
-repeated in multiple files, value from the later files would replace those formerly defined.
+in the order returned by this function. If the same variable is
+repeated in multiple files, value from later files would replace those formerly defined.
 Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
 By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
 See the details sections, for more explanation on this.</p>
@@ -902,14 +1012,14 @@ By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> sear
   <h4>Details</h4>
 
   <p class="rd-p">For example flowr has a variable <code>flow_run_path</code> where it puts all the execution logs etc.
-The default value is picked up from packagess internal <code>flowr.conf</code> file.
-To redefine this value, one could create a new file called <code>~/flowr/conf/flowr.conf</code> and
+The default value is picked up from the internal <strong>flowr.conf</strong> file.
+To redefine this value, one could create a new file called <strong>~/flowr/conf/flowr.conf</strong> and
 add a line:</p>
 
-  <p class="rd-p"><code>flow_run_path<TAB>my_awesome_path</code>, where <TAB> is a tab character, since these are tab
+  <p class="rd-p"><code>flow_run_path TAB my_awesome_path</code>, where <code>TAB</code> is a tab character, since these are tab
 seperated files.</p>
 
-  <p class="rd-p">Also, at any time you can run, <code>load_conf(super_specific_opts.conf)</code>; to load custom options.</p>
+  <p class="rd-p">Also, at any time you can run, <a href=#flowopts>load_opts</a>; to load custom options.</p>
 
 
 
@@ -1303,5 +1413,7 @@ are NULL</p>
 </dl>
 
 
+
+# 
 
 
