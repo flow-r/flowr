@@ -9,10 +9,14 @@
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
+<!--
+![license](https://img.shields.io/badge/license-MIT-blue.svg)
+-->
+
 
 ## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
 
-**Latest documentation: [docs.flowr.space](docs.flowr.space)**
+**Latest documentation: [docs.flowr.space](http://docs.flowr.space)**
 
 
 
@@ -90,3 +94,5 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
     [r-pkgs.had.co.nz](r-pkgs.had.co.nz)
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
+<script src = "vignettes/files/googl.js"></script>
+

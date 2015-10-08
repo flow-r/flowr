@@ -58,10 +58,16 @@ setwd(outwd)
 # ├── man/*Rd
 # └── vignettes/build-pipes.Rmd
 
+theme="flatly"
+theme = list(htmltools::htmlDependency(name = "bootswatch",
+													version = "3.3.5",
+													src = system.file("html_assets/bootswatch", theme, package = "packagedocs"),
+													stylesheet = "bootstrap.css"))
+
 # set some options
-pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template = "template.html")
-pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html")
-pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html")
+pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html", extra_dependencies = theme)
+pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template = "template.html", extra_dependencies = theme)
+pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html", extra_dependencies = theme)
 knitr::opts_knit$set(root.dir = normalizePath("."))
 
 # generate index.html, get new from template !
@@ -78,13 +84,14 @@ fls = c(
 
 unlink(fls)
 file.copy(from = file.path(code_path, names(fls)), to = fls)
-dir.create("files")
+dir.create("files", showWarnings = FALSE)
 file.copy(file.path(code_path, "vignettes/files"), to = ".", recursive = TRUE)
 
 message("rendering RMD files ....", getwd())
 
+#undebug(rmarkdown:::html_extras_for_document)
 render("index.Rmd", output_format = pd)
-check_output("index.html")
+check_output("index.html"); #system("open index.html")
 render("overview.Rmd", output_format = pd_expand)
 check_output("overview.html")
 render("tutorial.Rmd", output_format = pd_expand)
@@ -100,6 +107,7 @@ dir.create(file.path(code_path, "inst/staticdocs"))
 #debug(packagedocs:::get_rd_data)
 #debug(rd_template)
 #undebug(staticdocs:::to_html.Rd_content)
+#debug(staticdocs:::to_html.Rd_doc)
 render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
 check_output("rd.html")
@@ -107,7 +115,7 @@ check_output("rd.html")
 
 
 ## stuff for MAC ONLY
-if(Sys.info()['sysname'] == "Darwin"){
+if(Sys.info()['sysname'] == "Darwins"){
 	system("open index.html")
 	setwd("~/Dropbox/public/github_flowrpages")
 	system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")

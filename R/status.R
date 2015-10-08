@@ -8,7 +8,13 @@ get_wds <- function(x){
 	wds = list.files(dirname(x), full.names = TRUE, pattern = basename(x))
 	#wds = list.dirs(x, full.names = TRUE, recursive = FALSE)
 	y = file.info(wds)
-	rownames(with(y, {subset(y, isdir == TRUE)}))
+
+	## if the current folder contains a rds file
+	if(file.exists(file.path(x, "flow_details.rds")))
+		return(x)
+	
+	dirs = rownames(with(y, {subset(y, isdir == TRUE)}))
+	return(dirs)
 }
 
 

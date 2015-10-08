@@ -23,7 +23,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
   <a href="http://docs.flowr.space">
-  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='50px' style='margin-top: -10px'>
+  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
 source: github.com/sahilseth/flowr/tree/devel/vignettes/flowr_tutorial.Rmd
@@ -218,14 +218,5 @@ This lets the user mix and match several modules/pipelines to create a customize
 </div>
 -->
 
+<script src = "files/googl.js"></script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-68378910-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
