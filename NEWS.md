@@ -15,7 +15,7 @@ navpills: |
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
   <a href="http://docs.flowr.space">
-  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -30px'>
+  <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
 ---
@@ -26,6 +26,14 @@ flowr latest
 ----------------------------------------------
 
 - New option local_cores, which determines (max) number of cores to use when running local jobs.
+- enhanced get_wds/statuc, so that if CWD contains a flow_details file, status is shown for the flow and 
+not subfolder... 
+
+```
+## now this works well !
+flowr status x=.
+```
+
 
 flowr 0.9.8 (blueberries)
 ----------------------------------------------

@@ -84,7 +84,7 @@ fls = c(
 
 unlink(fls)
 file.copy(from = file.path(code_path, names(fls)), to = fls)
-dir.create("files")
+dir.create("files", showWarnings = FALSE)
 file.copy(file.path(code_path, "vignettes/files"), to = ".", recursive = TRUE)
 
 message("rendering RMD files ....", getwd())
@@ -107,6 +107,7 @@ dir.create(file.path(code_path, "inst/staticdocs"))
 #debug(packagedocs:::get_rd_data)
 #debug(rd_template)
 #undebug(staticdocs:::to_html.Rd_content)
+#debug(staticdocs:::to_html.Rd_doc)
 render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
 check_output("rd.html")
@@ -114,7 +115,7 @@ check_output("rd.html")
 
 
 ## stuff for MAC ONLY
-if(Sys.info()['sysname'] == "Darwin"){
+if(Sys.info()['sysname'] == "Darwins"){
 	system("open index.html")
 	setwd("~/Dropbox/public/github_flowrpages")
 	system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")
