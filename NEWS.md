@@ -26,8 +26,7 @@ flowr latest
 ----------------------------------------------
 
 - New option local_cores, which determines (max) number of cores to use when running local jobs.
-- enhanced get_wds/statuc, so that if CWD contains a flow_details file, status is shown for the flow and 
-not subfolder... 
+- enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).
 
 ```
 ## now this works well !
