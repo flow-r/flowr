@@ -55,7 +55,7 @@ before_install:
 install:
   - mkdir -p ~/Rlib
   - echo 'R_LIBS=~/Rlib' > .Renviron
-  - echo 'options(repos = c("http://cran.rstudio.com", "http://sahilseth.github.io/drat")' > .Rprofile
+  - echo 'options(repos = list(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat")' > .Rprofile
   - Rscript -e 'options("repos")'
   - Rscript -e 'if(!"devtools" %in% rownames(installed.packages())) { install.packages("devtools", dependencies = TRUE) }'
   - Rscript -e 'if(!"covr" %in% rownames(installed.packages())) { install.packages("covr", dependencies = TRUE) }'
