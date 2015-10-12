@@ -6,11 +6,11 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(pipe_name, platform, def, flow_run_path = get_opts("flow_run_path"),
+run(pipe_name, platform, def, conf, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
 
-run_pipe(pipe_name, platform, def, flow_run_path = get_opts("flow_run_path"),
-  execute = FALSE, ...)
+run_pipe(pipe_name, platform, def, conf,
+  flow_run_path = get_opts("flow_run_path"), execute = FALSE, ...)
 }
 \arguments{
 \item{platform}{what platform to use, overrides flowdef}
