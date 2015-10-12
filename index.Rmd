@@ -17,6 +17,8 @@ copyright: Licence MIT
 source: github.com/sahilseth/flowr/tree/gh-pages/index.Rmd
 ---
 
+<br>
+<br>
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
