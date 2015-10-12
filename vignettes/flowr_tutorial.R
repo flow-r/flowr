@@ -5,28 +5,56 @@ library(flowr)
 ## ----example1, cache = FALSE, echo=FALSE---------------------------------
 read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
 
-## ----eval=FALSE----------------------------------------------------------
-#  ## 1. Single step submission:
-#  fobj = run("sleep_pipe", execute = TRUE);
-#  
-#  ## 2a. Details of the above step:
-#  setwd("~/flowr/pipelines")
-#  ## behind the scenes, run does the following:
-#  ## optionally, load default parameters
-#  load_opts("sleep_pipe.conf")
-#  
-#  ## 2b. get sleep_pipe() function
-#  source("sleep_pipe.R")
-#  ## create a flowmat
-#  flowmat = sleep_pipe()
-#  
-#  ## 2c. read a flow definition.
-#  flowdef = as.flowdef("sleep_pipe.def")
-#  
-#  ## 2d. create flow and submit to cluster
-#  fobj = to_flow(flowmat, flowdef, execute = TRUE)
+## ------------------------------------------------------------------------
+sleep=c('sleep 5', 'sleep 5')
 
-## ----define_modules, echo=FALSE------------------------------------------
+tmp=c('cat $RANDOM > tmp1', 
+			'cat $RANDOM > tmp2')
+			
+merge='cat tmp1 tmp2 > tmp'
+			
+size='du -sh tmp'
+
+
+## ------------------------------------------------------------------------
+## create a table of all commands
+library(flowr)
+lst = list( sleep=sleep, 
+           create_tmp=tmp, 
+           merge=merge,
+           size=size)
+
+flowmat = to_flowmat(lst, "samp1")
+kable(flowmat)
+
+## ----plot_skeleton_def, message=FALSE------------------------------------
+## create a skeleton flow definition
+def = to_flowdef(flowmat) 
+suppressMessages(plot_flow(def))
+
+## ----message=FALSE-------------------------------------------------------
+##               sleep     create tmp   merge     size
+def$sub_type = c("scatter", "scatter", "serial", "serial")
+def$dep_type = c("none", "serial", "gather", "serial")
+kable(def)
+
+## ----plot_tweaked_def, message=FALSE, echo = FALSE-----------------------
+suppressMessages(plot_flow(def))
+
+## ---- message=FALSE------------------------------------------------------
+fobj = to_flow(flowmat, def, flowname = "sleep_pipe")
+
+## ----eval=FALSE----------------------------------------------------------
+#  plot_flow(fobj)
+#  submit_flow(fobj) ## dry run
+#  fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
+#  
+#  ## after submission, we can use the following:
+#  status(fobj2) ## check status
+#  rerun(fobj2)  ## re-run from a intermediate step
+#  kill(fobj2)   ## kill it!
+
+## ----define_modules, echo=TRUE-------------------------------------------
 #' @param x number of sleep commands
 sleep <- function(x, samplename){
 	cmd = list(sleep = sprintf("sleep %s && sleep %s;echo 'hello'",
@@ -79,37 +107,28 @@ sleep_pipe <- function(x = 3, samplename = "samp1"){
 	return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
 }
 
-## ------------------------------------------------------------------------
-## create a flow matrix
-out = sleep_pipe(x = 3, "sample1")
-flowmat = out$flowmat
-
-## ---- echo=FALSE---------------------------------------------------------
-kable(flowmat)
-
-## ----plot_skeleton_def, message=FALSE------------------------------------
-## create a skeleton flow definition
-def = to_flowdef(flowmat) 
-suppressMessages(plot_flow(def))
-
-## ----message=FALSE-------------------------------------------------------
-def$sub_type = c("scatter", "scatter", "serial", "serial")
-def$dep_type = c("none", "serial", "gather", "serial")
-kable(def)
-
-## ----plot_tweaked_def, message=FALSE, echo = FALSE-----------------------
-suppressMessages(plot_flow(def))
-
-## ---- message=FALSE------------------------------------------------------
-fobj = to_flow(flowmat, def, flowname = "sleep_pipe")
-
 ## ----eval=FALSE----------------------------------------------------------
-#  plot_flow(fobj)
-#  submit_flow(fobj) ## dry run
-#  fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
+#  ## 1. Single step submission:
+#  fobj = run("sleep_pipe", execute = TRUE);
 #  
-#  ## after submission, we can use the following:
-#  status(fobj2) ## check status
-#  rerun(fobj2)  ## re-run from a intermediate step
-#  kill(fobj2)   ## kill it!
+#  ## 2
+#  ## change wd, so that we can source the files downloaded in the previous step
+#  setwd("~/flowr/pipelines")
+#  
+#  ## 2a. optionally, load default parameters
+#  load_opts("sleep_pipe.conf")
+#  
+#  ## 2b. get sleep_pipe() function
+#  source("sleep_pipe.R")
+#  ## create a flowmat
+#  flowmat = sleep_pipe()
+#  
+#  ## 2c. read a flow definition.
+#  flowdef = as.flowdef("sleep_pipe.def")
+#  
+#  ## 2d. create flow and submit to cluster
+#  fobj = to_flow(flowmat, flowdef, execute = TRUE)
+
+## ------------------------------------------------------------------------
+#run("sleep_pipe", x = )
 

@@ -4,6 +4,7 @@
 #'
 #' @description
 #' Run complete pipelines, by wrapping several steps into one convinient function:
+#' NOTE: please use flowr version: 0.9.8.9010
 #' 
 #' Taking \code{sleep_pipe} as a example.
 #' \itemize{
@@ -53,7 +54,7 @@
 #' run("sleep_pipe", platform = "lsf", execute = TRUE, x = 5)
 #' 
 #' }
-run <- function(x,
+run <- function(pipe_name,
 	platform,
 	def,
 	flow_run_path = get_opts("flow_run_path"),
@@ -63,15 +64,15 @@ run <- function(x,
 	## find a Rscript with name {{x}}.R
 
 	message("\n##--- fetching pipeline... ")
-	pip = fetch_pipes(x, last_only = TRUE)
+	pip = fetch_pipes(pipe_name, last_only = TRUE)
 
-	if(missing(x))
+	if(missing(pipe_name))
 		stop("Please choose a pipeline to run, from the above list.")
 
 
 	## --- source the file and get the main function from it
 	source(pip$pipe, TRUE)
-	func = get(x) ## find function of the original name
+	func = get(pipe_name) ## find function of the original name
 
 
 	message("\n##--- loading confs....")
@@ -96,7 +97,7 @@ run <- function(x,
 	fobj = to_flow(x = out$flowmat,
 		def = def,
 		platform = platform,
-		flowname = x,
+		flowname = pipe_name,
 		flow_run_path = flow_run_path)
 
 	## submit the flow

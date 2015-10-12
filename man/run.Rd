@@ -6,15 +6,13 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(x, platform, def, flow_run_path = get_opts("flow_run_path"),
+run(pipe_name, platform, def, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
 
-run_pipe(x, platform, def, flow_run_path = get_opts("flow_run_path"),
+run_pipe(pipe_name, platform, def, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
 }
 \arguments{
-\item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}
-
 \item{platform}{what platform to use, overrides flowdef}
 
 \item{def}{flow definition}
@@ -24,9 +22,12 @@ run_pipe(x, platform, def, flow_run_path = get_opts("flow_run_path"),
 \item{execute}{TRUE/FALSE}
 
 \item{...}{passed onto the pipeline function as specified in x}
+
+\item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}
 }
 \description{
 Run complete pipelines, by wrapping several steps into one convinient function:
+NOTE: please use flowr version: 0.9.8.9010
 
 Taking \code{sleep_pipe} as a example.
 \itemize{
