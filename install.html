@@ -235,7 +235,7 @@ qsub --help</code></pre>
 <div id="errors-in-job-submission" class="section level4">
 <h4>Errors in job submission</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Jobs are not getting submitted</p>
+Possible issue: Jobs are not getting submitted
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -269,7 +269,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/sge.sh
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/slurm.sh</code></pre>
 <p>Make the desired changes using your favourite editor and submit again.</p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).</p>
+Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -302,7 +302,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div id="flowr-configuration-file" class="section level4">
 <h4>Flowr Configuration file</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Flowr shows too much OR too little information.</p>
+Possible issue: Flowr shows too much OR too little information.
 </div>
 <p>There are several <a href="http://docs.flowr.space/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
 <p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="http://docs.flowr.space/rd.html#verbose">verbosity</a> section in the help pages for more details.</p>
@@ -310,7 +310,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div id="flowdef-resource-columns" class="section level4">
 <h4>Flowdef resource columns</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: What all resources are supported in the flow definition?</p>
+Possible issue: What all resources are supported in the flow definition?
 </div>
 <p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in <code>cpu_reserved</code> column would be populated as <code>{{{CPU}}}</code> in the submission template.</p>
 <p>The following table provides a mapping between the flow definition columns and variables in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission templates</a>:</p>
@@ -377,7 +377,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <div id="adding-a-new-platform" class="section level4">
 <h4>Adding a new platform</h4>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: Need to add a new platform</p>
+Possible issue: Need to add a new platform
 </div>
 <p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
 <ol style="list-style-type: decimal">
@@ -392,7 +392,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 </ol>
 <p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
 <div class="alert alert-warning" role="alert">
-<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.</p>
+Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.
 </div>
 <pre><code>## outfiles end with .out, and are placed in a folder like 00X.&lt;jobname&gt;/
 ## here is one example:
@@ -400,6 +400,8 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.out
 ## final script:
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <script src = "files/googl.js"></script>
+
+
 </div>
 </div>
 </div>
