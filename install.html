@@ -119,7 +119,13 @@
           <li><a href="#test">Test</a></li>
           <li><a href="#advanced-configuration">Advanced Configuration</a><ul>
           <li><a href="#hpcc-support-overview">HPCC Support Overview</a></li>
-          <li><a href="#faqs-and-help-on-solving-issues">FAQs and help on Solving Issues</a></li>
+          </ul></li>
+          <li><a href="#troubleshooting-faqs">Troubleshooting &amp; FAQs</a><ul>
+          <li><a href="#errors-in-job-submission">Errors in job submission</a></li>
+          <li><a href="#flowdef-resource-columns">Flowdef resource columns</a></li>
+          <li><a href="#adding-a-new-platform">Adding a new platform</a></li>
+          <li><a href="#installation-error-drat">Installation Error (DRAT)</a></li>
+          <li><a href="#installation-error-github">Installation Error (Github)</a></li>
           </ul></li>
           </ul>
         </div>
@@ -230,10 +236,11 @@ qsub --help</code></pre>
 </ul>
 <p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 </div>
-<div id="faqs-and-help-on-solving-issues" class="section level2">
-<h2>FAQs and help on Solving Issues</h2>
-<div id="errors-in-job-submission" class="section level4">
-<h4>Errors in job submission</h4>
+</div>
+<div id="troubleshooting-faqs" class="section level1">
+<h1>Troubleshooting &amp; FAQs</h1>
+<div id="errors-in-job-submission" class="section level2">
+<h2>Errors in job submission</h2>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: Jobs are not getting submitted</p>
 </div>
@@ -298,7 +305,6 @@ load_opts(&quot;flowr.conf&quot;) ## visit sahilseth.github.io/params for more d
 <p>Confirm that the dependency parameter is specified correctly in the submission scripts:</p>
 <pre><code>wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
-</div>
 <div id="flowr-configuration-file" class="section level4">
 <h4>Flowr Configuration file</h4>
 <div class="alert alert-warning" role="alert">
@@ -307,8 +313,9 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <p>There are several <a href="http://docs.flowr.space/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
 <p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="http://docs.flowr.space/rd.html#verbose">verbosity</a> section in the help pages for more details.</p>
 </div>
-<div id="flowdef-resource-columns" class="section level4">
-<h4>Flowdef resource columns</h4>
+</div>
+<div id="flowdef-resource-columns" class="section level2">
+<h2>Flowdef resource columns</h2>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: What all resources are supported in the flow definition?</p>
 </div>
@@ -374,8 +381,8 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 </table>
 <p><code>* These are generated on the fly</code> and <code>** This is gathered from flow mat</code></p>
 </div>
-<div id="adding-a-new-platform" class="section level4">
-<h4>Adding a new platform</h4>
+<div id="adding-a-new-platform" class="section level2">
+<h2>Adding a new platform</h2>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: Need to add a new platform</p>
 </div>
@@ -399,8 +406,44 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 cat $wd/002.create_tmp/create_tmp_cmd_1.out
 ## final script:
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
-<script src = "files/googl.js"></script>
 </div>
+<div id="installation-error-drat" class="section level2">
+<h2>Installation Error (DRAT)</h2>
+<pre><code>install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)
+
+ERROR: dependency ‘whisker’ is not available for package ‘params’
+* removing ‘/usr/local/lib/R/site-library/params’
+ERROR: dependencies ‘params’, ‘diagram’, ‘whisker’ are not available for package ‘flowr’
+* removing ‘/usr/local/lib/R/site-library/flowr’
+
+The downloaded source packages are in
+    ‘/tmp/RtmpykBS2r/downloaded_packages’
+Warning messages:
+1: In install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;) :
+  installation of package ‘params’ had non-zero exit status
+2: In install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;) :
+  installation of package ‘flowr’ had non-zero exit status</code></pre>
+<p>Issues is that whisker and params are not installed, and are not available in the DRAT repo.</p>
+<p>Solution 1:</p>
+<pre class="r"><code>install.packages(&quot;whisker&quot;)
+install.packages(&quot;diagram&quot;)
+install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)</code></pre>
+<p>Solution 2:</p>
+<pre class="r"><code>install.packages(&quot;flowr&quot;, repos = c(CRAN = &quot;http://cran.rstudio.com&quot;, DRAT = &quot;http://sahilseth.github.io/drat&quot;))</code></pre>
+</div>
+<div id="installation-error-github" class="section level2">
+<h2>Installation Error (Github)</h2>
+<pre><code>devtools:::install_github(“sahilseth/flowr”)
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed</code></pre>
+<p>Solution:</p>
+<p>This is basically a issue with httr (link) Try this:</p>
+<pre><code>install.packages(&quot;RCurl&quot;)
+devtools:::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
+<p>If not then try this: install.packages(“httr”);</p>
+<pre><code>library(httr);
+set_config( config( ssl.verifypeer = 0L ) )
+devtools:::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
+<script src = "files/googl.js"></script>
 </div>
 </div>
 

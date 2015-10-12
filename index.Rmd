@@ -83,12 +83,18 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 the ideas and concepts used in flowr
 - We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
 new pipeline
+- We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
+new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://docs.flowr.space/rd.html)
 page
 - You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install.html)
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 
+
+### Troubleshooting
+
+- Refer to the [advanced configuration](http://docs.flowr.space/install.html#troubleshooting) section or post issues on github's issues page.
 
 ### Talks/Slides
 - Updated [introduction](http://sahilseth.github.io/slides/flowrintro/index.html) (Sep, 2015)
