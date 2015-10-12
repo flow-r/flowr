@@ -56,7 +56,7 @@
 #' }
 run <- function(pipe_name,
 	platform,
-	def,
+	def, conf, 
 	flow_run_path = get_opts("flow_run_path"),
 	execute = FALSE,  ...){
 
@@ -82,13 +82,18 @@ run <- function(pipe_name,
 		pip$conf)
 	print(kable(as.data.frame(confs)))
 	load_opts(confs, verbose = FALSE, check = FALSE)
+	
+	if(!missing(conf))
+		load_opts(conf, verbose = FALSE, check = FALSE)
 
 	message("\n##--- creating flowmat....")
 	## crate a flowmat
 	args <- list(...)
 	out = do.call(func, args)
 
-
+	## fetched from the latest conf file ONLY
+	module_cmds = get_opts("module_cmds")
+	
 	message("\n##--- stitching a flow object....")
 	## get a flowdef
 	if(missing(def))
@@ -98,6 +103,7 @@ run <- function(pipe_name,
 		def = def,
 		platform = platform,
 		flowname = pipe_name,
+		module_cmds = module_cmds,
 		flow_run_path = flow_run_path)
 
 	## submit the flow
