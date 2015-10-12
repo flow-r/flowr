@@ -19,6 +19,7 @@ source: github.com/sahilseth/flowr/tree/gh-pages/index.Rmd
 
 <br>
 <br>
+
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
@@ -59,7 +60,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1" frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1" frameborder="0" allowfullscreen volume="0"></iframe>
 
 ### A few lines, to get started
 
