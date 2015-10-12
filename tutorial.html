@@ -211,7 +211,7 @@ def = to_flowdef(flowmat)
 suppressMessages(plot_flow(def))</code></pre>
 <p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.
+<p>The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.</p>
 </div>
 <p>We can make a few changes to make this pipeline a little more efficient. Briefly, we would run a few steps in a <strong>scatter</strong> fashion (in parallel).</p>
 <p>A few points to note:</p>
@@ -229,8 +229,6 @@ The default skeleton takes a very conservative approach, creating all submission
 - Lastly, we need to check the *size* of the resulting merged file.
 Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.
 -->
-
-
 <pre class="r"><code>##               sleep     create tmp   merge     size
 def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
 def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
@@ -303,7 +301,7 @@ kable(def)</code></pre>
 </table>
 <p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<strong>Tip:</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.
+<p><strong>Tip:</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.</p>
 </div>
 </div>
 <div id="create-flow-submit-to-cluster" class="section level2">
@@ -417,7 +415,6 @@ determines number of tmp files to create. Default is 3, let us try changing that
 ```
 
 --->
-
 <!----
 
 
@@ -446,11 +443,7 @@ to run it, hence a module **elevates**, becoming a pipeline.
 This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
 </div>
 -->
-
 <script src = "files/googl.js"></script>
-
-
-
 </div>
 </div>
 
