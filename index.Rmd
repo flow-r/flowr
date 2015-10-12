@@ -21,7 +21,7 @@ source: github.com/sahilseth/flowr/tree/gh-pages/index.Rmd
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+<!--![license](https://img.shields.io/badge/license-MIT-blue.svg)-->
 
 <!--
 <center> <h4><font color="#D3003A">
@@ -37,6 +37,12 @@ are to be executed in a (work)flow.
 
 ### Highlights
 
+
+
+<!--	- Consider step 1 uses 10 cores for each file; with 50 files it would use 500 cores in total.
+	- Next step uses one core for each file, 50 cores in total.
+	- Say step C merges them, and uses only 1 core.-->
+
 - Effectively process a **multi-step pipeline**, spawning it
 across the computing cluster
 - Example: 
@@ -44,17 +50,16 @@ across the computing cluster
    [fastqs](http://en.wikipedia.org/wiki/FASTQ_format) for a sample,
    [mapping](http://en.wikipedia.org/wiki/Sequence_alignment) them to a reference genome.
 	- Each step requires a range resources in terms of CPU, RAM etc.
-	- Consider step 1 uses 10 cores for each file; with 50 files it would use 500 cores in total.
-	- Next step uses one core for each file, 50 cores in total.
-	- Say step C merges them, and uses only 1 core.
-	- Some pipelines may reserve the maximum, example say 500 cores throught steps 1 to 3, 
-	flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
+	- Some pipelines may reserve the maximum, example say 500 cores throught all the steps
+	- flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
 	- Now consider the run has 10 samples, all of them would be procesed in
 	 parallel, spawning **thousands of cores**.
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
 -   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
+
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1" frameborder="0" allowfullscreen></iframe>
 
 ### A few lines, to get started
 
