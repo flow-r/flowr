@@ -184,7 +184,7 @@ Streamlining Design and Deployment of Complex Workflows
 <strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]
 </p>
 <p>
-<strong>Version:</strong> 0.9.8.9004
+<strong>Version:</strong> 0.9.8.9010
 </p>
 <p>
 <strong>License:</strong> MIT + file LICENSE
@@ -1545,7 +1545,7 @@ See also
 Run automated Pipelines
 </h3>
 <p class="rd-p">
-Run complete pipelines, by wrapping several steps into one convinient function: Taking <code>sleep_pipe</code> as a example.
+Run complete pipelines, by wrapping several steps into one convinient function: NOTE: please use flowr version: 0.9.8.9010 Taking <code>sleep_pipe</code> as a example.
 <ul>
 <li>
 Use <a href='fetch.html'>fetch_pipes</a> to get paths to a Rscript, flowdef file and optionally a configuration file with various default options used.
@@ -1564,18 +1564,12 @@ Submit the flow to the cluster (using <a href='submit_flow.html'>submit_flow</a>
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>run(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
-<div>run_pipe(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
+<pre class="r"><code><div>run(pipe_name, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(pipe_name, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
 <h4>
 Arguments
 </h4>
 <dl class="rd-dl">
-<dt>
-x
-</dt>
-<dd class="rd-dd">
-name of the pipeline to run. This is a function called to create a flow_mat.
-</dd>
 <dt>
 platform
 </dt>
@@ -1605,6 +1599,12 @@ TRUE/FALSE
 </dt>
 <dd class="rd-dd">
 passed onto the pipeline function as specified in x
+</dd>
+<dt>
+x
+</dt>
+<dd class="rd-dd">
+name of the pipeline to run. This is a function called to create a flow_mat.
 </dd>
 </dl>
 <h4>

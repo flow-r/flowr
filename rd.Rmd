@@ -29,7 +29,7 @@ You may download a PDF version of this manual [here](manual.pdf)
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.8.9004</p>
+<p><strong>Version:</strong> 0.9.8.9010</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
@@ -1049,6 +1049,7 @@ pip$def</code></pre>
 <h3>Run automated Pipelines</h3>
 
 <p class="rd-p">Run complete pipelines, by wrapping several steps into one convinient function:
+NOTE: please use flowr version: 0.9.8.9010
 Taking <code>sleep_pipe</code> as a example.
 <ul>
 <li> Use <a href='fetch.html'>fetch_pipes</a> to get paths to a Rscript, flowdef file and optionally a configuration file
@@ -1064,13 +1065,11 @@ Taking <code>sleep_pipe</code> as a example.
 </p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>run(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
-<div>run_pipe(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
+<pre class="r"><code><div>run(pipe_name, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(pipe_name, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
-  <dt>x</dt>
-  <dd class="rd-dd">name of the pipeline to run. This is a function called to create a flow_mat.</dd>
   <dt>platform</dt>
   <dd class="rd-dd">what platform to use, overrides flowdef</dd>
   <dt>def</dt>
@@ -1081,6 +1080,8 @@ Taking <code>sleep_pipe</code> as a example.
   <dd class="rd-dd">TRUE/FALSE</dd>
   <dt>...</dt>
   <dd class="rd-dd">passed onto the pipeline function as specified in x</dd>
+  <dt>x</dt>
+  <dd class="rd-dd">name of the pipeline to run. This is a function called to create a flow_mat.</dd>
 </dl>
 
 
