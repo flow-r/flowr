@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-10-06" />
+    <meta name="date" content="2015-10-11" />
   
   <title>flowr</title>
 
@@ -117,7 +117,7 @@
           <ul>
           <li><a href="#flowr-latest">flowr latest</a></li>
           <li><a href="#flowr-0.9.8-blueberries">flowr 0.9.8 (blueberries)</a></li>
-          <li><a href="#flowr-0.9.7.10-apples">flowr 0.9.7.10 (apples)</a></li>
+          <li><a href="#flowr-0.9.7-apples">flowr 0.9.7 (apples)</a></li>
           <li><a href="#flowr-0.9.6.13">flowr 0.9.6.13</a></li>
           <li><a href="#flowr-0.9.6.7">flowr 0.9.6.7</a></li>
           <li><a href="#flowr-0.9.5.1">flowr 0.9.5.1</a></li>
@@ -133,7 +133,10 @@
 <h2>flowr latest</h2>
 <ul>
 <li>New option local_cores, which determines (max) number of cores to use when running local jobs.</li>
+<li>enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).</li>
 </ul>
+<pre><code>## now this works well !
+flowr status x=.</code></pre>
 </div>
 <div id="flowr-0.9.8-blueberries" class="section level2">
 <h2>flowr 0.9.8 (blueberries)</h2>
@@ -192,10 +195,10 @@ jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
 <li><p>Several detailed changes to the documentation.</p></li>
 </ul>
 </div>
-<div id="flowr-0.9.7.10-apples" class="section level2">
-<h2>flowr 0.9.7.10 (apples)</h2>
+<div id="flowr-0.9.7-apples" class="section level2">
+<h2>flowr 0.9.7 (apples)</h2>
 <blockquote>
-<p>2015-08-22</p>
+<p>2015-08-22 (0.9.7.10)</p>
 </blockquote>
 <ul>
 <li>This release adds and changes functionality of several functions.</li>

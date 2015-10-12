@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-10-06" />
+    <meta name="date" content="2015-10-11" />
   
   <title>flowr</title>
 
@@ -116,9 +116,10 @@
         <div id="toc">
           <ul>
           <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
-          <li><a href="#creating-modulespipelines">Creating Modules/Pipelines</a></li>
           <li><a href="#creating-flow-definition">Creating Flow Definition</a></li>
           <li><a href="#create-flow-submit-to-cluster">Create flow, submit to cluster</a></li>
+          <li><a href="#creating-modules">Creating modules</a></li>
+          <li><a href="#using-run-to-run-the-entire-pipeline">Using run(), to run the entire pipeline</a></li>
           </ul></li>
           </ul>
         </div>
@@ -128,56 +129,39 @@
 <div id="content-top"></div>
 <div id="tutorial-building-a-pipeline" class="section level1">
 <h1>Tutorial: building a pipeline</h1>
-<p>A pipeline consists of several pieces, most essential of which is a function which generates a <a href="http://docs.flowr.space/docs.html#flow_mat">flowmat</a>. Once we get a flowmat, we need a <a href="http://docs.flowr.space/docs.html#flow_definition">flow definition</a>, which descibes how to stich various steps of the pipeline in a logical flow. Optionally, one may use an additional file with default paths to various tools and their parameters etc.</p>
-<pre><code>## to follow this tutorial, you may download them:
-url=https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines
-cd ~/flowr/pipelines
-wget $url/sleep_pipe.R             ## A R script, with sleep_pipe(), which creates a flowmat
-wget $url/sleep_pipe.def           ## A tab-delimited flow definition file
-wget $url/sleep_pipe.conf          ## An *optional* tab-delim conf file, defining default params</code></pre>
-<p>These three files are available under the <a href="https://github.com/sahilseth/flowr/tree/master/inst/pipelines">pipelines</a> folder on github.</p>
-<p>Here is a pipeline and mentioned in the <a href="http://docs.flowr.space/docs">overview</a> as well where we sleep for a few seconds, create temporary files, merge them etc.</p>
-<p>One may use a <code>run</code> function to create the flowmat, fetch the flowdef and execute the pipeline in a single step. Here we would focus more on each of these steps in detail.</p>
-<pre class="r"><code>## 1. Single step submission:
-fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
+<p>Let us use the same example described in the overview section. We start by getting a set of commands we would like to run.</p>
+<pre><code>## wait for a few seconds…
+sleep 5
+sleep 5
 
-## 2a. Details of the above step:
-setwd(&quot;~/flowr/pipelines&quot;)
-## behind the scenes, run does the following:
-## optionally, load default parameters
-load_opts(&quot;sleep_pipe.conf&quot;) 
+## create two small files
+cat $RANDOM &gt; tmp1
+cat $RANDOM &gt; tmp2
 
-## 2b. get sleep_pipe() function
-source(&quot;sleep_pipe.R&quot;) 
-## create a flowmat
-flowmat = sleep_pipe()
+## merge the two files
+cat tmp1 tmp2 &gt; tmp
 
-## 2c. read a flow definition.
-flowdef = as.flowdef(&quot;sleep_pipe.def&quot;)
+## check the size of the resulting file
+du -sh tmp</code></pre>
+<p><strong>Wrap these commands into R</strong></p>
+<pre class="r"><code>sleep=c(&#39;sleep 5&#39;, &#39;sleep 5&#39;)
 
-## 2d. create flow and submit to cluster
-fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
-<div id="creating-modulespipelines" class="section level2">
-<h2>Creating Modules/Pipelines</h2>
-<p>The <code>sleep_pipe</code> calls the three other functions (<strong>modules</strong>); fetches flowmat from each, then rbinds them, creating a larger flowmat. You may refer to the <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R">sleep_pipe.R</a> file for the source.</p>
-<pre class="r"><code>#&#39; @param x number of files to make
-sleep_pipe &lt;- function(x = 3, samplename = &quot;samp1&quot;){
+tmp=c(&#39;cat $RANDOM &gt; tmp1&#39;, 
+            &#39;cat $RANDOM &gt; tmp2&#39;)
+            
+merge=&#39;cat tmp1 tmp2 &gt; tmp&#39;
+            
+size=&#39;du -sh tmp&#39;</code></pre>
+<p>Next, we would create a table using the above commands:</p>
+<pre class="r"><code>## create a table of all commands
+library(flowr)
+lst = list( sleep=sleep, 
+           create_tmp=tmp, 
+           merge=merge,
+           size=size)
 
-    ## call the modules one by one...
-    out_sleep = sleep(x, samplename)
-    out_create_tmp = create_tmp(x, samplename)
-    out_merge_size = merge_size(out_create_tmp$outfiles, samplename)
-
-    ## row bind all the commands
-    flowmat = rbind(out_sleep$flowmat,
-        out_create_tmp$flowmat,
-        out_merge_size$flowmat)
-
-    return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
-}</code></pre>
-<pre class="r"><code>## create a flow matrix
-out = sleep_pipe(x = 3, &quot;sample1&quot;)
-flowmat = out$flowmat</code></pre>
+flowmat = to_flowmat(lst, &quot;samp1&quot;)
+kable(flowmat)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -188,70 +172,65 @@ flowmat = out$flowmat</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">sample1</td>
+<td align="left">samp1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 4 &amp;&amp; sleep 3;echo ‘hello’</td>
+<td align="left">sleep 5</td>
 </tr>
 <tr class="even">
-<td align="left">sample1</td>
+<td align="left">samp1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 37 &amp;&amp; sleep 2;echo ‘hello’</td>
+<td align="left">sleep 5</td>
 </tr>
 <tr class="odd">
-<td align="left">sample1</td>
-<td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 3;echo ‘hello’</td>
+<td align="left">samp1</td>
+<td align="left">create_tmp</td>
+<td align="left">cat $RANDOM &gt; tmp1</td>
 </tr>
 <tr class="even">
-<td align="left">sample1</td>
+<td align="left">samp1</td>
 <td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_1</td>
+<td align="left">cat $RANDOM &gt; tmp2</td>
 </tr>
 <tr class="odd">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_2</td>
-</tr>
-<tr class="even">
-<td align="left">sample1</td>
-<td align="left">create_tmp</td>
-<td align="left">head -c 100000 /dev/urandom &gt; sample1_tmp_3</td>
-</tr>
-<tr class="odd">
-<td align="left">sample1</td>
+<td align="left">samp1</td>
 <td align="left">merge</td>
-<td align="left">cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 &gt; sample1_merged</td>
+<td align="left">cat tmp1 tmp2 &gt; tmp</td>
 </tr>
 <tr class="even">
-<td align="left">sample1</td>
+<td align="left">samp1</td>
 <td align="left">size</td>
-<td align="left">du -sh sample1_merged; echo ‘MY shell:’ $SHELL</td>
+<td align="left">du -sh tmp</td>
 </tr>
 </tbody>
 </table>
-<p>Next, we need a flow definition.</p>
-<div class="alert alert-info" role="alert">
-<p><strong>module:</strong> A R function which creates a flow mat, is a module. Using <strong>module + flowdef</strong>, we can run a pipeline.</p>
-</div>
-</div>
 <div id="creating-flow-definition" class="section level2">
 <h2>Creating Flow Definition</h2>
-<p>Flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function <code>to_flowdef</code>, accepts a <code>flowmat</code> and creates a flow definition.</p>
+<p>We have a few steps in a pipeline; we would use a flow definition to descibe their flow. Flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function <code>to_flowdef</code>, accepts a <code>flowmat</code> and creates a flow definition.</p>
 <pre class="r"><code>## create a skeleton flow definition
 def = to_flowdef(flowmat) 
 suppressMessages(plot_flow(def))</code></pre>
 <p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p>The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.</p>
+The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.
 </div>
 <p>We can make a few changes to make this pipeline a little more efficient. Briefly, we would run a few steps in a <strong>scatter</strong> fashion (in parallel).</p>
+<p>A few points to note:</p>
 <ul>
-<li>multiple <em>sleep</em> commands would run as <code>scatter</code>/parallel, with <code>none</code> as the dependency.</li>
-<li>For each <em>sleep</em>, <em>create_tmp</em> creates a tmp file as <code>scatter</code>, using a <code>serial</code> type dependency. One <code>create_tmp</code> for one <code>sleep</code> (one-to-one relationship).</li>
-<li>Then all tmp files are <em>merged</em>. Intuitively, since this is a single step, we run it as <code>serial</code> and as all tmp files are required, we use a <code>gather</code> type dependency.</li>
-<li>Lastly, we need to check the <em>size</em> of the resulting merged file. Again, since this is a single step, we run is as <code>serial</code>. More so since the previous step also had a single command, we use a <code>serial</code> type dependency.</li>
+<li>Intial steps have no dependency, so their <strong>previous_jobs</strong> and <strong>dependency_type</strong> is <strong>none</strong>.</li>
+<li>Steps with multiple commands, which can be run in parallel are submitted as <strong>scatter</strong>.</li>
+<li>Steps with single commands are submitted as <strong>serial</strong>.</li>
+<li>Say two consective steps run on small pieces of data, we have a <strong>serial</strong> <strong>one to one</strong> relationship. Example, both <strong>sleep</strong> and <strong>create_tmp</strong> are submitted as <strong>scatter</strong> and <strong>create_tmp</strong> has a dependency_type <strong>serial</strong>.</li>
+<li>Finally if a step needs all the small pieces from a previous step, we use a <strong>gather</strong> type dependency.</li>
 </ul>
-<pre class="r"><code>def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
+<!--
+- multiple *sleep* commands would run as `scatter`/parallel, with `none` as the dependency.
+- For each *sleep*, *create_tmp* creates a tmp file as `scatter`, using a `serial` type dependency. One `create_tmp` for one `sleep` (one-to-one relationship).
+- Then all tmp files are *merged*. Intuitively, since this is a single step, we run it as `serial` and as all tmp files are required, we use a `gather` type dependency.
+- Lastly, we need to check the *size* of the resulting merged file.
+Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.
+-->
+<pre class="r"><code>##               sleep     create tmp   merge     size
+def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
 def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
 kable(def)</code></pre>
 <table>
@@ -322,7 +301,7 @@ kable(def)</code></pre>
 </table>
 <p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p><strong>Tip:</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.</p>
+<strong>Tip:</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.
 </div>
 </div>
 <div id="create-flow-submit-to-cluster" class="section level2">
@@ -338,6 +317,104 @@ fobj2 = submit_flow(fobj, execute = TRUE) ## submission to LSF cluster
 status(fobj2) ## check status
 rerun(fobj2)  ## re-run from a intermediate step
 kill(fobj2)   ## kill it!</code></pre>
+</div>
+<div id="creating-modules" class="section level2">
+<h2>Creating modules</h2>
+<p>We used a simple example where a single function was creating all the commands. This is easier, but a step (or module) is not re-usable in another pipeline. Thus we may write a module for each step, such that one may mix and match to create their own pipeline.</p>
+<p><strong>NOTE:</strong> A module, always returns a flowmat. A module may have one or several steps. A module + flowdef, becomes a pipeline.</p>
+<pre><code>## to follow this tutorial, you may download them:
+url=https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines
+cd ~/flowr/pipelines
+wget $url/sleep_pipe.R ## A R script, with sleep_pipe(), which creates a flowmat
+wget $url/sleep_pipe.def ## A tab-delimited flow definition file
+wget $url/sleep_pipe.conf ## An *optional* tab-delim conf file, defining default params</code></pre>
+<p>The <code>sleep_pipe</code> calls the three other functions (<strong>modules</strong>); fetches flowmat from each, then rbinds them, creating a larger flowmat. You may refer to the <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R">sleep_pipe.R</a> file for the source.</p>
+<pre class="r"><code>#&#39; @param x number of sleep commands
+sleep &lt;- function(x, samplename){
+    cmd = list(sleep = sprintf(&quot;sleep %s &amp;&amp; sleep %s;echo &#39;hello&#39;&quot;,
+        abs(round(rnorm(x)*10, 0)),
+        abs(round(rnorm(x)*10, 0))))
+    flowmat = to_flowmat(cmd, samplename)
+    return(list(flowmat = flowmat))
+}
+
+#&#39; @param x number of tmp commands
+create_tmp &lt;- function(x, samplename){
+    ## Create 100 temporary files
+    tmp = sprintf(&quot;%s_tmp_%s&quot;, samplename, 1:x)
+    cmd = list(create_tmp = sprintf(&quot;head -c 100000 /dev/urandom &gt; %s&quot;, tmp))
+    ## --- convert the list into a data.frame
+    flowmat = to_flowmat(cmd, samplename)
+    return(list(flowmat = flowmat, outfiles = tmp))
+}
+
+#&#39; @param x vector of files to merge
+merge_size &lt;- function(x, samplename){
+    ## Merge them according to samples, 10 each
+    mergedfile = paste0(samplename, &quot;_merged&quot;)
+    cmd_merge &lt;- sprintf(&quot;cat %s &gt; %s&quot;,
+        paste(x, collapse = &quot; &quot;), ## input files
+        mergedfile)
+    ## get the size of merged files
+    cmd_size = sprintf(&quot;du -sh %s; echo &#39;MY shell:&#39; $SHELL&quot;, mergedfile)
+
+    cmd = list(merge = cmd_merge, size = cmd_size)
+    ## --- convert the list into a data.frame
+    flowmat = to_flowmat(cmd, samplename)
+    return(list(flowmat = flowmat, outfiles = mergedfile))
+}</code></pre>
+<pre class="r"><code>#&#39; @param x number of files to make
+sleep_pipe &lt;- function(x = 3, samplename = &quot;samp1&quot;){
+
+    ## call the modules one by one...
+    out_sleep = sleep(x, samplename)
+    out_create_tmp = create_tmp(x, samplename)
+    out_merge_size = merge_size(out_create_tmp$outfiles, samplename)
+
+    ## row bind all the commands
+    flowmat = rbind(out_sleep$flowmat,
+        out_create_tmp$flowmat,
+        out_merge_size$flowmat)
+
+    return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
+}</code></pre>
+</div>
+<div id="using-run-to-run-the-entire-pipeline" class="section level2">
+<h2>Using run(), to run the entire pipeline</h2>
+<p>One may use <code>run</code> function to create the flowmat, fetch the flowdef and execute the pipeline in a single step. Here we would focus more on each of these steps in detail.</p>
+<pre class="r"><code>## 1. Single step submission:
+fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
+
+## 2
+## change wd, so that we can source the files downloaded in the previous step
+setwd(&quot;~/flowr/pipelines&quot;)
+
+## 2a. optionally, load default parameters
+load_opts(&quot;sleep_pipe.conf&quot;) 
+
+## 2b. get sleep_pipe() function
+source(&quot;sleep_pipe.R&quot;) 
+## create a flowmat
+flowmat = sleep_pipe()
+
+## 2c. read a flow definition.
+flowdef = as.flowdef(&quot;sleep_pipe.def&quot;)
+
+## 2d. create flow and submit to cluster
+fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
+<!---
+The first argument to run is the name of the pipeline, 
+one may use a custom flow definition etc. Further any extra arguments supplied are passed on to the pipeline function.
+
+For example, the `sleep_pipe` function has a argument **x** which 
+determines number of tmp files to create. Default is 3, let us try changing that.
+
+
+```r
+#run("sleep_pipe", x = )
+```
+
+--->
 <!----
 
 

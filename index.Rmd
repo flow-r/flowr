@@ -57,6 +57,10 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 
+
+<center>![intro](files/flowr_intro_700.gif)</center>
+
+
 ### A few lines, to get started
 
 ``` {r, eval=FALSE}

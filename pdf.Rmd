@@ -19,5 +19,6 @@ output:
 ```{r child = 'tutorial.Rmd'}
 ```
 
-```{r child = 'rd.Rmd'}
+```{r child = 'example.Rmd'}
 ```
+
