@@ -61,7 +61,8 @@ setwd(outwd)
 theme="flatly"
 theme = list(htmltools::htmlDependency(name = "bootswatch",
 													version = "3.3.5",
-													src = system.file("html_assets/bootswatch", theme, package = "packagedocs"),
+													src = "assets/bootswatch-3.3.5",
+													#system.file("html_assets/bootswatch", theme, package = "packagedocs"),
 													stylesheet = "bootstrap.css"))
 
 # set some options
@@ -70,8 +71,8 @@ pd_collapsed <- package_docs(lib_dir = "assets", toc_collapse = TRUE, template =
 pd_expand <- package_docs(lib_dir = "assets", toc_collapse = FALSE, toc_depth = 2, template = "template.html", extra_dependencies = theme)
 knitr::opts_knit$set(root.dir = normalizePath("."))
 
-# generate index.html, get new from template !
-unlink("assets", recursive = TRUE)
+# generate index.html, get new from template.
+#unlink("assets", recursive = TRUE)
 
 message("Copying RMD files ....", getwd())
 fls = c(
