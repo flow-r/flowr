@@ -169,10 +169,10 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <pre><code>## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(x=&#39;sleep_pipe&#39;, platform=&#39;local&#39;, execute=TRUE)</code></pre>
+run(pipe=&#39;sleep_pipe&#39;, platform=&#39;local&#39;, execute=TRUE)</code></pre>
 <p>If this completes successfully, we can try this on a computing cluster; where this would submit a few interconnected jobs.</p>
 <p>Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the platform variable to switch between platforms.</p>
-<pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE
+<pre><code>flowr run pipe=sleep_pipe platform=lsf execute=TRUE
 ## other options for platform: torque, moab, sge, slurm, lsf
 ## this shows the folder being used as a working directory for this flow.</code></pre>
 <p>Once the submission is complete, we can test the status using <code>status()</code> by supplying it the full path as recovered from the previous step.</p>
