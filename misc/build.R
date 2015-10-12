@@ -115,10 +115,10 @@ check_output("rd.html")
 
 
 ## stuff for MAC ONLY
-if(Sys.info()['sysname'] == "Darwins"){
+if(Sys.info()['sysname'] == "Darwin"){
 	system("open index.html")
 	setwd("~/Dropbox/public/github_flowrpages")
-	system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")
+	#system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")
 	system("git commit -a -m 'update website'")
 	system("git push")
 }

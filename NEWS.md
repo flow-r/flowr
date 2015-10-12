@@ -99,9 +99,9 @@ fetching statuses of previously completed jobs; this really speeding things up.
 
 - Several detailed changes to the documentation.
 
-flowr 0.9.7.10 (apples)
+flowr 0.9.7 (apples)
 ----------------------------------------------
-> 2015-08-22
+> 2015-08-22 (0.9.7.10)
 
 - This release adds and changes functionality of several functions. 
 - A new function run(), creates and submits a pipeline. Specifically it follows the following steps:

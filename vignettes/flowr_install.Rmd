@@ -43,10 +43,10 @@ Requirements:
 
 ```{r eval=FALSE}
 ## for a latest official version (from CRAN)
-install.packages("flowr", repos = "http://cran.rstudio.com")
+install.packages("flowr", repos = CRAN="http://cran.rstudio.com")
 
-## Latest stable release from DRAT (updated every other week)
-install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
 
 ## OR cutting edge devel version
 devtools::install_github("sahilseth/flowr", ref = "devel")
