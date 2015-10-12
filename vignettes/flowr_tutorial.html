@@ -75,6 +75,11 @@ img {
 <li><a href="#create-flow-submit-to-cluster">Create flow, submit to cluster</a></li>
 <li><a href="#creating-modules">Creating modules</a></li>
 <li><a href="#using-run-to-run-the-entire-pipeline">Using run(), to run the entire pipeline</a></li>
+<li><a href="#best-practices-for-writing-modulespipelines">Best practices for writing modules/pipelines</a><ul>
+<li><a href="#module-function">Module function:</a></li>
+<li><a href="#pipeline-structure">Pipeline structure</a></li>
+</ul></li>
+<li><a href="#nomeclature-for-parameters">Nomeclature for parameters</a></li>
 </ul></li>
 </ul>
 </div>
@@ -354,6 +359,87 @@ flowdef = as.flowdef(&quot;sleep_pipe.def&quot;)
 
 ## 2d. create flow and submit to cluster
 fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
+</div>
+<div id="best-practices-for-writing-modulespipelines" class="section level2">
+<h2>Best practices for writing modules/pipelines</h2>
+<p>These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.</p>
+<div id="module-function" class="section level3">
+<h3>Module function:</h3>
+<pre class="r"><code>picard_merge &lt;- function(x, 
+                        samplename = get_opts(&quot;samplename&quot;),
+                         mergedbam,
+                         java_exe = get_opts(&quot;java_exe&quot;),
+                         java_mem = get_opts(&quot;java_mem&quot;),
+                         java_tmp = get_opts(&quot;java_tmp&quot;),
+                         picard_jar = get_opts(&quot;picard_jar&quot;)){
+  
+
+  check_args()  
+  
+  ## create a named list of commands
+  bam_list = paste(&quot;INPUT=&quot;, x, sep = &quot;&quot;, collapse = &quot; &quot;)
+  cmds = list(merge = sprintf(&quot;%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true&quot;,
+                              java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
+  
+  ## --- INPUT is a NAMED list
+  flowmat = to_flowmat(cmds, samplename)
+  return(list(outfiles = mergedbam, flowmat = flowmat))
+}</code></pre>
+<ol style="list-style-type: decimal">
+<li>should accept minimum of two inputs,
+<ul>
+<li><strong>x</strong> (a input file etc, depends on the module) and</li>
+<li>samplename (is used to append a column to the flowmat)</li>
+</ul></li>
+<li>should always return a list arguments:
+<ul>
+<li><strong>flowmat</strong> (required) : contains all the commands to run</li>
+<li><strong>outfiles</strong> (recommended): could be used as an input to other tools</li>
+</ul></li>
+<li>can define all other default arguments such as paths to tools etc. in a seperate conf (tab-delimited) file.</li>
+</ol>
+<ul>
+<li>Then use <code>get_opts(&quot;param&quot;)</code> to use their value.</li>
+</ul>
+<pre><code>## Example conf file:
+cat my.conf
+bwa_exe /apps/bwa/bin/bwa</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>should use <code>check_args()</code> to make sure none of the default parameters are null.</li>
+</ol>
+<pre class="r"><code>## since this is not defined in the config file, returns NULLL
+## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
+get_opts(&quot;my_new_tool&quot;)</code></pre>
+<pre><code>## NULL</code></pre>
+</div>
+<div id="pipeline-structure" class="section level3">
+<h3>Pipeline structure</h3>
+<p>For example we have a pipeline consisting of alignment using bwa (aln1, aln2, sampe), fix rg tags using picard and merging the files. We would create three files:</p>
+<pre><code>fastq_bam_bwa.R      ## A R script, with sleep_pipe(), which creates a flowmat
+fastq_bam_bwa.conf   ## An *optional* tab-delim conf file, defining default params
+fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
+<p>Notice how all files have the same basename; this is essential for the <strong>run</strong> function to find all these files.</p>
+<p>We need that, 1. all three files should have the same basename 2. can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used by default. But other are available for users to switch platforms quickly.</p>
+<p><strong>Reason for using the same basename</strong>: - When we call <code>run(&quot;fastq_bam_bwa&quot;, ....)</code> it tries to look for a .R file inside flowr’s package, <code>~/flowr/pipelines</code> OR your current wd. If there are multiple matches, later is chosen. - Then, it finds and load default parameters from <code>fastq_bam_bwa.conf</code> (if available). - Further, it calls the function <code>fastq_bam_bwa</code>, then stiches a flow using <code>fastq_bam_bwa.def</code> as the flow definition.</p>
+<p><strong>features</strong> - A user can supply a custom flow definition (<code>run(&quot;fastq_bam_bwa&quot;, def = path/myflowdef.def, ....)</code>). - Starting flowr version <em>0.9.8.9011</em>, run also accepts a custom conf file in addition to a flowdef file. Conf contains all the default parameters like absolute paths to tools, paths to genomes, indexes etc.</p>
+<p>This is quite useful for portability, since to use the same pipeline across institution/computing clusters one only needs to change the flow definition and R function remains intact.</p>
+<div class="alert alert-info" role="alert">
+<p><strong>Tip:</strong> Its important to note, that in this example we are using R functions, but any other language can be used to create a tab-delimited flowmat file, and submitted using <code>submit_flow</code> command.</p>
+</div>
+</div>
+</div>
+<div id="nomeclature-for-parameters" class="section level2">
+<h2>Nomeclature for parameters</h2>
+<p>Here is a good example: <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf" class="uri">https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf</a></p>
+<blockquote>
+<p>(recommeded for increased compatibility)</p>
+</blockquote>
+<ol style="list-style-type: decimal">
+<li>all binaries end with **_exe**</li>
+<li>all folders end with **_dir**</li>
+<li>all jar files end with **_jar**</li>
+<li>specify cpu’s using <code>&lt;%CPU%&gt;</code>, this makes this value dynamic and is picked up by the flow definition</li>
+</ol>
 <!---
 The first argument to run is the name of the pipeline, 
 one may use a custom flow definition etc. Further any extra arguments supplied are passed on to the pipeline function.
@@ -365,6 +451,8 @@ determines number of tmp files to create. Default is 3, let us try changing that
 ```r
 #run("sleep_pipe", x = )
 ```
+
+
 
 --->
 <!----

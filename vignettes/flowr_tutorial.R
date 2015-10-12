@@ -129,6 +129,33 @@ sleep_pipe <- function(x = 3, samplename = "samp1"){
 #  ## 2d. create flow and submit to cluster
 #  fobj = to_flow(flowmat, flowdef, execute = TRUE)
 
+## ----picard_merge, echo=TRUE, comment=""---------------------------------
+picard_merge <- function(x, 
+                        samplename = get_opts("samplename"),
+                         mergedbam,
+                         java_exe = get_opts("java_exe"),
+                         java_mem = get_opts("java_mem"),
+                         java_tmp = get_opts("java_tmp"),
+                         picard_jar = get_opts("picard_jar")){
+  
+
+  check_args()  
+  
+  ## create a named list of commands
+  bam_list = paste("INPUT=", x, sep = "", collapse = " ")
+  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",
+                              java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
+  
+  ## --- INPUT is a NAMED list
+  flowmat = to_flowmat(cmds, samplename)
+  return(list(outfiles = mergedbam, flowmat = flowmat))
+}
+
+## ------------------------------------------------------------------------
+## since this is not defined in the config file, returns NULLL
+## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
+get_opts("my_new_tool")
+
 ## ------------------------------------------------------------------------
 #run("sleep_pipe", x = )
 

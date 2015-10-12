@@ -22,3 +22,11 @@ library(flowr)
 mat = read_sheet("files/flow_def_columns.txt")
 kable(mat, col.names = c("flowdef variable", "submission template variable"))
 
+## ----eval=FALSE----------------------------------------------------------
+#  install.packages("whisker")
+#  install.packages("diagram")
+#  install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+
+## ----eval=FALSE----------------------------------------------------------
+#  install.packages("flowr", repos = c(CRAN = "http://cran.rstudio.com", DRAT = "http://sahilseth.github.io/drat"))
+
