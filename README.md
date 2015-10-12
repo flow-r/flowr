@@ -62,6 +62,8 @@ setup() ## copy flowr bash script; and create a folder flowr under home.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ```
 
+**Example pipelines** [inst/pipelines](https://github.com/sahilseth/flowr/blob/devel/inst/pipelines)
+
 ### Resources
 - For a quick overview, you may browse through,
  these [introductory slides](http://sahilseth.github.io/slides/flowrintro).
@@ -87,6 +89,7 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 
 -   Jianhua Zhang
 -   Samir Amin
+-   Roger Moye
 -   Kadir Akdemir
 -   Ethan Mao
 -   Henry Song

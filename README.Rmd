@@ -102,6 +102,7 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 
 -   Jianhua Zhang
 -   Samir Amin
+-   Roger Moye
 -   Kadir Akdemir
 -   Ethan Mao
 -   Henry Song
