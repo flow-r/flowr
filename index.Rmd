@@ -60,7 +60,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1" frameborder="0" allowfullscreen volume="0"></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1" frameborder="0" volume="0"></iframe>
 
 ### A few lines, to get started
 
