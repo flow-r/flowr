@@ -478,7 +478,11 @@ get_opts(&quot;my_new_tool&quot;)</code></pre>
 fastq_bam_bwa.conf   ## An *optional* tab-delim conf file, defining default params
 fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <p>Notice how all files have the same basename; this is essential for the <strong>run</strong> function to find all these files.</p>
-<p>We need that, 1. all three files should have the same basename 2. can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used by default. But other are available for users to switch platforms quickly.</p>
+<p>We need that,</p>
+<ol style="list-style-type: decimal">
+<li>all three files should have the same basename</li>
+<li>can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used by default. But other are available for users to switch platforms quickly.</li>
+</ol>
 <p><strong>Reason for using the same basename</strong>:</p>
 <ul>
 <li>When we call <code>run(&quot;fastq_bam_bwa&quot;, ....)</code> it tries to look for a .R file inside flowr’s package, <code>~/flowr/pipelines</code> OR your current wd. If there are multiple matches, later is chosen.</li>
