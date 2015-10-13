@@ -86,6 +86,7 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 ### Acknowledgements
 
 -   Jianhua Zhang
+-   Andy Futreal
 -   Samir Amin
 -   Kadir Akdemir
 -   Ethan Mao
