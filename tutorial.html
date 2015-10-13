@@ -478,10 +478,8 @@ get_opts(&quot;my_new_tool&quot;)</code></pre>
 fastq_bam_bwa.conf   ## An *optional* tab-delim conf file, defining default params
 fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <p>Notice how all files have the same basename; this is essential for the <strong>run</strong> function to find all these files.</p>
-<p>We need that,</p>
 <ol style="list-style-type: decimal">
 <li>all three files should have the same basename</li>
-<li>can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used by default. But other are available for users to switch platforms quickly.</li>
 </ol>
 <p><strong>Reason for using the same basename</strong>:</p>
 <ul>
@@ -489,7 +487,10 @@ fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <li>Then, it finds and load default parameters from <code>fastq_bam_bwa.conf</code> (if available).</li>
 <li>Further, it calls the function <code>fastq_bam_bwa</code>, then stiches a flow using <code>fastq_bam_bwa.def</code> as the flow definition.</li>
 </ul>
-<p><strong>Features</strong>:</p>
+<ol start="2" style="list-style-type: decimal">
+<li>can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used by default. But other are available for users to switch platforms quickly.</li>
+</ol>
+<p><strong>Feature</strong>:</p>
 <ul>
 <li>A user can supply a custom flow definition</li>
 </ul>
