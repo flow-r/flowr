@@ -13,12 +13,6 @@
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 -->
 
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
-
-### Example
-[![ex_fq_bam](docs.flowr.space/files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
-
-
 ## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
 
 **Latest documentation: [docs.flowr.space](http://docs.flowr.space)**
@@ -51,6 +45,14 @@ across the computing cluster
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
 -   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
+
+
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
+
+### Example
+[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
+
+
 
 ### A few lines, to get started
 
