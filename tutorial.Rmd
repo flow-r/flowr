@@ -298,6 +298,7 @@ We need that,
  by default. But other are available for users to switch platforms quickly.
 
 **Reason for using the same basename**:
+
 - When we call `run("fastq_bam_bwa", ....)` it tries to look for a .R file inside flowr's package, `~/flowr/pipelines` OR your current wd. 
 If there are multiple matches, later is chosen. 
 - Then, it finds and load default parameters from `fastq_bam_bwa.conf` (if available). 

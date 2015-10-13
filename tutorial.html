@@ -479,7 +479,12 @@ fastq_bam_bwa.conf   ## An *optional* tab-delim conf file, defining default para
 fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <p>Notice how all files have the same basename; this is essential for the <strong>run</strong> function to find all these files.</p>
 <p>We need that, 1. all three files should have the same basename 2. can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used by default. But other are available for users to switch platforms quickly.</p>
-<p><strong>Reason for using the same basename</strong>: - When we call <code>run(&quot;fastq_bam_bwa&quot;, ....)</code> it tries to look for a .R file inside flowr’s package, <code>~/flowr/pipelines</code> OR your current wd. If there are multiple matches, later is chosen. - Then, it finds and load default parameters from <code>fastq_bam_bwa.conf</code> (if available). - Further, it calls the function <code>fastq_bam_bwa</code>, then stiches a flow using <code>fastq_bam_bwa.def</code> as the flow definition.</p>
+<p><strong>Reason for using the same basename</strong>:</p>
+<ul>
+<li>When we call <code>run(&quot;fastq_bam_bwa&quot;, ....)</code> it tries to look for a .R file inside flowr’s package, <code>~/flowr/pipelines</code> OR your current wd. If there are multiple matches, later is chosen.</li>
+<li>Then, it finds and load default parameters from <code>fastq_bam_bwa.conf</code> (if available).</li>
+<li>Further, it calls the function <code>fastq_bam_bwa</code>, then stiches a flow using <code>fastq_bam_bwa.def</code> as the flow definition.</li>
+</ul>
 <p><strong>features</strong> - A user can supply a custom flow definition (<code>run(&quot;fastq_bam_bwa&quot;, def = path/myflowdef.def, ....)</code>). - Starting flowr version <em>0.9.8.9011</em>, run also accepts a custom conf file in addition to a flowdef file. Conf contains all the default parameters like absolute paths to tools, paths to genomes, indexes etc.</p>
 <p>This is quite useful for portability, since to use the same pipeline across institution/computing clusters one only needs to change the flow definition and R function remains intact.</p>
 <div class="alert alert-info" role="alert">
