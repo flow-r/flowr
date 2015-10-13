@@ -46,6 +46,10 @@ across the computing cluster
 
 <iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
 
+### Example
+[![ex_fq_bam](files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
+
+
 ### A few lines, to get started
 
 
