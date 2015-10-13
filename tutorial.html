@@ -431,21 +431,22 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
                          java_mem = get_opts(&quot;java_mem&quot;),
                          java_tmp = get_opts(&quot;java_tmp&quot;),
                          picard_jar = get_opts(&quot;picard_jar&quot;)){
+    ## Make sure all args have a value (not null)
+    ## If a variable was not defined in a conf. file get_opts, will return NULL
+    check_args()  
   
-
-  check_args()  
-  
-  ## create a named list of commands
   bam_list = paste(&quot;INPUT=&quot;, x, sep = &quot;&quot;, collapse = &quot; &quot;)
-  cmds = list(merge = sprintf(&quot;%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true&quot;,
-                              java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
+  ## create a named list of commands
+  cmds = list(merge = sprintf(&quot;%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true&quot;,java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
   
-  ## --- INPUT is a NAMED list
+  ## Create a flowmat
   flowmat = to_flowmat(cmds, samplename)
+  
+  ## return a list, flowmat AND outfiles
   return(list(outfiles = mergedbam, flowmat = flowmat))
 }</code></pre>
 <ol style="list-style-type: decimal">
-<li>should accept minimum of two inputs,
+<li>should accept minimum of <strong>two inputs</strong>,
 <ul>
 <li><strong>x</strong> (a input file etc, depends on the module) and</li>
 <li>samplename (is used to append a column to the flowmat)</li>
@@ -466,8 +467,7 @@ bwa_exe /apps/bwa/bin/bwa</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>should use <code>check_args()</code> to make sure none of the default parameters are null.</li>
 </ol>
-<pre class="r"><code>## since this is not defined in the config file, returns NULLL
-## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
+<pre class="r"><code>## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
 get_opts(&quot;my_new_tool&quot;)</code></pre>
 <pre><code>## NULL</code></pre>
 </div>
