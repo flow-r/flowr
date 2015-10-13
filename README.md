@@ -16,7 +16,7 @@
 <iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
 
 ### Example
-[![ex_fq_bam](files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
+[![ex_fq_bam](docs.flowr.space/files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
 
 
 ## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
