@@ -87,7 +87,7 @@ to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform
 <div>## method for class 'data.frame'
 to_flow(x, ...)</div>
 <div>## method for class 'list'
-to_flow(x, def, flowname, flow_run_path, desc, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;"", verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1049,6 +1049,7 @@ pip$def</code></pre>
 <h3>Run automated Pipelines</h3>
 
 <p class="rd-p">Run complete pipelines, by wrapping several steps into one convinient function:
+NOTE: please use flowr version: 0.9.8.9010
 Taking <code>sleep_pipe</code> as a example.
 <ul>
 <li> Use <a href='fetch.html'>fetch_pipes</a> to get paths to a Rscript, flowdef file and optionally a configuration file
@@ -1064,8 +1065,8 @@ Taking <code>sleep_pipe</code> as a example.
 </p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>run(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div>
-<div>run_pipe(x, platform, def, flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
+<pre class="r"><code><div>run(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1075,6 +1076,10 @@ Taking <code>sleep_pipe</code> as a example.
   <dd class="rd-dd">what platform to use, overrides flowdef</dd>
   <dt>def</dt>
   <dd class="rd-dd">flow definition</dd>
+  <dt>conf</dt>
+  <dd class="rd-dd">a tab-delimited configuration file with path to tools and default parameters. See <a href=#fetch>fetch_pipes</a>.</dd>
+  <dt>wd</dt>
+  <dd class="rd-dd">an alias to flow_run_path</dd>
   <dt>flow_run_path</dt>
   <dd class="rd-dd">passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs</dd>
   <dt>execute</dt>
@@ -1253,7 +1258,7 @@ submit_flow(fobj, execute = TRUE)</code></pre>
 <p class="rd-p">Internal function (used by <a href='to_flow.html'>to_flow</a>), which aids in creating a flow object.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>flow(jobs&nbsp;=&nbsp;list(new("job")), name&nbsp;=&nbsp;"newflow", desc&nbsp;=&nbsp;"my_super_flow", mode&nbsp;=&nbsp;c("scheduler", "trigger", "R"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), trigger_path&nbsp;=&nbsp;"", flow_path&nbsp;=&nbsp;"", version&nbsp;=&nbsp;"0.0", status&nbsp;=&nbsp;"created", execute&nbsp;=&nbsp;"")</div></code></pre>
+<pre class="r"><code><div>flow(jobs&nbsp;=&nbsp;list(new("job")), name&nbsp;=&nbsp;"newflow", desc&nbsp;=&nbsp;"my_super_flow", mode&nbsp;=&nbsp;c("scheduler", "trigger", "R"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), trigger_path&nbsp;=&nbsp;"", flow_path&nbsp;=&nbsp;"", version&nbsp;=&nbsp;"0.0", status&nbsp;=&nbsp;"created", module_cmds&nbsp;=&nbsp;get_opts("module_cmds"), execute&nbsp;=&nbsp;"")</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
