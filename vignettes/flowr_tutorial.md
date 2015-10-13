@@ -376,6 +376,13 @@ Here is a good example: https://github.com/sahilseth/flowr/blob/master/inst/pipe
 4. specify cpu's using `<%CPU%>`, this makes this value dynamic and is picked up by the flow definition
 
 
+<!--## Flow of data
+
+Idea is that,
+1. output of a **modA** can be fetched via **modA$outfiles**
+2. it will be piped into say a second module B
+-->
+
 
 <!---
 The first argument to run is the name of the pipeline, 

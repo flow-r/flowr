@@ -440,6 +440,12 @@ fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <li>all jar files end with **_jar**</li>
 <li>specify cpu’s using <code>&lt;%CPU%&gt;</code>, this makes this value dynamic and is picked up by the flow definition</li>
 </ol>
+<!--## Flow of data
+
+Idea is that,
+1. output of a **modA** can be fetched via **modA$outfiles**
+2. it will be piped into say a second module B
+-->
 <!---
 The first argument to run is the name of the pipeline, 
 one may use a custom flow definition etc. Further any extra arguments supplied are passed on to the pipeline function.

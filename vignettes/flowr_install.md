@@ -62,7 +62,7 @@ Initially, we can test this locally, and later on a specific HPCC platform.
 ## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(x='sleep_pipe', platform='local', execute=TRUE)
+run(pipe='sleep_pipe', platform='local', execute=TRUE)
 ```
 
 If this completes successfully, we can try this on a computing cluster; where this would submit
@@ -72,7 +72,7 @@ Several platforms are supported out of the box (torque, moab, sge, slurm and lsf
 to switch between platforms.
 
 ```
-flowr run x=sleep_pipe platform=lsf execute=TRUE
+flowr run pipe=sleep_pipe platform=lsf execute=TRUE
 ## other options for platform: torque, moab, sge, slurm, lsf
 ## this shows the folder being used as a working directory for this flow.
 ```

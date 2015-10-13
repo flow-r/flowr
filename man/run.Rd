@@ -6,11 +6,11 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(pipe_name, platform, def, conf, flow_run_path = get_opts("flow_run_path"),
+run(x, platform, def, conf, flow_run_path = get_opts("flow_run_path"),
   execute = FALSE, ...)
 
-run_pipe(pipe_name, platform, def, conf,
-  flow_run_path = get_opts("flow_run_path"), execute = FALSE, ...)
+run_pipe(x, platform, def, conf, flow_run_path = get_opts("flow_run_path"),
+  execute = FALSE, ...)
 }
 \arguments{
 \item{platform}{what platform to use, overrides flowdef}
@@ -23,7 +23,7 @@ run_pipe(pipe_name, platform, def, conf,
 
 \item{...}{passed onto the pipeline function as specified in x}
 
-\item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}
+\item{p}{name of the pipeline to run. This is a function called to create a flow_mat.}
 }
 \description{
 Run complete pipelines, by wrapping several steps into one convinient function:

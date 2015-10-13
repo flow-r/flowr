@@ -15,7 +15,7 @@
 #'   \item Submit the flow to the cluster (using \link{submit_flow})
 #' }
 #'
-#' @param x name of the pipeline to run. This is a function called to create a flow_mat.
+#' @param p name of the pipeline to run. This is a function called to create a flow_mat.
 #' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
 #' @param platform what platform to use, overrides flowdef
@@ -54,7 +54,7 @@
 #' run("sleep_pipe", platform = "lsf", execute = TRUE, x = 5)
 #' 
 #' }
-run <- function(pipe_name,
+run <- function(x,
 	platform,
 	def, conf, 
 	flow_run_path = get_opts("flow_run_path"),
@@ -64,15 +64,15 @@ run <- function(pipe_name,
 	## find a Rscript with name {{x}}.R
 
 	message("\n##--- fetching pipeline... ")
-	pip = fetch_pipes(pipe_name, last_only = TRUE)
+	pip = fetch_pipes(x, last_only = TRUE)
 
-	if(missing(pipe_name))
+	if(missing(x))
 		stop("Please choose a pipeline to run, from the above list.")
 
 
 	## --- source the file and get the main function from it
 	source(pip$pipe, TRUE)
-	func = get(pipe_name) ## find function of the original name
+	func = get(x) ## find function of the original name
 
 
 	message("\n##--- loading confs....")

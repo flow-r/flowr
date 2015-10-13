@@ -80,4 +80,4 @@ script:
 after_success:
   - R CMD INSTALL .
   - Rscript -e 'covr::codecov()'
-  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy2.sh
+#  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "devel" && bash misc/deploy2.sh

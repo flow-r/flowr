@@ -4,6 +4,16 @@
   <img src='https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png' alt='flowr icon' width='40px' height='40px' style='margin-top: -10px;'>
   </a>
 -->
+
+  
+<title>flowr — Easy, scalable big data pipelines using hpcc </title>
+<!---<link rel="shortcut icon" href="http://">--->
+<meta property="og:description" content="Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
+<meta property="og:title" content="flowr — Easy, scalable big data pipelines using hpcc">
+<meta name="twitter:description" content="flowr - Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
+<meta name="twitter:title" content="flowr — Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
+
+
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)

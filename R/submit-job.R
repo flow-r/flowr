@@ -136,7 +136,7 @@ render_queue_cmd <- function(jobj, file, index, fobj){
 	
 	## --- dependency here is a string according to the policies of the cluster platform
 	module_cmds = fobj@module_cmds
-	l <- c(l, dependency=dependency, module_cmds) ## add dependency to the list
+	l <- c(l, dependency=dependency, module_cmds = unlist(module_cmds)) ## add dependency to the list
 	names(l) = toupper(names(l)) ## get list of slots
 	l <- c(l, "CMD" = jobj@cmds[index])
 	l$STDERR=l$STDOUT=jobj@stdout[index]
