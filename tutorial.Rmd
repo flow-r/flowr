@@ -229,7 +229,7 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)
 
 These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.
 
-### Module function:
+### A note on module functions
 
 ```{r picard_merge, echo=TRUE, comment=""}
 picard_merge <- function(x, 
@@ -315,7 +315,7 @@ Its important to note, that in this example we are using R functions, but any ot
 </div>
 
 
-## Nomeclature for parameters
+### Nomeclature for parameters
 
 Here is a good example: https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf
 

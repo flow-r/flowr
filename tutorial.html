@@ -130,7 +130,6 @@
           <li><a href="#creating-modules">Creating modules</a></li>
           <li><a href="#using-run-to-run-the-entire-pipeline">Using run(), to run the entire pipeline</a></li>
           <li><a href="#best-practices-for-writing-modulespipelines">Best practices for writing modules/pipelines</a></li>
-          <li><a href="#nomeclature-for-parameters">Nomeclature for parameters</a></li>
           </ul></li>
           </ul>
         </div>
@@ -417,8 +416,8 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 <div id="best-practices-for-writing-modulespipelines" class="section level2">
 <h2>Best practices for writing modules/pipelines</h2>
 <p>These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.</p>
-<div id="module-function" class="section level3">
-<h3>Module function:</h3>
+<div id="a-note-on-module-functions" class="section level3">
+<h3>A note on module functions</h3>
 <pre class="r"><code>picard_merge &lt;- function(x, 
                         samplename = get_opts(&quot;samplename&quot;),
                          mergedbam,
@@ -481,9 +480,8 @@ fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <strong>Tip:</strong> Its important to note, that in this example we are using R functions, but any other language can be used to create a tab-delimited flowmat file, and submitted using <code>submit_flow</code> command.
 </div>
 </div>
-</div>
-<div id="nomeclature-for-parameters" class="section level2">
-<h2>Nomeclature for parameters</h2>
+<div id="nomeclature-for-parameters" class="section level3">
+<h3>Nomeclature for parameters</h3>
 <p>Here is a good example: <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf" class="uri">https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf</a></p>
 <blockquote>
 <p>(recommeded for increased compatibility)</p>
@@ -544,6 +542,7 @@ This lets the user mix and match several modules/pipelines to create a customize
 </div>
 -->
 <script src = "files/googl.js"></script>
+</div>
 </div>
 </div>
 
