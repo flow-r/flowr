@@ -6,8 +6,6 @@
 -->
 
   
-<title>flowr — Easy, scalable big data pipelines using hpcc </title>
-<!---<link rel="shortcut icon" href="http://">--->
 <meta property="og:description" content="Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
 <meta property="og:title" content="flowr — Easy, scalable big data pipelines using hpcc">
 <meta name="twitter:description" content="flowr - Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
