@@ -1,5 +1,6 @@
 # 
 
+
 <br>
 <br>
 
@@ -17,7 +18,7 @@ This framework allows you to design and implement complex pipelines, and
 deploy them on your institution's computing cluster. This has been built
 keeping in mind the needs of bioinformatics workflows. However, it is
 easily extendable to any field where a series of steps (shell commands)
-are to be executed in a (work)flow.
+are to be executed in a (work)flow to process big data.
 
 ### Highlights
 
@@ -43,7 +44,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1" frameborder="0" allowfullscreen volume="0"></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
 
 ### A few lines, to get started
 
@@ -67,12 +68,18 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 the ideas and concepts used in flowr
 - We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
 new pipeline
+- We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
+new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://docs.flowr.space/rd.html)
 page
 - You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install.html)
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 
+
+### Troubleshooting
+
+- Refer to the [advanced configuration](http://docs.flowr.space/install.html#troubleshooting) section or post issues on github's issues page.
 
 ### Talks/Slides
 - Updated [introduction](http://sahilseth.github.io/slides/flowrintro/index.html) (Sep, 2015)
@@ -82,8 +89,10 @@ MD Anderson Comp. Biology meeting (July, 2015)
 
 ### Acknowledgements
 
+-   Andy Futreal
 -   Jianhua Zhang
 -   Samir Amin
+-   Roger Moye
 -   Kadir Akdemir
 -   Ethan Mao
 -   Henry Song
