@@ -124,12 +124,16 @@
             <div class="col-md-3" id="sidebar-col">
         <div id="toc">
           <ul>
-          <li><a href="#tutorial-building-a-pipeline">Tutorial: building a pipeline</a><ul>
+          <li><a href="#creating-input-files">Creating input file(s)</a><ul>
           <li><a href="#creating-flow-definition">Creating Flow Definition</a></li>
           <li><a href="#create-flow-submit-to-cluster">Create flow, submit to cluster</a></li>
           <li><a href="#creating-modules">Creating modules</a></li>
-          <li><a href="#using-run-to-run-the-entire-pipeline">Using run(), to run the entire pipeline</a></li>
-          <li><a href="#best-practices-for-writing-modulespipelines">Best practices for writing modules/pipelines</a></li>
+          </ul></li>
+          <li><a href="#execute-the-pipeline">Execute the pipeline</a></li>
+          <li><a href="#best-practices-for-writing-modulespipelines">Best practices for writing modules/pipelines</a><ul>
+          <li><a href="#a-note-on-module-functions">A note on module functions</a></li>
+          <li><a href="#pipeline-structure">Pipeline structure</a></li>
+          <li><a href="#nomeclature-for-parameters">Nomeclature for parameters</a></li>
           </ul></li>
           </ul>
         </div>
@@ -137,8 +141,8 @@
       <div class="col-md-9" id="content-col">
       
 <div id="content-top"></div>
-<div id="tutorial-building-a-pipeline" class="section level1">
-<h1>Tutorial: building a pipeline</h1>
+<div id="creating-input-files" class="section level1">
+<h1>Creating input file(s)</h1>
 <p>Let us use the same example described in the overview section. We start by getting a set of commands we would like to run.</p>
 <pre><code>## wait for a few seconds…
 sleep 5
@@ -389,8 +393,10 @@ sleep_pipe &lt;- function(x = 3, samplename = &quot;samp1&quot;){
     return(list(flowmat = flowmat, outfiles = out_merge_size$outfiles))
 }</code></pre>
 </div>
-<div id="using-run-to-run-the-entire-pipeline" class="section level2">
-<h2>Using run(), to run the entire pipeline</h2>
+</div>
+<div id="execute-the-pipeline" class="section level1">
+<h1>Execute the pipeline</h1>
+<p><strong>Using run</strong></p>
 <p>One may use <code>run</code> function to create the flowmat, fetch the flowdef and execute the pipeline in a single step. Here we would focus more on each of these steps in detail.</p>
 <pre class="r"><code>## 1. Single step submission:
 fobj = run(&quot;sleep_pipe&quot;, execute = TRUE); 
@@ -413,11 +419,11 @@ flowdef = as.flowdef(&quot;sleep_pipe.def&quot;)
 ## 2d. create flow and submit to cluster
 fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 </div>
-<div id="best-practices-for-writing-modulespipelines" class="section level2">
-<h2>Best practices for writing modules/pipelines</h2>
+<div id="best-practices-for-writing-modulespipelines" class="section level1">
+<h1>Best practices for writing modules/pipelines</h1>
 <p>These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.</p>
-<div id="a-note-on-module-functions" class="section level3">
-<h3>A note on module functions</h3>
+<div id="a-note-on-module-functions" class="section level2">
+<h2>A note on module functions</h2>
 <pre class="r"><code>picard_merge &lt;- function(x, 
                         samplename = get_opts(&quot;samplename&quot;),
                          mergedbam,
@@ -465,8 +471,8 @@ bwa_exe /apps/bwa/bin/bwa</code></pre>
 get_opts(&quot;my_new_tool&quot;)</code></pre>
 <pre><code>## NULL</code></pre>
 </div>
-<div id="pipeline-structure" class="section level3">
-<h3>Pipeline structure</h3>
+<div id="pipeline-structure" class="section level2">
+<h2>Pipeline structure</h2>
 <p>For example we have a pipeline consisting of alignment using bwa (aln1, aln2, sampe), fix rg tags using picard and merging the files. We would create three files:</p>
 <pre><code>fastq_bam_bwa.R      ## A R script, with sleep_pipe(), which creates a flowmat
 fastq_bam_bwa.conf   ## An *optional* tab-delim conf file, defining default params
@@ -480,8 +486,8 @@ fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <strong>Tip:</strong> Its important to note, that in this example we are using R functions, but any other language can be used to create a tab-delimited flowmat file, and submitted using <code>submit_flow</code> command.
 </div>
 </div>
-<div id="nomeclature-for-parameters" class="section level3">
-<h3>Nomeclature for parameters</h3>
+<div id="nomeclature-for-parameters" class="section level2">
+<h2>Nomeclature for parameters</h2>
 <p>Here is a good example: <a href="https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf" class="uri">https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf</a></p>
 <blockquote>
 <p>(recommeded for increased compatibility)</p>
@@ -542,7 +548,6 @@ This lets the user mix and match several modules/pipelines to create a customize
 </div>
 -->
 <script src = "files/googl.js"></script>
-</div>
 </div>
 </div>
 

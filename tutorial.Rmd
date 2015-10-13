@@ -34,7 +34,7 @@ library(knitr)
 library(flowr)
 ```
 
-# Tutorial: building a pipeline
+# Creating input file(s)
 
 ```{r example1, cache = FALSE, echo=FALSE}
 read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
@@ -196,7 +196,9 @@ file for the source.
 
 
 
-## Using run(), to run the entire pipeline
+# Execute the pipeline
+
+**Using run**
 
 One may use `run` function to create the flowmat, fetch the flowdef and execute the pipeline in a single step. Here we would focus more on each of these steps in detail.
 
@@ -225,11 +227,11 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)
 ```
 
 
-## Best practices for writing modules/pipelines
+# Best practices for writing modules/pipelines
 
 These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.
 
-### A note on module functions
+## A note on module functions
 
 ```{r picard_merge, echo=TRUE, comment=""}
 picard_merge <- function(x, 
@@ -278,7 +280,7 @@ get_opts("my_new_tool")
 ```
 
 
-### Pipeline structure
+## Pipeline structure
 For example we have a pipeline consisting of alignment using bwa (aln1, aln2, sampe), fix rg tags using picard and merging the files.
 We would create three files: 
 
@@ -315,7 +317,7 @@ Its important to note, that in this example we are using R functions, but any ot
 </div>
 
 
-### Nomeclature for parameters
+## Nomeclature for parameters
 
 Here is a good example: https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf
 
