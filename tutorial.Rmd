@@ -305,6 +305,7 @@ If there are multiple matches, later is chosen.
 - Further, it calls the function `fastq_bam_bwa`, then stiches a flow using `fastq_bam_bwa.def` as the flow definition. 
 
 **features**
+
 - A user can supply a custom flow definition (`run("fastq_bam_bwa", def = path/myflowdef.def, ....)`). 
 - Starting flowr version *0.9.8.9011*, run also accepts a custom conf file in addition to a flowdef file. Conf contains all the 
 default parameters like absolute paths to tools, paths to genomes, indexes etc.

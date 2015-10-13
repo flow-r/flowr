@@ -485,7 +485,11 @@ fastq_bam_bwa.def    ## A tab-delimited flow definition file</code></pre>
 <li>Then, it finds and load default parameters from <code>fastq_bam_bwa.conf</code> (if available).</li>
 <li>Further, it calls the function <code>fastq_bam_bwa</code>, then stiches a flow using <code>fastq_bam_bwa.def</code> as the flow definition.</li>
 </ul>
-<p><strong>features</strong> - A user can supply a custom flow definition (<code>run(&quot;fastq_bam_bwa&quot;, def = path/myflowdef.def, ....)</code>). - Starting flowr version <em>0.9.8.9011</em>, run also accepts a custom conf file in addition to a flowdef file. Conf contains all the default parameters like absolute paths to tools, paths to genomes, indexes etc.</p>
+<p><strong>features</strong></p>
+<ul>
+<li>A user can supply a custom flow definition (<code>run(&quot;fastq_bam_bwa&quot;, def = path/myflowdef.def, ....)</code>).</li>
+<li>Starting flowr version <em>0.9.8.9011</em>, run also accepts a custom conf file in addition to a flowdef file. Conf contains all the default parameters like absolute paths to tools, paths to genomes, indexes etc.</li>
+</ul>
 <p>This is quite useful for portability, since to use the same pipeline across institution/computing clusters one only needs to change the flow definition and R function remains intact.</p>
 <div class="alert alert-info" role="alert">
 <strong>Tip:</strong> Its important to note, that in this example we are using R functions, but any other language can be used to create a tab-delimited flowmat file, and submitted using <code>submit_flow</code> command.
