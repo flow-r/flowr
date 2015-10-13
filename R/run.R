@@ -15,9 +15,11 @@
 #'   \item Submit the flow to the cluster (using \link{submit_flow})
 #' }
 #'
-#' @param p name of the pipeline to run. This is a function called to create a flow_mat.
+#' @param x name of the pipeline to run. This is a function called to create a flow_mat.
 #' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
+#' @param wd an alias to flow_run_path
+#' @param conf a tab-delimited configuration file with path to tools and default parameters. See \link{fetch_pipes}.
 #' @param platform what platform to use, overrides flowdef
 #' @param execute TRUE/FALSE
 #' @param ... passed onto the pipeline function as specified in x
@@ -57,7 +59,8 @@
 run <- function(x,
 	platform,
 	def, conf, 
-	flow_run_path = get_opts("flow_run_path"),
+	wd = get_opts("flow_run_path"),
+	flow_run_path = wd,
 	execute = FALSE,  ...){
 
 	#print(get_opts("flow_run_path"))
@@ -102,7 +105,7 @@ run <- function(x,
 	fobj = to_flow(x = out$flowmat,
 		def = def,
 		platform = platform,
-		flowname = pipe_name,
+		flowname = x,
 		module_cmds = module_cmds,
 		flow_run_path = flow_run_path)
 

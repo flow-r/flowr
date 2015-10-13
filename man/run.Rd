@@ -6,16 +6,18 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(x, platform, def, conf, flow_run_path = get_opts("flow_run_path"),
-  execute = FALSE, ...)
+run(x, platform, def, conf, wd = get_opts("flow_run_path"),
+  flow_run_path = wd, execute = FALSE, ...)
 
-run_pipe(x, platform, def, conf, flow_run_path = get_opts("flow_run_path"),
-  execute = FALSE, ...)
+run_pipe(x, platform, def, conf, wd = get_opts("flow_run_path"),
+  flow_run_path = wd, execute = FALSE, ...)
 }
 \arguments{
 \item{platform}{what platform to use, overrides flowdef}
 
 \item{def}{flow definition}
+
+\item{wd}{an alias to flow_run_path}
 
 \item{flow_run_path}{passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs}
 
