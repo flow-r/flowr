@@ -19,6 +19,8 @@
 #' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
 #' @param wd an alias to flow_run_path
+#' @param rerun_wd if you need to run, supply the previous working dir
+#' @param start_from the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.
 #' @param conf a tab-delimited configuration file with path to tools and default parameters. See \link{fetch_pipes}.
 #' @param platform what platform to use, overrides flowdef
 #' @param execute TRUE/FALSE
@@ -61,6 +63,7 @@ run <- function(x,
 	def, conf, 
 	wd = get_opts("flow_run_path"),
 	flow_run_path = wd,
+	rerun_wd, start_from,
 	execute = FALSE,  ...){
 
 	#print(get_opts("flow_run_path"))
@@ -101,18 +104,25 @@ run <- function(x,
 	## get a flowdef
 	if(missing(def))
 		def = as.flowdef(pip$def)
-	## create a flow object
-	fobj = to_flow(x = out$flowmat,
-		def = def,
-		platform = platform,
-		flowname = x,
-		module_cmds = module_cmds,
-		flow_run_path = flow_run_path)
-
-	## submit the flow
-	message("\n##--- submitting....")
-	fobj = submit_flow(fobj, execute = execute)
-
+	
+	if(missing(rerun_wd)){
+		## create a flow object
+		fobj = to_flow(x = out$flowmat,
+									 def = def,
+									 platform = platform,
+									 flowname = x,
+									 module_cmds = module_cmds,
+									 flow_run_path = flow_run_path)
+		
+		## submit the flow
+		message("\n##--- submitting....")
+		fobj = submit_flow(fobj, execute = execute)
+	}else{
+		
+		fobj = rerun(x = rerun_wd, mat = out$flowmat, def = def, start_from = start_from)
+		
+	}
+	
 	invisible(fobj)
 }
 

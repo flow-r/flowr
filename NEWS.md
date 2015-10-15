@@ -30,6 +30,7 @@ flowr latest
 - **NOTE:** change the first argument of of the run function to x. This prevents conflicts of x is also one of the arguments to a module.
 - **New**: run function now accepts a custom conf, parameter.
 - **New**: Now you can add a module_cmds variable to the config file, and this will be prefixed in all script of the pipeline.
+- **New**: Run function now supports re-run as well.
 
 
 ```
