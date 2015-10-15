@@ -4,7 +4,7 @@ Sahil Seth
 
 
 
-# Tutorial: building a pipeline
+# Creating input file(s)
 
 
 
@@ -238,7 +238,9 @@ sleep_pipe <- function(x = 3, samplename = "samp1"){
 
 
 
-## Using run(), to run the entire pipeline
+# Execute the pipeline
+
+**Using run**
 
 One may use `run` function to create the flowmat, fetch the flowdef and execute the pipeline in a single step. Here we would focus more on each of these steps in detail.
 
@@ -268,11 +270,11 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)
 ```
 
 
-## Best practices for writing modules/pipelines
+# Best practices for writing modules/pipelines
 
 These are some of the practices we follow in-house. We feel using these makes stitching custom pipelines using a set of modules quite easy. Consider this a check-list of a few ideas and a work in progress.
 
-### Module function:
+## A note on module functions
 
 
 ```r
@@ -283,22 +285,23 @@ picard_merge <- function(x,
                          java_mem = get_opts("java_mem"),
                          java_tmp = get_opts("java_tmp"),
                          picard_jar = get_opts("picard_jar")){
+	## Make sure all args have a value (not null)
+	## If a variable was not defined in a conf. file get_opts, will return NULL
+	check_args()  
   
-
-  check_args()  
-  
-  ## create a named list of commands
   bam_list = paste("INPUT=", x, sep = "", collapse = " ")
-  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",
-                              java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
+  ## create a named list of commands
+  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
   
-  ## --- INPUT is a NAMED list
+  ## Create a flowmat
   flowmat = to_flowmat(cmds, samplename)
+  
+  ## return a list, flowmat AND outfiles
   return(list(outfiles = mergedbam, flowmat = flowmat))
 }
 ```
 
-1. should accept minimum of two inputs, 
+1. should accept minimum of **two inputs**, 
     - **x** (a input file etc, depends on the module) and
     - samplename (is used to append a column to the flowmat)
 2. should always return a list arguments:
@@ -317,7 +320,6 @@ bwa_exe	/apps/bwa/bin/bwa
 
 
 ```r
-## since this is not defined in the config file, returns NULLL
 ## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
 get_opts("my_new_tool")
 ```
@@ -327,7 +329,7 @@ get_opts("my_new_tool")
 ```
 
 
-### Pipeline structure
+## Pipeline structure
 For example we have a pipeline consisting of alignment using bwa (aln1, aln2, sampe), fix rg tags using picard and merging the files.
 We would create three files: 
 
@@ -339,24 +341,37 @@ fastq_bam_bwa.def    ## A tab-delimited flow definition file
 
 Notice how all files have the same basename; this is essential for the **run** function to find all these files.
 
-We need that,
 1. all three files should have the same basename
-2. can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used
- by default. But other are available for users to switch platforms quickly.
 
 **Reason for using the same basename**:
+
 - When we call `run("fastq_bam_bwa", ....)` it tries to look for a .R file inside flowr's package, `~/flowr/pipelines` OR your current wd. 
 If there are multiple matches, later is chosen. 
 - Then, it finds and load default parameters from `fastq_bam_bwa.conf` (if available). 
 - Further, it calls the function `fastq_bam_bwa`, then stiches a flow using `fastq_bam_bwa.def` as the flow definition. 
 
-**features**
-- A user can supply a custom flow definition (`run("fastq_bam_bwa", def = path/myflowdef.def, ....)`). 
+2. can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used
+ by default. But other are available for users to switch platforms quickly.
+
+**Feature**:
+
+- A user can supply a custom flow definition 
+
+```
+run('fastq_bam_bwa', def = 'path/myflowdef.def'....)
+```
+
 - Starting flowr version *0.9.8.9011*, run also accepts a custom conf file in addition to a flowdef file. Conf contains all the 
 default parameters like absolute paths to tools, paths to genomes, indexes etc.
 
+```
+run('fastq_bam_bwa', def = 'path/myflowdef.def', conf='path/myconf.conf',....)
+```
+
 This is quite useful for portability, since to use the same pipeline across institution/computing clusters one only needs to change the 
 flow definition and R function remains intact.
+
+Refer to help section on [run](rd.html#run) for more details.
 
 <div class="alert alert-info" role="alert">
 **Tip:** 
@@ -370,9 +385,9 @@ Here is a good example: https://github.com/sahilseth/flowr/blob/master/inst/pipe
 
 > (recommeded for increased compatibility)
 
-1. all binaries end with **_exe**
-2. all folders end with **_dir**
-3. all jar files end with **_jar**
+1. all binaries end with **\_exe**
+2. all folders end with **\_dir**
+3. all jar files end with **\_jar**
 4. specify cpu's using `<%CPU%>`, this makes this value dynamic and is picked up by the flow definition
 
 

@@ -137,22 +137,22 @@ picard_merge <- function(x,
                          java_mem = get_opts("java_mem"),
                          java_tmp = get_opts("java_tmp"),
                          picard_jar = get_opts("picard_jar")){
+	## Make sure all args have a value (not null)
+	## If a variable was not defined in a conf. file get_opts, will return NULL
+	check_args()  
   
-
-  check_args()  
-  
-  ## create a named list of commands
   bam_list = paste("INPUT=", x, sep = "", collapse = " ")
-  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",
-                              java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
+  ## create a named list of commands
+  cmds = list(merge = sprintf("%s %s -Djava.io.tmpdir=%s -jar %s MergeSamFiles %s OUTPUT=%s ASSUME_SORTED=TRUE VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true USE_THREADING=true",java_exe, java_mem, java_tmp, picard_jar, bam_list, mergedbam))
   
-  ## --- INPUT is a NAMED list
+  ## Create a flowmat
   flowmat = to_flowmat(cmds, samplename)
+  
+  ## return a list, flowmat AND outfiles
   return(list(outfiles = mergedbam, flowmat = flowmat))
 }
 
 ## ------------------------------------------------------------------------
-## since this is not defined in the config file, returns NULLL
 ## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
 get_opts("my_new_tool")
 
