@@ -184,7 +184,7 @@
 <div id="content-top"></div>
 <p><br></p>
 <div class="alert alert-info" role="alert">
-You may download a PDF version of this manual <a href="manual.pdf">here</a>
+<p>You may download a PDF version of this manual <a href="manual.pdf">here</a></p>
 </div>
 <script src = "files/googl.js"></script>
 <h1>
@@ -194,7 +194,7 @@ Streamlining Design and Deployment of Complex Workflows
 <strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]
 </p>
 <p>
-<strong>Version:</strong> 0.9.8.9014
+<strong>Version:</strong> 0.9.8.9015
 </p>
 <p>
 <strong>License:</strong> MIT + file LICENSE
@@ -543,7 +543,7 @@ Usage
 </h4>
 <pre class="r"><code><div>to_flowdef(x, ...)</div>
 <div>## method for class 'flowmat'
-to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;TRUE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
 <div>## method for class 'flow'
 to_flowdef(x, ...)</div>
 <div>## method for class 'character'
@@ -1574,8 +1574,8 @@ Submit the flow to the cluster (using <a href='submit_flow.html'>submit_flow</a>
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>run(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, execute&nbsp;=&nbsp;FALSE, ...)</div>
-<div>run_pipe(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
+<pre class="r"><code><div>run(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, rerun_wd, start_from, execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, rerun_wd, start_from, execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
 <h4>
 Arguments
 </h4>
@@ -1615,6 +1615,18 @@ flow_run_path
 </dt>
 <dd class="rd-dd">
 passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
+</dd>
+<dt>
+rerun_wd
+</dt>
+<dd class="rd-dd">
+if you need to run, supply the previous working dir
+</dd>
+<dt>
+start_from
+</dt>
+<dd class="rd-dd">
+the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.
 </dd>
 <dt>
 execute

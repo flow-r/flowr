@@ -134,20 +134,32 @@
     - Next step uses one core for each file, 50 cores in total.
     - Say step C merges them, and uses only 1 core.-->
 <ul>
-<li>Effectively process a <strong>multi-step pipeline</strong>, spawning it across the computing cluster</li>
-<li>Example:
-<ul>
-<li>A typical case in next-generation sequencing involves processing of tens of <a href="http://en.wikipedia.org/wiki/FASTQ_format">fastqs</a> for a sample, <a href="http://en.wikipedia.org/wiki/Sequence_alignment">mapping</a> them to a reference genome.</li>
-<li>Each step requires a range resources in terms of CPU, RAM etc.</li>
-<li>Some pipelines may reserve the maximum, example say 500 cores throught all the steps</li>
-<li>flowr would handle the <strong>surge</strong>, reserving 500, 50 or 1; when needed.</li>
-<li>Now consider the run has 10 samples, all of them would be procesed in parallel, spawning <strong>thousands of cores</strong>.</li>
-</ul></li>
+<li>No new <strong>syntax/language</strong>. Put all shell commands as a tsv file.</li>
+<li>Define all the flow of steps using a simple tsv file (serial, scatter, gather, burst…)</li>
+<li>Works on you laptop/server or cluster (/cloud).</li>
+<li>Supports <strong>multiple cluster computing platforms</strong> (torque, lsf, sge, slurm …), cloud (star cluster) OR a local machine.</li>
+<li>One line installation (<code>install.packages(&quot;flowr&quot;)</code>)</li>
 <li><strong>Reproducible</strong> and <strong>transparent</strong>, with cleanly structured execution logs</li>
 <li><strong>Track</strong> and <strong>re-run</strong> flows</li>
 <li><strong>Lean</strong> and <strong>Portable</strong>, with easy installation</li>
-<li>Supports <strong>multiple cluster computing platforms</strong> (torque, lsf, sge, slurm …), cloud (star cluster) OR a local machine.</li>
+<li>Fine grain control over resources (CPU, memory, walltime of each step.</li>
 </ul>
+<!--
+- Effectively process a **multi-step pipeline**, spawning it
+across the computing cluster
+- Example: 
+    - A typical case in next-generation sequencing involves processing of tens of
+   [fastqs](http://en.wikipedia.org/wiki/FASTQ_format) for a sample,
+   [mapping](http://en.wikipedia.org/wiki/Sequence_alignment) them to a reference genome.
+    - Each step requires a range resources in terms of CPU, RAM etc.
+    - Some pipelines may reserve the maximum, example say 500 cores throught all the steps
+    - flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
+    - Now consider the run has 10 samples, all of them would be procesed in
+     parallel, spawning **thousands of cores**.
+-   **Reproducible** and **transparent**, with cleanly structured execution logs
+-   **Track** and **re-run** flows
+-   **Lean** and **Portable**, with easy installation
+-->
 <iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0">
 </iframe>
 </div>
