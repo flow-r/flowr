@@ -55,6 +55,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -->
 
+<script>
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
 
@@ -70,7 +71,8 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         videoId: 'szDNFioBdPo',
-        events: {
+         'startSeconds': 29,
+         events: {
             'onReady': onPlayerReady
         }
     });
@@ -81,8 +83,11 @@ function onPlayerReady(event) {
     player.setPlaybackRate(2);
     event.target.playVideo();
 }
+</script>
 
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29;speed=2" frameborder="0" volume="0"></iframe>
+<div id="player"></div>
+
+<!--<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29;speed=2" frameborder="0" volume="0"></iframe>-->
 
 ### Example
 [![ex_fq_bam](files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
