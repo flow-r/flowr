@@ -55,7 +55,9 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -->
 
+<div class="alert alert-info" role="alert">
 Find examples and relation software: [https://github.com/flow-r](https://github.com/flow-r)
+</div>
 
 <script>
 // 2. This code loads the IFrame Player API code asynchronously.
