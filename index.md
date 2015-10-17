@@ -28,9 +28,9 @@ are to be executed in a (work)flow to process big data.
 	- Next step uses one core for each file, 50 cores in total.
 	- Say step C merges them, and uses only 1 core.-->
 
-- No new **syntax or language**. Put all shell commands as a tsv file called [flow mat](http://docs.flowr.space/overview.html#flow_mat).
+- No new **syntax or language**. Put all shell commands as a tsv file called [flow mat](http://docs.flowr.space/overview.html#flow_matrix).
 - Define the [flow of steps](http://docs.flowr.space/overview.html#relationships) using a simple tsv file (serial, scatter, gather, burst...) called [flow def](http://docs.flowr.space/overview.html#flow_definition).
-- Works on you laptop/server or cluster (/cloud).
+- Works on your laptop/server or cluster (/cloud).
 - Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 - One line installation (`install.packages("flowr")`)
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
@@ -54,6 +54,8 @@ across the computing cluster
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
 -->
+
+Find examples and relation software: [https://github.com/flow-r](https://github.com/flow-r)
 
 <script>
 // 2. This code loads the IFrame Player API code asynchronously.
