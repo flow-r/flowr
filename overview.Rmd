@@ -400,7 +400,7 @@ The above translates to a flow definition which looks like this:
 dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
-something --->
+something -->
 
 
 
@@ -527,7 +527,7 @@ pcd <- plot_flow(flow(jobs = list(C, D)))
 ```
 
 
-<!--- makes sense when previous job had one command current job would split and submit several jobs in parallel
+<!-- makes sense when previous job had one command current job would split and submit several jobs in parallel
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 ```{r, eval=FALSE, echo=FALSE}
 jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
@@ -536,7 +536,7 @@ jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
 fobj <- flow(jobs = list(jobj1, jobj2))
 plot_flow(fobj)
 ```
---->
+something -->
 
 In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):
 
