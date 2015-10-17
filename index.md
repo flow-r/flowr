@@ -28,6 +28,17 @@ are to be executed in a (work)flow to process big data.
 	- Next step uses one core for each file, 50 cores in total.
 	- Say step C merges them, and uses only 1 core.-->
 
+- No new **syntax or language**. Put all shell commands as a tsv file called [flow mat](http://docs.flowr.space/overview.html#flow_mat).
+- Define the [flow of steps](http://docs.flowr.space/overview.html#relationships) using a simple tsv file (serial, scatter, gather, burst...) called [flow def](http://docs.flowr.space/overview.html#flow_definition).
+- Works on you laptop/server or cluster (/cloud).
+- Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
+- One line installation (`install.packages("flowr")`)
+-   **Reproducible** and **transparent**, with cleanly structured execution logs
+-   **Track** and **re-run** flows
+-   **Lean** and **Portable**, with easy installation
+- **Fine grain** control over resources (CPU, memory, walltime of each step.
+
+<!--
 - Effectively process a **multi-step pipeline**, spawning it
 across the computing cluster
 - Example: 
@@ -42,9 +53,9 @@ across the computing cluster
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
+-->
 
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29;speed=2" frameborder="0" volume="0"></iframe>
 
 ### Example
 [![ex_fq_bam](files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)

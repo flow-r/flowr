@@ -237,13 +237,11 @@ suppressMessages(plot_flow(def))</code></pre>
 <li>Say two consective steps run on small pieces of data, we have a <strong>serial</strong> <strong>one to one</strong> relationship. Example, both <strong>sleep</strong> and <strong>create_tmp</strong> are submitted as <strong>scatter</strong> and <strong>create_tmp</strong> has a dependency_type <strong>serial</strong>.</li>
 <li>Finally if a step needs all the small pieces from a previous step, we use a <strong>gather</strong> type dependency.</li>
 </ul>
-<!--
-- multiple *sleep* commands would run as `scatter`/parallel, with `none` as the dependency.
+<!-- multiple *sleep* commands would run as `scatter`/parallel, with `none` as the dependency.
 - For each *sleep*, *create_tmp* creates a tmp file as `scatter`, using a `serial` type dependency. One `create_tmp` for one `sleep` (one-to-one relationship).
 - Then all tmp files are *merged*. Intuitively, since this is a single step, we run it as `serial` and as all tmp files are required, we use a `gather` type dependency.
 - Lastly, we need to check the *size* of the resulting merged file.
-Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.
--->
+Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.-->
 <pre class="r"><code>##               sleep     create tmp   merge     size
 def$sub_type = c(&quot;scatter&quot;, &quot;scatter&quot;, &quot;serial&quot;, &quot;serial&quot;)
 def$dep_type = c(&quot;none&quot;, &quot;serial&quot;, &quot;gather&quot;, &quot;serial&quot;)
@@ -316,7 +314,7 @@ kable(def)</code></pre>
 </table>
 <p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-<p><strong><a href="Tip:**" class="uri">Tip:**</a> Alternatively, one may write this to a file (</strong>write_sheet(def, “sleep_pipe.def”)<strong>), make changes in a text editor and read it again (</strong>as.flowdef(“sleep_pipe.def”)**.</p>
+<p><strong>Tip</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.</p>
 </div>
 </div>
 <div id="create-flow-submit-to-cluster" class="section level2">
@@ -524,19 +522,25 @@ Idea is that,
 1. output of a **modA** can be fetched via **modA$outfiles**
 2. it will be piped into say a second module B
 -->
-<p>&lt;!— The first argument to run is the name of the pipeline, one may use a custom flow definition etc. Further any extra arguments supplied are passed on to the pipeline function.</p>
-<p>For example, the <code>sleep_pipe</code> function has a argument <strong>x</strong> which determines number of tmp files to create. Default is 3, let us try changing that.</p>
-<pre class="r"><code>#run(&quot;sleep_pipe&quot;, x = )</code></pre>
-<p>—&gt;</p>
-<p>&lt;!—-</p>
-<p>We then define another function <code>sleep_pipe</code> which calls the above defined <strong>modules</strong>; fetches flowmat from each, creating a larger flowmat. This time we will define a flowdef for the <code>sleep_pipe</code> function, elevating its status from module to a pipeline.</p>
-<p>This time we will define a flowdef for the <code>sleep_pipe</code> function, elevating its status from module to a pipeline.</p>
-<p>Here are a few examples of modules, three functions <code>sleep</code>, <code>create_tmp</code> and <code>merge_size</code> each returning a flowmat.</p>
-<p>We believe pipeline and modules may be interchangeble, in the sense that a <em>smaller</em> pipeline may be included as part of a larger pipeline. In flowr a module OR pipeline always returns a flowmat. The only difference being, a pipeline also has a correspomding flow definition file.</p>
+<!-- The first argument to run is the name of the pipeline, 
+one may use a custom flow definition etc. Further any extra arguments supplied are passed on to the pipeline function.
+For example, the `sleep_pipe` function has a argument **x** which 
+determines number of tmp files to create. Default is 3, let us try changing that. -->
+<!-- We then define another function `sleep_pipe` which calls the above defined **modules**; fetches flowmat from each, 
+creating a larger flowmat. This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
+module to a pipeline.
+This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
+module to a pipeline.
+Here are a few examples of modules, three functions `sleep`, `create_tmp` and `merge_size` each returning a flowmat.
+We believe pipeline and modules may be interchangeble, in the sense that a *smaller* pipeline may be 
+included as part of a larger pipeline.
+In flowr a module OR pipeline always returns a flowmat.
+The only difference being, a pipeline also has a correspomding flow definition file. 
 <div class="alert alert-info" role="alert">
-<p>As such, creating a flow definition for a module enables flowr to run it, hence a module <strong>elevates</strong>, becoming a pipeline. This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).</p>
-</div>
-<p>–&gt;</p>
+As such, creating a flow definition for a module enables flowr
+to run it, hence a module **elevates**, becoming a pipeline.
+This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
+</div> -->
 <script src = "files/googl.js"></script>
 </div>
 </div>

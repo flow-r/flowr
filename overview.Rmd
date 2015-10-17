@@ -46,10 +46,11 @@ library(flowr)
 ```{r eval=FALSE}
 setup()
 ```
+
 This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
 For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
 
-<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. ---> 
+<!-- We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --> 
 
 Running flowr from the terminal will fetch you the following:
 
@@ -364,8 +365,7 @@ kable(head(flow_def))
 
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
 
-<!-- 
-- jobname: is passed as `name` argument to job().
+<!--  jobname: is passed as `name` argument to job().
 - prev_jobs: passed as `previous_job` argument  to job().
 - dep_type: passed as `dependency_type` argument  to job(). Possible values: gather, serial
 - sub_type: passed as `submission_type` argument  to job().
@@ -375,11 +375,9 @@ kable(head(flow_def))
 	Some pipelines: 160000, 16g etc representing a 16GB reservation of RAM
 - walltime: How long would this job run. Again refer to your HPCC guide. Example: 24:00, 24:00:00
 - cpu_reserved: Amount of CPU reserved.
-
 Its best to have this as a tab seperated file (with no row.names). -->
 
-<!---
-### Style 2
+<!-- Style 2
 
 This style may be more suited for people who like to explore more advanced usage and like to code in R. Also this one find this much faster if jobs and their relationships changes a lot.
 
@@ -512,17 +510,13 @@ Since C is a single command which requires all steps of B to complete, intuitive
 pbc <- plot_flow(flow(jobs = list(B, C)))
 ```
 
-<!---
-- makes sense when previous job had many commands running in parallel and current job would wait for all
+<!-- makes sense when previous job had many commands running in parallel and current job would wait for all
 - so previous job submission: `scatter`, and current job's dependency type `gather`
-```{r, eval=FALSE, echo=FALSE}
 jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
 jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
              dependency_type = "gather", previous_job = "job1")
 fobj <- flow(jobs = list(jobj1, jobj2))
-plot_flow(fobj)
-```
---->
+plot_flow(fobj) -->
 
 ## One to Many (Burst)
 
@@ -543,8 +537,7 @@ pcd <- plot_flow(flow(jobs = list(C, D)))
 ```
 
 
-<!---
-- makes sense when previous job had one command current job would split and submit several jobs in parallel
+<!--- makes sense when previous job had one command current job would split and submit several jobs in parallel
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 ```{r, eval=FALSE, echo=FALSE}
 jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")

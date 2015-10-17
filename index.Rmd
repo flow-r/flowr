@@ -45,15 +45,15 @@ are to be executed in a (work)flow to process big data.
 	- Next step uses one core for each file, 50 cores in total.
 	- Say step C merges them, and uses only 1 core.-->
 
-- No new **syntax/language**. Put all shell commands as a tsv file.
-- Define all the flow of steps using a simple tsv file (serial, scatter, gather, burst...)
+- No new **syntax or language**. Put all shell commands as a tsv file called [flow mat](http://docs.flowr.space/overview.html#flow_mat).
+- Define the [flow of steps](http://docs.flowr.space/overview.html#relationships) using a simple tsv file (serial, scatter, gather, burst...) called [flow def](http://docs.flowr.space/overview.html#flow_definition).
 - Works on you laptop/server or cluster (/cloud).
 - Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 - One line installation (`install.packages("flowr")`)
 -   **Reproducible** and **transparent**, with cleanly structured execution logs
 -   **Track** and **re-run** flows
 -   **Lean** and **Portable**, with easy installation
-- Fine grain control over resources (CPU, memory, walltime of each step.
+- **Fine grain** control over resources (CPU, memory, walltime of each step.
 
 <!--
 - Effectively process a **multi-step pipeline**, spawning it

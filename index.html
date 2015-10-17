@@ -134,15 +134,15 @@
     - Next step uses one core for each file, 50 cores in total.
     - Say step C merges them, and uses only 1 core.-->
 <ul>
-<li>No new <strong>syntax/language</strong>. Put all shell commands as a tsv file.</li>
-<li>Define all the flow of steps using a simple tsv file (serial, scatter, gather, burst…)</li>
+<li>No new <strong>syntax or language</strong>. Put all shell commands as a tsv file called <a href="http://docs.flowr.space/overview.html#flow_mat">flow mat</a>.</li>
+<li>Define the <a href="http://docs.flowr.space/overview.html#relationships">flow of steps</a> using a simple tsv file (serial, scatter, gather, burst…) called <a href="http://docs.flowr.space/overview.html#flow_definition">flow def</a>.</li>
 <li>Works on you laptop/server or cluster (/cloud).</li>
 <li>Supports <strong>multiple cluster computing platforms</strong> (torque, lsf, sge, slurm …), cloud (star cluster) OR a local machine.</li>
 <li>One line installation (<code>install.packages(&quot;flowr&quot;)</code>)</li>
 <li><strong>Reproducible</strong> and <strong>transparent</strong>, with cleanly structured execution logs</li>
 <li><strong>Track</strong> and <strong>re-run</strong> flows</li>
 <li><strong>Lean</strong> and <strong>Portable</strong>, with easy installation</li>
-<li>Fine grain control over resources (CPU, memory, walltime of each step.</li>
+<li><strong>Fine grain</strong> control over resources (CPU, memory, walltime of each step.</li>
 </ul>
 <!--
 - Effectively process a **multi-step pipeline**, spawning it
