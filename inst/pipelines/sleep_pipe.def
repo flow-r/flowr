@@ -1,5 +1,5 @@
 jobname	sub_type	prev_jobs	dep_type	queue	memory_reserved	walltime	cpu_reserved	platform
-sleep	scatter	NA	none	short	2000	1:00	1	torque
-create_tmp	scatter	sleep	serial	short	2000	1:00	1	torque
-merge	serial	create_tmp	gather	short	2000	1:00	1	torque
-size	serial	merge	serial	short	2000	1:00	1	torque
+sleep	scatter	NA	none	short	2000	1:00	1	local
+create_tmp	scatter	sleep	serial	short	2000	1:00	1	local
+merge	serial	create_tmp	gather	short	2000	1:00	1	local
+size	serial	merge	serial	short	2000	1:00	1	local

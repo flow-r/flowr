@@ -1,0 +1,355 @@
+#!/usr/bin/env Rscript
+## A class that contains bam file information
+## Copyright 2014, Sahil Seth
+## licence: MIT
+## sahil.seth@me.com
+## A few functions to supplement those already in this package.
+## URL: github.com/sahilseth/funr
+## URL: docs.flowr.space
+#### -----------------------
+
+
+
+
+
+## ------------------------------   define the functions ------------------------------------------- ##
+## All the functions have now moved to a funr pacakge
+
+#' funr: providing a simple command-line interface to R functions
+#'
+#' @description
+#' Wraps Rscript in a easy to use manner, exposing all R functions from the terminal.
+#' The \href{https://github.com/sahilseth/funr}{github page} provides more details with examples,
+#' highlights and caveats.
+#'
+#' @aliases funr rfun cli
+#'
+#' @param args Should always be: \code{commandArgs(trailingOnly = TRUE)}, when used
+#' inside a script. \href{https://github.com/sahilseth/funr/blob/master/inst/scripts/funr}{Example}
+#' @param help_text A simple text to be displayed describing options and usage of this interface.
+#' Supplying this, replaces the default text.
+#' @param script_name Name of the script. This is used in the the help text. [funr]
+#'
+#'
+#' @source https://github.com/sahilseth/funr
+#'
+#' @export
+#'
+#' @examples
+#' ## show funr help
+#' ## terminal version: funr -h
+#' funr()
+#'
+#'
+#' ## show rnorm help
+#' ## terminal version: funr -h rnorm
+#' render_funr(funr(args=c("-h", "rnorm")))
+#'
+#' ## Generate a few random numbers
+#' ## terminal version: funr rnorm n=10
+#' render_funr(funr(args=c("rnorm", "n=10")))
+#'
+funr <- function(args,
+								 help_text,
+								 script_name = "funr"){
+	
+	##        show help if there are no arguments
+	#if(missing(help_text))
+	
+	if(missing(args)){
+		message(generic_help(help_text = help_text, script_name = script_name))
+		return()
+	}
+	
+	if(length(args) == 0){
+		message(generic_help(help_text = help_text, script_name = script_name))
+		return()
+	}
+	
+	##           Arguments which start with - are for this script
+	rm = grep("^-", args)
+	script_args = args[rm]
+	
+	verbose = FALSE
+	if("-v" %in% script_args)
+		verbose = TRUE
+	
+	if(verbose){
+		message("args:"); message(args)
+		message("script_args:"); message(script_args)
+	}
+	
+	## remove these from subsequent processing
+	if(length(rm) > 0)
+		args = args[-rm]
+	
+	if(length(args) == 0){
+		message(generic_help(help_text = help_text))
+		return()
+	}
+	
+	##             Get name of the function
+	func = args[1]
+	## all arguments to that function
+	args = args[-1]
+	
+	if(verbose){
+		message("\nusing func:");message(func)
+		message("with final args:");message(args)
+	}
+	
+	
+	##           Load the required package
+	if(grepl("::", func)){
+		pkg <- gsub("(.?)::.*", "\\1", func)
+		cat("loading pkg:", pkg, "\n");
+		library(pkg, character.only = TRUE)
+		func = as.character(gsub(".*::(.*)", "\\1", func))
+	}
+	
+	if( is.na(func) ){
+		generic_help()
+		invisible()
+	}
+	
+	fn = try(get(func))
+	if(class(try(fn)) == "try-error")
+		stop("\n\nwe would not find a function by this name, please check: ", func)
+	
+	if(is.function(fn) & "-h" %in% script_args){
+		out = withVisible(help(func))
+		class(out) = c("funr", "list")
+		return(out)
+		
+	}else{
+		
+		params <- parse_params(func = func, paramPairs = args, verbose = verbose)
+		if(verbose){
+			cat("\nStarting", func, "with params\n",
+					paste(names(params), unlist(params),sep=": ",
+								collapse="\n"),"\n")
+			#message(args)
+			if(verbose) message(str(params))
+		}
+		
+		if(length(args) == 0)
+			message("\ntry:      ", script_name, " -h ", func, "     to get more details on this function.")
+		
+		out = try(withVisible(do.call(func, args = params)))
+		class(out) = c("funr", "list")
+		return(out)
+	}
+	
+}
+
+parse_params <- function(func, paramPairs, verbose = FALSE){
+	#func <- as.character(paramPairs[1])
+	#if(length(func) == 0) return(help())
+	
+	args <- formals(func)
+	paramPairs <- paramPairs[grep("=", paramPairs)] ## get those with =
+	
+	if(verbose){message("args:");print(args)}
+	
+	#print("paramPairs:");print(paramPairs)
+	#args_supplied = sapply(strsplit(paramPairs, "="), "[[", 1)
+	
+	
+	if(verbose) 
+		message("\nget_params: we have ", 
+						length(paramPairs), " parameters\n",
+						paste(paramPairs, collapse = "\n"))
+	
+	for(param in paramPairs){
+		if(verbose)
+			message("\nstarting process with: ", param)
+		
+		splt <- unlist(strsplit(param, "="));
+		nm = splt[1]
+		value = splt[2]
+		value <- strsplit(value,",")[[1]] #handling those with , in value.. for multiple R values
+		
+		## --- if function supports ... need to pass ALL arguments
+		if(sum( names(args) %in% "...") & !nm %in% names(args) ){
+			## -- remove the dots argument
+			if(verbose)
+				message("Adding ", nm, ":", value)
+			l = list(nm = value);names(l) = nm
+			args <- c(args, l)
+		}
+		
+		# 		if(verbose)
+		# 			message("processing param: ", nm, " value ", args[[nm]])
+		
+		if(class(args[[nm]]) == "numeric" ){
+			args[[nm]] = as.numeric(value)
+		}else if(class(args[[nm]]) %in% c("logical") | (value[1] %in% c("TRUE", "FALSE") & length(value) == 1)){
+			args[[nm]] = as.logical(value)
+		}else if(class(args[[nm]]) %in% c("character", "name" )){
+			args[[nm]] = as.character(value)
+		}else if(class(args[[nm]]) %in% c("list")){
+			args[[nm]] = as.list(value)
+		}else if(class(args[[nm]]) %in% c("call")){ ## example call to getOption
+			args[[nm]] = as.character(value)
+		}
+		if(verbose)
+			message("processed param: ", nm, " value ", args[[nm]])
+	}
+	
+	## remove dots
+	dots = which( names(args) == "..." )
+	if(length(dots) > 0 )
+		args = args[-dots]
+	
+	## check values if NULL, remove.
+	rm = which(sapply(args, is.name))
+	if(length(rm) > 0)
+		args = args[-rm]
+	
+	##print(do.call(rbind, as.list(args)))
+	if(verbose) print(args)
+	return(as.list(args))
+	
+}
+
+## --- showing the output of the returned..
+
+#' Render output of functions in a print friendly format
+#'
+#' @description
+#' If the function returns with invisible, output is suppressed
+#'
+#' @param x a output from \code{funr}
+#' @param max_rows In case output of a function is a data.frame, the number
+#' of rows to display.
+#'
+#' @export
+#'
+render_funr <- function(x, max_rows = 100){
+	
+	out = try(x$value, silent = TRUE)
+	if(class(out)[1] == "try-error")
+		stop(1)
+
+	vis = ifelse(length(x$visible) == 0, FALSE, x$visible)
+	
+	#message("visible status: ", vis)
+	
+	if(!vis){
+		return(cat(""))
+		
+	}else if(is.data.frame(out)){
+		message("Showing the first ", max_rows, " rows of the data.frame")
+		try(head(out, max_rows), silent = TRUE)
+		
+	}else if(class(out) == "help_files_with_topic"){
+		## print help files
+		print(out)
+		
+	}else if(is.null(out)){
+		## skip NULL
+		cat("")
+		
+	}else if(is.list(out)){
+		## print list
+		print(out)
+		
+	}else if(is.atomic(out)){
+		cat(out, "\n")
+		
+	}else if(is.function(out)){
+		print(out)
+		
+	}else{
+		cat("")
+	}
+}
+
+generic_help <- function(help_text, script_name = "funr"){
+	nm = script_name
+	
+	if(missing(help_text))
+		help_text = sprintf("
+												This aims to provide an easy command-line interface to all R functions.
+												
+												Usage: %s [-h -v] <name of a function> <arguments to the function [<options>=<value>]>
+												
+												%s -h            Show this help
+												%s -h <function> Show help for a specific function
+												%s -v            Show extra verbose prints, for debugging this package
+												%s <func>        Find and run <function>
+												%s <func> [args] Run <func> with supplied <arguments>
+												%s <pkg::func>   Load the package (pkg), and then run <func>
+												
+												Examples:
+												## Show help for rnorm (random numbers from normal distribution)
+												%s -h rnorm
+												## generate 100 random numbers
+												%s rnorm n=100
+												
+												## load knitr, then call knit2html to stitch a file
+												%s knitr::knit2html <all other arguments>
+												
+												## get an example file from the knitr package
+												rmd=$(%s system.file package=knitr fl=examples/knitr-minimal.Rmd)
+												## run knitr on that file
+												%s knitr::knit input=$rmd
+												
+												", nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm, nm)
+	
+	# 	if(nm == "flowr")
+	# 		default_help = c(default_help, flow_help())
+	
+	return(help_text)
+}
+
+
+## ------------------------------   Call the functions ------------------------------------------- ##
+
+
+
+help_text = "
+
+Usage: flowr function [arguments]
+
+status          Detailed status of a flow(s).
+rerun           rerun a previously failed flow
+kill            Kill the flow, upon providing working directory
+fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
+
+Please use 'flowr -h function' to obtain further information about the usage of a specific function.
+
+Note: Please make sure to include `x=` etc. to explicitly define the variable.
+
+Examples:
+## Run a small pipeline
+flowr run x=sleep_pipe platform=local
+flowr run x=sleep_pipe platform=local execute=TRUE
+
+## When running a pipeline, flowr creates a unique working 
+## directory for each flow. This is used to monitor, kill and re-run the flow.
+## wd=<path to a flowr execution folder>
+
+## Get status of all the flows:
+## (all flows with 'sleep_pipe' in their name are checked and their status is shown)
+flowr status x=~/flowr/runs/sleep_pipe*
+## Use the parent folder to get a summary of all the flows
+flowr status x=~/flowr/runs
+
+## kill the flow
+flowr kill x=~/flowr/runs/sleep_pipe*
+## if their are multiple flows, need to be sure; so use force to enforce killing
+flowr kill x=~/flowr/runs/sleep_pipe* force=TRUE
+
+## Rerun a previous flow from a intermediate step.
+## using FULL path to a previous execution folder
+flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp start_from=create_tmp
+"
+
+## parse all the arugment using the funr function
+#if(!require(funr)) install.packages('funr'); library(funr)
+suppressMessages(library(flowr, verbose = FALSE, quietly = TRUE))
+out = funr(args = commandArgs(trailingOnly = TRUE), script_name = "flowr", help_text = help_text)
+## parse the output nicely using render_funr
+render_funr(out)
+
