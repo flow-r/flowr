@@ -35,6 +35,9 @@ set +o noclobber
 touch {{{TRIGGER}}}
 echo 'BGN at' $(date)
 
+##--- add some custom module commands
+{{{MODULE_CMDS}}}
+
 ## --- command to run comes here (flow_mat)
 {{{CMD}}}
 exitstat=$?

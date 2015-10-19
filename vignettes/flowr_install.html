@@ -10,7 +10,7 @@
 
 <meta name="author" content="Sahil Seth" />
 
-<meta name="date" content="2015-10-06" />
+<meta name="date" content="2015-10-12" />
 
 <title>flowr</title>
 
@@ -65,7 +65,7 @@ img {
 <h1 class="title">flowr</h1>
 <h3 class="subtitle"><em>Streamlining Workflows</em></h3>
 <h4 class="author"><em>Sahil Seth</em></h4>
-<h4 class="date"><em>2015-10-06</em></h4>
+<h4 class="date"><em>2015-10-12</em></h4>
 </div>
 
 <div id="TOC">
@@ -74,12 +74,15 @@ img {
 <li><a href="#test">Test</a></li>
 <li><a href="#advanced-configuration">Advanced Configuration</a><ul>
 <li><a href="#hpcc-support-overview">HPCC Support Overview</a></li>
-<li><a href="#faqs-and-help-on-solving-issues">FAQs and help on Solving Issues</a><ul>
-<li><a href="#errors-in-job-submission">Errors in job submission</a></li>
+</ul></li>
+<li><a href="#troubleshooting-faqs">Troubleshooting &amp; FAQs</a><ul>
+<li><a href="#errors-in-job-submission">Errors in job submission</a><ul>
 <li><a href="#flowr-configuration-file">Flowr Configuration file</a></li>
+</ul></li>
 <li><a href="#flowdef-resource-columns">Flowdef resource columns</a></li>
 <li><a href="#adding-a-new-platform">Adding a new platform</a></li>
-</ul></li>
+<li><a href="#installation-error-drat">Installation Error (DRAT)</a></li>
+<li><a href="#installation-error-github">Installation Error (Github)</a></li>
 </ul></li>
 </ul>
 </div>
@@ -91,10 +94,10 @@ img {
 <li>R version &gt; 3.1, preferred 3.2</li>
 </ul>
 <pre class="r"><code>## for a latest official version (from CRAN)
-install.packages(&quot;flowr&quot;, repos = &quot;http://cran.rstudio.com&quot;)
+install.packages(&quot;flowr&quot;, repos = CRAN=&quot;http://cran.rstudio.com&quot;)
 
-## Latest stable release from DRAT (updated every other week)
-install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)
+## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+install.packages(&quot;flowr&quot;, repos = c(CRAN=&quot;http://cran.rstudio.com&quot;, DRAT=&quot;http://sahilseth.github.io/drat&quot;))
 
 ## OR cutting edge devel version
 devtools::install_github(&quot;sahilseth/flowr&quot;, ref = &quot;devel&quot;)</code></pre>
@@ -120,10 +123,10 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 <pre><code>## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(x='sleep_pipe', platform='local', execute=TRUE)</code></pre>
+run(pipe='sleep_pipe', platform='local', execute=TRUE)</code></pre>
 <p>If this completes successfully, we can try this on a computing cluster; where this would submit a few interconnected jobs.</p>
 <p>Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the platform variable to switch between platforms.</p>
-<pre><code>flowr run x=sleep_pipe platform=lsf execute=TRUE
+<pre><code>flowr run pipe=sleep_pipe platform=lsf execute=TRUE
 ## other options for platform: torque, moab, sge, slurm, lsf
 ## this shows the folder being used as a working directory for this flow.</code></pre>
 <p>Once the submission is complete, we can test the status using <code>status()</code> by supplying it the full path as recovered from the previous step.</p>
@@ -187,12 +190,13 @@ qsub --help</code></pre>
 </ul>
 <p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 </div>
-<div id="faqs-and-help-on-solving-issues" class="section level2">
-<h2>FAQs and help on Solving Issues</h2>
-<div id="errors-in-job-submission" class="section level4">
-<h4>Errors in job submission</h4>
+</div>
+<div id="troubleshooting-faqs" class="section level1">
+<h1>Troubleshooting &amp; FAQs</h1>
+<div id="errors-in-job-submission" class="section level2">
+<h2>Errors in job submission</h2>
 <div class="alert alert-warning" role="alert">
-Possible issue: Jobs are not getting submitted
+<p>Possible issue: Jobs are not getting submitted</p>
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -226,7 +230,7 @@ wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/sge.sh
 wget https://raw.githubusercontent.com/sahilseth/flowr/master/inst/conf/slurm.sh</code></pre>
 <p>Make the desired changes using your favourite editor and submit again.</p>
 <div class="alert alert-warning" role="alert">
-Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).
+<p>Possible issue: Jobs for subsequent steps are not submitting (though first step works fine).</p>
 </div>
 <div class="alert alert-info" role="alert">
 <ol style="list-style-type: decimal">
@@ -255,19 +259,19 @@ load_opts(&quot;flowr.conf&quot;) ## visit sahilseth.github.io/params for more d
 <p>Confirm that the dependency parameter is specified correctly in the submission scripts:</p>
 <pre><code>wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
-</div>
 <div id="flowr-configuration-file" class="section level4">
 <h4>Flowr Configuration file</h4>
 <div class="alert alert-warning" role="alert">
-Possible issue: Flowr shows too much OR too little information.
+<p>Possible issue: Flowr shows too much OR too little information.</p>
 </div>
 <p>There are several <a href="http://docs.flowr.space/rd.html#verbose">verbose levels</a> available (0, 1, 2, 3, …)</p>
 <p>One can change the verbose levels in this file (<code>~/flowr/conf/flowr.conf</code>) and check <a href="http://docs.flowr.space/rd.html#verbose">verbosity</a> section in the help pages for more details.</p>
 </div>
-<div id="flowdef-resource-columns" class="section level4">
-<h4>Flowdef resource columns</h4>
+</div>
+<div id="flowdef-resource-columns" class="section level2">
+<h2>Flowdef resource columns</h2>
 <div class="alert alert-warning" role="alert">
-Possible issue: What all resources are supported in the flow definition?
+<p>Possible issue: What all resources are supported in the flow definition?</p>
 </div>
 <p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in <code>cpu_reserved</code> column would be populated as <code>{{{CPU}}}</code> in the submission template.</p>
 <p>The following table provides a mapping between the flow definition columns and variables in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission templates</a>:</p>
@@ -331,10 +335,10 @@ Possible issue: What all resources are supported in the flow definition?
 </table>
 <p><code>* These are generated on the fly</code> and <code>** This is gathered from flow mat</code></p>
 </div>
-<div id="adding-a-new-platform" class="section level4">
-<h4>Adding a new platform</h4>
+<div id="adding-a-new-platform" class="section level2">
+<h2>Adding a new platform</h2>
 <div class="alert alert-warning" role="alert">
-Possible issue: Need to add a new platform
+<p>Possible issue: Need to add a new platform</p>
 </div>
 <p>Adding a new platform involves <a href="https://github.com/sahilseth/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
 <ol style="list-style-type: decimal">
@@ -349,15 +353,51 @@ Possible issue: Need to add a new platform
 </ol>
 <p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/sahilseth/flowr/issues/7">adding platforms</a></p>
 <div class="alert alert-warning" role="alert">
-Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.
+<p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/sahilseth/flowr/issues">github issues tracker</a>.</p>
 </div>
 <pre><code>## outfiles end with .out, and are placed in a folder like 00X.&lt;jobname&gt;/
 ## here is one example:
 cat $wd/002.create_tmp/create_tmp_cmd_1.out
 ## final script:
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
-<script src="data:application/x-javascript,%20%20%28function%28i%2Cs%2Co%2Cg%2Cr%2Ca%2Cm%29%7Bi%5B%27GoogleAnalyticsObject%27%5D%3Dr%3Bi%5Br%5D%3Di%5Br%5D%7C%7Cfunction%28%29%7B%0A%20%20%28i%5Br%5D%2Eq%3Di%5Br%5D%2Eq%7C%7C%5B%5D%29%2Epush%28arguments%29%7D%2Ci%5Br%5D%2El%3D1%2Anew%20Date%28%29%3Ba%3Ds%2EcreateElement%28o%29%2C%0A%20%20m%3Ds%2EgetElementsByTagName%28o%29%5B0%5D%3Ba%2Easync%3D1%3Ba%2Esrc%3Dg%3Bm%2EparentNode%2EinsertBefore%28a%2Cm%29%0A%20%20%7D%29%28window%2Cdocument%2C%27script%27%2C%27%2F%2Fwww%2Egoogle%2Danalytics%2Ecom%2Fanalytics%2Ejs%27%2C%27ga%27%29%3B%0A%0A%20%20ga%28%27create%27%2C%20%27UA%2D68378910%2D1%27%2C%20%27auto%27%29%3B%0A%20%20ga%28%27send%27%2C%20%27pageview%27%29%3B%0A"></script>
 </div>
+<div id="installation-error-drat" class="section level2">
+<h2>Installation Error (DRAT)</h2>
+<pre><code>install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)
+
+ERROR: dependency ‘whisker’ is not available for package ‘params’
+* removing ‘/usr/local/lib/R/site-library/params’
+ERROR: dependencies ‘params’, ‘diagram’, ‘whisker’ are not available for package ‘flowr’
+* removing ‘/usr/local/lib/R/site-library/flowr’
+
+The downloaded source packages are in
+    ‘/tmp/RtmpykBS2r/downloaded_packages’
+Warning messages:
+1: In install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;) :
+  installation of package ‘params’ had non-zero exit status
+2: In install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;) :
+  installation of package ‘flowr’ had non-zero exit status</code></pre>
+<p>Issues is that whisker and params are not installed, and are not available in the DRAT repo.</p>
+<p>Solution 1:</p>
+<pre class="r"><code>install.packages(&quot;whisker&quot;)
+install.packages(&quot;diagram&quot;)
+install.packages(&quot;flowr&quot;, repos = &quot;http://sahilseth.github.io/drat&quot;)</code></pre>
+<p>Solution 2:</p>
+<pre class="r"><code>install.packages(&quot;flowr&quot;, repos = c(CRAN = &quot;http://cran.rstudio.com&quot;, DRAT = &quot;http://sahilseth.github.io/drat&quot;))</code></pre>
+</div>
+<div id="installation-error-github" class="section level2">
+<h2>Installation Error (Github)</h2>
+<pre><code>devtools:::install_github(“sahilseth/flowr”)
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed</code></pre>
+<p>Solution:</p>
+<p>This is basically a issue with httr (link) Try this:</p>
+<pre><code>install.packages(&quot;RCurl&quot;)
+devtools:::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
+<p>If not then try this: install.packages(“httr”);</p>
+<pre><code>library(httr);
+set_config( config( ssl.verifypeer = 0L ) )
+devtools:::install_github(&quot;sahilseth/flowr&quot;)</code></pre>
+<script src="data:application/x-javascript,%20%20%28function%28i%2Cs%2Co%2Cg%2Cr%2Ca%2Cm%29%7Bi%5B%27GoogleAnalyticsObject%27%5D%3Dr%3Bi%5Br%5D%3Di%5Br%5D%7C%7Cfunction%28%29%7B%0A%20%20%28i%5Br%5D%2Eq%3Di%5Br%5D%2Eq%7C%7C%5B%5D%29%2Epush%28arguments%29%7D%2Ci%5Br%5D%2El%3D1%2Anew%20Date%28%29%3Ba%3Ds%2EcreateElement%28o%29%2C%0A%20%20m%3Ds%2EgetElementsByTagName%28o%29%5B0%5D%3Ba%2Easync%3D1%3Ba%2Esrc%3Dg%3Bm%2EparentNode%2EinsertBefore%28a%2Cm%29%0A%20%20%7D%29%28window%2Cdocument%2C%27script%27%2C%27%2F%2Fwww%2Egoogle%2Danalytics%2Ecom%2Fanalytics%2Ejs%27%2C%27ga%27%29%3B%0A%0A%20%20ga%28%27create%27%2C%20%27UA%2D68378910%2D1%27%2C%20%27auto%27%29%3B%0A%20%20ga%28%27send%27%2C%20%27pageview%27%29%3B%0A"></script>
 </div>
 </div>
 

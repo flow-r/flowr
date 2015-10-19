@@ -24,7 +24,6 @@ parse_jobids <- function(jobids, platform){
 	if(platform=="lsf")
 		jobids <- gsub(get_opts("flow_parse_lsf"),"\\1", jobids)
 
-
 	## --- moab
 	## --- Example (has empty lines):
 	## parse into: --->>> 97724

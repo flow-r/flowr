@@ -18,6 +18,7 @@ render_dependency.local <- function(...){
 	return("")
 }
 
+## http://docs.adaptivecomputing.com/torque/4-1-4/Content/topics/commands/qsub.htm
 render_dependency.torque <- function(x, index, ...){
 	dep_type = x@dependency_type
 
@@ -38,19 +39,19 @@ render_dependency.torque <- function(x, index, ...){
 }
 
 
-
+## ti kills orphan jobs
 render_dependency.lsf <- function(x, index, ...){
 	#message(index)
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
-		dep <- sprintf("-w '%s'",
+		dep <- sprintf("-w '%s' -ti",
 									 paste(unlist(x@dependency), collapse = " && "))
 	}else if(dep_type == "serial"){
-		dep <- sprintf("-w '%s'", paste(x@dependency[[index]],
+		dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]],
 																		collapse=" && "))
 	}else if(dep_type == "burst"){
 		index=1
-		dep <- sprintf("-w '%s'", paste(x@dependency[[index]],
+		dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]],
 																		collapse=" && "))
 	}else{dep = ""}
 	return(dep)

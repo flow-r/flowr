@@ -14,10 +14,10 @@ Requirements:
 
 ```r
 ## for a latest official version (from CRAN)
-install.packages("flowr", repos = "http://cran.rstudio.com")
+install.packages("flowr", repos = CRAN="http://cran.rstudio.com")
 
-## Latest stable release from DRAT (updated every other week)
-install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
 
 ## OR cutting edge devel version
 devtools::install_github("sahilseth/flowr", ref = "devel")
@@ -62,7 +62,7 @@ Initially, we can test this locally, and later on a specific HPCC platform.
 ## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(x='sleep_pipe', platform='local', execute=TRUE)
+run(pipe='sleep_pipe', platform='local', execute=TRUE)
 ```
 
 If this completes successfully, we can try this on a computing cluster; where this would submit
@@ -72,7 +72,7 @@ Several platforms are supported out of the box (torque, moab, sge, slurm and lsf
 to switch between platforms.
 
 ```
-flowr run x=sleep_pipe platform=lsf execute=TRUE
+flowr run pipe=sleep_pipe platform=lsf execute=TRUE
 ## other options for platform: torque, moab, sge, slurm, lsf
 ## this shows the folder being used as a working directory for this flow.
 ```
@@ -149,9 +149,9 @@ Here are some helpful guides and details on the platforms:
 
 [Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
 
-## FAQs and help on Solving Issues
+# Troubleshooting & FAQs
 
-#### Errors in job submission
+## Errors in job submission
 
 <div class="alert alert-warning" role="alert">
 Possible issue: Jobs are not getting submitted
@@ -273,7 +273,7 @@ and check [verbosity](http://docs.flowr.space/rd.html#verbose) section in the he
 
 
 
-#### Flowdef resource columns
+## Flowdef resource columns
 
 <div class="alert alert-warning" role="alert">
 Possible issue: 
@@ -305,7 +305,7 @@ The following table provides a mapping between the flow definition columns and v
 `* These are generated on the fly` and `** This is gathered from flow mat`
 
 
-#### Adding a new platform
+## Adding a new platform
 
 <div class="alert alert-warning" role="alert">
 Possible issue: Need to add a new platform
@@ -346,6 +346,70 @@ Possible issue: For other issues upload the error shown in the out files to
 cat $wd/002.create_tmp/create_tmp_cmd_1.out
 ## final script:
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh
+```
+
+## Installation Error (DRAT)
+
+```
+install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+
+ERROR: dependency ‘whisker’ is not available for package ‘params’
+* removing ‘/usr/local/lib/R/site-library/params’
+ERROR: dependencies ‘params’, ‘diagram’, ‘whisker’ are not available for package ‘flowr’
+* removing ‘/usr/local/lib/R/site-library/flowr’
+
+The downloaded source packages are in
+    ‘/tmp/RtmpykBS2r/downloaded_packages’
+Warning messages:
+1: In install.packages("flowr", repos = "http://sahilseth.github.io/drat") :
+  installation of package ‘params’ had non-zero exit status
+2: In install.packages("flowr", repos = "http://sahilseth.github.io/drat") :
+  installation of package ‘flowr’ had non-zero exit status
+```
+
+Issues is that whisker and params are not installed, and are not available in the DRAT repo.
+
+Solution 1:
+
+
+```r
+install.packages("whisker")
+install.packages("diagram")
+install.packages("flowr", repos = "http://sahilseth.github.io/drat")
+```
+
+Solution 2:
+
+
+```r
+install.packages("flowr", repos = c(CRAN = "http://cran.rstudio.com", DRAT = "http://sahilseth.github.io/drat"))
+```
+
+
+## Installation Error (Github)
+
+```
+devtools:::install_github(“sahilseth/flowr”)
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+```
+
+Solution:
+
+This is basically a issue with httr (link) Try this:
+
+```
+install.packages("RCurl")
+devtools:::install_github("sahilseth/flowr")
+```
+
+
+If not then try this:
+install.packages("httr");
+
+```
+library(httr);
+set_config( config( ssl.verifypeer = 0L ) )
+devtools:::install_github("sahilseth/flowr")
 ```
 
 

@@ -334,6 +334,7 @@ to_flow.list <- function(x, def,
 												 flow_run_path, 
 												 desc, 
 												 qobj, 
+												 module_cmds = '',
 												 verbose = get_opts("verbose"),...){
 	## --- qobj, missing only works for arguments
 	# 	if(is.flowmat(x[[1]])){
@@ -354,6 +355,7 @@ to_flow.list <- function(x, def,
 	fobj <- flow(jobs = jobs,
 							 desc = desc, name = flowname,
 							 mode = "scheduler",
+							 module_cmds = module_cmds,
 							 version = as.character(packageVersion("flowr")),
 							 flow_run_path = flow_run_path)
 	

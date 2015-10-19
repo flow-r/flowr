@@ -9,7 +9,8 @@
 flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
   mode = c("scheduler", "trigger", "R"),
   flow_run_path = get_opts("flow_run_path"), trigger_path = "",
-  flow_path = "", version = "0.0", status = "created", execute = "")
+  flow_path = "", version = "0.0", status = "created",
+  module_cmds = get_opts("module_cmds"), execute = "")
 }
 \arguments{
 \item{jobs}{\code{list}: A list of jobs to be included in this flow}

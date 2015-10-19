@@ -4,6 +4,7 @@
 #'
 #' @description
 #' Run complete pipelines, by wrapping several steps into one convinient function:
+#' NOTE: please use flowr version: 0.9.8.9010
 #' 
 #' Taking \code{sleep_pipe} as a example.
 #' \itemize{
@@ -17,6 +18,10 @@
 #' @param x name of the pipeline to run. This is a function called to create a flow_mat.
 #' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
+#' @param wd an alias to flow_run_path
+#' @param rerun_wd if you need to run, supply the previous working dir
+#' @param start_from the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.
+#' @param conf a tab-delimited configuration file with path to tools and default parameters. See \link{fetch_pipes}.
 #' @param platform what platform to use, overrides flowdef
 #' @param execute TRUE/FALSE
 #' @param ... passed onto the pipeline function as specified in x
@@ -55,8 +60,10 @@
 #' }
 run <- function(x,
 	platform,
-	def,
-	flow_run_path = get_opts("flow_run_path"),
+	def, conf, 
+	wd = get_opts("flow_run_path"),
+	flow_run_path = wd,
+	rerun_wd, start_from,
 	execute = FALSE,  ...){
 
 	#print(get_opts("flow_run_path"))
@@ -81,28 +88,41 @@ run <- function(x,
 		pip$conf)
 	print(kable(as.data.frame(confs)))
 	load_opts(confs, verbose = FALSE, check = FALSE)
+	
+	if(!missing(conf))
+		load_opts(conf, verbose = FALSE, check = FALSE)
 
 	message("\n##--- creating flowmat....")
 	## crate a flowmat
 	args <- list(...)
 	out = do.call(func, args)
 
-
+	## fetched from the latest conf file ONLY
+	module_cmds = get_opts("module_cmds")
+	
 	message("\n##--- stitching a flow object....")
 	## get a flowdef
 	if(missing(def))
 		def = as.flowdef(pip$def)
-	## create a flow object
-	fobj = to_flow(x = out$flowmat,
-		def = def,
-		platform = platform,
-		flowname = x,
-		flow_run_path = flow_run_path)
-
-	## submit the flow
-	message("\n##--- submitting....")
-	fobj = submit_flow(fobj, execute = execute)
-
+	
+	if(missing(rerun_wd)){
+		## create a flow object
+		fobj = to_flow(x = out$flowmat,
+									 def = def,
+									 platform = platform,
+									 flowname = x,
+									 module_cmds = module_cmds,
+									 flow_run_path = flow_run_path)
+		
+		## submit the flow
+		message("\n##--- submitting....")
+		fobj = submit_flow(fobj, execute = execute)
+	}else{
+		
+		fobj = rerun(x = rerun_wd, mat = out$flowmat, def = def, start_from = start_from)
+		
+	}
+	
 	invisible(fobj)
 }
 

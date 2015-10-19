@@ -64,6 +64,7 @@ setClass("flow", representation(jobs = "list",
 																status = "character", ## status
 																mode = "character", ## what kind of flow this is
 																name = "character",
+																module_cmds = "character",
 																version = "character",
 																execute = "logical"))
 
@@ -371,6 +372,7 @@ flow <- function(
 	flow_path = "",
 	version = '0.0',
 	status="created",
+	module_cmds = get_opts("module_cmds"),
 	execute = ""){
 	mode <- match.arg(mode)
 	## create a list of jobs if nore already
@@ -382,6 +384,7 @@ flow <- function(
 								name = name, flow_run_path = flow_run_path,
 								trigger_path = trigger_path,
 								flow_path=flow_path,
+								module_cmds = module_cmds,
 								desc=desc,
 								version = version,
 								status=status)

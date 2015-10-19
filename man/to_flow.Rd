@@ -23,7 +23,7 @@ is.flow(x)
 \method{to_flow}{data.frame}(x, ...)
 
 \method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj,
-  verbose = get_opts("verbose"), ...)
+  module_cmds = "", verbose = get_opts("verbose"), ...)
 }
 \arguments{
 \item{x}{path (char. vector) to flow_mat, a data.frame or a list.}

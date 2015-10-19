@@ -49,7 +49,7 @@ to_flowdef(x, ...)
 
 \method{to_flowdef}{flowmat}(x, sub_type, dep_type, prev_jobs,
   queue = "short", platform = "torque", memory_reserved = "2000",
-  cpu_reserved = "1", walltime = "1:00", guess = TRUE,
+  cpu_reserved = "1", walltime = "1:00", guess = FALSE,
   verbose = get_opts("verbose"), ...)
 
 \method{to_flowdef}{flow}(x, ...)

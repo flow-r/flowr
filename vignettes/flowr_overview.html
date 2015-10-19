@@ -10,7 +10,7 @@
 
 <meta name="author" content="Sahil Seth" />
 
-<meta name="date" content="2015-10-06" />
+<meta name="date" content="2015-10-16" />
 
 <title>flowr</title>
 
@@ -65,7 +65,7 @@ img {
 <h1 class="title">flowr</h1>
 <h3 class="subtitle"><em>Streamlining Workflows</em></h3>
 <h4 class="author"><em>Sahil Seth</em></h4>
-<h4 class="date"><em>2015-10-06</em></h4>
+<h4 class="date"><em>2015-10-16</em></h4>
 </div>
 
 <div id="TOC">
@@ -102,7 +102,7 @@ img {
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
 <p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable. For more details refer to <a href="http://docs.flowr.space/rd.html#setup">setup’s help section</a>.</p>
-<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --->
+<!-- We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. -->
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
 
@@ -199,7 +199,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
@@ -211,7 +211,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
@@ -223,7 +223,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
@@ -235,7 +235,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">4</td>
 </tr>
 </tbody>
@@ -439,7 +439,7 @@ Each row in this table refers to one step of the pipeline. It describes the reso
 This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in other frameworks, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage of those cores. Flowr prevents this, by being able to tune resources granurly. Example, one may submit few short steps in <code>short</code> queue, and longer steps of the same pipeline in say <code>long</code> queue.
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
-<div class="alert alert-success" role="alert">
+<div class="alert alert-warning" role="alert">
 If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
@@ -468,7 +468,7 @@ If these (resource requirements) columns are not included in the flow definition
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">1</td>
 </tr>
 <tr class="even">
@@ -480,7 +480,7 @@ If these (resource requirements) columns are not included in the flow definition
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">2</td>
 </tr>
 <tr class="odd">
@@ -492,7 +492,7 @@ If these (resource requirements) columns are not included in the flow definition
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">3</td>
 </tr>
 <tr class="even">
@@ -504,14 +504,13 @@ If these (resource requirements) columns are not included in the flow definition
 <td align="right">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
-<td align="left">torque</td>
+<td align="left">local</td>
 <td align="right">4</td>
 </tr>
 </tbody>
 </table>
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
-<!-- 
-- jobname: is passed as `name` argument to job().
+<!--  jobname: is passed as `name` argument to job().
 - prev_jobs: passed as `previous_job` argument  to job().
 - dep_type: passed as `dependency_type` argument  to job(). Possible values: gather, serial
 - sub_type: passed as `submission_type` argument  to job().
@@ -521,29 +520,19 @@ If these (resource requirements) columns are not included in the flow definition
     Some pipelines: 160000, 16g etc representing a 16GB reservation of RAM
 - walltime: How long would this job run. Again refer to your HPCC guide. Example: 24:00, 24:00:00
 - cpu_reserved: Amount of CPU reserved.
-
 Its best to have this as a tab seperated file (with no row.names). -->
-<!---
-### Style 2
-
+<!-- Style 2
 This style may be more suited for people who like to explore more advanced usage and like to code in R. Also this one find this much faster if jobs and their relationships changes a lot.
-
 Here instead of seperating cmds and definitions one defines them step by step incrementally.
-
 - Use: queue(), to define the computing cluster being used
 - Use: multiple calls job()
 - Use: flow() to stich the jobs into a flow.
-
-
 Currently we support LSF, Torque and SGE. Let us use LSF for this example.
-
 
 ```r
 qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 ```
-
 Let us stitch a simple flow with three jobs, which are submitted one after the other.
-
 
 ```r
 job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
@@ -552,15 +541,13 @@ job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjo
 fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
 plot_flow(fobj)
 ```
-
 The above translates to a flow definition which looks like this:
-
 
 ```r
 dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
---->
+something -->
 <div id="example" class="section level3">
 <h3>Example:</h3>
 <p>Let us use an example flow, to understand submission and dependency types.</p>
@@ -634,11 +621,13 @@ knitr:::kable(dat)
                  relationship
                   MANY-to-ONE</code></pre>
 <p>Since C is a single command which requires all steps of B to complete, intuitively it needs to <code>gather</code> pieces of data generated by B. In this case <code>dep_type</code> would be <code>gather</code> and <code>sub_type</code> type would be <code>serial</code> since it is a single command.</p>
-<!---
-- makes sense when previous job had many commands running in parallel and current job would wait for all
+<!-- makes sense when previous job had many commands running in parallel and current job would wait for all
 - so previous job submission: `scatter`, and current job's dependency type `gather`
-
---->
+jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+             dependency_type = "gather", previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj) -->
 </div>
 <div id="one-to-many-burst" class="section level2">
 <h2>One to Many (Burst)</h2>
@@ -650,11 +639,10 @@ knitr:::kable(dat)
                  relationship
                   ONE-to-MANY</code></pre>
 <p>Further, D is a set of three commands (D1-D3), which need to wait for a single process (C1) to complete. They would be submitted as <code>scatter</code> after waiting on C in a <code>burst</code> type dependency.</p>
-<!---
-- makes sense when previous job had one command current job would split and submit several jobs in parallel
+<!-- makes sense when previous job had one command current job would split and submit several jobs in parallel
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 
---->
+something -->
 <p>In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):</p>
 <pre class="r"><code>ex2def = as.flowdef(file.path(ex, &quot;abcd.def&quot;))
 ex2mat = as.flowmat(file.path(ex, &quot;abcd.tsv&quot;))

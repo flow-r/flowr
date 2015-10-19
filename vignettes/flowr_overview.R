@@ -99,13 +99,6 @@ pab <- plot_flow(flow(jobs = list(A, B)))
 ## ----plot_many_one, echo=FALSE, message=FALSE, eval=FALSE----------------
 #  pbc <- plot_flow(flow(jobs = list(B, C)))
 
-## ---- eval=FALSE, echo=FALSE---------------------------------------------
-#  jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-#  jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
-#               dependency_type = "gather", previous_job = "job1")
-#  fobj <- flow(jobs = list(jobj1, jobj2))
-#  plot_flow(fobj)
-
 ## ----plot_one_many, echo=FALSE, message=FALSE, eval=FALSE----------------
 #  pcd <- plot_flow(flow(jobs = list(C, D)))
 
