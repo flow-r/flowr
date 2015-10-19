@@ -36,8 +36,16 @@ are to be executed in a (work)flow.
 
 ### Highlights
 
-- Effectively process a **multi-step pipeline**, spawning it
-across the computing cluster
+- No new **syntax or language**. Put all shell commands as a tsv file called [flow mat](http://docs.flowr.space/overview.html#flow_matrix).
+- Define the [flow of steps](http://docs.flowr.space/overview.html#relationships) using a simple tsv file (serial, scatter, gather, burst...) called [flow def](http://docs.flowr.space/overview.html#flow_definition).
+- Works on your laptop/server or cluster (/cloud).
+- Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
+- One line installation (`install.packages("flowr")`)
+-   **Reproducible** and **transparent**, with cleanly structured execution logs
+-   **Track** and **re-run** flows
+-   **Lean** and **Portable**, with easy installation
+- **Fine grain** control over resources (CPU, memory, walltime of each step.
+
 - Example: 
 	- A typical case in next-generation sequencing involves processing of tens of
    [fastqs](http://en.wikipedia.org/wiki/FASTQ_format) for a sample,
@@ -50,10 +58,6 @@ across the computing cluster
 	flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
 	- Now consider the run has 10 samples, all of them would be procesed in
 	 parallel, spawning **thousands of cores**.
--   **Reproducible** and **transparent**, with cleanly structured execution logs
--   **Track** and **re-run** flows
--   **Lean** and **Portable**, with easy installation
--   Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 
 ### A few lines, to get started
 

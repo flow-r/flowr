@@ -18,10 +18,11 @@ library(flowr)
 ```r
 setup()
 ```
+
 This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
 For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
 
-<!---We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. ---> 
+<!-- We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --> 
 
 Running flowr from the terminal will fetch you the following:
 
@@ -79,10 +80,10 @@ Further, we use an additional file specifying the relationship between the steps
 
 jobname      sub_type   prev_jobs    dep_type   queue    memory_reserved  walltime    cpu_reserved  platform    jobid
 -----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
-sleep        scatter    none         none       short               2000  1:00                   1  torque          1
-create_tmp   scatter    sleep        serial     short               2000  1:00                   1  torque          2
-merge        serial     create_tmp   gather     short               2000  1:00                   1  torque          3
-size         serial     merge        serial     short               2000  1:00                   1  torque          4
+sleep        scatter    none         none       short               2000  1:00                   1  local           1
+create_tmp   scatter    sleep        serial     short               2000  1:00                   1  local           2
+merge        serial     create_tmp   gather     short               2000  1:00                   1  local           3
+size         serial     merge        serial     short               2000  1:00                   1  local           4
 
 <div class="alert alert-info" role="alert">
 **Note:** Each row in a flow mat relates to one job. Jobname column is used to link flow definition with flow mat.
@@ -341,16 +342,15 @@ Here is an example of a typical [flow_def](https://raw.githubusercontent.com/sah
 
 jobname      sub_type   prev_jobs    dep_type   queue    memory_reserved  walltime    cpu_reserved  platform    jobid
 -----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
-sleep        scatter    none         none       short               2000  1:00                   1  torque          1
-create_tmp   scatter    sleep        serial     short               2000  1:00                   1  torque          2
-merge        serial     create_tmp   gather     short               2000  1:00                   1  torque          3
-size         serial     merge        serial     short               2000  1:00                   1  torque          4
+sleep        scatter    none         none       short               2000  1:00                   1  local           1
+create_tmp   scatter    sleep        serial     short               2000  1:00                   1  local           2
+merge        serial     create_tmp   gather     short               2000  1:00                   1  local           3
+size         serial     merge        serial     short               2000  1:00                   1  local           4
 
 
 <!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
 
-<!-- 
-- jobname: is passed as `name` argument to job().
+<!--  jobname: is passed as `name` argument to job().
 - prev_jobs: passed as `previous_job` argument  to job().
 - dep_type: passed as `dependency_type` argument  to job(). Possible values: gather, serial
 - sub_type: passed as `submission_type` argument  to job().
@@ -360,30 +360,20 @@ size         serial     merge        serial     short               2000  1:00  
 	Some pipelines: 160000, 16g etc representing a 16GB reservation of RAM
 - walltime: How long would this job run. Again refer to your HPCC guide. Example: 24:00, 24:00:00
 - cpu_reserved: Amount of CPU reserved.
-
 Its best to have this as a tab seperated file (with no row.names). -->
 
-<!---
-### Style 2
-
+<!-- Style 2
 This style may be more suited for people who like to explore more advanced usage and like to code in R. Also this one find this much faster if jobs and their relationships changes a lot.
-
 Here instead of seperating cmds and definitions one defines them step by step incrementally.
-
 - Use: queue(), to define the computing cluster being used
 - Use: multiple calls job()
 - Use: flow() to stich the jobs into a flow.
-
-
 Currently we support LSF, Torque and SGE. Let us use LSF for this example.
-
 
 ```r
 qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 ```
-
 Let us stitch a simple flow with three jobs, which are submitted one after the other.
-
 
 ```r
 job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
@@ -392,15 +382,13 @@ job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjo
 fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
 plot_flow(fobj)
 ```
-
 The above translates to a flow definition which looks like this:
-
 
 ```r
 dat <- flowr:::create_jobs_mat(fobj)
 knitr:::kable(dat)
 ```
---->
+something -->
 
 
 
@@ -483,11 +471,13 @@ Since C is a single command which requires all steps of B to complete, intuitive
 
 
 
-<!---
-- makes sense when previous job had many commands running in parallel and current job would wait for all
+<!-- makes sense when previous job had many commands running in parallel and current job would wait for all
 - so previous job submission: `scatter`, and current job's dependency type `gather`
-
---->
+jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
+jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
+             dependency_type = "gather", previous_job = "job1")
+fobj <- flow(jobs = list(jobj1, jobj2))
+plot_flow(fobj) -->
 
 ## One to Many (Burst)
 
@@ -506,11 +496,10 @@ Further, D is a set of three commands (D1-D3), which need to wait for a single p
 
 
 
-<!---
-- makes sense when previous job had one command current job would split and submit several jobs in parallel
+<!-- makes sense when previous job had one command current job would split and submit several jobs in parallel
 - so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
 
---->
+something -->
 
 In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):
 

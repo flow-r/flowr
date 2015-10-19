@@ -156,6 +156,3 @@ picard_merge <- function(x,
 ## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
 get_opts("my_new_tool")
 
-## ------------------------------------------------------------------------
-#run("sleep_pipe", x = )
-

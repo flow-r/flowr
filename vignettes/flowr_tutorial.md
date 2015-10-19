@@ -99,13 +99,11 @@ A few points to note:
 are submitted as **scatter** and **create_tmp** has a dependency_type **serial**.
 - Finally if a step needs all the small pieces from a previous step, we use a **gather** type dependency.
 
-<!--
-- multiple *sleep* commands would run as `scatter`/parallel, with `none` as the dependency.
+<!-- multiple *sleep* commands would run as `scatter`/parallel, with `none` as the dependency.
 - For each *sleep*, *create_tmp* creates a tmp file as `scatter`, using a `serial` type dependency. One `create_tmp` for one `sleep` (one-to-one relationship).
 - Then all tmp files are *merged*. Intuitively, since this is a single step, we run it as `serial` and as all tmp files are required, we use a `gather` type dependency.
 - Lastly, we need to check the *size* of the resulting merged file.
-Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.
--->
+Again, since this is a single step, we run is as `serial`. More so since the previous step also had a single command, we use a `serial` type dependency.-->
 
 
 ```r
@@ -128,7 +126,7 @@ size         serial     merge        serial     short   2000              1:00  
 
 
 <div class="alert alert-info" role="alert">
-**Tip:** Alternatively, one may write this to a file 
+**Tip** Alternatively, one may write this to a file 
 (**write_sheet(def, "sleep_pipe.def")**), make changes in a text editor and read it again (**as.flowdef("sleep_pipe.def")**.
 </div>
 
@@ -399,50 +397,26 @@ Idea is that,
 -->
 
 
-<!---
-The first argument to run is the name of the pipeline, 
+<!-- The first argument to run is the name of the pipeline, 
 one may use a custom flow definition etc. Further any extra arguments supplied are passed on to the pipeline function.
-
 For example, the `sleep_pipe` function has a argument **x** which 
-determines number of tmp files to create. Default is 3, let us try changing that.
+determines number of tmp files to create. Default is 3, let us try changing that. -->
 
-
-```r
-#run("sleep_pipe", x = )
-```
-
-
-
---->
-
-<!----
-
-
-We then define another function `sleep_pipe` which calls the above defined **modules**; fetches flowmat from each, 
+<!-- We then define another function `sleep_pipe` which calls the above defined **modules**; fetches flowmat from each, 
 creating a larger flowmat. This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
 module to a pipeline.
-
-
 This time we will define a flowdef for the `sleep_pipe` function, elevating its status from
 module to a pipeline.
-
-
-
-
 Here are a few examples of modules, three functions `sleep`, `create_tmp` and `merge_size` each returning a flowmat.
-
 We believe pipeline and modules may be interchangeble, in the sense that a *smaller* pipeline may be 
 included as part of a larger pipeline.
 In flowr a module OR pipeline always returns a flowmat.
 The only difference being, a pipeline also has a correspomding flow definition file. 
-
-
 <div class="alert alert-info" role="alert">
 As such, creating a flow definition for a module enables flowr
 to run it, hence a module **elevates**, becoming a pipeline.
 This lets the user mix and match several modules/pipelines to create a customized larger pipeline(s).
-</div>
--->
+</div> -->
 
 <script src = "files/googl.js"></script>
 
