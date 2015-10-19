@@ -50,10 +50,12 @@ are to be executed in a (work)flow to process big data.
 - Works on your laptop/server or cluster (/cloud).
 - Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 - One line installation (`install.packages("flowr")`)
--   **Reproducible** and **transparent**, with cleanly structured execution logs
--   **Track** and **re-run** flows
--   **Lean** and **Portable**, with easy installation
+- **Reproducible** and **transparent**, with cleanly structured execution logs
+- **Track** and **re-run** flows
+- **Lean** and **Portable**, with easy installation
 - **Fine grain** control over resources (CPU, memory, walltime of each step.
+- Manage tools and default options using a companion **[params](http://sahilseth.com/params)** package.
+- Access all R function from cmd line using **[funr](http://github.com/sahilseth/funr)**.
 
 <!--
 - Effectively process a **multi-step pipeline**, spawning it
@@ -72,7 +74,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -->
 
-<!-- Find examples and related software: [https://github.com/flow-r](https://github.com/flow-r)-->
+<!--Find examples and related software: [https://github.com/flow-r](https://github.com/flow-r)-->
 
 <!--<script>
 // 2. This code loads the IFrame Player API code asynchronously.
