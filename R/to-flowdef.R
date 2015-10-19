@@ -129,9 +129,12 @@ to_flowdef <- function(x, ...){
 	warnings()
 }
 
-
-detect_sub_type <- function(cmds){
-	sub_type = as.character(ifelse(length(cmds) > 1, "scatter", "serial"))
+# detect_dep_type
+# @param x job object
+# @param ncmds a string of commands
+# @param prev_job previous job name
+detect_sub_type <- function(ncmds){
+	sub_type = as.character(ifelse(ncmds > 1, "scatter", "serial"))
 	return(sub_type)
 }
 
@@ -139,21 +142,37 @@ detect_sub_type <- function(cmds){
 # @param x job object
 # @param cmds a string of commands
 # @param prev_job previous job name
-detect_dep_type <- function(cmds, prev_job, prev_cmds){
+detect_dep_type <- function(ncmds, prev_job, npcmds){
 	
+	# multiple previos jobs
 	if (length(prev_job) > 1) {
 		dep_type = "gather"
+	
+	# no previous job
 	}else if (prev_job == "none") {
 		dep_type = "none"
-	}else if (length(x[[prev_job]]) == length(cmds)) {
-		## if same length, serial
+		
+	# both prev. and current have same number of commands
+	# if same length, serial
+	}else if (ncmds == npcmds[1] & length(prev_job) == 1) {
 		dep_type = "serial"
-	}else if (length(x[[prev_job]]) > length(cmds) & length(cmds) == 1  ) {
-		## --- if prevous job were more than current
+		
+	# multiple previous, each streaming into this
+	}else if (all(ncmds == npcmds) & length(prev_job) > 1) {
+	  dep_type = "serial"
+
+	# if prevous job were more than current, a safety net
+	}else if (any( npcmds > ncmds)) {
 		dep_type = "gather"
-	}else if (length(x[[prev_job]]) == 1 & length(cmds) > 1) {
-		## previous was only one, and current are a few
+		
+	# single previous and multiple cmds in current
+	}else if (npcmds == 1 & ncmds > 1) {
 		dep_type = "burst"
+		
+	}else{
+		message("Number of cmds: ", ncmds, " and previous cmds: ", npcmds)
+		message("Could not decide a depedency type; this was too confusing to me. Help from Stackoverflow/Github?")
+		dep_type = "gather"
 	}
 	
 	return(dep_type)
@@ -161,19 +180,31 @@ detect_dep_type <- function(cmds, prev_job, prev_cmds){
 }
 
 guess_sub_dep <- function(mat, def){
-
+	
+	# expand rows with multiple dependencies
+	long_def = split_multi_dep(def)
+	
 	lst <- lapply(1:nrow(def), function(i){
+		
+		# get current jobname, previous jobname(s)
+		# as well as current and previous commands
 		jobnm = def$jobname[i]
-		prev_job = def$prev_jobs[i]
-		cmds = subset(mat, jobname==jobnm)
-		d_sub_type <- detect_sub_type(cmds = cmds)
-		d_dep_type <- detect_dep_type(prev_job = prev_job, cmds = cmds)
-		list(sub_type = d_sub_type, dep_type = d_dep_type)
+		ncmds = nrow(subset(mat, jobname == jobnm))
+		prev_job = subset(def, jobname == jobnm)$prev_jobs
+		
+		# get number of commands in each of the previous steps
+		prevmat = subset(mat, jobname %in% prev_job)
+		npcmds = sapply(split.data.frame(prevmat, prevmat$jobname), nrow)
+		
+		d_sub_type <- detect_sub_type(ncmds = ncmds)
+		d_dep_type <- detect_dep_type(prev_job = prev_job, ncmds = ncmds, npcmds = npcmds)
+		
+		data.frame(sub_type = d_sub_type, dep_type = d_dep_type, stringsAsFactors = FALSE)
 	})
 	tmp = do.call(rbind, lst)
 	
 	def$sub_type = tmp$sub_type
-	def$dep_type = tmp$def_type
+	def$dep_type = tmp$dep_type
 	
 	return(def)
 }
@@ -189,7 +220,7 @@ to_flowdef.flowmat <- function(x,
 															 memory_reserved = "2000", ## in MB
 															 cpu_reserved = "1",
 															 walltime = "1:00",
-															 guess = TRUE,
+															 guess = FALSE,
 															 verbose = get_opts("verbose"), ...){
 
 	if(verbose)
@@ -221,9 +252,11 @@ to_flowdef.flowmat <- function(x,
 
 	def = as.flowdef(def)
 	
-	## use sub and dep detection, if prev_jobs is given:
-# 	if(guess)
-# 		def <- guess_sub_dep(x, def)
+	# use sub and dep detection, if prev_jobs is given:
+	if(guess){
+		message("guessing submission and dependency types, experimental...")
+		def <- guess_sub_dep(x, def)
+	}
 
 	return(def)
 }
