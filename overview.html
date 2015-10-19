@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-10-16" />
+    <meta name="date" content="2015-10-19" />
   
   <!---  <title>flowr</title> --->
   
@@ -171,10 +171,10 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 <div id="toy-example" class="section level2">
 <h2>Toy example</h2>
-<p><img src="files/toy.png" /></p>
+<p><img src="files/toy.png" alt="" /></p>
 <p>Consider, a simple example where we have <strong>three</strong> instances of linux’s <code>sleep</code> command. After its completion <strong>three</strong> tmp files are created with some random data. Then, a merging step follows, combining the tmp files into one big file. Next, we use <code>du</code> to calculate the size of the merged file.</p>
 <div class="alert alert-info" role="alert">
-<strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.
+<p><strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.</p>
 </div>
 <p>To create this flow in flowr, we need the actual commands to run; and a set of instructions regarding how to stich the individual steps into a coherent pipeline.</p>
 <p>Here is a table with the commands we would like to run ( or <code>flow mat</code> ).</p>
@@ -297,7 +297,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 </tbody>
 </table>
 <div class="alert alert-info" role="alert">
-<strong>Note:</strong> Each row in a flow mat relates to one job. Jobname column is used to link flow definition with flow mat. Also, values in previous jobs (prev_jobs) are derived from jobnames.
+<p><strong>Note:</strong> Each row in a flow mat relates to one job. Jobname column is used to link flow definition with flow mat. Also, values in previous jobs (prev_jobs) are derived from jobnames.</p>
 </div>
 </div>
 <div id="stitch-it" class="section level2">
@@ -324,7 +324,7 @@ plot_flow(flowdef) # plot_flow works on flow definition as well</code></pre>
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
 <div class="alert alert-info" role="alert">
-<b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. This helps in debugging etc.
+<p><b>Dry run</b>: Quickly perform a dry run, of the submission step. This creates all the folder and files, and skips submission to the cluster. This helps in debugging etc.</p>
 </div>
 <pre class="r"><code>submit_flow(fobj)</code></pre>
 <pre><code>Test Successful!
@@ -334,7 +334,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
 <div id="submit-it" class="section level2">
 <h2>Submit it</h2>
 <div class="alert alert-info" role="alert">
-Submit to the cluster !
+<p>Submit to the cluster !</p>
 </div>
 <pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
@@ -363,7 +363,7 @@ Showing status of: ~/flowr/runs
 |003.merge |     3|       3|         1|           0|   pending|
 |004.size  |     3|       3|         1|           0|   pending|</code></pre>
 <div class="alert alert-success" role="alert">
-<b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.
+<p><b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.</p>
 </div>
 <p>Refer to <a href="docs.flowr.space/rd.html#status">status’s help section</a> for more details.</p>
 </div>
@@ -373,7 +373,7 @@ Showing status of: ~/flowr/runs
 <p>kill one flow:</p>
 <pre><code>flowr kill_flow x=flow_wd</code></pre>
 <div class="alert alert-warning" role="alert">
-One may instruct flowr to kill multiple flows, but flowr would confirm before killing.
+<p>One may instruct flowr to kill multiple flows, but flowr would confirm before killing.</p>
 </div>
 <pre><code>flowr kill x=&#39;~/flowr/runs/sleep_pipe&#39;
 found multiple wds:
@@ -405,7 +405,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <h2>1. Flow matrix</h2>
 <div class="alert alert-info" role="alert">
 <p>describes commands to run:</p>
-Each row in flow mat describes one shell command, with additional information regarding the name of the step etc.
+<p>Each row in flow mat describes one shell command, with additional information regarding the name of the step etc.</p>
 </div>
 <p>Essentially, this is a tab delimited file with three columns:</p>
 <ul>
@@ -473,7 +473,7 @@ Each row in flow mat describes one shell command, with additional information re
 <h2>2. Flow definition</h2>
 <div class="alert alert-info" role="alert">
 <p>defines how to stich pieces of the (work)flow:</p>
-Each row in this table refers to one step of the pipeline. It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it.
+<p>Each row in this table refers to one step of the pipeline. It describes the resources used by the step and also its relationship with other steps, especially, the step immediately prior to it.</p>
 </div>
 <p>It is a tab separated file, with a minimum of 4 columns:</p>
 <ul>
@@ -492,11 +492,11 @@ Each row in this table refers to one step of the pipeline. It describes the reso
 <li><code>queue</code></li>
 </ul>
 <div class="alert alert-info" role="alert">
-This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in other frameworks, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage of those cores. Flowr prevents this, by being able to tune resources granurly. Example, one may submit few short steps in <code>short</code> queue, and longer steps of the same pipeline in say <code>long</code> queue.
+<p>This is especially useful for genomics pipelines, since each step may use different amount of resources. For example, in other frameworks, if one step uses 16 cores these would be blocked and not used during processing of several other steps. Thus resulting in blockage of those cores. Flowr prevents this, by being able to tune resources granurly. Example, one may submit few short steps in <code>short</code> queue, and longer steps of the same pipeline in say <code>long</code> queue.</p>
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
 <div class="alert alert-warning" role="alert">
-If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.
+<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.</p>
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
 <table>
@@ -662,7 +662,7 @@ something -->
     none     scatter      serial     scatter
                  relationship
                   ONE-to-ONE</code></pre>
-<p>Relationship between steps A and B is best defined as <code>serial</code>. Step A (A1 through A10) is submitted as scatter. Further, <span class="math"><em>i</em><sup><em>t</em></sup><em>h</em></span> jobs of B depends on <span class="math"><em>i</em><sup><em>t</em></sup><em>h</em></span> jobs of A. i.e. B1 requires A1 to complete; B2 requires A2 and so on. Also, we note that defining dependency as serial, makes sure that B does not wait for all elements of A to complete.</p>
+<p>Relationship between steps A and B is best defined as <code>serial</code>. Step A (A1 through A10) is submitted as scatter. Further, <span class="math inline"><em>i</em><sup><em>t</em></sup><em>h</em></span> jobs of B depends on <span class="math inline"><em>i</em><sup><em>t</em></sup><em>h</em></span> jobs of A. i.e. B1 requires A1 to complete; B2 requires A2 and so on. Also, we note that defining dependency as serial, makes sure that B does not wait for all elements of A to complete.</p>
 <p><img src="overview_files/figure-html/plot_one_one-1.png" title="" alt="" width="624" /></p>
 </div>
 <div id="many-to-one-gather" class="section level2">
@@ -742,7 +742,7 @@ kable(ex2def[, 1:4])</code></pre>
 <pre class="r"><code>plot_flow(ex2def)</code></pre>
 <p><img src="overview_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
 <div class="alert alert-info" role="alert">
-There is a darker more prominent shadow to indicate scatter steps.
+<p>There is a darker more prominent shadow to indicate scatter steps.</p>
 </div>
 </div>
 </div>
