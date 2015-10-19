@@ -30,6 +30,7 @@ flowr latest
 - **New**: run function now accepts a custom conf, parameter.
 - **New**: Now you can add a module_cmds variable to the config file, and this will be prefixed in all script of the pipeline.
 - **New**: Run function now supports re-run as well.
+- **New**: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).
 
 
 ```
