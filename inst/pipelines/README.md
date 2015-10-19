@@ -14,7 +14,7 @@ wget $base/fastq_bam_bwa.conf
 wget $base/fastq_bam_bwa.def
 ```
 
-Edit the conf file to provide relevent paths to tools
+Edit the conf file to provide relevant paths to tools
 
 ```
 ## customize parameters, including paths to samtools, bwa, reference genomes etc.
