@@ -55,10 +55,10 @@ are to be executed in a (work)flow.
 - Works on your laptop/server or cluster (/cloud).
 - Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 - One line installation (`install.packages("flowr")`)
--   **Reproducible** and **transparent**, with cleanly structured execution logs
--   **Track** and **re-run** flows
--   **Lean** and **Portable**, with easy installation
-- **Fine grain** control over resources (CPU, memory, walltime of each step.
+- **Reproducible** and **transparent**, with cleanly structured execution logs
+- **Track** and **re-run** flows
+- **Lean** and **Portable**, with easy installation
+- **Fine grain** control over resources (CPU, memory, walltime, etc.) of each step.
 
 - Example: 
 	- A typical case in next-generation sequencing involves processing of tens of

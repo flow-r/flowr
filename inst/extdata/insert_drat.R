@@ -13,6 +13,8 @@ pkgs = c(pkg1, pkg2, pkg3, pkg4, pkg5, pkg6)
 for(pkg in pkgs){
 	out = drat::insertPackage(pkg, "~/Dropbox/public/github_drat", TRUE)
 }
+
+out = drat::insertPackage(pkg1, "~/Dropbox/public/github_drat", TRUE)
 system("cd ~/Dropbox/public/github_drat;git push")
 
 
