@@ -1,11 +1,13 @@
 ---  
 title: flowr
 subtitle: Streamlining Computing Workflows
+date: Flowr version `r packageVersion('flowr')` Revised on `r Sys.Date()`
 author: Sahil Seth
-date: Flowr documentation, version (`r packageVersion('flowr')`)
 output: 
   pdf_document:
-    toc: yes 
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
 ---
 
 
