@@ -76,9 +76,12 @@ are to be executed in a (work)flow.
 ### A few lines, to get started
 
 ``` {r, eval=FALSE}
-## Latest stable release from CRAN (updated every other month)
+## Official stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
 install.packages("flowr")
+
+# or a latest version from DRAT
+install.packages("flowr", repos="http://sahilseth.github.io/DRAT")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
@@ -123,4 +126,3 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
 <script src = "vignettes/files/googl.js"></script>
-
