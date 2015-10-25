@@ -163,7 +163,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -->
 <!--Find examples and related software: [https://github.com/flow-r](https://github.com/flow-r)-->
-<!--<script>
+<script>
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
 
@@ -179,7 +179,7 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         videoId: 'szDNFioBdPo',
-         'startSeconds': 29,
+        'startSeconds': 28,
          events: {
             'onReady': onPlayerReady
         }
@@ -188,15 +188,14 @@ function onYouTubeIframeAPIReady() {
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
     player.setPlaybackRate(1);
-    event.target.playVideo();
+    player.mute();
+    event.target.playVideo({'startSeconds': 29});
+    player.nextVideo();
 }
-</script>-->
-<div id="player">
-
-</div>
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29;speed=2" frameborder="0" volume="0">
+</script>
+<!--<div id="player"></div>-->
+<iframe id="player" type="text/html" width="640" height="480" src="http://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;enablejsapi=1;showinfo=0;start=29;loop=1" frameborder="0">
 </iframe>
-<p>.</p>
 </div>
 <div id="example" class="section level3">
 <h3>Example</h3>

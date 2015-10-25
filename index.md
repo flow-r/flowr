@@ -33,10 +33,12 @@ are to be executed in a (work)flow to process big data.
 - Works on your laptop/server or cluster (/cloud).
 - Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 - One line installation (`install.packages("flowr")`)
--   **Reproducible** and **transparent**, with cleanly structured execution logs
--   **Track** and **re-run** flows
--   **Lean** and **Portable**, with easy installation
+- **Reproducible** and **transparent**, with cleanly structured execution logs
+- **Track** and **re-run** flows
+- **Lean** and **Portable**, with easy installation
 - **Fine grain** control over resources (CPU, memory, walltime of each step.
+- Manage tools and default options using a companion **[params](http://sahilseth.com/params)** package.
+- Access all R function from cmd line using **[funr](http://github.com/sahilseth/funr)**.
 
 <!--
 - Effectively process a **multi-step pipeline**, spawning it
@@ -55,9 +57,7 @@ across the computing cluster
 -   **Lean** and **Portable**, with easy installation
 -->
 
-<div class="alert alert-info" role="alert">
-Find examples and relation software: [https://github.com/flow-r](https://github.com/flow-r)
-</div>
+<!--Find examples and related software: [https://github.com/flow-r](https://github.com/flow-r)-->
 
 <script>
 // 2. This code loads the IFrame Player API code asynchronously.
@@ -75,23 +75,26 @@ function onYouTubeIframeAPIReady() {
         height: '390',
         width: '640',
         videoId: 'szDNFioBdPo',
-         'startSeconds': 29,
+        'startSeconds': 28,
          events: {
             'onReady': onPlayerReady
         }
     });
 }
-
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-    player.setPlaybackRate(2);
-    event.target.playVideo();
+    player.setPlaybackRate(1);
+    player.mute();
+    event.target.playVideo({'startSeconds': 29});
+    player.nextVideo();
 }
 </script>
 
-<div id="player"></div>
+<!--<div id="player"></div>-->
 
-<!--<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29;speed=2" frameborder="0" volume="0"></iframe>-->
+<iframe id="player" type="text/html" width="640" height="480"
+  src="http://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;enablejsapi=1;showinfo=0;start=29;loop=1"  frameborder="0"></iframe>
+
 
 ### Example
 [![ex_fq_bam](files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
@@ -148,7 +151,7 @@ MD Anderson Comp. Biology meeting (July, 2015)
 -   Ethan Mao
 -   Henry Song
 -   An excellent resource for writing your own R packages:
-    [r-pkgs.had.co.nz](r-pkgs.had.co.nz)
+    [r-pkgs.had.co.nz](http://r-pkgs.had.co.nz)
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
 <script src = "files/googl.js"></script>
