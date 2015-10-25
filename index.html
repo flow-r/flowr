@@ -8,12 +8,12 @@
   
   <!---  <title></title> --->
   
-  <title>flowr — Easy, scalable big data pipelines using hpcc </title>
+  <title>flowr — Easy, scalable big data pipelines using High Performance Computing Cluster </title>
   <!---<link rel="shortcut icon" href="http://">--->
-  <meta property="og:description" content="Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
-  <meta property="og:title" content="flowr — Easy, scalable big data pipelines using hpcc">
-  <meta name="twitter:description" content="flowr - Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
-  <meta name="twitter:title" content="flowr — Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
+  <meta property="og:description" content="Easy, scalable big data pipelines using HPCC (high performance computing cluster)">
+  <meta property="og:title" content="flowr — Easy, scalable big data pipelines using a Computing Cluster">
+  <meta name="twitter:description" content="flowr - Easy, scalable big data pipelines using HPCC (high performance computing cluster)">
+  <meta name="twitter:title" content="flowr — Easy, scalable big data pipelines using HPCC (high performance computing cluster)">
   <meta name="keywords" content="R, HPCC, computing, big data, genomics, bioinformatics, pipelines, workflow, ngs, next-generation, sequencing, wgs, wex">
   
   
@@ -205,7 +205,11 @@ function onPlayerReady(event) {
 <h3>A few lines, to get started</h3>
 <pre class="r"><code>## Latest stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
-install.packages(&quot;flowr&quot;)
+## for a latest official version (from CRAN)
+install.packages(&quot;flowr&quot;, repos = CRAN=&quot;http://cran.rstudio.com&quot;)
+
+## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+install.packages(&quot;flowr&quot;, repos = c(CRAN=&quot;http://cran.rstudio.com&quot;, DRAT=&quot;http://sahilseth.github.io/drat&quot;))
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.

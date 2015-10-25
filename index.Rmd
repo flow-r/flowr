@@ -122,7 +122,11 @@ function onPlayerReady(event) {
 ``` {r, eval=FALSE}
 ## Latest stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
-install.packages("flowr")
+## for a latest official version (from CRAN)
+install.packages("flowr", repos = CRAN="http://cran.rstudio.com")
+
+## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
