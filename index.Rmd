@@ -126,6 +126,7 @@ function onPlayerReady(event) {
 install.packages("flowr", repos = CRAN="http://cran.rstudio.com")
 
 ## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+
 install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
 
 library(flowr) ## load the library
