@@ -42,17 +42,15 @@ are to be executed in a (work)flow to process big data.
 
 <li>
 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_manual.pdf">Flowr Manual</a></span>
+<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_manual.pdf">Flowr Manual  (PDF)</a></span>
 </li>
 
-Disclamer: Since we are using the same source for HTML and PDF, some plots/tables may not render perfectly in the PDF.
+**Disclamer: Since we are using the same source for HTML and PDF, some plots/tables may not render perfectly in the PDF.**
 
 <li>
 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_pkg_ref.pdf">Flowr package Reference</a></span>
+<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_pkg_ref.pdf">Flowr Package Reference (describing all functions) (PDF)</a></span>
 </li>
-
-**Package reference (describing all functions).**
 
 
 
@@ -156,6 +154,37 @@ page
 - Updated [introduction](http://sahilseth.github.io/slides/flowrintro/index.html) (Sep, 2015)
 - An earlier [introduction](http://sahilseth.github.io/slides/flowrintro/index_20150706) at 
 MD Anderson Comp. Biology meeting (July, 2015)
+
+Citation (from within R, enter citation("flowr")):
+
+
+```r
+citation("flowr")
+```
+
+```
+
+To cite the ouch package in publications use:
+
+  Sahil Seth et. al (2015) Flowr: Robust and efficient pipelines
+  using a simple language-agnostic approach bioRxiv 2015
+
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    author = {Sahil Seth and Samir Amin and Xingzhi Song and Xizeng Mao and Jianhua Zhang},
+    title = {Flowr: Robust and efficient pipelines using a simple language-agnostic approach},
+    journal = {bioRxiv},
+    year = {2015},
+    doi = {10.1101/029710},
+    publisher = {Cold Spring Harbor Labs Journals},
+    url = {http://biorxiv.org/content/early/2015/10/22/029710},
+  }
+
+As flowr is continually evolving, you may want to cite its version
+number. Find it with 'help(package=flowr)'.
+```
+
 
 
 ### Acknowledgements
