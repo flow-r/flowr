@@ -378,29 +378,28 @@ kable(head(flow_def))
 Its best to have this as a tab seperated file (with no row.names). -->
 
 <!-- Style 2
-This style may be more suited for people who like to explore more advanced usage and like to code in R. Also this one find this much faster if jobs and their relationships changes a lot.
-Here instead of seperating cmds and definitions one defines them step by step incrementally.
-- Use: queue(), to define the computing cluster being used
-- Use: multiple calls job()
-- Use: flow() to stich the jobs into a flow.
-Currently we support LSF, Torque and SGE. Let us use LSF for this example.
-```{r getqobj, eval=FALSE}
-qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
-```
-Let us stitch a simple flow with three jobs, which are submitted one after the other.
-```{r plot_simpleflow, eval=FALSE}
-job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
-job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
-plot_flow(fobj)
-```
-The above translates to a flow definition which looks like this:
-```{r, eval=FALSE}
-dat <- flowr:::create_jobs_mat(fobj)
-knitr:::kable(dat)
-```
-something -->
+// This style may be more suited for people who like to explore more advanced usage and like to code in R. Also this one find this much faster if jobs and their relationships changes a lot.
+//Here instead of seperating cmds and definitions one defines them step by step incrementally.
+//- Use: queue(), to define the computing cluster being used
+//- Use: multiple calls job()
+//- Use: flow() to stich the jobs into a flow.
+//Currently we support LSF, Torque and SGE. Let us use LSF for this example.
+//```{r getqobj, eval=FALSE}
+//qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
+//```
+//Let us stitch a simple flow with three jobs, which are submitted one after the other.
+//```{r plot_simpleflow, eval=FALSE}
+//job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
+//job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = //"serial")
+//job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
+//fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
+//plot_flow(fobj)
+//```
+//The above translates to a flow definition which looks like this:
+//```{r, eval=FALSE}
+//dat <- flowr:::create_jobs_mat(fobj)
+//knitr:::kable(dat)
+// -->
 
 
 
