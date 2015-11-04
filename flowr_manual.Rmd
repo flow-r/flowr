@@ -24,3 +24,10 @@ output:
 ```{r child = 'example.Rmd'}
 ```
 
+# Citation:
+
+Please consider citing flowr, would be great help (from within R, enter `citation("flowr")`)
+
+```{r, comment="", echo=FALSE}
+citation("flowr")
+```
