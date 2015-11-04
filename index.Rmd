@@ -62,7 +62,7 @@ are to be executed in a (work)flow to process big data.
 <span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_manual.pdf">Flowr Manual</a></span>
 </li>
 
-Disclamer: Since we are using the same source for HTML and PDF, some plots/tables may not render perfectly in the PDF.
+**Disclamer: Since we are using the same source for HTML and PDF, some plots/tables may not render perfectly in the PDF.**
 
 <li>
 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
