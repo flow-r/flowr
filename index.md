@@ -122,14 +122,17 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 - The [overview](http://docs.flowr.space/docs.html) provides additional details regarding
 the ideas and concepts used in flowr
 - We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
-new pipeline
-- We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
-new pipeline
+simple pipeline.
+- Or a tutorial explaining pipeline for [fastq to bam](http://rpubs.com/sahiilseth/flowr_fq_bam).
 - Additionally, a subset of important functions are described in the [package reference](http://docs.flowr.space/rd.html)
 page
 - You may follow detailed instructions on [installing and configuring](http://docs.flowr.space/install.html)
 - You can use [flow creator](https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
+
+**All this documentation is also available as [PDF here](http://docs.flowr.space/manual.pdf)**. 
+
+Disclamer: Since we are using the same source for HTML and PDF, some plots/tables may not render perfectly in the PDF.
 
 
 ### Troubleshooting
