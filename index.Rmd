@@ -172,7 +172,9 @@ page
 - An earlier [introduction](http://sahilseth.github.io/slides/flowrintro/index_20150706) at 
 MD Anderson Comp. Biology meeting (July, 2015)
 
-## Please consider citing flowr, would be great help (from within R, enter citation("flowr")):
+## Please consider citing flowr, would be great help 
+
+from within R, enter `citation("flowr")`
 
 ```{r, comment="", echo=FALSE}
 citation("flowr")
