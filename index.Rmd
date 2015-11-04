@@ -66,10 +66,8 @@ are to be executed in a (work)flow to process big data.
 
 <li>
 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_pkg_ref.pdf">Flowr package Reference (PDF)</a></span>
+<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_pkg_ref.pdf">Flowr package Reference (describing all functions) (PDF)</a></span>
 </li>
-
-**Package reference (describing all functions).**
 
 
 
