@@ -111,10 +111,6 @@ function onPlayerReady(event) {
 <iframe id="player" type="text/html" width="640" height="480"
   src="http://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;enablejsapi=1;showinfo=0;start=29;loop=1"  frameborder="0"></iframe>
 
-<<<<<<< HEAD
-=======
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=0;start=29;speed=2" frameborder="0" volume="0"></iframe>.
->>>>>>> origin/gh-pages
 
 ### Example
 [![ex_fq_bam](files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
