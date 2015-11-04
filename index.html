@@ -190,7 +190,6 @@ function onPlayerReady(event) {
     player.setPlaybackRate(1);
     player.mute();
     event.target.playVideo({'startSeconds': 29});
-    player.nextVideo();
 }
 </script>
 <!--<div id="player"></div>-->
@@ -203,17 +202,15 @@ function onPlayerReady(event) {
 </div>
 <div id="a-few-lines-to-get-started" class="section level3">
 <h3>A few lines, to get started</h3>
-<pre class="r"><code>## Latest stable release from CRAN (updated every other month)
+<pre><code>## Latest stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
 ## for a latest official version (from CRAN)
-install.packages(&quot;flowr&quot;, repos = CRAN=&quot;http://cran.rstudio.com&quot;)
+Rscript -e &#39;install.packages(&quot;flowr&quot;, repos = c(CRAN=&quot;http://cran.rstudio.com&quot;))&#39;
 
 ## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+Rscript -e &#39;install.packages(&quot;flowr&quot;, repos = c(CRAN=&quot;http://cran.rstudio.com&quot;, DRAT=&quot;http://sahilseth.github.io/drat&quot;))&#39;
 
-install.packages(&quot;flowr&quot;, repos = c(CRAN=&quot;http://cran.rstudio.com&quot;, DRAT=&quot;http://sahilseth.github.io/drat&quot;))
-
-library(flowr) ## load the library
-setup() ## copy flowr bash script; and create a folder flowr under home.
+Rscript -e &#39;library(flowr);setup()&#39;
 
 ## Run an example pipeline
 flowr run x=sleep_pipe platform=local execute=TRUE</code></pre>

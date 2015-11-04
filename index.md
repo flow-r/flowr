@@ -86,7 +86,6 @@ function onPlayerReady(event) {
     player.setPlaybackRate(1);
     player.mute();
     event.target.playVideo({'startSeconds': 29});
-    player.nextVideo();
 }
 </script>
 
@@ -102,14 +101,16 @@ function onPlayerReady(event) {
 
 ### A few lines, to get started
 
-
-```r
+```
 ## Latest stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
-install.packages("flowr")
+## for a latest official version (from CRAN)
+Rscript -e 'install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com"))'
 
-library(flowr) ## load the library
-setup() ## copy flowr bash script; and create a folder flowr under home.
+## Latest stable release from DRAT (updated every other week); CRAN for dependencies
+Rscript -e 'install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))'
+
+Rscript -e 'library(flowr);setup()'
 
 ## Run an example pipeline
 flowr run x=sleep_pipe platform=local execute=TRUE
