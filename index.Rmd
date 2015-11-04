@@ -59,14 +59,14 @@ are to be executed in a (work)flow to process big data.
 
 <li>
 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_manual.pdf">Flowr Manual</a></span>
+<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_manual.pdf">Flowr Manual  (PDF)</a></span>
 </li>
 
 **Disclamer: Since we are using the same source for HTML and PDF, some plots/tables may not render perfectly in the PDF.**
 
 <li>
 <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_pkg_ref.pdf">Flowr package Reference</a></span>
+<span class="glyphicon-class"><a href="http://docs.flowr.space/flowr_pkg_ref.pdf">Flowr package Reference (PDF)</a></span>
 </li>
 
 **Package reference (describing all functions).**
