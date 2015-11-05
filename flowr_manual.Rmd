@@ -12,7 +12,7 @@ output:
 
 
 
-```{r child = 'docs.Rmd'}
+```{r child = 'overview.Rmd'}
 ```
 
 ```{r child = 'install.Rmd'}
