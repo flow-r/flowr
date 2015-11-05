@@ -222,8 +222,8 @@ to_flow.flowmat <- function(x, def,
 		if (execute|submit){
 			if(verbose)
 				message("\n##--- flowr submission...")
-			if(verbose)
-				message("\nYou may use fobj <- to_flow(...); submit_flow(fobj)")
+			# if(verbose)
+			# message("\nYou may use fobj <- to_flow(...); submit_flow(fobj)")
 			if (length(samps) > 1){
 				if(verbose)
 					message("\n\nDetected ", length(samps), " samples/groups in flow_mat.",

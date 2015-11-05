@@ -66,20 +66,6 @@ kable(subset(flow_mat, samplename == "sample1"))
 ## ----build_pipe_exdef, echo=FALSE----------------------------------------
 kable(head(flow_def))
 
-## ----getqobj, eval=FALSE-------------------------------------------------
-#  qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
-
-## ----plot_simpleflow, eval=FALSE-----------------------------------------
-#  job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
-#  job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-#  job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-#  fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
-#  plot_flow(fobj)
-
-## ---- eval=FALSE---------------------------------------------------------
-#  dat <- flowr:::create_jobs_mat(fobj)
-#  knitr:::kable(dat)
-
 ## ----plot_one_one, echo=FALSE, message=FALSE-----------------------------
 qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
 A <- job(name = "A", cmds = "sleep1", q_obj = qobj, 
@@ -101,13 +87,6 @@ pab <- plot_flow(flow(jobs = list(A, B)))
 
 ## ----plot_one_many, echo=FALSE, message=FALSE, eval=FALSE----------------
 #  pcd <- plot_flow(flow(jobs = list(C, D)))
-
-## ---- eval=FALSE, echo=FALSE---------------------------------------------
-#  jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "serial", name = "job1")
-#  jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter",
-#               dependency_type = "burst", previous_job = "job1")
-#  fobj <- flow(jobs = list(jobj1, jobj2))
-#  plot_flow(fobj)
 
 ## ----plot_abcd, message=FALSE--------------------------------------------
 ex2def = as.flowdef(file.path(ex, "abcd.def"))

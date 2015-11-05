@@ -22,12 +22,10 @@ setup <- function(bin = "~/bin",
 	if(!file.exists(bin)) dir.create(bin) ## create bin, if it does not exist
 	script = file.path(bin, pkg)
 	if(!file.exists(script)){
-		message("Adding flowr executable to ~/bin")
+		message("\nAdding flowr executable to ~/bin")
 		file.symlink(system.file(package = pkg, "scripts/flowr"), bin)
 	}
-	tmp <- c("Consider adding ~/bin to your PATH variable in .bashrc.",
-		"\nexport PATH=$PATH:$HOME/bin",
-		"\nYou may now use all R functions using 'flowr' from shell.")
+	
 
 	message("Creating a directory structure under ", flow_base_path)
 	dir.create(flow_base_path, showWarnings = FALSE)
@@ -37,7 +35,18 @@ setup <- function(bin = "~/bin",
 
 	## fetch conf files and copy them, if they exist show warning
 	confs = sapply(c("flowr","ngsflows"), function(x) fetch_conf(x, verbose = 0)[1])
-	tmp2 = file.copy(confs, flow_conf_path, overwrite = FALSE)
+	message("\ncopying default configuration files to: ", flow_conf_path, 
+					".\nWould skip if they already exist. ", 
+					"\nIf you are upgrading, please check the conf files for version information:\n", 
+					"https://github.com/sahilseth/flowr/tree/master/inst/conf")
+	tmp2 = try(file.copy(confs, flow_conf_path, overwrite = FALSE), silent = TRUE)
 	
+	message("\ncopying a simple pipeline to: ", flow_pipe_path[1])
+	pip = fetch_pipes("sleep_pipe", silent = TRUE)[1, ]
+	tmp2 = try(file.copy(c(pip$def, pip$pipe), flow_pipe_path[1]), silent = TRUE)
+	
+	tmp <- c("\nConsider adding ~/bin to your PATH variable in .bashrc.",
+					 "\nexport PATH=$PATH:$HOME/bin",
+					 "\nYou may now use all R functions using 'flowr' from shell.")
 	message(tmp)
 }
