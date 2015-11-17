@@ -27,16 +27,19 @@ flowr latest
 
 - New option local_cores, which determines (max) number of cores to use when running local jobs.
 - enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).
-- **New**: run function now accepts a custom conf, parameter.
-- **New**: Now you can add a module_cmds variable to the config file, and this will be prefixed in all script of the pipeline.
-- **New**: Run function now supports re-run as well.
-- **New**: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).
-
 
 ```
 ## now this works well !
 flowr status x=.
 ```
+
+- **New**: run function now accepts a custom conf, parameter.
+- **New**: Now you can add a module_cmds variable to the config file, and this will be prefixed in all script of the pipeline.
+- **New**: Run function now supports re-run as well.
+- **New**: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).
+- **New**: status gets a new argument to turn off progress bar if needed.
+- fixed bugs in documentation
+
 
 
 flowr 0.9.8 (blueberries)
