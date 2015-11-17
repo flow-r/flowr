@@ -63,7 +63,6 @@
 #' @importFrom utils tail
 #' @importFrom params kable
 #' @export
-#' 
 #' @seealso \link{flowopts}
 #'
 #' @examples

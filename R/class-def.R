@@ -112,8 +112,7 @@ setClass("flow", representation(jobs = "list",
 #' 
 #' @keywords queue
 #' 
-#' @export
-#' 
+#' @export 
 #' @examples
 #' qobj <- queue(platform='lsf')
 queue <- function(object,

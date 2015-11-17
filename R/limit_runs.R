@@ -27,7 +27,6 @@ limit_runs <- function(x, max_processing = 7){
 #' @param max_processing max number of flow which may be processed concurrently
 #'
 #' @export
-#'
 submit_run <- function(x, wd, max_processing = 7){
 	
 	submit_one <- function(x, wd, max_processing){
