@@ -51,10 +51,7 @@ get_wds <- function(x){
 #' 
 #' Once all the jobs have been submitted to the cluster you may always use \code{use_cache=TRUE}.
 #' 
-#' 
-#'
 #' @export
-#'
 #' @importFrom parallel mclapply
 #'
 #' @examples
@@ -66,7 +63,7 @@ get_wds <- function(x){
 status <- function(x, 
 									 use_cache = FALSE,
 									 verbose = get_opts("verbose"),
-									 out_format = "markdown"){
+									 out_format = "markdown", ...){
 	## get the total jobs
 	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
 	
@@ -75,7 +72,7 @@ status <- function(x,
 	
 	## if a flow object it specified
 	if(is.flow(x))
-		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache)
+		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...)
 	
 	wds = get_wds(x)
 	lst = lapply(wds, function(wd){
@@ -88,7 +85,7 @@ status <- function(x,
 			message("Using cache for speed, skipping checking jobs, which were previously marked complete...")
 		
 		x = read_fobj(wd)
-		lst = get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache)
+		lst = get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...)
 	})
 	invisible(lst)
 }
@@ -179,18 +176,21 @@ get_status.character <- function(x, verbose, use_cache, out_format, ...){
 
 #' @rdname status
 #' @export
-get_status.data.frame <- function(x, verbose, use_cache, ...){
+get_status.data.frame <- function(x, verbose, use_cache, progress = TRUE, ...){
 	
 	## get exit codes for all triggers
 	## got over each row of flowdet and work through it
 	## one may need to make this faster, for now, we will just show a progress bar
 	if(verbose > 1)
 		message("fetching exit codes...")
-	if(nrow(x) > 1)
+	
+	# eval is we need to show progress
+	show_progress = all(progress, nrow(x) > 1)
+	if(show_progress)
 		pb <- txtProgressBar(min = 1, max = nrow(x), style = 3)
 	
 	get_code <-  function(i){
-		if(nrow(x) > 1)
+		if(show_progress)
 			pb$up(i)
 		fl = x$trigger[i]
 		## skip reading the code
@@ -214,7 +214,7 @@ get_status.data.frame <- function(x, verbose, use_cache, ...){
 	exit_code <- lapply(1:nrow(x), get_code)
 	exit_code = unlist(exit_code)
 	
-	if(nrow(x) > 1)
+	if(show_progress)
 		close(pb)
 	
 	x$started = !is.na(exit_code)
