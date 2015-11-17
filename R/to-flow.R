@@ -32,6 +32,7 @@
 #' @param verbose A numeric value indicating the amount of messages to produce.
 #'  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
 #' [\code{get_opts("verbose")}] [1]
+#' @param module_cmds A character vector of additional commands, which will be prepended to each script of the flow. 
 #'
 #' @examples
 #' ## Use this link for a few elaborate examples:

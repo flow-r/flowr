@@ -49,7 +49,6 @@ if(FALSE){
 #' @examples \dontrun{
 #' rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
 #' }
-#'  @export
 rerun <- function(x, ...) {
 	
 	if(get_opts("verbose") > 1)

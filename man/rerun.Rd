@@ -65,6 +65,5 @@ regarding previous job ids and their status is not lost.
 \dontrun{
 rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
 }
- @export
 }
 

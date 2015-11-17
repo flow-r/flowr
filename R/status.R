@@ -30,6 +30,7 @@ get_wds <- function(x){
 #' @param use_cache This skips checking status of jobs which have already been completed a
 #' and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]
 #' @param out_format passed onto knitr:::kable. supports: markdown, rst, html... [markdown]
+#' @param progress Whether or not to show a progress bar, when fetching/reading files [TRUE]
 #' @inheritParams to_flow
 #'
 #' @details

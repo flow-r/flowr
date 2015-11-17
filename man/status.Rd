@@ -32,6 +32,8 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]}
 \item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html... [markdown]}
 
 \item{...}{not used}
+
+\item{progress}{Whether or not to show a progress bar, when fetching/reading files [TRUE]}
 }
 \description{
 Summarize status of a flow OR multiple flows OR a high-level summary of all flows in a folder.

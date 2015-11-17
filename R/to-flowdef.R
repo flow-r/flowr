@@ -189,8 +189,8 @@ guess_sub_dep <- function(mat, def){
 		# get current jobname, previous jobname(s)
 		# as well as current and previous commands
 		jobnm = def$jobname[i]
-		ncmds = nrow(subset(mat, jobname == jobnm))
-		prev_job = subset(def, jobname == jobnm)$prev_jobs
+		ncmds = nrow(subset(mat, mat$jobname == jobnm))
+		prev_job = subset(def, mat$jobname == jobnm)$prev_jobs
 		
 		# get number of commands in each of the previous steps
 		prevmat = subset(mat, jobname %in% prev_job)

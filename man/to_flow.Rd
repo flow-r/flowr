@@ -57,6 +57,8 @@ This over-rides the platform column in flowdef. (optional)}
 [\code{get_opts("verbose")}] [1]}
 
 \item{desc}{Advanced Use. final flow name, please don't change.}
+
+\item{module_cmds}{A character vector of additional commands, which will be prepended to each script of the flow.}
 }
 \value{
 Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
