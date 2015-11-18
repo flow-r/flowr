@@ -28,4 +28,4 @@ URL: https://github.com/sahilseth/flowr
 BugReports: https://github.com/sahilseth/flowr/issues
 Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
 License: MIT + file LICENSE
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1.9000
