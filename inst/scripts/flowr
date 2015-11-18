@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript --no-save --no-restore
+#!/usr/bin/env Rscript
 # ------------------------------------ header ----------------------------------
 # Copyright 2014, Sahil Seth
 # licence: MIT

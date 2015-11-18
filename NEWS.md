@@ -38,6 +38,7 @@ flowr status x=.
 - **New**: Run function now supports re-run as well.
 - **New**: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).
 - **New**: status gets a new argument to turn off progress bar if needed.
+- **NEW**: Now rerun supports multiple folders to be re-run.
 - fixed bugs in documentation
 
 
