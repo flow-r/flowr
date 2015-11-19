@@ -115,6 +115,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	## --- check if there are rows where prev_job specied but dep NOT specified
 	if(verbose)
 		message("checking for extra rows in def...")
+	
 	extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")
 	if (sum(extra_rows) > 0){
 		message(paste(kable(x[extra_rows,]), collapse = "\n"))
@@ -140,6 +141,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	}
 
 	x$cpu_reserved = as.numeric(x$cpu_reserved)
+	x$nodes = as.character(x$nodes)
 	
 	#print(x)
 	## check all previous jobs defined in names

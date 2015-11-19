@@ -219,6 +219,7 @@ to_flowdef.flowmat <- function(x,
 															 platform = "torque",
 															 memory_reserved = "2000", ## in MB
 															 cpu_reserved = "1",
+															 nodes = "1",
 															 walltime = "1:00",
 															 guess = FALSE,
 															 verbose = get_opts("verbose"), ...){
@@ -247,6 +248,7 @@ to_flowdef.flowmat <- function(x,
 										memory_reserved = memory_reserved,
 										walltime = walltime,
 										cpu_reserved = cpu_reserved,
+										nodes = nodes,
 										platform = platform,
 										stringsAsFactors = FALSE)
 
