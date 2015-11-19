@@ -65,9 +65,9 @@ rerun.character <- function(x, ...){
 	message("x looks like a path, seeing if multiple paths match ...")
 	wds = get_wds(x)
 	
-	lapply(wds, function(wd){
+	tmp <- lapply(wds, function(wd){
 		
-		message("reading flow_details.rds from, ", wd)
+		message("\n\nreading flow_details.rds from: ", wd)
 		fobj <- read_fobj(wd)
 		
 		if(is.character(fobj))
@@ -79,7 +79,9 @@ rerun.character <- function(x, ...){
 					 "Valid arguments for rerun are: mat and def, for flow matrix and flow definition respectively.")
 		
 		rerun(fobj, ...)
-	})	
+	})
+	
+	invisible(tmp)
 	
 	
 }
