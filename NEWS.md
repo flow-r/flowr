@@ -40,6 +40,7 @@ flowr status x=.
 - **New**: status gets a new argument to turn off progress bar if needed.
 - **NEW**: Now rerun supports multiple folders to be re-run.
 - fixed bugs in documentation
+- **IMP**: to_flowdef now add a parameter nodes, to enable specifying number of nodes required per-job.
 
 
 
