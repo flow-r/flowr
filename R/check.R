@@ -141,7 +141,9 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	}
 
 	x$cpu_reserved = as.numeric(x$cpu_reserved)
-	x$nodes = as.character(x$nodes)
+	
+	if(!is.null(x$nodes))
+		x$nodes = as.character(x$nodes)
 	
 	#print(x)
 	## check all previous jobs defined in names

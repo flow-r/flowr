@@ -23,7 +23,7 @@ test_that("check return of fetch_pipes", {
 if(verbose) message("class: ", class(pip$pipe))
 if(verbose) message("file ", pip$pipe, " exists: ", file.exists(pip$pipe))
 
-## ----- flowmat
+# ----- flowmat ---------
 context("Test creation of flowmat")
 source(pip$pipe)
 out = sleep_pipe(x = 3, "sample1")
@@ -36,7 +36,7 @@ test_that("test output of sleep_pipe", {
 })
 
 
-## ----- flowdef	
+# ----- flowdef ---------
 context("Test creation of flowdef")
 ## --- specify the resource requirement
 def = to_flowdef(out$flowmat,
@@ -48,11 +48,11 @@ test_that("test creation of flowdef", {
 	expect_is(def, "flowdef")
 	expect_is(def, "data.frame")
 	expect_equal(nrow(def), 4)
-	expect_equal(ncol(def), 10)
+	expect_equal(ncol(def), 11)
 })
 
 
-## ---                             flowdef	
+# ----- test creation of flowdef ---------
 context("Test creation of flow")
 rm_col <- function(x, nm){
 	col = which(colnames(x) %in% nm)
