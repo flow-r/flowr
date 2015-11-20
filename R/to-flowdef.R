@@ -104,7 +104,8 @@
 #' @param queue Cluster queue to be used
 #' @param platform platform of the cluster: lsf, sge, moab, torque, slurm etc.
 #' @param memory_reserved amount of memory required.
-#' @param cpu_reserved number of cpu's required
+#' @param cpu_reserved number of cpu's required. [1]
+#' @param nodes if you tool can use multiple nodes, you may reserve multiple nodes for it. [1]
 #' @param walltime amount of walltime required
 #' @param guess should the function, guess submission and dependency types. See details. 
 #' @inheritParams to_flow
@@ -193,7 +194,7 @@ guess_sub_dep <- function(mat, def){
     prev_job = subset(def, mat$jobname == jobnm)$prev_jobs
     
     # get number of commands in each of the previous steps
-    prevmat = subset(mat, jobname %in% prev_job)
+    prevmat = subset(mat, mat$jobname %in% prev_job)
     npcmds = sapply(split.data.frame(prevmat, prevmat$jobname), nrow)
     
     d_sub_type <- detect_sub_type(ncmds = ncmds)

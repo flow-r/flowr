@@ -77,7 +77,9 @@ is.flowdef(x)
 
 \item{memory_reserved}{amount of memory required.}
 
-\item{cpu_reserved}{number of cpu's required}
+\item{cpu_reserved}{number of cpu's required. [1]}
+
+\item{nodes}{if you tool can use multiple nodes, you may reserve multiple nodes for it. [1]}
 
 \item{walltime}{amount of walltime required}
 

@@ -51,6 +51,9 @@ queue(object, platform = c("local", "lsf", "torque", "sge", "moab"),
 \item{stdout}{[debug use] Ignore}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
+
+\item{module_cmds}{[advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
+Could be cmds like \code{module load mytool1;module load mytool2}}
 }
 \description{
 Internal function (used by \link{to_flow}), to define the format used to submit a job.
