@@ -33,12 +33,11 @@ You may download a PDF version of this manual [here](manual.pdf)
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
-<p>
-This framework allows you to design and implement complex pipelines, and
-deploy them on your institution's computing cluster. This has been built
-keeping in mind the needs of bioinformatics workflows. However, it is
-easily extendable to any field where a series of steps (shell commands)
-are to be executed in a (work)flow.</p>
+<p>This framework allows you to design and implement complex
+pipelines, and deploy them on your institution's computing cluster. This has
+been built keeping in mind the needs of bioinformatics workflows. However, it is
+easily extendable to any field where a series of steps (shell commands) are to
+be executed in a (work)flow.</p>
 
 <h4>Depends</h4>
 <p>
@@ -83,7 +82,7 @@ a named list of commands for a sample. Its best to supply a flowmat instead.</p>
 <div>## method for class 'character'
 to_flow(x, def, grp_col, jobname_col, cmd_col, ...)</div>
 <div>## method for class 'flowmat'
-to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, containerize&nbsp;=&nbsp;TRUE, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
 <div>## method for class 'data.frame'
 to_flow(x, ...)</div>
 <div>## method for class 'list'
@@ -111,6 +110,8 @@ to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;"",
   <dt>platform</dt>
   <dd class="rd-dd">character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
 This over-rides the platform column in flowdef. (optional)</dd>
+  <dt>containerize</dt>
+  <dd class="rd-dd">flowr could create a new folder and pull all flows in them, keep the process clean</dd>
   <dt>submit</dt>
   <dd class="rd-dd">Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]</dd>
   <dt>execute</dt>
@@ -123,6 +124,8 @@ This over-rides the platform column in flowdef. (optional)</dd>
 [<code>get_opts("verbose")</code>] [1]</dd>
   <dt>desc</dt>
   <dd class="rd-dd">Advanced Use. final flow name, please dont change.</dd>
+  <dt>module_cmds</dt>
+  <dd class="rd-dd">A character vector of additional commands, which will be prepended to each script of the flow.</dd>
 </dl>
 
   <h4>Details</h4>
@@ -259,18 +262,18 @@ kill(fobj3)</code></pre>
 
 <h3>Flow Definition defines how to stich pieces of the (work)flow into a flow.</h3>
 
-<p class="rd-p">This function enables creation of a skeleton flow definition with several default values, using a
+<p class="rd-p">This function enables creation of a skeleton flow definition with several default values, using a 
 flowmat.
 To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront.
 As such, these params must be of the same length as number of unique jobs using in the flowmat.
-Each row in this table refers to one step of the pipeline.
-It describes the resources used by the step and also its relationship with other steps,
+Each row in this table refers to one step of the pipeline. 
+It describes the resources used by the step and also its relationship with other steps, 
 especially, the step immediately prior to it.
  <br><br>
-<strong>Submission types:</strong>
+<strong>Submission types:</strong> 
 <em>This refers to the sub_type column in flow definition.</em><br>
-Consider an example with three steps A, B and C.
-A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and
+Consider an example with three steps A, B and C. 
+A has 10 commands from A1 to A10, similarly B has 10 commands B1 through B10 and 
 C has a single command, C1.
 Consider another step D (with D1-D3), which comes after C.
 step (number of sub-processes)
@@ -290,12 +293,12 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 		<ul>
 </ul>
 </li>
-<li> <code>serial</code>: <em>one to one</em> relationship with previous job.
+<li> <code>serial</code>: <em>one to one</em> relationship with previous job. 
 	<ul>
 <li> <em>B1 can start as soon as A1 completes, and B2 starts just after A2 and so on.</em></li>
 </ul>
 </li>
-<li> <code>gather</code>: <em>many to one</em>, wait for <strong>all</strong> commands in the previous job to finish then start the  current step.
+<li> <code>gather</code>: <em>many to one</em>, wait for <strong>all</strong> commands in the previous job to finish then start the  current step. 
 	<ul>
 </ul>
 </li>
@@ -308,7 +311,7 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 <h4>Usage</h4>
 <pre class="r"><code><div>to_flowdef(x, ...)</div>
 <div>## method for class 'flowmat'
-to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", nodes&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
 <div>## method for class 'flow'
 to_flowdef(x, ...)</div>
 <div>## method for class 'character'
@@ -355,17 +358,17 @@ to_flowdef(x, ...)</div>
 <li><code>jobname</code>: Name of the step</p>
 
   <p class="rd-p"></li>
-<li><code>sub_type</code>: Short for submission type,
+<li><code>sub_type</code>: Short for submission type, 
  refers to, how should multiple commands of this step be submitted. Possible values are `serial` or `scatter`.</p>
 
   <p class="rd-p"></li>
-<li><code>prev_jobs</code>: Short for previous job, this would be the jobname of the previous job.
-This can be NA/./none if this is a independent/initial step, and no previous step is required for this to start.
+<li><code>prev_jobs</code>: Short for previous job, this would be the jobname of the previous job. 
+This can be NA/./none if this is a independent/initial step, and no previous step is required for this to start. 
 Additionally, one may use comma(s) to define multiple previous jobs (A,B).</p>
 
   <p class="rd-p"></li>
-<li><code>dep_type</code>: Short for dependency type,
-refers to the relationship of this job with the one defined in `prev_jobs`.
+<li><code>dep_type</code>: Short for dependency type, 
+refers to the relationship of this job with the one defined in `prev_jobs`. 
 This can take values `none`, `gather`, `serial` or `burst`.</p>
 
   <p class="rd-p"></li>
@@ -374,19 +377,19 @@ This can take values `none`, `gather`, `serial` or `burst`.</p>
   <p class="rd-p"><em>resource columns</em> (recommended):<br></p>
 
   <p class="rd-p">Additionally, one may customize resource requirements used by each step.
-The format used varies and depends to the computing platform. Thus its best to refer to
+The format used varies and depends to the computing platform. Thus its best to refer to 
 your institutions guide to specify these.</p>
 
   <p class="rd-p"><ul>
 <li><code>cpu_reserved</code> integer, specifying number of cores to reserve [1]
-	</li>
+</li>
 <li><code>memory_reserved</code> Usually in KB [2000]
-	</li>
+</li>
 <li><code>nodes</code> number of server nodes to reserve, most tools can only use multiple cores on
-	a <strong>single</strong> node [1]
-	</li>
+a <strong>single</strong> node [1]
+</li>
 <li><code>walltime</code> maximum time allowed for a step, usually in a HH:MM or HH:MM:SS format. [1:00]
-	</li>
+</li>
 <li><code>queue</code> the queue to use for job submission [short]
 </li>
 </ul></p>
@@ -394,11 +397,11 @@ your institutions guide to specify these.</p>
 
   <h4>Details</h4>
 
-  <p class="rd-p"><strong>NOTE:</strong> Guessing is a experimental feature, please check the definition carefully,
+  <p class="rd-p"><strong>NOTE:</strong> Guessing is a experimental feature, please check the definition carefully, 
 and its provided to help and not replace best your best judgement. <br></p>
 
-  <p class="rd-p">Optionally, one may provide the previous jobs and flowr can try guessing the appropriate
-submission and dependency types. If there are multiple commands, default is submitting them as
+  <p class="rd-p">Optionally, one may provide the previous jobs and flowr can try guessing the appropriate 
+submission and dependency types. If there are multiple commands, default is submitting them as 
 scatter, else as serial. Further, if previous job has multiple commands and current job has single;
 its assumed that all of the previous need to complete, suggesting a gather type dependency.</p>
 
@@ -437,25 +440,25 @@ check(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
   <p class="rd-p"><strong>A typical output from flowdef</strong> with verbose level: 2</p>
 
   <p class="rd-p"><pre>
-	checking if required columns are present...
-	checking if resources columns are present...
-	checking if dependency column has valid names...
-	checking if submission column has valid names...
-	checking for missing rows in def...
-	checking for extra rows in def...
-	checking submission and dependency types...
-	jobname	prev.sub_type --> dep_type --> sub_type: relationship
-	1: aln1_a	none --> none --> scatter
-	2: aln2_a	scatter --> none --> scatter
-	3: sampe_a	scatter --> serial --> scatter rel: complex one:one
-	4: fixrg_a	scatter --> serial --> scatter rel: complex one:one
-	5: merge_a	scatter --> gather --> serial rel: many:one
-	6: markdup_a	serial --> serial --> serial rel: simple one:one
-	7: target_a	serial --> serial --> serial rel: simple one:one
-	8: realign_a	serial --> burst --> scatter rel: one:many
-	9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
-	10: printreads_a	scatter --> serial --> scatter rel: complex one:one
-	</pre></p>
+checking if required columns are present...
+checking if resources columns are present...
+checking if dependency column has valid names...
+checking if submission column has valid names...
+checking for missing rows in def...
+checking for extra rows in def...
+checking submission and dependency types...
+jobname	prev.sub_type --> dep_type --> sub_type: relationship
+1: aln1_a	none --> none --> scatter 
+2: aln2_a	scatter --> none --> scatter 
+3: sampe_a	scatter --> serial --> scatter rel: complex one:one
+4: fixrg_a	scatter --> serial --> scatter rel: complex one:one
+5: merge_a	scatter --> gather --> serial rel: many:one
+6: markdup_a	serial --> serial --> serial rel: simple one:one
+7: target_a	serial --> serial --> serial rel: simple one:one
+8: realign_a	serial --> burst --> scatter rel: one:many
+9: baserecalib_a	scatter --> serial --> scatter rel: complex one:one
+10: printreads_a	scatter --> serial --> scatter rel: complex one:one
+</pre></p>
 
 
 
@@ -501,8 +504,8 @@ Especially useful in case of re-running a flow.</dd>
   <h4>Details</h4>
 
   <p class="rd-p">NOTE:
-Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use <code>kill(flow_wd)</code>.
-If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use <code>kill(flow_wd)</code>. 
+If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association 
 of jobs with flow instance and cannot monitor, kill or re-run the flow.</p>
 
 
@@ -582,14 +585,14 @@ plot_flow(fobj)</code></pre>
 <p class="rd-p">Summarize status of a flow OR multiple flows OR a high-level summary of all flows in a folder.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), out_format&nbsp;=&nbsp;"markdown")</div>
+<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), out_format&nbsp;=&nbsp;"markdown", ...)</div>
 <div>get_status(x, ...)</div>
 <div>## method for class 'flow'
 get_status(x, verbose, use_cache, out_format, ...)</div>
 <div>## method for class 'character'
 get_status(x, verbose, use_cache, out_format, ...)</div>
 <div>## method for class 'data.frame'
-get_status(x, verbose, use_cache, ...)</div></code></pre>
+get_status(x, verbose, use_cache, progress&nbsp;=&nbsp;TRUE, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -606,6 +609,8 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]</
   <dd class="rd-dd">passed onto knitr:::kable. supports: markdown, rst, html... [markdown]</dd>
   <dt>...</dt>
   <dd class="rd-dd">not used</dd>
+  <dt>progress</dt>
+  <dd class="rd-dd">Whether or not to show a progress bar, when fetching/reading files [TRUE]</dd>
 </dl>
 
   <h4>Details</h4>
@@ -613,7 +618,7 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]</
   <p class="rd-p">basename(x) is used in a wild card search.</p>
 
   <p class="rd-p"><ul>
-<li> Get status of all the flows:
+<li> Get status of all the flows: 
   (all flows with sleep_pipe in their name are checked and their status is shown)
   <br>
   <code>flowr status x=~/flowr/runs/sleep_pipe*</code>
@@ -624,8 +629,8 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]</
 </li>
 </ul></p>
 
-  <p class="rd-p">Use <strong>use_cache</strong>=TRUE to speed up checking the status.
-This assumes that no new jobs have been submitted and skips (re-)checking status of
+  <p class="rd-p">Use <strong>use_cache</strong>=TRUE to speed up checking the status. 
+This assumes that no new jobs have been submitted and skips (re-)checking status of 
 completed jobs.</p>
 
   <p class="rd-p">Once all the jobs have been submitted to the cluster you may always use <code>use_cache=TRUE</code>.</p>
@@ -645,8 +650,8 @@ flowr status x=path_to_flow_directory</code></pre>
 
 <p class="rd-p">NOTE:
 <strong>This requires files which are created at the end of the <a href='submit_flow.html'>submit_flow</a> command</strong>.
-Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use <code>kill(flow_wd)</code>.
-If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association
+Even if you want to kill the flow, its best to let submit_flow do its job, when done simply use <code>kill(flow_wd)</code>. 
+If submit_flow is interrupted, files like flow_details.rds etc are not created, thus flowr looses the association 
 of jobs with flow instance and cannot monitor, kill or re-run the flow.</p>
 
 <h4>Usage</h4>
@@ -742,7 +747,7 @@ rerun(x, mat, def, start_from, execute&nbsp;=&nbsp;TRUE, kill&nbsp;=&nbsp;TRUE, 
 
   <p class="rd-p">This function fetches details regarding the previous execution from the flow working directory (flow_wd).</p>
 
-  <p class="rd-p">It reads the <a href=#flow>flow</a> object from the flow_details.rds file, and extracts flowdef and flowmat from it
+  <p class="rd-p">It reads the <a href=#flow>flow</a> object from the flow_details.rds file, and extracts flowdef and flowmat from it 
 using <a href=#to_flowmat>to_flowmat</a> and <a href=#to_flowdef>to_flowdef</a> functions.</p>
 
   <p class="rd-p"><strong>Using new flowmat OR flowdef for re-run</strong>:</p>
@@ -808,27 +813,27 @@ load_opts(...)</div></code></pre>
 
   <p class="rd-p"><code>opts_flow$get()</code>:
 <pre>
-	|name              |value                    |
-	|:-----------------|:------------------------|
-	|default_regex     |(.*)                     |
-	|flow_base_path    |~/flowr                  |
-	|flow_conf_path    |~/flowr/conf             |
-	|flow_parse_lsf    |.*(\<[0-9]*\>).*         |
-	|flow_parse_moab   |(.*)                     |
-	|flow_parse_sge    |(.*)                     |
-	|flow_parse_slurm  |(.*)                     |
-	|flow_parse_torque |(.?)\..*                 |
-	|flow_pipe_paths   |~/flowr/pipelines        |
-	|flow_pipe_urls    |~/flowr/pipelines        |
-	|flow_platform     |local                    |
-	|flow_run_path     |~/flowr/runs             |
-	|my_conf_path      |~/flowr/conf             |
-	|my_dir            |path/to/a/folder         |
-	|my_path           |~/flowr                  |
-	|my_tool_exe       |/usr/bin/ls              |
-	|time_format       |%a %b %e %H:%M:%S CDT %Y |
-	|verbose           |FALSE                    |
-	</pre></p>
+|name              |value                    |
+|:-----------------|:------------------------|
+|default_regex     |(.*)                     |
+|flow_base_path    |~/flowr                  |
+|flow_conf_path    |~/flowr/conf             |
+|flow_parse_lsf    |.*(\<[0-9]*\>).*         |
+|flow_parse_moab   |(.*)                     |
+|flow_parse_sge    |(.*)                     |
+|flow_parse_slurm  |(.*)                     |
+|flow_parse_torque |(.?)\..*                 |
+|flow_pipe_paths   |~/flowr/pipelines        |
+|flow_pipe_urls    |~/flowr/pipelines        |
+|flow_platform     |local                    |
+|flow_run_path     |~/flowr/runs             |
+|my_conf_path      |~/flowr/conf             |
+|my_dir            |path/to/a/folder         |
+|my_path           |~/flowr                  |
+|my_tool_exe       |/usr/bin/ls              |
+|time_format       |%a %b %e %H:%M:%S CDT %Y |
+|verbose           |FALSE                    |
+</pre></p>
 
 
 
@@ -857,7 +862,7 @@ get_opts()</code></pre>
 
 <h3>Setup and initialize flowr</h3>
 
-<p class="rd-p">This functions creates a directory structure in user's home directory.
+<p class="rd-p">This functions creates a directory structure in user's home directory. 
 Additionally it creates a shortcut to the <code>flowr</code> helper script in <code>~/bin</code>.</p>
 
 <h4>Usage</h4>
@@ -894,17 +899,17 @@ Additionally it creates a shortcut to the <code>flowr</code> helper script in <c
 <p class="rd-p">There are several levels of verboseness one can choose from.
 <strong>levels:</strong>
 <ul>
-<li> level 0 is almost silent, producing only necessary messages
+<li> level 0 is almost silent, producing only necessary messages 
 	</li>
-<li> level 1 is good for most purposes, where as,
+<li> level 1 is good for most purposes, where as, 
 	</li>
 <li> level 2 is good when developing a new pipeline.
 	</li>
 <li> level 3 is good for debugging, especially when getting un-expected results.
 </li>
 </ul>
-One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>, which
-	will be used across flowr and ngsflows packages. Additionally one may set this value in
+One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>, which 
+	will be used across flowr and ngsflows packages. Additionally one may set this value in 
 	the configurations files: <code>~/flowr/conf/flowr.conf</code> OR <code>~/flowr/conf/ngsflows.conf</code>.</p>
 
 <h4>Usage</h4>
@@ -912,38 +917,37 @@ One can set the level of verboseness using <code>opts_flow$set(verbose=2)</code>
 
   <h4>Format</h4>
 
-  <p class="rd-p"><pre> NULL
-</pre></p>
+  <p class="rd-p">An object of class <code>NULL</code> of length 0.</p>
 
 
 
 <h4>Examples</h4>
 <pre class="r"><code>fl = system.file("pipelines/abcd.def", package = "flowr")
 def = as.flowdef(fl, verbose = 0)
-	# def seems to be a file, reading it...
+# def seems to be a file, reading it...
 def = as.flowdef(fl, verbose = 1)
-	# def seems to be a file, reading it...
-	# checking if required columns are present...
-	# checking if resources columns are present...
-	# checking if dependency column has valid names...
-	# checking if submission column has valid names...
-	# checking for missing rows in def...
-	# checking for extra rows in def...
-	# checking submission and dependency types...
+# def seems to be a file, reading it...
+# checking if required columns are present...
+# checking if resources columns are present...
+# checking if dependency column has valid names...
+# checking if submission column has valid names...
+# checking for missing rows in def...
+# checking for extra rows in def...
+# checking submission and dependency types...
 def = as.flowdef(fl, verbose = 2)
-	# def seems to be a file, reading it...
-	# checking if required columns are present...
-	# checking if resources columns are present...
-	# checking if dependency column has valid names...
-	# checking if submission column has valid names...
-	# checking for missing rows in def...
-	# checking for extra rows in def...
-	# checking submission and dependency types...
-	# jobname	prev.sub_type --> dep_type --> sub_type: relationship
-	# 	1: A	none --> none --> scatter
-	# 	2: B	scatter --> serial --> scatter rel: complex one:one
-	# 	3: C	scatter --> gather --> serial rel: many:one
-	# 	4: D	serial --> burst --> scatter rel: one:many</code></pre>
+# def seems to be a file, reading it...
+# checking if required columns are present...
+# checking if resources columns are present...
+# checking if dependency column has valid names...
+# checking if submission column has valid names...
+# checking for missing rows in def...
+# checking for extra rows in def...
+# checking submission and dependency types...
+# jobname	prev.sub_type --> dep_type --> sub_type: relationship
+# 	1: A	none --> none --> scatter 
+# 	2: B	scatter --> serial --> scatter rel: complex one:one
+# 	3: C	scatter --> gather --> serial rel: many:one
+# 	4: D	serial --> burst --> scatter rel: one:many</code></pre>
 
 # Managing pipelines
 
@@ -962,7 +966,7 @@ def = as.flowdef(fl, verbose = 2)
 </li>
 </ul>
 <strong>NOTE:</strong> If same pipeline is availabe in multiple places; intitutively, one from the later
-folder would be selected. As such, giving priority to user's home, and current working
+folder would be selected. As such, giving priority to user's home, and current working 
 directories.
 <br>
 <code>fetch_conf()</code>: Fetches configuration files in ALL of the following places:
@@ -975,11 +979,11 @@ directories.
 </li>
 </ul>
 <strong>NOTE:</strong>
-This function would greedily return all matching conf files. One would load all of them
+This function would greedily return all matching conf files. One would load all of them 
 in the order returned by this function. If the same variable is
 repeated in multiple files, value from later files would replace those formerly defined.
 Thus ( as explained above ), giving priority to options defined in user's home and current working directories.
-By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
+By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>. 
 See the details sections, for more explanation on this.</p>
 
 <h4>Usage</h4>
@@ -990,8 +994,8 @@ See the details sections, for more explanation on this.</p>
 <h4>Arguments</h4>
 <dl class="rd-dl">
   <dt>x</dt>
-  <dd class="rd-dd">name of the file to search for (without extension).
-By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> search for files ending with
+  <dd class="rd-dd">name of the file to search for (without extension). 
+By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> search for files ending with 
 <code>.R</code> and <code>.conf</code> respectively.</dd>
   <dt>places</dt>
   <dd class="rd-dd">places (paths) to look for files matching the name. Defaults are already defined in the function.</dd>
@@ -1015,10 +1019,10 @@ By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> sear
 
   <p class="rd-p">For example flowr has a variable <code>flow_run_path</code> where it puts all the execution logs etc.
 The default value is picked up from the internal <strong>flowr.conf</strong> file.
-To redefine this value, one could create a new file called <strong>~/flowr/conf/flowr.conf</strong> and
+To redefine this value, one could create a new file called <strong>~/flowr/conf/flowr.conf</strong> and 
 add a line:</p>
 
-  <p class="rd-p"><code>flow_run_path TAB my_awesome_path</code>, where <code>TAB</code> is a tab character, since these are tab
+  <p class="rd-p"><code>flow_run_path TAB my_awesome_path</code>, where <code>TAB</code> is a tab character, since these are tab 
 seperated files.</p>
 
   <p class="rd-p">Also, at any time you can run, <a href=#flowopts>load_opts</a>; to load custom options.</p>
@@ -1271,7 +1275,7 @@ submit_flow(fobj, execute = TRUE)</code></pre>
   <dt>name</dt>
   <dd class="rd-dd"><code>character</code>: Name of the flow. [newflow]</dd>
   <dt>desc</dt>
-  <dd class="rd-dd"><code>character</code> Description of the flow, used to uniquely identify a
+  <dd class="rd-dd"><code>character</code> Description of the flow, used to uniquely identify a 
 flow instance. [my_super_flow]</dd>
   <dt>mode</dt>
   <dd class="rd-dd"><code>character</code> Mode of submission of the flow (depreciated). [scheduler]</dd>

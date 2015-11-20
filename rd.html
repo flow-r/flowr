@@ -247,7 +247,7 @@ Usage
 <div>## method for class 'character'
 to_flow(x, def, grp_col, jobname_col, cmd_col, ...)</div>
 <div>## method for class 'flowmat'
-to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, containerize&nbsp;=&nbsp;TRUE, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
 <div>## method for class 'data.frame'
 to_flow(x, ...)</div>
 <div>## method for class 'list'
@@ -311,6 +311,12 @@ platform
 character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, … This over-rides the platform column in flowdef. (optional)
 </dd>
 <dt>
+containerize
+</dt>
+<dd class="rd-dd">
+flowr could create a new folder and pull all flows in them, keep the process clean
+</dd>
+<dt>
 submit
 </dt>
 <dd class="rd-dd">
@@ -339,6 +345,12 @@ desc
 </dt>
 <dd class="rd-dd">
 Advanced Use. final flow name, please dont change.
+</dd>
+<dt>
+module_cmds
+</dt>
+<dd class="rd-dd">
+A character vector of additional commands, which will be prepended to each script of the flow.
 </dd>
 </dl>
 <h4>
@@ -543,7 +555,7 @@ Usage
 </h4>
 <pre class="r"><code><div>to_flowdef(x, ...)</div>
 <div>## method for class 'flowmat'
-to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", nodes&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
 <div>## method for class 'flow'
 to_flowdef(x, ...)</div>
 <div>## method for class 'character'
@@ -740,25 +752,25 @@ Details
 </p>
 <p class="rd-p">
 <pre>
-    checking if required columns are present...
-    checking if resources columns are present...
-    checking if dependency column has valid names...
-    checking if submission column has valid names...
-    checking for missing rows in def...
-    checking for extra rows in def...
-    checking submission and dependency types...
-    jobname prev.sub_type --> dep_type --> sub_type: relationship
-    1: aln1_a   none --> none --> scatter
-    2: aln2_a   scatter --> none --> scatter
-    3: sampe_a  scatter --> serial --> scatter rel: complex one:one
-    4: fixrg_a  scatter --> serial --> scatter rel: complex one:one
-    5: merge_a  scatter --> gather --> serial rel: many:one
-    6: markdup_a    serial --> serial --> serial rel: simple one:one
-    7: target_a serial --> serial --> serial rel: simple one:one
-    8: realign_a    serial --> burst --> scatter rel: one:many
-    9: baserecalib_a    scatter --> serial --> scatter rel: complex one:one
-    10: printreads_a    scatter --> serial --> scatter rel: complex one:one
-    </pre>
+checking if required columns are present...
+checking if resources columns are present...
+checking if dependency column has valid names...
+checking if submission column has valid names...
+checking for missing rows in def...
+checking for extra rows in def...
+checking submission and dependency types...
+jobname prev.sub_type --> dep_type --> sub_type: relationship
+1: aln1_a   none --> none --> scatter 
+2: aln2_a   scatter --> none --> scatter 
+3: sampe_a  scatter --> serial --> scatter rel: complex one:one
+4: fixrg_a  scatter --> serial --> scatter rel: complex one:one
+5: merge_a  scatter --> gather --> serial rel: many:one
+6: markdup_a    serial --> serial --> serial rel: simple one:one
+7: target_a serial --> serial --> serial rel: simple one:one
+8: realign_a    serial --> burst --> scatter rel: one:many
+9: baserecalib_a    scatter --> serial --> scatter rel: complex one:one
+10: printreads_a    scatter --> serial --> scatter rel: complex one:one
+</pre>
 </p>
 </div>
 </div>
@@ -945,14 +957,14 @@ Summarize status of a flow OR multiple flows OR a high-level summary of all flow
 <h4>
 Usage
 </h4>
-<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), out_format&nbsp;=&nbsp;"markdown")</div>
+<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), out_format&nbsp;=&nbsp;"markdown", ...)</div>
 <div>get_status(x, ...)</div>
 <div>## method for class 'flow'
 get_status(x, verbose, use_cache, out_format, ...)</div>
 <div>## method for class 'character'
 get_status(x, verbose, use_cache, out_format, ...)</div>
 <div>## method for class 'data.frame'
-get_status(x, verbose, use_cache, ...)</div></code></pre>
+get_status(x, verbose, use_cache, progress&nbsp;=&nbsp;TRUE, ...)</div></code></pre>
 <h4>
 Arguments
 </h4>
@@ -986,6 +998,12 @@ passed onto knitr:::kable. supports: markdown, rst, html… [markdown]
 </dt>
 <dd class="rd-dd">
 not used
+</dd>
+<dt>
+progress
+</dt>
+<dd class="rd-dd">
+Whether or not to show a progress bar, when fetching/reading files [TRUE]
 </dd>
 </dl>
 <h4>
@@ -1268,27 +1286,27 @@ Below is a list of default flowr options, retrieved via
 <p class="rd-p">
 <code>opts_flow$get()</code>:
 <pre>
-    |name              |value                    |
-    |:-----------------|:------------------------|
-    |default_regex     |(.*)                     |
-    |flow_base_path    |~/flowr                  |
-    |flow_conf_path    |~/flowr/conf             |
-    |flow_parse_lsf    |.*(\<[0-9]*\>).*         |
-    |flow_parse_moab   |(.*)                     |
-    |flow_parse_sge    |(.*)                     |
-    |flow_parse_slurm  |(.*)                     |
-    |flow_parse_torque |(.?)\..*                 |
-    |flow_pipe_paths   |~/flowr/pipelines        |
-    |flow_pipe_urls    |~/flowr/pipelines        |
-    |flow_platform     |local                    |
-    |flow_run_path     |~/flowr/runs             |
-    |my_conf_path      |~/flowr/conf             |
-    |my_dir            |path/to/a/folder         |
-    |my_path           |~/flowr                  |
-    |my_tool_exe       |/usr/bin/ls              |
-    |time_format       |%a %b %e %H:%M:%S CDT %Y |
-    |verbose           |FALSE                    |
-    </pre>
+|name              |value                    |
+|:-----------------|:------------------------|
+|default_regex     |(.*)                     |
+|flow_base_path    |~/flowr                  |
+|flow_conf_path    |~/flowr/conf             |
+|flow_parse_lsf    |.*(\<[0-9]*\>).*         |
+|flow_parse_moab   |(.*)                     |
+|flow_parse_sge    |(.*)                     |
+|flow_parse_slurm  |(.*)                     |
+|flow_parse_torque |(.?)\..*                 |
+|flow_pipe_paths   |~/flowr/pipelines        |
+|flow_pipe_urls    |~/flowr/pipelines        |
+|flow_platform     |local                    |
+|flow_run_path     |~/flowr/runs             |
+|my_conf_path      |~/flowr/conf             |
+|my_dir            |path/to/a/folder         |
+|my_path           |~/flowr                  |
+|my_tool_exe       |/usr/bin/ls              |
+|time_format       |%a %b %e %H:%M:%S CDT %Y |
+|verbose           |FALSE                    |
+</pre>
 </p>
 <h4>
 Examples
@@ -1395,38 +1413,37 @@ Usage
 Format
 </h4>
 <p class="rd-p">
-<pre> NULL
-</pre>
+An object of class <code>NULL</code> of length 0.
 </p>
 <h4>
 Examples
 </h4>
 <pre class="r"><code>fl = system.file("pipelines/abcd.def", package = "flowr")
 def = as.flowdef(fl, verbose = 0)
-    # def seems to be a file, reading it...
+# def seems to be a file, reading it...
 def = as.flowdef(fl, verbose = 1)
-    # def seems to be a file, reading it...
-    # checking if required columns are present...
-    # checking if resources columns are present...
-    # checking if dependency column has valid names...
-    # checking if submission column has valid names...
-    # checking for missing rows in def...
-    # checking for extra rows in def...
-    # checking submission and dependency types...
+# def seems to be a file, reading it...
+# checking if required columns are present...
+# checking if resources columns are present...
+# checking if dependency column has valid names...
+# checking if submission column has valid names...
+# checking for missing rows in def...
+# checking for extra rows in def...
+# checking submission and dependency types...
 def = as.flowdef(fl, verbose = 2)
-    # def seems to be a file, reading it...
-    # checking if required columns are present...
-    # checking if resources columns are present...
-    # checking if dependency column has valid names...
-    # checking if submission column has valid names...
-    # checking for missing rows in def...
-    # checking for extra rows in def...
-    # checking submission and dependency types...
-    # jobname   prev.sub_type --> dep_type --> sub_type: relationship
-    #   1: A    none --> none --> scatter
-    #   2: B    scatter --> serial --> scatter rel: complex one:one
-    #   3: C    scatter --> gather --> serial rel: many:one
-    #   4: D    serial --> burst --> scatter rel: one:many</code></pre>
+# def seems to be a file, reading it...
+# checking if required columns are present...
+# checking if resources columns are present...
+# checking if dependency column has valid names...
+# checking if submission column has valid names...
+# checking for missing rows in def...
+# checking for extra rows in def...
+# checking submission and dependency types...
+# jobname   prev.sub_type --> dep_type --> sub_type: relationship
+#   1: A    none --> none --> scatter 
+#   2: B    scatter --> serial --> scatter rel: complex one:one
+#   3: C    scatter --> gather --> serial rel: many:one
+#   4: D    serial --> burst --> scatter rel: one:many</code></pre>
 </div>
 </div>
 <div id="managing-pipelines" class="section level1">
