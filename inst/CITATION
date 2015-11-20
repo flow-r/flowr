@@ -14,7 +14,7 @@ citEntry(entry = "Article",
 				 doi = "10.1101/029710",
 				 publisher = "Cold Spring Harbor Labs Journals",
 				 url = "http://biorxiv.org/content/early/2015/10/22/029710", 
-				 textVersion = paste("Sahil Seth, Jianhua Zhang, et. al (2015)", 
+				 textVersion = paste("Sahil Seth, et. al (2015)", 
 				 										"Flowr: Robust and efficient pipelines using a simple language-agnostic approach", 
 				 										"bioRxiv 2015"))
 citFooter("As flowr is continually evolving, you may want to cite its version number. Find it with 'help(package=flowr)'.")
