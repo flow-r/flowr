@@ -158,7 +158,6 @@
 <pre class="r"><code>library(flowr)</code></pre>
 <pre class="r"><code>setup()</code></pre>
 <p>This will copy the flowr helper script to <code>~/bin</code>. Please make sure that this folder is in your <code>$PATH</code> variable. For more details refer to <a href="http://docs.flowr.space/rd.html#setup">setup’s help section</a>.</p>
-<!-- We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. -->
 <p>Running flowr from the terminal will fetch you the following:</p>
 <pre><code>Usage: flowr function [arguments]
 
@@ -168,7 +167,6 @@ kill            Kill the flow, upon providing working directory
 fetch_pipes     Checking what modules and pipelines are available; flowr fetch_pipes
 
 Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
-<!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 <div id="toy-example" class="section level2">
 <h2>Toy example</h2>
 <p><img src="files/toy.png" alt="" /></p>
@@ -229,7 +227,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 </tr>
 </tbody>
 </table>
-<p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://docs.flowr.space/docs.html#flow-definition">flow_def</a>.</p>
+<p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="/docs.html#flow-definition">flow_def</a>.</p>
 <table>
 <thead>
 <tr class="header">
@@ -311,15 +309,15 @@ fobj &lt;- to_flow(x = flowmat,
                  def = flowdef,
                  flowname = &quot;example1&quot;, ## give it a name
                  platform = &quot;lsf&quot;)      ## override platform mentioned in flow def</code></pre>
-<p>Refer to <a href="docs.flowr.space/rd.html#to_flow">to_flow’s help section</a> for more details.</p>
+<p>Refer to <a href="http://docs.flowr.space/rd.html#to_flow">to_flow’s help section</a> for more details.</p>
 </div>
 <div id="plot-it" class="section level2">
 <h2>Plot it</h2>
-<p>We can use <code>plot_flow</code> to quickly visualize the flow; this really helps when developing complex workflows.</p>
+<p>We can use <a href="http://docs.flowr.space/rd.html#plot_flow">plot_flow</a> to quickly visualize the flow; this really helps when developing complex workflows.</p>
 <pre class="r"><code>plot_flow(fobj)     # ?plot_flow for more information
 plot_flow(flowdef) # plot_flow works on flow definition as well</code></pre>
 <p><img src="overview_files/figure-html/plotit-1.png" title="Flow chart describing process for example 1" alt="Flow chart describing process for example 1" width="624" /></p>
-<p>Refer to <a href="docs.flowr.space/rd.html#plot_flow">plot_flow’s help section</a> for more details.</p>
+<p>Refer to <a href="http://docs.flowr.space/rd.html#plot_flow">plot_flow’s help section</a> for more details.</p>
 </div>
 <div id="dry-run" class="section level2">
 <h2>Dry Run</h2>
@@ -333,17 +331,18 @@ You may check this folder for consistency. Also you may re-run submit with execu
 </div>
 <div id="submit-it" class="section level2">
 <h2>Submit it</h2>
+<p>Once, we have a flow we can submit it to the cluster using <a href="http://docs.flowr.space/rd.html#submit_flow">submit_flow</a></p>
 <div class="alert alert-info" role="alert">
 <p>Submit to the cluster !</p>
 </div>
 <pre class="r"><code>submit_flow(fobj, execute = TRUE)</code></pre>
 <pre><code>Flow has been submitted. Track it from terminal using:
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
-<p>Refer to <a href="docs.flowr.space/rd.html#submit_flow">submit_flow’s help section</a> for more details.</p>
+<p>Refer to <a href="http://docs.flowr.space/rd.html#submit_flow">submit_flow’s help section</a> for more details.</p>
 </div>
 <div id="check-its-status" class="section level2">
 <h2>Check its status</h2>
-<p>One may periodically run <code>status</code> to monitor the status of a flow.</p>
+<p>Next, you may use <a href="http://docs.flowr.space/rd.html#status">status</a> to monitor the status of a flow.</p>
 <pre><code>flowr status x=~/flowr/runs/sleep_pipe-20150520*
 
 |          | total| started| completed| exit_status|    status|
@@ -352,7 +351,8 @@ flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE</code></pre>
 |002.tmp   |    10|      10|        10|           0| completed|
 |003.merge |     1|       1|         1|           0| completed|
 |004.size  |     1|       1|         1|           0| completed|</code></pre>
-<p>Alternatively, to check a summarized status of several flows, use the parent folder, for example:</p>
+<p>Notice, how we skipped specifying the complete path. Status would try to use the basename and show status of any folder it can match. If there are multiple matched, status would show a summary of each.</p>
+<p>Alternatively, to check a summarized status of several flows, use the parent folder. In this case the parent folder has 3 flows, and here is the summary:</p>
 <pre><code>flowr status x=~/flowr/runs
 
 Showing status of: ~/flowr/runs
@@ -365,11 +365,11 @@ Showing status of: ~/flowr/runs
 <div class="alert alert-success" role="alert">
 <p><b>Scalability</b>: Quickly submit, and check a summarized OR detailed status on ten or hundreds of flows.</p>
 </div>
-<p>Refer to <a href="docs.flowr.space/rd.html#status">status’s help section</a> for more details.</p>
+<p>Refer to <a href="http://docs.flowr.space/rd.html#status">status’s help section</a> for more details.</p>
 </div>
 <div id="kill-it" class="section level2">
 <h2>Kill it</h2>
-<p>Incase something goes wrong, one may use to kill command to terminate all the relating jobs.</p>
+<p>Incase something goes wrong, one may use to kill command to terminate all the relating jobs of a single flow OR multiple flows.</p>
 <p>kill one flow:</p>
 <pre><code>flowr kill_flow x=flow_wd</code></pre>
 <div class="alert alert-warning" role="alert">
@@ -381,23 +381,23 @@ found multiple wds:
   ~/flowr/runs/sleep_pipe-20150825-17-47-52-5vFIkrMD
 Really kill all of them ? kill again with force=TRUE</code></pre>
 <p>To kill multiple flow, set force=TRUE:</p>
-<pre><code>kill(x=&#39;~/flowr/runs/sleep_pipe*&#39;, force = TRUE)</code></pre>
-<p>Refer to <a href="docs.flowr.space/rd.html#kill">kill’s help section</a> for more details.</p>
+<pre><code>kill x=&#39;~/flowr/runs/sleep_pipe*&#39; force = TRUE</code></pre>
+<p>Refer to <a href="http://docs.flowr.space/rd.html#kill">kill’s help section</a> for more details.</p>
 </div>
 <div id="re-run-a-flow" class="section level2">
 <h2>Re-run a flow</h2>
 <p>flowr also enables you to re-run a pipeline in case of hardware or software failures.</p>
 <ul>
-<li><strong>hardware failure</strong>: no change to the pipeline is required, simply rerun it: <code>rerun(x=flow_wd, start_from=&lt;intermediate step&gt;)</code></li>
-<li><strong>software failure</strong>: either a change to flowmat or flowdef has been made: <code>rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef, start_from=&lt;intermediate step&gt;)</code></li>
+<li><strong>hardware failure</strong>: no change to the pipeline is required, simply rerun it: <code>rerun x=flow_wd  start_from=&lt;intermediate step&gt;</code></li>
+<li><strong>software failure</strong>: either a change to flowmat or flowdef has been made: <code>rerun x=flow_wdmat = new_flowmat def = new_flowdef start_from=&lt;intermediate step&gt;</code></li>
 </ul>
-<p>Refer to <a href="docs.flowr.space/rd.html#rerun">rerun’s help section</a> for more details.</p>
+<p>Refer to <a href="http://docs.flowr.space/rd.html#rerun">rerun’s help section</a> for more details.</p>
 </div>
 </div>
 <div id="input-files" class="section level1">
 <h1>Input files</h1>
 <p>An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as <code>flow_mat</code> and <code>flow_def</code> respectively (as introduced in the previous sections).</p>
-<p>We could read in, examples of both these files to understand their structure.</p>
+<p>Let us read in examples of both these files to understand their structure.</p>
 <pre class="r"><code>ex = file.path(system.file(package = &quot;flowr&quot;), &quot;pipelines&quot;)
 flow_mat = as.flowmat(file.path(ex, &quot;sleep_pipe.tsv&quot;))
 flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
