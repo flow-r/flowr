@@ -29,7 +29,7 @@ You may download a PDF version of this manual [here](manual.pdf)
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.8.9019</p>
+<p><strong>Version:</strong> 0.9.9</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
@@ -80,11 +80,11 @@ funr</p>
 <div>## method for class 'character'
 to_flow(x, def, grp_col, jobname_col, cmd_col, ...)</div>
 <div>## method for class 'flowmat'
-to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, containerize&nbsp;=&nbsp;TRUE, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, containerize&nbsp;=&nbsp;TRUE, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div>
 <div>## method for class 'data.frame'
 to_flow(x, ...)</div>
 <div>## method for class 'list'
-to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;"", verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;"", verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -103,7 +103,7 @@ to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;"",
   <dt>flowname</dt>
   <dd class="rd-dd">name of the flow [flowname]</dd>
   <dt>flow_run_path</dt>
-  <dd class="rd-dd">Path to a folder. Main operating folder for this flow. [<code>get_opts("flow_run_path")</code>]
+  <dd class="rd-dd">Path to a folder. Main operating folder for this flow. [<code>opts_flow$get("flow_run_path")</code>]
 [<code>~/flowr/runs</code>].</dd>
   <dt>platform</dt>
   <dd class="rd-dd">character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
@@ -119,7 +119,7 @@ This over-rides the platform column in flowdef. (optional)</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
   <dt>desc</dt>
   <dd class="rd-dd">Advanced Use. final flow name, please dont change.</dd>
   <dt>module_cmds</dt>
@@ -309,7 +309,7 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 <h4>Usage</h4>
 <pre class="r"><code><div>to_flowdef(x, ...)</div>
 <div>## method for class 'flowmat'
-to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", nodes&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+to_flowdef(x, sub_type, dep_type, prev_jobs, queue&nbsp;=&nbsp;"short", platform&nbsp;=&nbsp;"torque", memory_reserved&nbsp;=&nbsp;"2000", cpu_reserved&nbsp;=&nbsp;"1", nodes&nbsp;=&nbsp;"1", walltime&nbsp;=&nbsp;"1:00", guess&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div>
 <div>## method for class 'flow'
 to_flowdef(x, ...)</div>
 <div>## method for class 'character'
@@ -336,7 +336,9 @@ to_flowdef(x, ...)</div>
   <dt>memory_reserved</dt>
   <dd class="rd-dd">amount of memory required.</dd>
   <dt>cpu_reserved</dt>
-  <dd class="rd-dd">number of cpus required</dd>
+  <dd class="rd-dd">number of cpus required. [1]</dd>
+  <dt>nodes</dt>
+  <dd class="rd-dd">if you tool can use multiple nodes, you may reserve multiple nodes for it. [1]</dd>
   <dt>walltime</dt>
   <dd class="rd-dd">amount of walltime required</dd>
   <dt>guess</dt>
@@ -344,7 +346,7 @@ to_flowdef(x, ...)</div>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
 </dl>
 
   <h4>Format</h4>
@@ -419,7 +421,7 @@ its assumed that all of the previous need to complete, suggesting a gather type 
 <div>## method for class 'flowmat'
 check(x, ...)</div>
 <div>## method for class 'flowdef'
-check(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+check(x, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -430,7 +432,7 @@ check(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
 </dl>
 
   <h4>Details</h4>
@@ -472,11 +474,11 @@ jobname	prev.sub_type --> dep_type --> sub_type: relationship
 <p class="rd-p">Submit a flow to the cluster or perform a dry-run to check and debug issues.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+<pre class="r"><code><div>submit_flow(x, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div>
 <div>## method for class 'list'
-submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div>
+submit_flow(x, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div>
 <div>## method for class 'flow'
-submit_flow(x, verbose&nbsp;=&nbsp;get_opts("verbose"), execute&nbsp;=&nbsp;FALSE, uuid, plot&nbsp;=&nbsp;TRUE, dump&nbsp;=&nbsp;TRUE, .start_jid&nbsp;=&nbsp;1, ...)</div></code></pre>
+submit_flow(x, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), execute&nbsp;=&nbsp;FALSE, uuid, plot&nbsp;=&nbsp;TRUE, dump&nbsp;=&nbsp;TRUE, .start_jid&nbsp;=&nbsp;1, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -583,7 +585,7 @@ plot_flow(fobj)</code></pre>
 <p class="rd-p">Summarize status of a flow OR multiple flows OR a high-level summary of all flows in a folder.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), out_format&nbsp;=&nbsp;"markdown", ...)</div>
+<pre class="r"><code><div>status(x, use_cache&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), out_format&nbsp;=&nbsp;"markdown", ...)</div>
 <div>get_status(x, ...)</div>
 <div>## method for class 'flow'
 get_status(x, verbose, use_cache, out_format, ...)</div>
@@ -602,7 +604,7 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]</
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
   <dt>out_format</dt>
   <dd class="rd-dd">passed onto knitr:::kable. supports: markdown, rst, html... [markdown]</dd>
   <dt>...</dt>
@@ -657,7 +659,7 @@ of jobs with flow instance and cannot monitor, kill or re-run the flow.</p>
 <div>## method for class 'character'
 kill(x, force&nbsp;=&nbsp;FALSE, ...)</div>
 <div>## method for class 'flow'
-kill(x, kill_cmd, verbose&nbsp;=&nbsp;get_opts("verbose"), jobid_col&nbsp;=&nbsp;"job_sub_id", ...)</div></code></pre>
+kill(x, kill_cmd, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), jobid_col&nbsp;=&nbsp;"job_sub_id", ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -673,7 +675,7 @@ it here; fot custom platoforms.</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
   <dt>jobid_col</dt>
   <dd class="rd-dd">Advanced use. The column name in flow_details.txt file used to fetch jobids to kill</dd>
 </dl>
@@ -713,7 +715,7 @@ kill(x='fastq_haplotyper*', force = TRUE)</code></pre>
 <div>## method for class 'character'
 rerun(x, ...)</div>
 <div>## method for class 'flow'
-rerun(x, mat, def, start_from, execute&nbsp;=&nbsp;TRUE, kill&nbsp;=&nbsp;TRUE, select, ignore, verbose&nbsp;=&nbsp;get_opts("verbose"), ...)</div></code></pre>
+rerun(x, mat, def, start_from, execute&nbsp;=&nbsp;TRUE, kill&nbsp;=&nbsp;TRUE, select, ignore, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -738,7 +740,7 @@ rerun(x, mat, def, start_from, execute&nbsp;=&nbsp;TRUE, kill&nbsp;=&nbsp;TRUE, 
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
 </dl>
 
   <h4>Details</h4>
@@ -864,7 +866,7 @@ get_opts()</code></pre>
 Additionally it creates a shortcut to the <code>flowr</code> helper script in <code>~/bin</code>.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>setup(bin&nbsp;=&nbsp;"~/bin", flow_base_path&nbsp;=&nbsp;get_opts("flow_base_path"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), flow_conf_path&nbsp;=&nbsp;get_opts("flow_conf_path"), flow_pipe_path&nbsp;=&nbsp;get_opts("flow_pipe_paths"))</div></code></pre>
+<pre class="r"><code><div>setup(bin&nbsp;=&nbsp;"~/bin", flow_base_path&nbsp;=&nbsp;opts_flow$get("flow_base_path"), flow_run_path&nbsp;=&nbsp;opts_flow$get("flow_run_path"), flow_conf_path&nbsp;=&nbsp;opts_flow$get("flow_conf_path"), flow_pipe_path&nbsp;=&nbsp;opts_flow$get("flow_pipe_paths"))</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -873,7 +875,7 @@ Additionally it creates a shortcut to the <code>flowr</code> helper script in <c
   <dt>flow_base_path</dt>
   <dd class="rd-dd">The base of flowr configuration and execution folders.</dd>
   <dt>flow_run_path</dt>
-  <dd class="rd-dd">Path to a folder. Main operating folder for this flow. [<code>get_opts("flow_run_path")</code>]
+  <dd class="rd-dd">Path to a folder. Main operating folder for this flow. [<code>opts_flow$get("flow_run_path")</code>]
 [<code>~/flowr/runs</code>].</dd>
   <dt>flow_conf_path</dt>
   <dd class="rd-dd">Flowr configuration folder, used by <a href=#fetch>fetch_conf</a>.</dd>
@@ -985,8 +987,8 @@ By default flowr loads, <code>flowr.conf</code> and <code>ngsflows.conf</code>.
 See the details sections, for more explanation on this.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>fetch(x, places, urls, verbose&nbsp;=&nbsp;get_opts("verbose"))</div>
-<div>fetch_pipes(x, places, last_only&nbsp;=&nbsp;FALSE, urls&nbsp;=&nbsp;get_opts("flowr_pipe_urls"), silent&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;get_opts("verbose"), ask&nbsp;=&nbsp;TRUE)</div>
+<pre class="r"><code><div>fetch(x, places, urls, verbose&nbsp;=&nbsp;opts_flow$get("verbose"))</div>
+<div>fetch_pipes(x, places, last_only&nbsp;=&nbsp;FALSE, urls&nbsp;=&nbsp;opts_flow$get("flowr_pipe_urls"), silent&nbsp;=&nbsp;FALSE, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ask&nbsp;=&nbsp;TRUE)</div>
 <div>fetch_conf(x&nbsp;=&nbsp;"flowr.conf", places, ...)</div></code></pre>
 
 <h4>Arguments</h4>
@@ -1002,7 +1004,7 @@ By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> sear
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>get_opts("verbose")</code>] [1]</dd>
+[<code>opts_flow$get("verbose")</code>] [1]</dd>
   <dt>last_only</dt>
   <dd class="rd-dd">fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]</dd>
   <dt>silent</dt>
@@ -1067,8 +1069,8 @@ Taking <code>sleep_pipe</code> as a example.
 </p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>run(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, rerun_wd, start_from, execute&nbsp;=&nbsp;FALSE, ...)</div>
-<div>run_pipe(x, platform, def, conf, wd&nbsp;=&nbsp;get_opts("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, rerun_wd, start_from, execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
+<pre class="r"><code><div>run(x, platform, def, conf, wd&nbsp;=&nbsp;opts_flow$get("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, rerun_wd, start_from, execute&nbsp;=&nbsp;FALSE, ...)</div>
+<div>run_pipe(x, platform, def, conf, wd&nbsp;=&nbsp;opts_flow$get("flow_run_path"), flow_run_path&nbsp;=&nbsp;wd, rerun_wd, start_from, execute&nbsp;=&nbsp;FALSE, ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1172,6 +1174,9 @@ bsub etc.</dd>
   <dd class="rd-dd">[debug use] Ignore</dd>
   <dt>...</dt>
   <dd class="rd-dd">other passed onto object creation. Example: memory, walltime, cpu</dd>
+  <dt>module_cmds</dt>
+  <dd class="rd-dd">[advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
+Could be cmds like <code>`module load mytool1;module load mytool2`</code></dd>
 </dl>
 
   <h4>Details</h4>
@@ -1264,7 +1269,7 @@ submit_flow(fobj, execute = TRUE)</code></pre>
 <p class="rd-p">Internal function (used by <a href='to_flow.html'>to_flow</a>), which aids in creating a flow object.</p>
 
 <h4>Usage</h4>
-<pre class="r"><code><div>flow(jobs&nbsp;=&nbsp;list(new("job")), name&nbsp;=&nbsp;"newflow", desc&nbsp;=&nbsp;"my_super_flow", mode&nbsp;=&nbsp;c("scheduler", "trigger", "R"), flow_run_path&nbsp;=&nbsp;get_opts("flow_run_path"), trigger_path&nbsp;=&nbsp;"", flow_path&nbsp;=&nbsp;"", version&nbsp;=&nbsp;"0.0", status&nbsp;=&nbsp;"created", module_cmds&nbsp;=&nbsp;get_opts("module_cmds"), execute&nbsp;=&nbsp;"")</div></code></pre>
+<pre class="r"><code><div>flow(jobs&nbsp;=&nbsp;list(new("job")), name&nbsp;=&nbsp;"newflow", desc&nbsp;=&nbsp;"my_super_flow", mode&nbsp;=&nbsp;c("scheduler", "trigger", "R"), flow_run_path&nbsp;=&nbsp;opts_flow$get("flow_run_path"), trigger_path&nbsp;=&nbsp;"", flow_path&nbsp;=&nbsp;"", version&nbsp;=&nbsp;"0.0", status&nbsp;=&nbsp;"created", module_cmds&nbsp;=&nbsp;opts_flow$get("module_cmds"), execute&nbsp;=&nbsp;"")</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
@@ -1287,6 +1292,9 @@ flow instance. [my_super_flow]</dd>
   <dd class="rd-dd">version of flowr used to create and execute this flow.</dd>
   <dt>status</dt>
   <dd class="rd-dd"><code>character</code>: Status of the flow.</dd>
+  <dt>module_cmds</dt>
+  <dd class="rd-dd">[advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
+Could be cmds like <code>`module load mytool1;module load mytool2`</code></dd>
   <dt>execute</dt>
   <dd class="rd-dd">executtion status of flow object. [FALSE]</dd>
 </dl>

@@ -125,7 +125,7 @@
             <div class="col-md-3" id="sidebar-col">
         <div id="toc">
           <ul>
-          <li><a href="#flowr-latest">flowr latest</a></li>
+          <li><a href="#flowr-0.9.9-cherries">flowr 0.9.9 (cherries)</a></li>
           <li><a href="#flowr-0.9.8-blueberries">flowr 0.9.8 (blueberries)</a></li>
           <li><a href="#flowr-0.9.7-apples">flowr 0.9.7 (apples)</a></li>
           <li><a href="#flowr-0.9.6.13">flowr 0.9.6.13</a></li>
@@ -139,8 +139,11 @@
       
 <div id="content-top"></div>
 <p><br></p>
-<div id="flowr-latest" class="section level2">
-<h2>flowr latest</h2>
+<div id="flowr-0.9.9-cherries" class="section level2">
+<h2>flowr 0.9.9 (cherries)</h2>
+<blockquote>
+<p>2015-11-20</p>
+</blockquote>
 <ul>
 <li>New option local_cores, which determines (max) number of cores to use when running local jobs.</li>
 <li>enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).</li>
@@ -157,6 +160,7 @@ flowr status x=.</code></pre>
 <li>fixed bugs in documentation (changed the formatting of output messages)</li>
 <li><strong>IMP</strong>: to_flowdef now add a parameter nodes, to enable specifying number of nodes required per-job.</li>
 <li><strong>NEW</strong>: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean.</li>
+<li><strong>IMP</strong>: opts_flow$get replaces get_opts, for reliability etc. Also this closely follows how knitr options are set.</li>
 </ul>
 </div>
 <div id="flowr-0.9.8-blueberries" class="section level2">
@@ -340,6 +344,8 @@ jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
 <li>get_flow_status(): -exit_status: reports number of exited jobs (not sum of exit codes)</li>
 </ul>
 <script src = "files/googl.js"></script>
+<p>Versioning:</p>
+<p>Loosely, following <a href="http://www.greatgrubclub.com/a-z-fruit-veg#.Vk-gx4QzBRE">fruits A-Z</a>.</p>
 </div>
 
 
