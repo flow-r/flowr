@@ -124,9 +124,9 @@
 #' 
 #' @export
 to_flowdef <- function(x, ...){
-	#message("input x is ", class(x)[1])
-	UseMethod("to_flowdef")
-	warnings()
+  #message("input x is ", class(x)[1])
+  UseMethod("to_flowdef")
+  warnings()
 }
 
 # detect_dep_type
@@ -134,8 +134,8 @@ to_flowdef <- function(x, ...){
 # @param ncmds a string of commands
 # @param prev_job previous job name
 detect_sub_type <- function(ncmds){
-	sub_type = as.character(ifelse(ncmds > 1, "scatter", "serial"))
-	return(sub_type)
+  sub_type = as.character(ifelse(ncmds > 1, "scatter", "serial"))
+  return(sub_type)
 }
 
 # detect_dep_type
@@ -143,124 +143,124 @@ detect_sub_type <- function(ncmds){
 # @param cmds a string of commands
 # @param prev_job previous job name
 detect_dep_type <- function(ncmds, prev_job, npcmds){
-	
-	# multiple previos jobs
-	if (length(prev_job) > 1) {
-		dep_type = "gather"
-	
-	# no previous job
-	}else if (prev_job == "none") {
-		dep_type = "none"
-		
-	# both prev. and current have same number of commands
-	# if same length, serial
-	}else if (ncmds == npcmds[1] & length(prev_job) == 1) {
-		dep_type = "serial"
-		
-	# multiple previous, each streaming into this
-	}else if (all(ncmds == npcmds) & length(prev_job) > 1) {
-	  dep_type = "serial"
-
-	# if prevous job were more than current, a safety net
-	}else if (any( npcmds > ncmds)) {
-		dep_type = "gather"
-		
-	# single previous and multiple cmds in current
-	}else if (npcmds == 1 & ncmds > 1) {
-		dep_type = "burst"
-		
-	}else{
-		message("Number of cmds: ", ncmds, " and previous cmds: ", npcmds)
-		message("Could not decide a depedency type; this was too confusing to me. Help from Stackoverflow/Github?")
-		dep_type = "gather"
-	}
-	
-	return(dep_type)
-	
+  
+  # multiple previos jobs
+  if (length(prev_job) > 1) {
+    dep_type = "gather"
+    
+    # no previous job
+  }else if (prev_job == "none") {
+    dep_type = "none"
+    
+    # both prev. and current have same number of commands
+    # if same length, serial
+  }else if (ncmds == npcmds[1] & length(prev_job) == 1) {
+    dep_type = "serial"
+    
+    # multiple previous, each streaming into this
+  }else if (all(ncmds == npcmds) & length(prev_job) > 1) {
+    dep_type = "serial"
+    
+    # if prevous job were more than current, a safety net
+  }else if (any( npcmds > ncmds)) {
+    dep_type = "gather"
+    
+    # single previous and multiple cmds in current
+  }else if (npcmds == 1 & ncmds > 1) {
+    dep_type = "burst"
+    
+  }else{
+    message("Number of cmds: ", ncmds, " and previous cmds: ", npcmds)
+    message("Could not decide a depedency type; this was too confusing to me. Help from Stackoverflow/Github?")
+    dep_type = "gather"
+  }
+  
+  return(dep_type)
+  
 }
 
 guess_sub_dep <- function(mat, def){
-	
-	# expand rows with multiple dependencies
-	long_def = split_multi_dep(def)
-	
-	lst <- lapply(1:nrow(def), function(i){
-		
-		# get current jobname, previous jobname(s)
-		# as well as current and previous commands
-		jobnm = def$jobname[i]
-		ncmds = nrow(subset(mat, mat$jobname == jobnm))
-		prev_job = subset(def, mat$jobname == jobnm)$prev_jobs
-		
-		# get number of commands in each of the previous steps
-		prevmat = subset(mat, jobname %in% prev_job)
-		npcmds = sapply(split.data.frame(prevmat, prevmat$jobname), nrow)
-		
-		d_sub_type <- detect_sub_type(ncmds = ncmds)
-		d_dep_type <- detect_dep_type(prev_job = prev_job, ncmds = ncmds, npcmds = npcmds)
-		
-		data.frame(sub_type = d_sub_type, dep_type = d_dep_type, stringsAsFactors = FALSE)
-	})
-	tmp = do.call(rbind, lst)
-	
-	def$sub_type = tmp$sub_type
-	def$dep_type = tmp$dep_type
-	
-	return(def)
+  
+  # expand rows with multiple dependencies
+  long_def = split_multi_dep(def)
+  
+  lst <- lapply(1:nrow(def), function(i){
+    
+    # get current jobname, previous jobname(s)
+    # as well as current and previous commands
+    jobnm = def$jobname[i]
+    ncmds = nrow(subset(mat, mat$jobname == jobnm))
+    prev_job = subset(def, mat$jobname == jobnm)$prev_jobs
+    
+    # get number of commands in each of the previous steps
+    prevmat = subset(mat, jobname %in% prev_job)
+    npcmds = sapply(split.data.frame(prevmat, prevmat$jobname), nrow)
+    
+    d_sub_type <- detect_sub_type(ncmds = ncmds)
+    d_dep_type <- detect_dep_type(prev_job = prev_job, ncmds = ncmds, npcmds = npcmds)
+    
+    data.frame(sub_type = d_sub_type, dep_type = d_dep_type, stringsAsFactors = FALSE)
+  })
+  tmp = do.call(rbind, lst)
+  
+  def$sub_type = tmp$sub_type
+  def$dep_type = tmp$dep_type
+  
+  return(def)
 }
 
 #' @rdname to_flowdef
 #' @export
 to_flowdef.flowmat <- function(x,
-															 sub_type,
-															 dep_type,
-															 prev_jobs,
-															 queue = "short",
-															 platform = "torque",
-															 memory_reserved = "2000", ## in MB
-															 cpu_reserved = "1",
-															 nodes = "1",
-															 walltime = "1:00",
-															 guess = FALSE,
-															 verbose = get_opts("verbose"), ...){
-
-	if(verbose)
-		message("Creating a skeleton flow definition")
-	jobnames <- unique(x$jobname)
-	if(verbose)
-		message("Following jobnames detected: ",
-					paste(jobnames, collapse = " "))
-
-	njobs = length(jobnames)
-	if(missing(dep_type))
-		dep_type = c("none", rep("gather", njobs - 1))
-	if(missing(sub_type))
-		sub_type = "serial"
-	if(missing(prev_jobs))
-		prev_jobs = c("none", jobnames[-njobs])
-	
-
-	def <- data.frame(jobname = jobnames,
-										sub_type = sub_type,
-										prev_jobs = prev_jobs,
-										dep_type = dep_type,
-										queue = queue,
-										memory_reserved = memory_reserved,
-										walltime = walltime,
-										cpu_reserved = cpu_reserved,
-										nodes = nodes,
-										platform = platform,
-										stringsAsFactors = FALSE)
-
-	def = as.flowdef(def)
-	
-	# use sub and dep detection, if prev_jobs is given:
-	if(guess){
-		message("guessing submission and dependency types, experimental...")
-		def <- guess_sub_dep(x, def)
-	}
-
-	return(def)
+                               sub_type,
+                               dep_type,
+                               prev_jobs,
+                               queue = "short",
+                               platform = "torque",
+                               memory_reserved = "2000", ## in MB
+                               cpu_reserved = "1",
+                               nodes = "1",
+                               walltime = "1:00",
+                               guess = FALSE,
+                               verbose = get_opts("verbose"), ...){
+  
+  if(verbose)
+    message("Creating a skeleton flow definition")
+  jobnames <- unique(x$jobname)
+  if(verbose)
+    message("Following jobnames detected: ",
+            paste(jobnames, collapse = " "))
+  
+  njobs = length(jobnames)
+  if(missing(dep_type))
+    dep_type = c("none", rep("gather", njobs - 1))
+  if(missing(sub_type))
+    sub_type = "serial"
+  if(missing(prev_jobs))
+    prev_jobs = c("none", jobnames[-njobs])
+  
+  
+  def <- data.frame(jobname = jobnames,
+                    sub_type = sub_type,
+                    prev_jobs = prev_jobs,
+                    dep_type = dep_type,
+                    queue = queue,
+                    memory_reserved = memory_reserved,
+                    walltime = walltime,
+                    cpu_reserved = cpu_reserved,
+                    nodes = nodes,
+                    platform = platform,
+                    stringsAsFactors = FALSE)
+  
+  def = as.flowdef(def, verbose = verbose)
+  
+  # use sub and dep detection, if prev_jobs is given:
+  if(guess){
+    message("guessing submission and dependency types, experimental...")
+    def <- guess_sub_dep(x, def)
+  }
+  
+  return(def)
 }
 
 
@@ -268,27 +268,27 @@ to_flowdef.flowmat <- function(x,
 #' @rdname to_flowdef
 #' @export
 to_flowdef.flow <- function(x, ...){
-	slts = c(jobname = "name",
-					 prev_jobs = 'previous_job',
-					 dep_type = "dependency_type",
-					 sub_type = "submission_type",
-					 queue = "queue",
-					 memory_reserved = "memory",
-					 walltime = "walltime",
-					 nodes = "nodes",
-					 cpu_reserved = "cpu",
-					 status = "status",
-					 platform = "platform")
-	tmp <- lapply(x@jobs, function(y){
-		y = slots_as_list(y)[slts]
-		y$previous_job = paste(y$previous_job, collapse = ",")
-		unlist(y)
-	})
-	def = data.frame(do.call(rbind, tmp), stringsAsFactors = FALSE)
-	colnames(def) = names(slts)
-	#kable(def)
-	def = as.flowdef(def)
-	return(def)
+  slts = c(jobname = "name",
+           prev_jobs = 'previous_job',
+           dep_type = "dependency_type",
+           sub_type = "submission_type",
+           queue = "queue",
+           memory_reserved = "memory",
+           walltime = "walltime",
+           nodes = "nodes",
+           cpu_reserved = "cpu",
+           status = "status",
+           platform = "platform")
+  tmp <- lapply(x@jobs, function(y){
+    y = slots_as_list(y)[slts]
+    y$previous_job = paste(y$previous_job, collapse = ",")
+    unlist(y)
+  })
+  def = data.frame(do.call(rbind, tmp), stringsAsFactors = FALSE)
+  colnames(def) = names(slts)
+  #kable(def)
+  def = as.flowdef(def)
+  return(def)
 }
 
 
@@ -296,42 +296,51 @@ to_flowdef.flow <- function(x, ...){
 #' @importFrom utils write.table
 #' @export
 to_flowdef.character <- function(x, ...){
-	if(!missing(x)){
-		mat <- read_sheet(x)
-		mat = to_flowmat(mat)
-	}
-	def = to_flowdef(mat)
-	write.table(def, file = file.path(dirname(x), "flowdef.txt"),
-							sep = "\t", row.names = FALSE, quote = FALSE)
-	invisible(def)
+  if(!missing(x)){
+    mat <- read_sheet(x)
+    mat = to_flowmat(mat)
+  }
+  def = to_flowdef(mat)
+  write.table(def, file = file.path(dirname(x), "flowdef.txt"),
+              sep = "\t", row.names = FALSE, quote = FALSE)
+  invisible(def)
 }
 
 
 #' @rdname to_flowdef
 #' @export
 as.flowdef <- function(x, ...){
-	## ---- assuming x is a file
-	if(is.flowdef(x))
-		return(check(x))
-	if(is.data.frame(x))
-		y = x
-	if(is.character(x)){
-		if(!file.exists(x))
-			stop(paste0(error("no.def"), x))
-		message("def seems to be a file, reading it...")
-		y <- read_sheet(x, id_column = "jobname")
-	}
-	y$jobid <- 1:nrow(y)
-	class(y) <- c("flowdef", "data.frame")
-	y = check(y, ...)
-	return(y)
+  
+  # if its already a flowdef
+  if(is.flowdef(x))
+    return(check(x, ...))
+  
+  # if its a data.frame
+  if(is.data.frame(x))
+    y = x
+  
+  # if its a file
+  if(is.character(x)){
+    if(!file.exists(x))
+      stop(paste0(error("no.def"), x))
+    message("def seems to be a file, reading it...")
+    y <- read_sheet(x, id_column = "jobname")
+  }
+  
+  y$jobid <- 1:nrow(y)
+  class(y) <- c("flowdef", "data.frame")
+  
+  # finally check the object
+  y = check(y, ...)
+  
+  return(y)
 }
 
 
 #' @rdname to_flowdef
 #' @export
 is.flowdef <- function(x){
-	class(x)[1] == "flowdef"
+  class(x)[1] == "flowdef"
 }
 
 
@@ -346,8 +355,8 @@ is.flowdef <- function(x){
 
 ## examples
 if(FALSE){
-	def = system.file('vignettes/ex_flow2.def', package = "ngsflows")
-
+  def = system.file('vignettes/ex_flow2.def', package = "ngsflows")
+  
 }
 
 

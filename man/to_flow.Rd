@@ -17,8 +17,8 @@ is.flow(x)
 \method{to_flow}{character}(x, def, grp_col, jobname_col, cmd_col, ...)
 
 \method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
-  flow_run_path, platform, submit = FALSE, execute = FALSE, qobj,
-  verbose = get_opts("verbose"), ...)
+  flow_run_path, platform, containerize = TRUE, submit = FALSE,
+  execute = FALSE, qobj, verbose = get_opts("verbose"), ...)
 
 \method{to_flow}{data.frame}(x, ...)
 
@@ -45,6 +45,8 @@ is.flow(x)
 
 \item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
 This over-rides the platform column in flowdef. (optional)}
+
+\item{containerize}{flowr could create a new folder and pull all flows in them, keep the process clean}
 
 \item{submit}{Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]}
 
