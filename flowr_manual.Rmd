@@ -21,6 +21,7 @@ output:
 ```{r child = 'tutorial.Rmd'}
 ```
 
+# Example pipeline: fastq to bam
 ```{r child = 'example.Rmd'}
 ```
 
