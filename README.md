@@ -41,10 +41,10 @@ are to be executed in a (work)flow.
 - Works on your laptop/server or cluster (/cloud).
 - Supports **multiple cluster computing platforms** (torque, lsf, sge, slurm ...), cloud (star cluster) OR a local machine.
 - One line installation (`install.packages("flowr")`)
--   **Reproducible** and **transparent**, with cleanly structured execution logs
--   **Track** and **re-run** flows
--   **Lean** and **Portable**, with easy installation
-- **Fine grain** control over resources (CPU, memory, walltime of each step.
+- **Reproducible** and **transparent**, with cleanly structured execution logs
+- **Track** and **re-run** flows
+- **Lean** and **Portable**, with easy installation
+- **Fine grain** control over resources (CPU, memory, walltime, etc.) of each step.
 
 - Example: 
 	- A typical case in next-generation sequencing involves processing of tens of
@@ -63,9 +63,12 @@ are to be executed in a (work)flow.
 
 
 ```r
-## Latest stable release from CRAN (updated every other month)
+## Official stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
 install.packages("flowr")
+
+# or a latest version from DRAT
+install.packages("flowr", repos="http://sahilseth.github.io/DRAT")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
@@ -110,4 +113,3 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
 <script src = "vignettes/files/googl.js"></script>
-

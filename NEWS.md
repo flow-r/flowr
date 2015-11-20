@@ -22,8 +22,9 @@ copyright: Licence MIT
 
 <br>
 
-flowr latest
+flowr 0.9.9 (cherries)
 ----------------------------------------------
+> 2015-11-20
 
 - New option local_cores, which determines (max) number of cores to use when running local jobs.
 - enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).
@@ -216,3 +217,7 @@ flowr 0.85
   -exit_status: reports number of exited jobs (not sum of exit codes)
 
 <script src = "files/googl.js"></script>
+
+Versioning:
+
+Loosely, following [fruits A-Z](http://www.greatgrubclub.com/a-z-fruit-veg#.Vk-gx4QzBRE).
