@@ -44,4 +44,4 @@
 #'	# 	2: B	scatter --> serial --> scatter rel: complex one:one
 #'	# 	3: C	scatter --> gather --> serial rel: many:one
 #'	# 	4: D	serial --> burst --> scatter rel: one:many
-verbose = get_opts("verbose")
+verbose = opts_flow$get("verbose")

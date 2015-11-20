@@ -223,7 +223,7 @@ to_flowdef.flowmat <- function(x,
                                nodes = "1",
                                walltime = "1:00",
                                guess = FALSE,
-                               verbose = get_opts("verbose"), ...){
+                               verbose = opts_flow$get("verbose"), ...){
   
   if(verbose)
     message("Creating a skeleton flow definition")

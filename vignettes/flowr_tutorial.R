@@ -131,14 +131,14 @@ sleep_pipe <- function(x = 3, samplename = "samp1"){
 
 ## ----picard_merge, echo=TRUE, comment=""---------------------------------
 picard_merge <- function(x, 
-                        samplename = get_opts("samplename"),
+                        samplename = opts_flow$get("samplename"),
                          mergedbam,
-                         java_exe = get_opts("java_exe"),
-                         java_mem = get_opts("java_mem"),
-                         java_tmp = get_opts("java_tmp"),
-                         picard_jar = get_opts("picard_jar")){
+                         java_exe = opts_flow$get("java_exe"),
+                         java_mem = opts_flow$get("java_mem"),
+                         java_tmp = opts_flow$get("java_tmp"),
+                         picard_jar = opts_flow$get("picard_jar")){
 	## Make sure all args have a value (not null)
-	## If a variable was not defined in a conf. file get_opts, will return NULL
+	## If a variable was not defined in a conf. file opts_flow$get, will return NULL
 	check_args()  
   
   bam_list = paste("INPUT=", x, sep = "", collapse = " ")
@@ -154,5 +154,5 @@ picard_merge <- function(x,
 
 ## ------------------------------------------------------------------------
 ## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
-get_opts("my_new_tool")
+opts_flow$get("my_new_tool")
 

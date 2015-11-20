@@ -60,12 +60,12 @@
 run <- function(x,
 	platform,
 	def, conf, 
-	wd = get_opts("flow_run_path"),
+	wd = opts_flow$get("flow_run_path"),
 	flow_run_path = wd,
 	rerun_wd, start_from,
 	execute = FALSE,  ...){
 
-	#print(get_opts("flow_run_path"))
+	#print(opts_flow$get("flow_run_path"))
 	## find a Rscript with name {{x}}.R
 
 	message("\n##--- fetching pipeline... ")
@@ -97,7 +97,7 @@ run <- function(x,
 	out = do.call(func, args)
 
 	## fetched from the latest conf file ONLY
-	module_cmds = get_opts("module_cmds")
+	module_cmds = opts_flow$get("module_cmds")
 	
 	message("\n##--- stitching a flow object....")
 	## get a flowdef

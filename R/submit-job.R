@@ -106,7 +106,7 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
 # @param fobj flow object
 #' @importFrom utils tail
 render_queue_cmd <- function(jobj, file, index, fobj){
-	if(get_opts("verbose") > 1)
+	if(opts_flow$get("verbose") > 1)
 		message("Working on ", jobj@name, " with index ", index)
 	
 	## --- get platform of previous job

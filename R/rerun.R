@@ -51,7 +51,7 @@ if(FALSE){
 #' }
 rerun <- function(x, ...) {
 	
-	if(get_opts("verbose") > 1)
+	if(opts_flow$get("verbose") > 1)
 		message("rerun: input x is ", class(x))
 	
 	UseMethod("rerun")
@@ -97,7 +97,7 @@ rerun.flow <- function(x, mat, def,
 											 kill = TRUE, 
 											 select,
 											 ignore,
-											 verbose = get_opts("verbose"),
+											 verbose = opts_flow$get("verbose"),
 											 ...){
 	fobj = x
 	

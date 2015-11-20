@@ -20,7 +20,7 @@
 #' @param jobname_col column name with job names. [jobname]
 #' @param cmd_col column name with commands. [cmd]
 #' @param flowname name of the flow [flowname]
-#' @param flow_run_path Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
+#' @param flow_run_path Path to a folder. Main operating folder for this flow. [\code{opts_flow$get("flow_run_path")}]
 #'  [\code{~/flowr/runs}].
 #' @param desc Advanced Use. final flow name, please don't change.
 #' @param containerize flowr could create a new folder and pull all flows in them, keep the process clean
@@ -32,7 +32,7 @@
 #' @param qobj Depreciated, modify \href{http://docs.flowr.space/docs.html#cluster-support}{cluster templates} instead.  A object of class \link{queue}.
 #' @param verbose A numeric value indicating the amount of messages to produce.
 #'  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-#' [\code{get_opts("verbose")}] [1]
+#' [\code{opts_flow$get("verbose")}] [1]
 #' @param module_cmds A character vector of additional commands, which will be prepended to each script of the flow. 
 #'
 #' @examples
@@ -133,7 +133,7 @@ to_flow.flowmat <- function(x, def,
                             submit = FALSE,
                             execute = FALSE,
                             qobj, 
-                            verbose = get_opts("verbose"),
+                            verbose = opts_flow$get("verbose"),
                             ...){
   
   ## --- change all the input columns into character
@@ -154,7 +154,7 @@ to_flow.flowmat <- function(x, def,
   }
   
   if (missing(flow_run_path)) {
-    flow_run_path = get_opts("flow_run_path")
+    flow_run_path = opts_flow$get("flow_run_path")
     message("> Using flow_run_path default: ", flow_run_path);
   }
   
@@ -264,7 +264,7 @@ proc_jobs <- function(x,
                       qobj,
                       def,
                       desc,
-                      verbose = get_opts("verbose")
+                      verbose = opts_flow$get("verbose")
                       
 ){
   
@@ -336,7 +336,7 @@ to_flow.list <- function(x, def,
                          desc, 
                          qobj, 
                          module_cmds = '',
-                         verbose = get_opts("verbose"),...){
+                         verbose = opts_flow$get("verbose"),...){
   ## --- qobj, missing only works for arguments
   # 	if(is.flowmat(x[[1]])){
   # 		warning("to_flow supports a list of commands as a input not list of flowmats.")

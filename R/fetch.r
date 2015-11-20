@@ -78,7 +78,7 @@
 #' pip$pipe
 #' pip$def
 #' 
-fetch <- function(x, places, urls, verbose = get_opts("verbose")){
+fetch <- function(x, places, urls, verbose = opts_flow$get("verbose")){
 	if(is.null(verbose))
 		verbose = FALSE
 	y = sapply(places, list.files, pattern = paste0(x, "$"),
@@ -95,9 +95,9 @@ fetch <- function(x, places, urls, verbose = get_opts("verbose")){
 fetch_pipes <- function(x,
 												places,
 												last_only = FALSE,
-												urls = get_opts("flowr_pipe_urls"),
+												urls = opts_flow$get("flowr_pipe_urls"),
 												silent = FALSE,
-												verbose = get_opts("verbose"),
+												verbose = opts_flow$get("verbose"),
 												ask = TRUE){
 	if(missing(places)){
 		places = c(
@@ -105,7 +105,7 @@ fetch_pipes <- function(x,
 			system.file(package = "flowr", "inst/pipelines"),
 			system.file(package = "ngsflows", "pipelines"),
 			system.file(package = "ngsflows", "inst/pipelines"),
-			get_opts("flow_pipe_paths"),
+			opts_flow$get("flow_pipe_paths"),
 			getwd())
 	}
 
@@ -180,7 +180,7 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
 			system.file(package = "flowr", "inst/conf"),
 			system.file(package = "ngsflows", "conf"),
 			system.file(package = "ngsflows", "inst/conf"),
-			get_opts("flow_conf_path"), getwd())
+			opts_flow$get("flow_conf_path"), getwd())
 	}
 	
 	ext = tools::file_ext(x)

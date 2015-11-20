@@ -63,7 +63,7 @@ get_wds <- function(x){
 #' }
 status <- function(x, 
 									 use_cache = FALSE,
-									 verbose = get_opts("verbose"),
+									 verbose = opts_flow$get("verbose"),
 									 out_format = "markdown", ...){
 	## get the total jobs
 	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)

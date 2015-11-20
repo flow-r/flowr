@@ -368,12 +368,12 @@ flow <- function(
 	name = "newflow",
 	desc = "my_super_flow",
 	mode = c("scheduler","trigger","R"),
-	flow_run_path = get_opts("flow_run_path"),
+	flow_run_path = opts_flow$get("flow_run_path"),
 	trigger_path = "",
 	flow_path = "",
 	version = '0.0',
 	status="created",
-	module_cmds = get_opts("module_cmds"),
+	module_cmds = opts_flow$get("module_cmds"),
 	execute = ""){
 	mode <- match.arg(mode)
 	## create a list of jobs if nore already

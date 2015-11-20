@@ -5,7 +5,7 @@ system("env")
 system.file(package = "flowr")
 
 #set_opts("verbose")
-get_opts()
+opts_flow$get()
 
 test_check("flowr")
 

@@ -159,7 +159,7 @@ arrange_flowdef <- function(x, n = 4){
 	return(x)
 }
 
-display_mat <- function(x, verbose = get_opts("verbose")){
+display_mat <- function(x, verbose = opts_flow$get("verbose")){
 	
 	check_args()
 	
@@ -224,7 +224,7 @@ calc_boxdim <- function(x, detailed, pdf){
 # @param verbose display verbose messages
 # @param x box height
 #' @importFrom grDevices dev.size
-calc_fontsize <- function(x, verbose = get_opts("verbose")){
+calc_fontsize <- function(x, verbose = opts_flow$get("verbose")){
 	
 	## get height of the window
 	h = dev.size("px")[2]
@@ -258,7 +258,7 @@ calc_shadowsize <- function(x){
 # @param pdf creating pdf of displaying interactively
 # @param verbose display verbose messages
 # @param x boxht height of the box, as returned by calc_box
-calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
+calc_arrows <- function(x, pdf, verbose = opts_flow$get("verbose")){
 	
 	## width of the arrow is 40 times the box ht
 	lwd=x*40;
@@ -289,7 +289,7 @@ calc_arrows <- function(x, pdf, verbose = get_opts("verbose")){
 																 ## vector of columns to be used in plotting
 																 pdffile = sprintf("flow_details.pdf"),
 																 width, height, 
-																 verbose = get_opts("verbose"), 
+																 verbose = opts_flow$get("verbose"), 
 																 ...){
 	
 	if (missing(height))  height = 2.5 * nrow(x)

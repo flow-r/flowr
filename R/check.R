@@ -57,7 +57,7 @@ check.flowmat <- function(x, ...){
 #' @rdname check
 #' @importFrom params kable
 #' @export
-check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
+check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
 
 	dep_types = c("none", "serial", "gather", "burst")
 	sub_types = c("serial", "scatter")
@@ -184,7 +184,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 ##      serial  --(burst)--> scatter
 check_dep_sub_type <- function(dep, sub,
 													p.dep, p.sub,
-													verbose = get_opts("verbose")){
+													verbose = opts_flow$get("verbose")){
 	v = verbose
 	p.dep = ifelse(length(p.dep) == 0, "none", p.dep)
 	p.sub = ifelse(length(p.sub) == 0, "none", p.sub)
