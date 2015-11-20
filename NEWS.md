@@ -39,8 +39,9 @@ flowr status x=.
 - **New**: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).
 - **New**: status gets a new argument to turn off progress bar if needed.
 - **NEW**: Now rerun supports multiple folders to be re-run.
-- fixed bugs in documentation
+- fixed bugs in documentation (changed the formatting of output messages)
 - **IMP**: to_flowdef now add a parameter nodes, to enable specifying number of nodes required per-job.
+- **NEW**: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean.
 
 
 

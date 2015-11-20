@@ -22,7 +22,7 @@ setup()
 This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
 For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
 
-<!-- We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --> 
+
 
 Running flowr from the terminal will fetch you the following:
 
@@ -38,7 +38,6 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 ```
 
 
-<!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 
 
 ## Toy example
@@ -74,7 +73,7 @@ sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3
 sample1      merge        cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged 
 sample1      size         du -sh sample1_merged; echo MY shell: $SHELL                   
 
-Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](http://docs.flowr.space/docs.html#flow-definition). 
+Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](/docs.html#flow-definition). 
 
 
 
@@ -92,8 +91,8 @@ Also, values in previous jobs (prev_jobs) are derived from jobnames.
 
 ## Stitch it
 
-We use the two files descirbed above and stich them to create a `flow object` (which contains all the information we
-need for cluster submission). 
+We use the two files descirbed above and stich them to create a `flow object` 
+(which contains all the information we need for cluster submission). 
 
 
 
@@ -108,11 +107,11 @@ fobj <- to_flow(x = flowmat,
                  platform = "lsf")      ## override platform mentioned in flow def
 ```
 
-Refer to [to_flow's help section](docs.flowr.space/rd.html#to_flow) for more details.
+Refer to [to_flow's help section](http://docs.flowr.space/rd.html#to_flow) for more details.
 
 ## Plot it
 
-We can use `plot_flow` to quickly visualize the flow; this really helps when developing complex workflows. 
+We can use [plot_flow](http://docs.flowr.space/rd.html#plot_flow) to quickly visualize the flow; this really helps when developing complex workflows. 
 
 
 ```r
@@ -122,7 +121,7 @@ plot_flow(flowdef) # plot_flow works on flow definition as well
 
 ![Flow chart describing process for example 1](flowr_overview_files/figure-html/plotit-1.png) 
 
-Refer to [plot_flow's help section](docs.flowr.space/rd.html#plot_flow) for more details.
+Refer to [plot_flow's help section](http://docs.flowr.space/rd.html#plot_flow) for more details.
 
 
 ## Dry Run
@@ -145,6 +144,9 @@ You may check this folder for consistency. Also you may re-run submit with execu
 
 ## Submit it
 
+Once, we have a flow we can submit it to the cluster using
+[submit_flow](http://docs.flowr.space/rd.html#submit_flow)
+
 <div class="alert alert-info" role="alert">
 Submit to the cluster !
 </div>
@@ -160,12 +162,12 @@ Flow has been submitted. Track it from terminal using:
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 ```
 
-Refer to [submit_flow's help section](docs.flowr.space/rd.html#submit_flow) for more details.
+Refer to [submit_flow's help section](http://docs.flowr.space/rd.html#submit_flow) for more details.
 
 
 ## Check its status
 
-One may periodically run `status` to monitor the status of a flow.
+Next, you may use [status](http://docs.flowr.space/rd.html#status) to monitor the status of a flow.
 
 
 ```
@@ -179,7 +181,11 @@ flowr status x=~/flowr/runs/sleep_pipe-20150520*
 |004.size  |     1|       1|         1|           0| completed|
 ```
 
-Alternatively, to check a summarized status of several flows, use the parent folder, for example:
+Notice, how we skipped specifying the complete path. Status would try to use the basename and show status of any folder it can match.
+If there are multiple matched, status would show a summary of each.
+
+Alternatively, to check a summarized status of several flows, use the parent folder. 
+In this case the parent folder has 3 flows, and here is the summary:
 
 ```
 flowr status x=~/flowr/runs
@@ -198,15 +204,17 @@ Showing status of: ~/flowr/runs
 flows.
 </div>
 
-Refer to [status's help section](docs.flowr.space/rd.html#status) for more details.
+Refer to [status's help section](http://docs.flowr.space/rd.html#status) for more details.
 
 
 ## Kill it
 
-Incase something goes wrong, one may use to kill command to terminate all the relating jobs.
+Incase something goes wrong, one may use to kill command to terminate all the relating jobs of a single flow OR
+multiple flows. 
 
 
 kill one flow:
+
 ```
 flowr kill_flow x=flow_wd
 ```
@@ -226,10 +234,10 @@ Really kill all of them ? kill again with force=TRUE
 To kill multiple flow, set force=TRUE:
 
 ```
-kill(x='~/flowr/runs/sleep_pipe*', force = TRUE)
+kill x='~/flowr/runs/sleep_pipe*' force = TRUE
 ```
 
-Refer to [kill's help section](docs.flowr.space/rd.html#kill) for more details.
+Refer to [kill's help section](http://docs.flowr.space/rd.html#kill) for more details.
 
 
 ## Re-run a flow
@@ -237,11 +245,11 @@ Refer to [kill's help section](docs.flowr.space/rd.html#kill) for more details.
 flowr also enables you to re-run a pipeline in case of hardware or software failures.
 
 - **hardware failure**: no change to the pipeline is required, simply rerun it: 
-  `rerun(x=flow_wd, start_from=<intermediate step>)`
+  `rerun x=flow_wd  start_from=<intermediate step>`
 - **software failure**: either a change to flowmat or flowdef has been made: 
-  `rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef, start_from=<intermediate step>)`
+  `rerun x=flow_wdmat = new_flowmat def = new_flowdef start_from=<intermediate step>`
 
-Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details.
+Refer to [rerun's help section](http://docs.flowr.space/rd.html#rerun) for more details.
 
 
 
@@ -250,7 +258,7 @@ Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details
 
 An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as `flow_mat` and `flow_def` respectively (as introduced in the previous sections).
 
-We could read in, examples of both these files to understand their structure.
+Let us read in examples of both these files to understand their structure.
 
 
 ```r

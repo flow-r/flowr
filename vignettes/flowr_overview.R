@@ -8,6 +8,10 @@ library(flowr)
 ## ----eval=FALSE----------------------------------------------------------
 #  setup()
 
+## ---- echo=FALSE, eval=FALSE---------------------------------------------
+#  #We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory.
+#  
+
 ## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE----
 #  library(DiagrammeR)
 #  mermaid("

@@ -115,12 +115,12 @@ kable(def)
 
 
 
-jobname      sub_type   prev_jobs    dep_type   queue   memory_reserved   walltime    cpu_reserved  platform    jobid
------------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
-sleep        scatter    none         none       short   2000              1:00                   1  torque          1
-create_tmp   scatter    sleep        serial     short   2000              1:00                   1  torque          2
-merge        serial     create_tmp   gather     short   2000              1:00                   1  torque          3
-size         serial     merge        serial     short   2000              1:00                   1  torque          4
+jobname      sub_type   prev_jobs    dep_type   queue   memory_reserved   walltime    cpu_reserved  nodes   platform    jobid
+-----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ------  ---------  ------
+sleep        scatter    none         none       short   2000              1:00                   1  1       torque          1
+create_tmp   scatter    sleep        serial     short   2000              1:00                   1  1       torque          2
+merge        serial     create_tmp   gather     short   2000              1:00                   1  1       torque          3
+size         serial     merge        serial     short   2000              1:00                   1  1       torque          4
 
 ![](flowr_tutorial_files/figure-html/plot_tweaked_def-1.png) 
 

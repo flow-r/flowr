@@ -77,11 +77,7 @@ What goes in, and what to expect in return?
 }
 }
 \description{
-Use a set of shell commands and flow definiton to create \link{flow} object.
-
-vector: a file with flowmat table
-
-a named list of commands for a sample. Its best to supply a flowmat instead.
+Use a set of shell commands (flow mat) and flow definiton to create \link{flow} object.
 }
 \details{
 The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
