@@ -113,13 +113,16 @@ render_rd("rd_skeleton.Rmd", "flowr", code_path,
           rd_index = "rd_index.yaml", output_format = pd_expand)
 check_output("rd.html")
 
+# create pdf manual
+render("flowr_manual.Rmd")
+
 
 
 ## stuff for MAC ONLY
 if(Sys.info()['sysname'] == "Darwin"){
 	system("open index.html")
 	setwd("~/Dropbox/public/github_flowrpages")
-	#system("rm manual.pdf;R CMD Rd2pdf --no-preview -o manual.pdf ~/Dropbox/public/github_flow")
+	system("rm flowr_pkg_ref.pdf;R CMD Rd2pdf --no-preview -o flowr_pkg_ref.pdf ~/Dropbox/public/github_flow")
 	system("git commit -a -m 'update website'")
 	system("git push")
 }
@@ -135,5 +138,8 @@ if(FALSE){
 	render("pdf.Rmd", pdf_document())
 }
 
+
+# copy the PDFs to github, to make them easier to see:
+file.copy(c("flowr_manual.pdf", "flowr_pkg_ref.pdf"), code_path)
 setwd(code_path)
 

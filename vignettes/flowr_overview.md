@@ -22,7 +22,7 @@ setup()
 This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
 For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
 
-<!-- We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory. --> 
+
 
 Running flowr from the terminal will fetch you the following:
 
@@ -38,7 +38,6 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 ```
 
 
-<!--If you would like to do a test drive on its other capabilities, here are a [few examples](https://github.com/sahilseth/rfun).-->
 
 
 ## Toy example
@@ -74,7 +73,7 @@ sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3
 sample1      merge        cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged 
 sample1      size         du -sh sample1_merged; echo MY shell: $SHELL                   
 
-Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](http://docs.flowr.space/docs.html#flow-definition). 
+Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](/docs.html#flow-definition). 
 
 
 
@@ -92,8 +91,8 @@ Also, values in previous jobs (prev_jobs) are derived from jobnames.
 
 ## Stitch it
 
-We use the two files descirbed above and stich them to create a `flow object` (which contains all the information we
-need for cluster submission). 
+We use the two files descirbed above and stich them to create a `flow object` 
+(which contains all the information we need for cluster submission). 
 
 
 
@@ -108,11 +107,11 @@ fobj <- to_flow(x = flowmat,
                  platform = "lsf")      ## override platform mentioned in flow def
 ```
 
-Refer to [to_flow's help section](docs.flowr.space/rd.html#to_flow) for more details.
+Refer to [to_flow's help section](http://docs.flowr.space/rd.html#to_flow) for more details.
 
 ## Plot it
 
-We can use `plot_flow` to quickly visualize the flow; this really helps when developing complex workflows. 
+We can use [plot_flow](http://docs.flowr.space/rd.html#plot_flow) to quickly visualize the flow; this really helps when developing complex workflows. 
 
 
 ```r
@@ -122,7 +121,7 @@ plot_flow(flowdef) # plot_flow works on flow definition as well
 
 ![Flow chart describing process for example 1](flowr_overview_files/figure-html/plotit-1.png) 
 
-Refer to [plot_flow's help section](docs.flowr.space/rd.html#plot_flow) for more details.
+Refer to [plot_flow's help section](http://docs.flowr.space/rd.html#plot_flow) for more details.
 
 
 ## Dry Run
@@ -145,6 +144,9 @@ You may check this folder for consistency. Also you may re-run submit with execu
 
 ## Submit it
 
+Once, we have a flow we can submit it to the cluster using
+[submit_flow](http://docs.flowr.space/rd.html#submit_flow)
+
 <div class="alert alert-info" role="alert">
 Submit to the cluster !
 </div>
@@ -160,12 +162,12 @@ Flow has been submitted. Track it from terminal using:
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 ```
 
-Refer to [submit_flow's help section](docs.flowr.space/rd.html#submit_flow) for more details.
+Refer to [submit_flow's help section](http://docs.flowr.space/rd.html#submit_flow) for more details.
 
 
 ## Check its status
 
-One may periodically run `status` to monitor the status of a flow.
+Next, you may use [status](http://docs.flowr.space/rd.html#status) to monitor the status of a flow.
 
 
 ```
@@ -179,7 +181,11 @@ flowr status x=~/flowr/runs/sleep_pipe-20150520*
 |004.size  |     1|       1|         1|           0| completed|
 ```
 
-Alternatively, to check a summarized status of several flows, use the parent folder, for example:
+Notice, how we skipped specifying the complete path. Status would try to use the basename and show status of any folder it can match.
+If there are multiple matched, status would show a summary of each.
+
+Alternatively, to check a summarized status of several flows, use the parent folder. 
+In this case the parent folder has 3 flows, and here is the summary:
 
 ```
 flowr status x=~/flowr/runs
@@ -198,15 +204,17 @@ Showing status of: ~/flowr/runs
 flows.
 </div>
 
-Refer to [status's help section](docs.flowr.space/rd.html#status) for more details.
+Refer to [status's help section](http://docs.flowr.space/rd.html#status) for more details.
 
 
 ## Kill it
 
-Incase something goes wrong, one may use to kill command to terminate all the relating jobs.
+Incase something goes wrong, one may use to kill command to terminate all the relating jobs of a single flow OR
+multiple flows. 
 
 
 kill one flow:
+
 ```
 flowr kill_flow x=flow_wd
 ```
@@ -226,10 +234,10 @@ Really kill all of them ? kill again with force=TRUE
 To kill multiple flow, set force=TRUE:
 
 ```
-kill(x='~/flowr/runs/sleep_pipe*', force = TRUE)
+kill x='~/flowr/runs/sleep_pipe*' force = TRUE
 ```
 
-Refer to [kill's help section](docs.flowr.space/rd.html#kill) for more details.
+Refer to [kill's help section](http://docs.flowr.space/rd.html#kill) for more details.
 
 
 ## Re-run a flow
@@ -237,11 +245,11 @@ Refer to [kill's help section](docs.flowr.space/rd.html#kill) for more details.
 flowr also enables you to re-run a pipeline in case of hardware or software failures.
 
 - **hardware failure**: no change to the pipeline is required, simply rerun it: 
-  `rerun(x=flow_wd, start_from=<intermediate step>)`
+  `rerun x=flow_wd  start_from=<intermediate step>`
 - **software failure**: either a change to flowmat or flowdef has been made: 
-  `rerun(x=flow_wd, mat = new_flowmat, def = new_flowdef, start_from=<intermediate step>)`
+  `rerun x=flow_wdmat = new_flowmat def = new_flowdef start_from=<intermediate step>`
 
-Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details.
+Refer to [rerun's help section](http://docs.flowr.space/rd.html#rerun) for more details.
 
 
 
@@ -250,7 +258,7 @@ Refer to [rerun's help section](docs.flowr.space/rd.html#rerun) for more details
 
 An easy and quick way to build a workflow is to create a set of two tab delimited files. First is a table with commands to run (for each step of the pipeline), while second has details regarding how the modules are stitched together. In the rest of this document we would refer to them as `flow_mat` and `flow_def` respectively (as introduced in the previous sections).
 
-We could read in, examples of both these files to understand their structure.
+Let us read in examples of both these files to understand their structure.
 
 
 ```r
@@ -348,49 +356,6 @@ merge        serial     create_tmp   gather     short               2000  1:00  
 size         serial     merge        serial     short               2000  1:00                   1  local           4
 
 
-<!-- Each row of this table translates to a call to ([job](http://docs.flowr.space/build/html/rd/topics/job.html) or) [queue](http://docs.flowr.space/build/html/rd/topics/queue.html) function. -->
-
-<!--  jobname: is passed as `name` argument to job().
-- prev_jobs: passed as `previous_job` argument  to job().
-- dep_type: passed as `dependency_type` argument  to job(). Possible values: gather, serial
-- sub_type: passed as `submission_type` argument  to job().
-- queue: name of the queue to be used for this particular job. 
-	Since each jobs can be submitted to a different queue, this makes your flow very flexible
-- memory_reserved: Refer to your system admin guide on what values should go here. 
-	Some pipelines: 160000, 16g etc representing a 16GB reservation of RAM
-- walltime: How long would this job run. Again refer to your HPCC guide. Example: 24:00, 24:00:00
-- cpu_reserved: Amount of CPU reserved.
-Its best to have this as a tab seperated file (with no row.names). -->
-
-<!-- Style 2
-This style may be more suited for people who like to explore more advanced usage and like to code in R. Also this one find this much faster if jobs and their relationships changes a lot.
-Here instead of seperating cmds and definitions one defines them step by step incrementally.
-- Use: queue(), to define the computing cluster being used
-- Use: multiple calls job()
-- Use: flow() to stich the jobs into a flow.
-Currently we support LSF, Torque and SGE. Let us use LSF for this example.
-
-```r
-qobj <- queue(platform = "lsf", queue = "normal", verbose = FALSE)
-```
-Let us stitch a simple flow with three jobs, which are submitted one after the other.
-
-```r
-job1 <- job(name = "myjob1", cmds = "sleep1", q_obj = qobj)
-job2 <- job(name = "myjob2", cmds = "sleep2", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-job3 <- job(name = "myjob3", cmds = "sleep3", q_obj = qobj, previous_job = "myjob1", dependency_type = "serial")
-fobj <- flow(name = "myflow", jobs = list(job1, job2, job3), desc="description")
-plot_flow(fobj)
-```
-The above translates to a flow definition which looks like this:
-
-```r
-dat <- flowr:::create_jobs_mat(fobj)
-knitr:::kable(dat)
-```
-something -->
-
-
 
 ### Example:
 
@@ -471,13 +436,6 @@ Since C is a single command which requires all steps of B to complete, intuitive
 
 
 
-<!-- makes sense when previous job had many commands running in parallel and current job would wait for all
-- so previous job submission: `scatter`, and current job's dependency type `gather`
-jobj1 <- job(q_obj=qobj, cmd = cmds, submission_type = "scatter", name = "job1")
-jobj2 <- job(q_obj=qobj, name = "job2", cmd = cmds, submission_type = "scatter", 
-             dependency_type = "gather", previous_job = "job1")
-fobj <- flow(jobs = list(jobj1, jobj2))
-plot_flow(fobj) -->
 
 ## One to Many (Burst)
 
@@ -496,10 +454,6 @@ Further, D is a set of three commands (D1-D3), which need to wait for a single p
 
 
 
-<!-- makes sense when previous job had one command current job would split and submit several jobs in parallel
-- so previous job submission_type: `serial`, and current job's dependency type `burst`, with a submission type: `scatter`
-
-something -->
 
 In essence, an example flow_def would look like as follows (with additional resource requirements not shown for brevity):
 

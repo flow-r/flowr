@@ -1,13 +1,12 @@
 Package: flowr
 Type: Package
 Title: Streamlining Design and Deployment of Complex Workflows
-Description: 
-  This framework allows you to design and implement complex pipelines, and
-  deploy them on your institution's computing cluster. This has been built
-  keeping in mind the needs of bioinformatics workflows. However, it is
-  easily extendable to any field where a series of steps (shell commands)
-  are to be executed in a (work)flow.
-Version: 0.9.8.9017
+Description: This framework allows you to design and implement complex
+    pipelines, and deploy them on your institution's computing cluster. This has
+    been built keeping in mind the needs of bioinformatics workflows. However, it is
+    easily extendable to any field where a series of steps (shell commands) are to
+    be executed in a (work)flow.
+Version: 0.9.8.9019
 Depends:
     R (>= 3.0.2),
     methods,
@@ -29,3 +28,4 @@ URL: https://github.com/sahilseth/flowr
 BugReports: https://github.com/sahilseth/flowr/issues
 Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
 License: MIT + file LICENSE
+RoxygenNote: 5.0.1.9000

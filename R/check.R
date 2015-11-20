@@ -67,19 +67,19 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	check_args()
 	
 	if(verbose)
-		message("\nchecking if required columns are present...")
+		message("--> checking if required columns are present...")
 	if (any(!need_cols  %in% colnames(x)))
 		stop(c(error("flowdef: missing required columns"),
 					 paste(need_cols, collapse = " ")))
 
 	if(verbose)
-		message("checking if resources columns are present...")
+		message("--> checking if resources columns are present...")
 	if (any(!opt_cols  %in% colnames(x)))
 		stop(c(error("flowdef: missing resource columns", msg = stop), 
 							paste(opt_cols, collapse = ", ")))
 
 	if(verbose)
-		message("checking if dependency column has valid names...")
+		message("--> checking if dependency column has valid names...")
 	if (sum(!x$dep_type %in% dep_types))
 		stop("dep_type: invalid\n",
 			"Dependency type not recognized.\n Inputs are: ",
@@ -87,7 +87,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 				 ".\nAnd they can be one of ", paste(dep_types, collapse = ", "))
 
 	if(verbose)
-		message("checking if submission column has valid names...")
+		message("--> checking if submission column has valid names...")
 	if (sum(!x$sub_type %in% sub_types)){
 		stop("sub_type: invalid\n",
 				 "Submission type not recognized. Inputs are: ", paste(x$sub_type, collapse = " "),
@@ -103,7 +103,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	prev_jobs = unlist(strsplit(x$prev_jobs[!(x$prev_jobs == "none")], ","))
 
 	if(verbose)
-		message("checking for missing rows in def...")
+		message("--> checking for missing rows in def...")
 	miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
 	if (length(miss_jobs) > 0){
 		message(paste(kable(x), collapse = "\n"))
@@ -114,7 +114,8 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 
 	## --- check if there are rows where prev_job specied but dep NOT specified
 	if(verbose)
-		message("checking for extra rows in def...")
+		message("--> checking for extra rows in def...")
+	
 	extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")
 	if (sum(extra_rows) > 0){
 		message(paste(kable(x[extra_rows,]), collapse = "\n"))
@@ -141,6 +142,9 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 
 	x$cpu_reserved = as.numeric(x$cpu_reserved)
 	
+	if(!is.null(x$nodes))
+		x$nodes = as.character(x$nodes)
+	
 	#print(x)
 	## check all previous jobs defined in names
 	## code previous jobs as NA
@@ -155,7 +159,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	## not allowed:
 	##      any --(none)--> any
 	if(verbose)
-		message("checking submission and dependency types...")
+		message("--> checking submission and dependency types...")
 	if(verbose > 1) message("\tjobname\tprev.sub_type --> dep_type --> sub_type: relationship")
 	for(i in 1:nrow(x)){
 		if(verbose > 1) 

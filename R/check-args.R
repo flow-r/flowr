@@ -27,8 +27,8 @@ assert_args_not_null <- function(...,
 #' 
 #' @param ignore optionally ignore a few variables for checking.
 #' @param select optionally only check a few variables of the function.
-#' @export
 #' 
+#' @export 
 #' @details 
 #' This function has now been moved to params package.
 check_args <- function(ignore, select){

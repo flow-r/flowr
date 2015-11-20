@@ -49,7 +49,6 @@ if(FALSE){
 #' @examples \dontrun{
 #' rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
 #' }
-#'  @export
 rerun <- function(x, ...) {
 	
 	if(get_opts("verbose") > 1)
@@ -62,18 +61,28 @@ rerun <- function(x, ...) {
 #' @rdname rerun
 #' @export
 rerun.character <- function(x, ...){
-	message("x looks like a path, reading flow_details.rds")
-	fobj <- read_fobj(x)
 	
-	if(is.character(fobj))
-		stop("x does not seems to be a correct path to the flow submission, missing flow_details.rds")
+	message("x looks like a path, seeing if multiple paths match ...")
+	wds = get_wds(x)
 	
-	args = list(...)
-	if(any(names(args) %in% c("flowmat", "flowdef", "flow_mat", "flow_def")))
-		stop("some arguments not recognized\n",
-				 "Valid arguments for rerun are: mat and def, for flow matrix and flow definition respectively.")
+	tmp <- lapply(wds, function(wd){
+		
+		message("\n\nreading flow_details.rds from: ", wd)
+		fobj <- read_fobj(wd)
+		
+		if(is.character(fobj))
+			stop("x does not seems to be a correct path to the flow submission, missing flow_details.rds")
+		
+		args = list(...)
+		if(any(names(args) %in% c("flowmat", "flowdef", "flow_mat", "flow_def")))
+			stop("some arguments not recognized\n",
+					 "Valid arguments for rerun are: mat and def, for flow matrix and flow definition respectively.")
+		
+		rerun(fobj, ...)
+	})
 	
-	rerun(fobj, ...)
+	invisible(tmp)
+	
 	
 }
 

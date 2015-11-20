@@ -2,8 +2,8 @@
 # nocov start
 if(FALSE){
 	get_connection <- function(path = "/rsrch2/iacs/iacs_dep/sseth/rflow/db/main.sqlite"){
-		#' @importFrom RSQLite dbConnect
-		#' @importFrom RSQLite SQLite
+		# @importFrom RSQLite dbConnect
+		# @importFrom RSQLite SQLite
 		#   library(sqldf)
 		if (!requireNamespace("pkg", quietly = TRUE)) {
 			stop("Pkg needed for this function to work. Please install it.",

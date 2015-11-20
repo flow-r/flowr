@@ -1,0 +1,20 @@
+citHeader("To cite flowr in publications use:")
+citEntry(entry = "Article", 
+				 author = personList(as.person("Sahil Seth"), 
+				 										as.person("Samirkumar B Amin"),
+				 										as.person("Xingzhi Song"),
+				 										as.person("Xizeng Mao"),
+				 										as.person("Huandong Sun"),
+				 										as.person("Roeland GW Verhaak"),
+				 										as.person("Andrew PA Futreal"),
+				 										as.person("Jianhua Zhang")
+				 ), 
+				 title = "Flowr: Robust and efficient pipelines using a simple language-agnostic approach", 
+				 journal = "bioRxiv", year = 2015, 
+				 doi = "10.1101/029710",
+				 publisher = "Cold Spring Harbor Labs Journals",
+				 url = "http://biorxiv.org/content/early/2015/10/22/029710", 
+				 textVersion = paste("Sahil Seth, et. al (2015)", 
+				 										"Flowr: Robust and efficient pipelines using a simple language-agnostic approach", 
+				 										"bioRxiv 2015"))
+citFooter("As flowr is continually evolving, you may want to cite its version number. Find it with 'help(package=flowr)'.")
