@@ -30,9 +30,9 @@
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
 submit_flow <- function(x, verbose = get_opts("verbose"), ...) {
-	if(verbose > 1)
-		message("input x is ", class(x))
-	UseMethod("submit_flow")
+  if(verbose > 1)
+    message("input x is ", class(x))
+  UseMethod("submit_flow")
 }
 
 ## --- this works when there are a list of fobjs
@@ -40,14 +40,14 @@ submit_flow <- function(x, verbose = get_opts("verbose"), ...) {
 #' @rdname submit_flow
 #' @export
 submit_flow.list <- function(x, verbose = get_opts("verbose"), ...){
-	fobjs = lapply(x, function(y)
-		submit_flow(y, ...)
-	)
-	return(fobjs)
+  fobjs = lapply(x, function(y)
+    submit_flow(y, ...)
+  )
+  return(fobjs)
 }
 
 parse_prevjobids <- function(x){
-
+  
 }
 
 
@@ -58,120 +58,120 @@ parse_prevjobids <- function(x){
 #' @importFrom utils txtProgressBar
 #' @export
 submit_flow.flow <- function(x,
-														 verbose = get_opts("verbose"),
-														 execute = FALSE,
-														 uuid,
-														 plot = TRUE,
-														 dump = TRUE,
-														 .start_jid = 1,
-														 ...){
-
-	## -- store, for use later
-	x@execute=execute
-
-	## --- this field is currently not used extensibly
-	## --- Assumption here is that a submitted/processed flow
-	## --- has uuid part of its flow_path already
-	## the case of resubmission
-	if(!file.exists(x@flow_run_path))
-		dir.create(x@flow_run_path, recursive = TRUE)
-
-	if(missing(uuid)){
-		wd = file.path(file_path_as_absolute(x@flow_run_path), x@desc)
-		uuid = get_unique_id(prefix = wd)
-	}
-	x@flow_path = uuid
-	# 		if(!x@status %in%
-	# 			 c("processed","submitted","running","completed","exit"))
-
-	##jobnames <- sapply(x@jobs, function(x) x@name)
-	##names(x@jobs) <- jobnames
-	### ---------- Error handling
-	if(execute)
-		message("\nFlow is being processed.",
-						sprintf(" Track it from cmd line using:\nflowr status x=%s\n",
-										x@flow_path),
-						sprintf("OR from R using:\nstatus(x='%s')\n\n\n",
-										x@flow_path))
-
-	## should be included in check flow_def
-	if(length(x@jobs[[1]]@dependency_type) > 0 & x@jobs[[1]]@dependency_type !="none")
-		stop("Seems like the first job has a dependency, please check")
-
-	## ------   create CWD
-	if(!file.exists(file.path(x@flow_path,"tmp")))
-		dir.create(file.path(x@flow_path,"tmp"),
-							 showWarnings=FALSE, recursive=TRUE)
-
-	## -----   loop on jobs
-	## parse dependency from the previous
-	## then send it along to submit_job
-	## prevjob is null but dep_type exists --- > problem, check should detect.
-	## split dependency, if multiple previous jobs
-
-	#x <- pbsapply(1:length(x@jobs), function(i, x = x){
-	
-	from=.start_jid;to=length(x@jobs)
-	if(to > from)
-		pb <- txtProgressBar(min = from, max = to, style = 3)
-	for(i in from:to){
-		if(verbose > 0 & to > from)
-			pb$up(i)
-		## ------ check if there are any dependencies
-		previous_job <- x@jobs[[i]]@previous_job
-		if(verbose > 1) 
-			message("Working on job ", i, " with previous job: ", previous_job)
-		
-		## if there is a previous job
-		if(prevjob_exists(previous_job)){
-			## --- split multiple dependencies as a list
-			## get say a multi column matrix. JOBIDS X PREV JOBS
-			previds <- do.call(cbind, lapply(previous_job, function(y)
-				x@jobs[[y]]@id))
-			## split the MATRIX by rowindex, into a LIST
-			x@jobs[[i]]@dependency <- split(previds, row(previds))
-		}
-		
-		## ------ submit the job, get updates job object
-		x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
-															fobj = x,
-															execute=execute,
-															job_id=i,
-															verbose = verbose, ...)
-	}
-	if( to > from )
-		close(pb)
-	
-
-	x@status <- "dry-run"
-	if(execute){
-		x@status <- "submitted"
-	}else{
-		message("Dry Run Successful!\n",
-						"You may check this folder for consistency. ",
-						"Also you may submit again with execute=TRUE\n",
-						x@flow_path)
-	}
-
-	if(dump){
-		flow_det = to_flowdet(x)
-		write_flow_details(x@flow_path, fobj = x, plot = plot, flow_det = flow_det)
-	}
-	invisible(x)
+                             verbose = get_opts("verbose"),
+                             execute = FALSE,
+                             uuid,
+                             plot = TRUE,
+                             dump = TRUE,
+                             .start_jid = 1,
+                             ...){
+  
+  ## -- store, for use later
+  x@execute=execute
+  
+  ## --- this field is currently not used extensibly
+  ## --- Assumption here is that a submitted/processed flow
+  ## --- has uuid part of its flow_path already
+  ## the case of resubmission
+  if(!file.exists(x@flow_run_path))
+    dir.create(x@flow_run_path, recursive = TRUE)
+  
+  if(missing(uuid)){
+    wd = file.path(file_path_as_absolute(x@flow_run_path), x@desc)
+    uuid = get_unique_id(prefix = wd)
+  }
+  x@flow_path = uuid
+  # 		if(!x@status %in%
+  # 			 c("processed","submitted","running","completed","exit"))
+  
+  ##jobnames <- sapply(x@jobs, function(x) x@name)
+  ##names(x@jobs) <- jobnames
+  ### ---------- Error handling
+  if(execute)
+    message("--> Flow is being processed.",
+            sprintf(" Track it from cmd line using:\nflowr status x=%s\n",
+                    x@flow_path),
+            sprintf("OR from R using:\nstatus(x='%s')",
+                    x@flow_path))
+  
+  ## should be included in check flow_def
+  if(length(x@jobs[[1]]@dependency_type) > 0 & x@jobs[[1]]@dependency_type !="none")
+    stop("Seems like the first job has a dependency, please check")
+  
+  ## ------   create CWD
+  if(!file.exists(file.path(x@flow_path,"tmp")))
+    dir.create(file.path(x@flow_path,"tmp"),
+               showWarnings=FALSE, recursive=TRUE)
+  
+  ## -----   loop on jobs
+  ## parse dependency from the previous
+  ## then send it along to submit_job
+  ## prevjob is null but dep_type exists --- > problem, check should detect.
+  ## split dependency, if multiple previous jobs
+  
+  #x <- pbsapply(1:length(x@jobs), function(i, x = x){
+  
+  from=.start_jid;to=length(x@jobs)
+  if(to > from)
+    pb <- txtProgressBar(min = from, max = to, style = 3)
+  for(i in from:to){
+    if(verbose > 0 & to > from)
+      pb$up(i)
+    ## ------ check if there are any dependencies
+    previous_job <- x@jobs[[i]]@previous_job
+    if(verbose > 1) 
+      message("----> Working on job ", i, " with previous job: ", previous_job)
+    
+    ## if there is a previous job
+    if(prevjob_exists(previous_job)){
+      ## --- split multiple dependencies as a list
+      ## get say a multi column matrix. JOBIDS X PREV JOBS
+      previds <- do.call(cbind, lapply(previous_job, function(y)
+        x@jobs[[y]]@id))
+      ## split the MATRIX by rowindex, into a LIST
+      x@jobs[[i]]@dependency <- split(previds, row(previds))
+    }
+    
+    ## ------ submit the job, get updates job object
+    x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
+                              fobj = x,
+                              execute=execute,
+                              job_id=i,
+                              verbose = verbose, ...)
+  }
+  if( to > from )
+    close(pb)
+  
+  
+  x@status <- "dry-run"
+  if(execute){
+    x@status <- "submitted"
+  }else{
+    message("--> Dry Run Successful!\n",
+            "--> You may check this folder for consistency. ",
+            "--> Also you may submit again with execute=TRUE\n",
+            x@flow_path)
+  }
+  
+  if(dump){
+    flow_det = to_flowdet(x)
+    write_flow_details(x@flow_path, fobj = x, plot = plot, flow_det = flow_det)
+  }
+  invisible(x)
 }
 
 
 prevjob_exists <- function(x){
-	if(length(x)!=0){
-		## prev job should not be of length 0. need ., NA, "" for missing
-		if(!is.na(x[1]) & !is.null(x[1]) & !x[1] %in% c("", "NA", ".", "none", "NULL")){
-			return(TRUE)
-		}else{
-			return(FALSE)
-		}
-	}else{
-		return(FALSE)
-	}
+  if(length(x)!=0){
+    ## prev job should not be of length 0. need ., NA, "" for missing
+    if(!is.na(x[1]) & !is.null(x[1]) & !x[1] %in% c("", "NA", ".", "none", "NULL")){
+      return(TRUE)
+    }else{
+      return(FALSE)
+    }
+  }else{
+    return(FALSE)
+  }
 }
 
 
