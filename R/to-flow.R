@@ -10,7 +10,7 @@
 #' @aliases flowr
 #'
 #' @description
-#' Use a set of shell commands and flow definiton to create \link{flow} object.
+#' Use a set of shell commands (flow mat) and flow definiton to create \link{flow} object.
 #'
 #' @param x path (char. vector) to flow_mat, a data.frame or a list.
 #' @param def A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow
@@ -103,7 +103,6 @@ is.flow <- function(x){
   class(x)[1] == "flow"
 }
 
-#' @description vector: a file with flowmat table
 #' @rdname to_flow
 #' @export
 to_flow.character <- function(x, def,
@@ -328,7 +327,6 @@ proc_jobs <- function(x,
 }
 
 
-#' @description a named list of commands for a sample. Its best to supply a flowmat instead.
 #' @rdname to_flow
 #' @importFrom utils packageVersion
 #' @importFrom params kable
