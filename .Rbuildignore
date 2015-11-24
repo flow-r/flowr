@@ -26,4 +26,10 @@ tests/testthat/sleep_pipe*
 flowr_manual.pdf
 flowr_pkg_ref.pdf
 
+# vignettes
+vignettes/*.html
+vignettes/*.R
+vignettes/*.md
+vignettes/*_files
+
 

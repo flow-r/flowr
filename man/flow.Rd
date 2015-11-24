@@ -8,9 +8,9 @@
 \usage{
 flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
   mode = c("scheduler", "trigger", "R"),
-  flow_run_path = get_opts("flow_run_path"), trigger_path = "",
+  flow_run_path = opts_flow$get("flow_run_path"), trigger_path = "",
   flow_path = "", version = "0.0", status = "created",
-  module_cmds = get_opts("module_cmds"), execute = "")
+  module_cmds = opts_flow$get("module_cmds"), execute = "")
 }
 \arguments{
 \item{jobs}{\code{list}: A list of jobs to be included in this flow}
@@ -31,6 +31,9 @@ flow instance. ['my_super_flow']}
 \item{version}{version of flowr used to create and execute this flow.}
 
 \item{status}{\code{character}: Status of the flow.}
+
+\item{module_cmds}{[advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
+Could be cmds like \code{`module load mytool1;module load mytool2`}}
 
 \item{execute}{executtion status of flow object. [FALSE]}
 }

@@ -55,7 +55,7 @@ check_args <- function(ignore, select){
 		message("Checking arguments for function: ", fn, "\n")
 		message("value of following variables is null: '", paste(names(miss), collapse = ", "))
 		stop("There are several options to fix this:
-				 1. Use set_opts(variable1 = 'value', var1 = 'value') format to define these variables.
+				 1. Use opts_flow$set(variable1 = 'value', var1 = 'value') format to define these variables.
 				 2. If this function was called directly, you may simply supply these arguments to this function.
 				 3. Add these parameters to configuration files.
 				 Two such examples are: ngsflows.conf and flowr.conf which reside in ~/flowr/conf folder < or equivalent >. ",

@@ -6,6 +6,9 @@
 \alias{get_opts}
 \alias{load_opts}
 \alias{opts_flow}
+\alias{opts_flow$get}
+\alias{opts_flow$load}
+\alias{opts_flow$set}
 \alias{set_opts}
 \title{Default options/params used in flowr and ngsflows}
 \format{\code{opts_flow}}
@@ -61,18 +64,18 @@ Below is a list of default flowr options, retrieved via
 }
 }
 \examples{
-## Set options: set_opts()
-opts = set_opts(flow_run_path = "~/mypath")
+## Set options: opts_flow$set()
+opts = opts_flow$set(flow_run_path = "~/mypath")
 ## OR if you would like to supply a long list of options:
-opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
+opts = opts_flow$set(.dots = list(flow_run_path = "~/mypath"))
 
-## load options from a configuration file: load_opts()
+## load options from a configuration file: opts_flow$load()
 conffile = fetch_conf("flowr.conf")
-load_opts(conffile)
+opts_flow$load(conffile)
 
 ## Fetch options: get_opts()
-get_opts("flow_run_path")
-get_opts()
+opts_flow$get("flow_run_path")
+opts_flow$get()
 
 }
 \seealso{

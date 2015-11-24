@@ -50,7 +50,7 @@ to_flowdef(x, ...)
 \method{to_flowdef}{flowmat}(x, sub_type, dep_type, prev_jobs,
   queue = "short", platform = "torque", memory_reserved = "2000",
   cpu_reserved = "1", nodes = "1", walltime = "1:00", guess = FALSE,
-  verbose = get_opts("verbose"), ...)
+  verbose = opts_flow$get("verbose"), ...)
 
 \method{to_flowdef}{flow}(x, ...)
 
@@ -87,7 +87,7 @@ is.flowdef(x)
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+[\code{opts_flow$get("verbose")}] [1]}
 }
 \description{
 This function enables creation of a skeleton flow definition with several default values, using a 

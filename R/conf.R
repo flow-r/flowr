@@ -7,7 +7,7 @@ flowopts = new.env()
 
 #' @rdname flowopts
 #' 
-#' @aliases set_opts get_opts load_opts
+#' @aliases set_opts get_opts load_opts opts_flow$set opts_flow$get opts_flow$load
 #' 
 #' @title Default options/params used in flowr and ngsflows
 #'
@@ -63,45 +63,54 @@ flowopts = new.env()
 #' @seealso \link{fetch} \link[params]{params} \link[params]{read_sheet}
 #' 
 #' @examples
-#' ## Set options: set_opts()
-#' opts = set_opts(flow_run_path = "~/mypath")
+#' ## Set options: opts_flow$set()
+#' opts = opts_flow$set(flow_run_path = "~/mypath")
 #' ## OR if you would like to supply a long list of options:
-#' opts = set_opts(.dots = list(flow_run_path = "~/mypath"))
+#' opts = opts_flow$set(.dots = list(flow_run_path = "~/mypath"))
 #'
-#' ## load options from a configuration file: load_opts()
+#' ## load options from a configuration file: opts_flow$load()
 #' conffile = fetch_conf("flowr.conf")
-#' load_opts(conffile)
+#' opts_flow$load(conffile)
 #'
 #' ## Fetch options: get_opts()
-#' get_opts("flow_run_path")
-#' get_opts()
+#' opts_flow$get("flow_run_path")
+#' opts_flow$get()
 #'
 #' @export
 #' @importFrom params new_opts
-
 opts_flow = new_opts(flowopts)
 
 
 #' @aliases params
 #' @export
 get_opts <- function(...){
+  message("Its better to use: opts_flow$get instead")
 	opts_flow$get(...)
 }
 
 #' @aliases params
 #' @export
 set_opts <- function(...){
-	opts_flow$set(...)
+  message("Its better to use: opts_flow$set instead")
+  opts_flow$set(...)
+}
+
+# redefine opts_flow$load
+
+opts_flow$load <- function(...){
+  params::load_opts(..., envir = flowopts)
+  
+  # certain opts need to be numeric; force and change verbose to numeric
+  opts_flow$set(verbose = as.numeric(get_opts("verbose")))
+  
 }
 
 #' @aliases params
 #' @export
 load_opts <- function(...){
-	opts_flow$load(...)
-	
-	## certain opts need to be numeric
-	set_opts(verbose = as.numeric(get_opts("verbose")))
-	
+  message("Its better to use: opts_flow$load instead")
+  opts_flow$load(...)
+  
 }
 
 #devtools::install("~/Dropbox/public/github_params")

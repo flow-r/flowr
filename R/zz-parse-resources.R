@@ -3,7 +3,7 @@
 
 
 
-set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
+opts_flow$set(time_format = "%a %b %e %H:%M:%S CDT %Y")
 
 # parse LSF output files
 # @param x file

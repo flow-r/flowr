@@ -11,7 +11,7 @@ rerun(x, ...)
 \method{rerun}{character}(x, ...)
 
 \method{rerun}{flow}(x, mat, def, start_from, execute = TRUE, kill = TRUE,
-  select, ignore, verbose = get_opts("verbose"), ...)
+  select, ignore, verbose = opts_flow$get("verbose"), ...)
 }
 \arguments{
 \item{x}{flow working directory}
@@ -34,7 +34,7 @@ rerun(x, ...)
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+[\code{opts_flow$get("verbose")}] [1]}
 }
 \description{
 \itemize{

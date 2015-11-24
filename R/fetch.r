@@ -57,7 +57,7 @@
 #' \code{flow_run_path TAB my_awesome_path}, where \code{TAB} is a tab character, since these are tab 
 #' seperated files.
 #' 
-#' Also, at any time you can run, \link{load_opts}; to load custom options.
+#' Also, at any time you can run, \link{opts_flow$load}; to load custom options.
 #' 
 #' @importFrom tools file_path_sans_ext
 #' @importFrom utils tail
@@ -70,7 +70,7 @@
 #' ## let us find a default conf file
 #' conf = fetch_conf("flowr.conf");conf
 #' ## load this
-#' load_opts(conf)
+#' opts_flow$load(conf)
 #' 
 #' ## this returns a list, which prints pretty
 #' pip = fetch_pipes("sleep_pipe")
@@ -78,7 +78,8 @@
 #' pip$pipe
 #' pip$def
 #' 
-fetch <- function(x, places, urls, verbose = opts_flow$get("verbose")){
+fetch <- function(x, places, urls, 
+                  verbose = opts_flow$get("verbose")){
 	if(is.null(verbose))
 		verbose = FALSE
 	y = sapply(places, list.files, pattern = paste0(x, "$"),

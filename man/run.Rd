@@ -6,10 +6,10 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(x, platform, def, conf, wd = get_opts("flow_run_path"),
+run(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
   flow_run_path = wd, rerun_wd, start_from, execute = FALSE, ...)
 
-run_pipe(x, platform, def, conf, wd = get_opts("flow_run_path"),
+run_pipe(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
   flow_run_path = wd, rerun_wd, start_from, execute = FALSE, ...)
 }
 \arguments{

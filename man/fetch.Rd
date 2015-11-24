@@ -6,11 +6,11 @@
 \alias{fetch_pipes}
 \title{Two generic functions to search for pipelines and configuration files.}
 \usage{
-fetch(x, places, urls, verbose = get_opts("verbose"))
+fetch(x, places, urls, verbose = opts_flow$get("verbose"))
 
 fetch_pipes(x, places, last_only = FALSE,
-  urls = get_opts("flowr_pipe_urls"), silent = FALSE,
-  verbose = get_opts("verbose"), ask = TRUE)
+  urls = opts_flow$get("flowr_pipe_urls"), silent = FALSE,
+  verbose = opts_flow$get("verbose"), ask = TRUE)
 
 fetch_conf(x = "flowr.conf", places, ...)
 }
@@ -25,7 +25,7 @@ By default \link{fetch_pipes} and \link{fetch_conf} search for files ending with
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+[\code{opts_flow$get("verbose")}] [1]}
 
 \item{last_only}{fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]}
 
@@ -74,14 +74,14 @@ add a line:
 \code{flow_run_path TAB my_awesome_path}, where \code{TAB} is a tab character, since these are tab 
 seperated files.
 
-Also, at any time you can run, \link{load_opts}; to load custom options.
+Also, at any time you can run, \link{opts_flow$load}; to load custom options.
 }
 \examples{
 
 ## let us find a default conf file
 conf = fetch_conf("flowr.conf");conf
 ## load this
-load_opts(conf)
+opts_flow$load(conf)
 
 ## this returns a list, which prints pretty
 pip = fetch_pipes("sleep_pipe")

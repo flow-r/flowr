@@ -371,14 +371,14 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 <div id="a-note-on-module-functions" class="section level2">
 <h2>A note on module functions</h2>
 <pre class="r"><code>picard_merge &lt;- function(x, 
-                        samplename = get_opts(&quot;samplename&quot;),
+                        samplename = opts_flow$get(&quot;samplename&quot;),
                          mergedbam,
-                         java_exe = get_opts(&quot;java_exe&quot;),
-                         java_mem = get_opts(&quot;java_mem&quot;),
-                         java_tmp = get_opts(&quot;java_tmp&quot;),
-                         picard_jar = get_opts(&quot;picard_jar&quot;)){
+                         java_exe = opts_flow$get(&quot;java_exe&quot;),
+                         java_mem = opts_flow$get(&quot;java_mem&quot;),
+                         java_tmp = opts_flow$get(&quot;java_tmp&quot;),
+                         picard_jar = opts_flow$get(&quot;picard_jar&quot;)){
     ## Make sure all args have a value (not null)
-    ## If a variable was not defined in a conf. file get_opts, will return NULL
+    ## If a variable was not defined in a conf. file opts_flow$get, will return NULL
     check_args()  
   
   bam_list = paste(&quot;INPUT=&quot;, x, sep = &quot;&quot;, collapse = &quot; &quot;)
@@ -405,7 +405,7 @@ fobj = to_flow(flowmat, flowdef, execute = TRUE)</code></pre>
 <li>can define all other default arguments such as paths to tools etc. in a seperate conf (tab-delimited) file.</li>
 </ol>
 <ul>
-<li>Then use <code>get_opts(&quot;param&quot;)</code> to use their value.</li>
+<li>Then use <code>opts_flow$get(&quot;param&quot;)</code> to use their value.</li>
 </ul>
 <pre><code>## Example conf file:
 cat my.conf
@@ -414,7 +414,7 @@ bwa_exe /apps/bwa/bin/bwa</code></pre>
 <li>should use <code>check_args()</code> to make sure none of the default parameters are null.</li>
 </ol>
 <pre class="r"><code>## check_args(), checks ALL the arguments of the function, and throws a error. use ?check_args for more details.
-get_opts(&quot;my_new_tool&quot;)</code></pre>
+opts_flow$get(&quot;my_new_tool&quot;)</code></pre>
 <pre><code>## NULL</code></pre>
 </div>
 <div id="pipeline-structure" class="section level2">

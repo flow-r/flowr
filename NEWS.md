@@ -26,8 +26,8 @@ flowr 0.9.9 (cherries)
 ----------------------------------------------
 > 2015-11-20
 
-- New option local_cores, which determines (max) number of cores to use when running local jobs.
-- enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).
+- **New** option local_cores, which determines (max) number of cores to use when running local jobs.
+- **New** enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).
 
 ```
 ## now this works well !
@@ -39,10 +39,33 @@ flowr status x=.
 - **New**: Run function now supports re-run as well.
 - **New**: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).
 - **New**: status gets a new argument to turn off progress bar if needed.
-- **NEW**: Now rerun supports multiple folders to be re-run.
+- **New**: Now rerun supports multiple folders to be re-run.
 - fixed bugs in documentation (changed the formatting of output messages)
-- **IMP**: to_flowdef now add a parameter nodes, to enable specifying number of nodes required per-job.
-- **NEW**: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean.
+- **New**: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean.
+
+**IMP Changes**
+
+- **IMP**: `to_flowdef` now adds a parameter nodes, to enable specifying number of nodes required per-job
+- **IMP**: `opts_flow$get` replaces `get_opts`, for reliability etc. Also this closely follows how knitr options are set.
+
+- **IMP**: New version needs additional components in the `flowr.conf` file
+
+```diff
++ # version >= 0.9.8.9004
++ # max number of cores to use when running on a local server
++ local_cores	4
+
+# default module of a pipeline
+# version >= 0.9.8.9015
+module_cmds	''
+
++ # examples: one may define all modules used in a pipeline here, 
++ # further one may specify any other command which should be run before 
++ # script executes
++ #module_cmds	'module load samtools;PATH=$PATH:/apps/bin'
+
+```
+
 
 
 
@@ -216,7 +239,7 @@ flowr 0.85
 - get_flow_status():
   -exit_status: reports number of exited jobs (not sum of exit codes)
 
-<script src = "files/googl.js"></script>
+<script src = "https://raw.githubusercontent.com/sahilseth/flowr/master/vignettes/files/googl.js"></script>
 
 Versioning:
 

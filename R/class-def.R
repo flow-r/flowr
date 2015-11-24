@@ -94,8 +94,6 @@ setClass("flow", representation(jobs = "list",
 #' @param stderr [debug use] Ignore
 #' @param stdout [debug use] Ignore
 #' @param server [not used] This is not implemented currently. This would specify the head node of the computing cluster. At this time submission needs to be done on the head node of the cluster where flow is to be submitted
-#' @param module_cmds [advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
-#' Could be cmds like \code{module load mytool1;module load mytool2}
 #'
 #'
 #' @details
@@ -335,6 +333,8 @@ job <- function(cmds = "",
 #' @param status \code{character}: Status of the flow.
 #' @param version version of flowr used to create and execute this flow.
 #' @param execute executtion status of flow object. [FALSE]
+#' @param module_cmds [advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
+#' Could be cmds like \code{`module load mytool1;module load mytool2`}
 #' @export
 #' @examples
 #' cmds = rep("sleep 5", 10)
