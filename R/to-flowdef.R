@@ -257,13 +257,19 @@ to_flowdef.flowmat <- function(x,
   
   # use sub and dep detection, if prev_jobs is given:
   if(guess){
-    message("guessing submission and dependency types, experimental...")
+    message("> guessing submission and dependency types, this feature is experimental...")
     def <- guess_sub_dep(x, def)
   }
   
   return(def)
 }
 
+
+#' @export
+to_flowdef.data.frame = to_flowdef.flowmat
+
+#' @export
+to_flowdef.tbl_df = to_flowdef.flowmat
 
 
 #' @rdname to_flowdef
@@ -297,6 +303,7 @@ to_flowdef.flow <- function(x, ...){
 #' @importFrom utils write.table
 #' @export
 to_flowdef.character <- function(x, ...){
+  
   if(!missing(x)){
     mat <- read_sheet(x)
     mat = to_flowmat(mat)

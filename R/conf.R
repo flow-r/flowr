@@ -101,7 +101,7 @@ opts_flow$load <- function(...){
   params::load_opts(..., envir = flowopts)
   
   # certain opts need to be numeric; force and change verbose to numeric
-  opts_flow$set(verbose = as.numeric(get_opts("verbose")))
+  opts_flow$set(verbose = as.numeric(opts_flow$get("verbose")))
   
 }
 

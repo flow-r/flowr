@@ -117,7 +117,7 @@ fetch_pipes <- function(x,
 	
 	ext = tools::file_ext(x)
 	if(!ext == ""){
-		warning("Its best to supply only the name of the pipeline, without the extension. ", 
+		warning("> It is best to supply only the name of the pipeline, without the extension. ", 
 						"We add a .R extention before searching. Also, this name also corresponds, ",
 						"to the R function.")
 	}else{
@@ -154,7 +154,7 @@ fetch_pipes <- function(x,
 
 	if(last_only){
 		if(nrow(pipes) > 1)
-			message("\nFound multiple pipelines with the same name, will use the last from above list")
+			message("> Found multiple pipelines with the same name, will use the last from above list")
 		pipes = tail(pipes, 1)
 	}
 

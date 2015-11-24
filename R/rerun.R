@@ -78,6 +78,10 @@ rerun.character <- function(x, ...){
 			stop("some arguments not recognized\n",
 					 "Valid arguments for rerun are: mat and def, for flow matrix and flow definition respectively.")
 		
+		# updating this with the new path
+		fobj@flow_run_path = dirname(x)
+		fobj@flow_path = x
+		
 		rerun(fobj, ...)
 	})
 	
@@ -165,6 +169,7 @@ rerun.flow <- function(x, mat, def,
 		newdet = file.remove(newdet$trigger)
 	
 	## jobname, has ids as well.
+	# flow_run_path: does not matter, since in the next step we would use flow_path
 	fobj2 <- to_flow(x = mat, def = def, 
 									 flowname = fobj@name, 
 									 flow_run_path = fobj@flow_run_path, ...)

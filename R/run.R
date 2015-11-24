@@ -68,7 +68,7 @@ run <- function(x,
 	#print(opts_flow$get("flow_run_path"))
 	## find a Rscript with name {{x}}.R
 
-	message("\n##--- fetching pipeline... ")
+	message("\n> fetching pipeline... ")
 	pip = fetch_pipes(x, last_only = TRUE)
 
 	if(missing(x))
@@ -80,7 +80,7 @@ run <- function(x,
 	func = get(x) ## find function of the original name
 
 
-	message("\n##--- loading confs....")
+	message("\n> loading confs....")
 	## load default options for the pipeline
 	confs = c(fetch_conf("flowr.conf"),
 		fetch_conf("ngsflows.conf"),
@@ -91,7 +91,7 @@ run <- function(x,
 	if(!missing(conf))
 	  opts_flow$load(conf, verbose = FALSE, check = FALSE)
 
-	message("\n##--- creating flowmat....")
+	message("\n> creating flowmat....")
 	## crate a flowmat
 	args <- list(...)
 	out = do.call(func, args)
@@ -99,7 +99,7 @@ run <- function(x,
 	## fetched from the latest conf file ONLY
 	module_cmds = opts_flow$get("module_cmds")
 	
-	message("\n##--- stitching a flow object....")
+	message("\n> stitching a flow object....")
 	## get a flowdef
 	if(missing(def))
 		def = as.flowdef(pip$def)
@@ -116,9 +116,10 @@ run <- function(x,
 		## submit the flow
 		message("\n##--- submitting....")
 		fobj = submit_flow(fobj, execute = execute)
+	
 	}else{
 		
-		fobj = rerun(x = rerun_wd, mat = out$flowmat, def = def, start_from = start_from)
+		fobj = rerun(x = rerun_wd, mat = out$flowmat, def = def, start_from = start_from, execute = execute)
 		
 	}
 	
