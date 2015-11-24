@@ -81,7 +81,7 @@ are to be executed in a (work)flow.
 install.packages("flowr")
 
 # or a latest version from DRAT
-install.packages("flowr", repos="http://sahilseth.github.io/DRAT")
+install.packages("flowr", repos="http://sahilseth.github.io/drat")
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
