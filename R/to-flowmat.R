@@ -124,7 +124,7 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 		if(!file.exists(x))
 			stop("file does not exists: ", x)
 		message("mat seems to be a file, reading it...")
-		x <- read_sheet(x, id_column = "jobname")
+		x <- read_sheet(x, id_column = "jobname", quote = "")
 	}
 	
 	
