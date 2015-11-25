@@ -161,11 +161,14 @@ get_status.character <- function(x, verbose, use_cache, out_format, ...){
 	if(verbose > 1)
 		message("getting to_flowdet")
 	fl = file.path(x, "flow_details.txt")
+	
 	if(use_cache == TRUE & file.exists(fl)){
 		flow_det = read_sheet(fl);
 		if(verbose > 1)
 			message("skipped to_flowdet")
+		
 	}else{
+	  # if x is a character
 		flow_det = to_flowdet.rootdir(x)
 	}
 	
