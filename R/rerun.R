@@ -28,6 +28,7 @@ if(FALSE){
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
 #' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
 #' @inheritParams to_flow
+#' @param samplename If flowmat contains multiple samples, provide the samplname, corresponding to the runwd provided.
 #' @param ... passed onto to_flow
 #'
 #'
@@ -97,6 +98,7 @@ rerun.character <- function(x, ...){
 #' @export
 rerun.flow <- function(x, mat, def, 
 											 start_from,
+											 samplename,
 											 execute = TRUE,
 											 kill = TRUE, 
 											 select,
@@ -148,6 +150,7 @@ rerun.flow <- function(x, mat, def,
 		mat = to_flowmat(fobj)
 	}else{
 		mat = as.flowmat(mat)
+		mat = subset(mat, samplename == samplename)
 	}
 	
 	

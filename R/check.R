@@ -144,6 +144,8 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
 	
 	if(!is.null(x$nodes))
 		x$nodes = as.character(x$nodes)
+
+	x$memory_reserved = as.character(x$memory_reserved)
 	
 	#print(x)
 	## check all previous jobs defined in names

@@ -88,7 +88,7 @@ submit_flow.flow <- function(x,
   ##names(x@jobs) <- jobnames
   ### ---------- Error handling
   if(execute)
-    message("--> Flow is being processed.",
+    message("\n--> Flow is being processed.",
             sprintf(" Track it from cmd line using:\nflowr status x=%s\n",
                     x@flow_path),
             sprintf("OR from R using:\nstatus(x='%s')",

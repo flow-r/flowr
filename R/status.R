@@ -73,8 +73,7 @@ status <- function(x,
 	
 	# if a flow object it specified
 	if(is.flow(x)){
-		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...)
-	  return()
+	  return(get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...))
 	}
 	
 	wds = get_wds(x)
