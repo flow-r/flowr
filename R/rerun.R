@@ -150,7 +150,8 @@ rerun.flow <- function(x, mat, def,
 		mat = to_flowmat(fobj)
 	}else{
 		mat = as.flowmat(mat)
-		mat = subset(mat, samplename == samplename)
+		if(!missing(samplename))
+		  mat = subset(mat, samplename == samplename)
 	}
 	
 	
