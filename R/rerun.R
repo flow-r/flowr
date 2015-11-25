@@ -63,12 +63,13 @@ rerun <- function(x, ...) {
 #' @export
 rerun.character <- function(x, ...){
   
-  message("x looks like a path, seeing if multiple paths match ...")
+  message("> input looks like a path, seeing if multiple paths match ...")
   wds = get_wds(x)
   
   tmp <- lapply(wds, function(wd){
     
-    message("\n\nreading flow_details.rds from: ", wd)
+    message("> reading flow_details.rds from: ", wd)
+    wd = file_path_as_absolute(wd)
     fobj <- read_fobj(wd)
     
     if(is.character(fobj))
@@ -137,7 +138,7 @@ rerun.flow <- function(x, mat, def,
   
   if(missing(def)){
     #stop("Please metion where to start from. Detection currently no supported")
-    message("\nExtracting flow definition from previous run.")
+    message("\n> extracting flow definition from previous run.")
     def = to_flowdef(fobj)
   }else{
     message("\nReading flow definition supplied.")
@@ -150,19 +151,22 @@ rerun.flow <- function(x, mat, def,
     mat = to_flowmat(fobj)
   }else{
     mat = as.flowmat(mat)
-    if(!missing(samplename))
+    if(!missing(samplename)){
       message("> subsetting for sample: ", 
               samplename, " starting with rows ", nrow(mat))
-    samp = samplename  
-    mat = subset(mat, mat$samplename == samp)
-    message("> now we have: ", nrow(mat), " rows")
+      samp = samplename  
+      mat = subset(mat, mat$samplename == samp)
+      message("--> now we have: ", nrow(mat), " rows")
+      if(nrow(mat) == 0)
+        stop("--> no jobs left after subsetting ...")
+    }
   }
   
   
-  message("\nSubsetting... get steps to re-run:")
+  message("\n> subsetting... get steps to re-run:")
   mat = subset_fmat(fobj = fobj, mat = mat, start_from = start_from, select, ignore)
   def = subset_fdef(fobj = fobj, def = def, start_from = start_from, select, ignore)
-  message(paste(def$jobname, collapse = "\n"), "\n")
+  message(paste("--> ", def$jobname, collapse = "\n"), "\n")
   
   
   ## reset few things before we start the new flow

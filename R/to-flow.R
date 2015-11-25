@@ -144,7 +144,7 @@ to_flow.flowmat <- function(x, def,
                  jobname_col = jobname_col,
                  cmd_col = cmd_col)
 
-  message(">        Reading and checking flow def ...")
+  message("> reading and checking flow def ...")
   def = as.flowdef(def)
   
   # --- defaults
@@ -160,7 +160,7 @@ to_flow.flowmat <- function(x, def,
   
   
   if(verbose)
-    message(">        Checking flow definition and flow matrix for consistency...")
+    message("> checking flow definition and flow matrix for consistency...")
   
   # ---  COMPARE flowdef and flowmat jobnames
   msg = c("--> flowdef jobs: ", paste(def$jobname, collapse = " "),
@@ -208,7 +208,7 @@ to_flow.flowmat <- function(x, def,
     
     x2 = subset(x, x$samplename == samp)
     if(verbose)
-      message(">        Working on... ", samp)
+      message(">  working on... ", samp)
     
     ## Compare flowdef and flowmat, AGAIN
     ## in case of more complex flows like fastq_mutect

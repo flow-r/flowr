@@ -123,7 +123,7 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	}else if(is.character(x)){
 		if(!file.exists(x))
 			stop("file does not exists: ", x)
-		message("mat seems to be a file, reading it...")
+		message("> mat seems to be a file, reading it...")
 		x <- read_sheet(x, id_column = "jobname", quote = "")
 	}
 	
@@ -131,21 +131,21 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	if(missing(grp_col)){
 		grp_col = "samplename"
 		if(grp_col %in% colnames(x))
-			message("Using `", grp_col, "` as the grouping column")
+			message("--> Using `", grp_col, "` as the grouping column")
 		else
 			stop("grouping column not specified, and the default 'samplename' is absent in the input x.")
 	}
 	if(missing(jobname_col)){
 		jobname_col = "jobname"
 		if(jobname_col %in% colnames(x))
-			message("Using `", jobname_col, "` as the jobname column")
+			message("--> Using `", jobname_col, "` as the jobname column")
 		else
 			stop("jobname column not specified, and the default 'jobname' is absent in the input x.")
 	}
 	if(missing(cmd_col)){
 		cmd_col = "cmd"
 		if(cmd_col %in% colnames(x))
-			message("Using `", cmd_col, "` as the cmd column")
+			message("--> Using `", cmd_col, "` as the cmd column")
 		else
 			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
 	}
