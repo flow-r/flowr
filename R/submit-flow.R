@@ -147,9 +147,9 @@ submit_flow.flow <- function(x,
   if(execute){
     x@status <- "submitted"
   }else{
-    message("--> Dry Run Successful!\n",
-            "--> You may check this folder for consistency. ",
-            "--> Also you may submit again with execute=TRUE\n",
+    message("\n--> Dry Run Successful!",
+            "\n--> You may check this folder for consistency. ",
+            "\n--> Also you may submit again with execute=TRUE\n",
             x@flow_path)
   }
   
