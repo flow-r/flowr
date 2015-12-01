@@ -106,7 +106,7 @@ fetch_pipes <- function(x,
 			system.file(package = "flowr", "inst/pipelines"),
 			system.file(package = "ngsflows", "pipelines"),
 			system.file(package = "ngsflows", "inst/pipelines"),
-			opts_flow$get("flow_pipe_paths"),
+			strsplit(opts_flow$get("flow_pipe_paths"), ",")[[1]],
 			getwd())
 	}
 
