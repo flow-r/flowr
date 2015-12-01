@@ -221,6 +221,10 @@ Using the name of the pipeline, `run` fetches it in various places inclusing `~/
 library(flowr)
 setwd("~/flowr/pipelines")
 source("fastq_bam_bwa.R")
+
+#fetch_pipes("fastq_bam_bwa")
+
+
 ## this may throw a warning if paths do not exist
 ## if you have used modules instead of full paths please ignore the warnings
 load_opts("fastq_bam_bwa.conf") 

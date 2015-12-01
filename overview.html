@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-11-20" />
+    <meta name="date" content="2015-12-01" />
   
   <!---  <title>flowr</title> --->
   
@@ -188,17 +188,17 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 2;echo hello</td>
+<td align="left">sleep 10 &amp;&amp; sleep 2;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 8;echo hello</td>
+<td align="left">sleep 11 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 17;echo hello</td>
+<td align="left">sleep 11 &amp;&amp; sleep 17;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -223,7 +223,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">size</td>
-<td align="left">du -sh sample1_merged; echo MY shell: $SHELL</td>
+<td align="left">du -sh sample1_merged; echo ‘MY shell:’ $SHELL</td>
 </tr>
 </tbody>
 </table>
@@ -236,7 +236,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <th align="left">prev_jobs</th>
 <th align="left">dep_type</th>
 <th align="left">queue</th>
-<th align="right">memory_reserved</th>
+<th align="left">memory_reserved</th>
 <th align="left">walltime</th>
 <th align="right">cpu_reserved</th>
 <th align="left">platform</th>
@@ -250,7 +250,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <td align="left">none</td>
 <td align="left">none</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -262,7 +262,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <td align="left">sleep</td>
 <td align="left">serial</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -274,7 +274,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <td align="left">create_tmp</td>
 <td align="left">gather</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -286,7 +286,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <td align="left">merge</td>
 <td align="left">serial</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -429,17 +429,17 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 10 &amp;&amp; sleep 2;echo hello</td>
+<td align="left">sleep 10 &amp;&amp; sleep 2;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 8;echo hello</td>
+<td align="left">sleep 11 &amp;&amp; sleep 8;echo ‘hello’</td>
 </tr>
 <tr class="odd">
 <td align="left">sample1</td>
 <td align="left">sleep</td>
-<td align="left">sleep 11 &amp;&amp; sleep 17;echo hello</td>
+<td align="left">sleep 11 &amp;&amp; sleep 17;echo ‘hello’</td>
 </tr>
 <tr class="even">
 <td align="left">sample1</td>
@@ -464,7 +464,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <tr class="even">
 <td align="left">sample1</td>
 <td align="left">size</td>
-<td align="left">du -sh sample1_merged; echo MY shell: $SHELL</td>
+<td align="left">du -sh sample1_merged; echo ‘MY shell:’ $SHELL</td>
 </tr>
 </tbody>
 </table>
@@ -507,7 +507,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <th align="left">prev_jobs</th>
 <th align="left">dep_type</th>
 <th align="left">queue</th>
-<th align="right">memory_reserved</th>
+<th align="left">memory_reserved</th>
 <th align="left">walltime</th>
 <th align="right">cpu_reserved</th>
 <th align="left">platform</th>
@@ -521,7 +521,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <td align="left">none</td>
 <td align="left">none</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -533,7 +533,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <td align="left">sleep</td>
 <td align="left">serial</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -545,7 +545,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <td align="left">create_tmp</td>
 <td align="left">gather</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>
@@ -557,7 +557,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
 <td align="left">merge</td>
 <td align="left">serial</td>
 <td align="left">short</td>
-<td align="right">2000</td>
+<td align="left">2000</td>
 <td align="left">1:00</td>
 <td align="right">1</td>
 <td align="left">local</td>

@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-11-20" />
+    <meta name="date" content="2015-12-01" />
   
   <!---  <title>flowr</title> --->
   
@@ -125,7 +125,7 @@
             <div class="col-md-3" id="sidebar-col">
         <div id="toc">
           <ul>
-          <li><a href="#flowr-0.9.9-cherries">flowr 0.9.9 (cherries)</a></li>
+          <li><a href="#flowr-0.9.9.2-cherries">flowr 0.9.9.2 (cherries)</a></li>
           <li><a href="#flowr-0.9.8-blueberries">flowr 0.9.8 (blueberries)</a></li>
           <li><a href="#flowr-0.9.7-apples">flowr 0.9.7 (apples)</a></li>
           <li><a href="#flowr-0.9.6.13">flowr 0.9.6.13</a></li>
@@ -139,28 +139,56 @@
       
 <div id="content-top"></div>
 <p><br></p>
-<div id="flowr-0.9.9-cherries" class="section level2">
-<h2>flowr 0.9.9 (cherries)</h2>
+<div id="flowr-0.9.9.2-cherries" class="section level2">
+<h2>flowr 0.9.9.2 (cherries)</h2>
 <blockquote>
 <p>2015-11-20</p>
 </blockquote>
+<p>tl;dr (<strong>summary of changes</strong>)</p>
 <ul>
-<li>New option local_cores, which determines (max) number of cores to use when running local jobs.</li>
-<li>enhanced get_wds/status, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).</li>
+<li>Better handling of multiple flows in terms of running and re-running.</li>
+<li>Nicer and cleaner messages.</li>
+</ul>
+<p><strong>additions/changes to <code>flowr.conf</code> file</strong></p>
+<ul>
+<li><strong>New:</strong> option local_cores, which determines (max) number of cores to use when running local jobs.</li>
+<li><strong>New:</strong>: Now you can add a <code>module_cmds</code> variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:</li>
+<li><p><strong>New</strong>: <code>flow_pipe_paths</code> now supports multiple paths, seperated by comma. The <code>fetch_pipes()</code> would split the vector at commas.</p></li>
+<li><p><strong>IMP</strong>: New version needs additional components in the <code>flowr.conf</code> file</p></li>
+</ul>
+<pre class="diff"><code># version &gt;= 0.9.8.9004
+# max number of cores to use when running on a local server
+local_cores 4
+
+# default module of a pipeline
+# version &gt;= 0.9.8.9015
+module_cmds &#39;&#39;
+
+# examples: one may define all modules used in a pipeline here, 
+# further one may specify any other command which should be run before 
+# script executes.
+#module_cmds    &#39;module load samtools;export PATH=$PATH:/apps/bin&#39;
+</code></pre>
+<p><strong>addition/changes to <code>status()</code></strong></p>
+<ul>
+<li><strong>New</strong>: status gets a new argument to turn off progress bar if needed.</li>
+<li><strong>New</strong> enhanced <code>get_wds</code>/<code>status</code>, so that if current wd contains a flow_details file, status is shown for this folder and not sub-folder(s).</li>
 </ul>
 <pre><code>## now this works well !
 flowr status x=.</code></pre>
+<p><strong>addition/changes to <code>run()</code> and <code>rerun()</code> functions</strong></p>
 <ul>
-<li><strong>New</strong>: run function now accepts a custom conf, parameter.</li>
-<li><strong>New</strong>: Now you can add a module_cmds variable to the config file, and this will be prefixed in all script of the pipeline.</li>
-<li><strong>New</strong>: Run function now supports re-run as well.</li>
-<li><strong>New</strong>: to_flowdef can now guess submission and dependency types (experimental, pre-alpha).</li>
-<li><strong>New</strong>: status gets a new argument to turn off progress bar if needed.</li>
-<li><strong>NEW</strong>: Now rerun supports multiple folders to be re-run.</li>
-<li>fixed bugs in documentation (changed the formatting of output messages)</li>
-<li><strong>IMP</strong>: to_flowdef now add a parameter nodes, to enable specifying number of nodes required per-job.</li>
-<li><strong>NEW</strong>: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean.</li>
-<li><strong>IMP</strong>: opts_flow$get replaces get_opts, for reliability etc. Also this closely follows how knitr options are set.</li>
+<li><strong>New</strong>: run function now accepts a custom configuration [<code>conf</code>], parameter. See <code>help(flowr::run)</code> for detail. The conf file would specify various parameters used for that pipeline.</li>
+<li><strong>New</strong>: <code>run()</code> re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (trial feature).</li>
+<li><strong>New</strong>: Now <code>rerun()</code> supports multiple folders. Basically, one may specify a parent folder which has multiple flowr runs and ask it to re-run <strong>ALL</strong> of them again, from a specific intermediate step.</li>
+<li><strong>New</strong>: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean and debugging life easier.</li>
+</ul>
+<p><strong>other changes</strong></p>
+<ul>
+<li><strong>New</strong>: <code>to_flowdef()</code> can now guess submission and dependency types (experimental feature).</li>
+<li><strong>IMP</strong>: <code>to_flowdef</code> now adds a parameter <code>nodes</code>, to enable specifying number of nodes required per-job.</li>
+<li><strong>IMP</strong>: <code>opts_flow$get</code> replaces <code>get_opts</code>, for reliability etc. Also this closely follows how knitr options are set.</li>
+<li>fixed bugs in documentation (changed the formatting of output messages).</li>
 </ul>
 </div>
 <div id="flowr-0.9.8-blueberries" class="section level2">
@@ -343,7 +371,7 @@ jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
 <li>plot_flow(): make plot type 1 as default</li>
 <li>get_flow_status(): -exit_status: reports number of exited jobs (not sum of exit codes)</li>
 </ul>
-<script src = "files/googl.js"></script>
+<script src = "https://raw.githubusercontent.com/sahilseth/flowr/master/vignettes/files/googl.js"></script>
 <p>Versioning:</p>
 <p>Loosely, following <a href="http://www.greatgrubclub.com/a-z-fruit-veg#.Vk-gx4QzBRE">fruits A-Z</a>.</p>
 </div>
