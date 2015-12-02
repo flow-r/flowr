@@ -21,14 +21,15 @@ if(FALSE){
 #'
 #' @param x flow working directory
 #' @param execute [logical] whether to execute or not
-#' @param start_from which job to start from, this is a job name.
-#' @param select select a subset of jobs to rerun [character vector]
-#' @param ignore ignore a subset of jobs to rerun [character vector]
+#' @param start_from (required) which job to start from, this is a job name.
+#' @param select (optional) select a subset of jobs to rerun [character vector]
+#' @param ignore (optional) ignore a subset of jobs to rerun [character vector]
 #' @param mat (optional) flowmat fetched from previous submission if missing. For more information regarding the format refer to \link{to_flowmat}
 #' @param def (optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}
 #' @param kill (optional) logical indicating whether to kill the jobs from the previous execution of flow.
 #' @inheritParams to_flow
-#' @param samplename If flowmat contains multiple samples, provide the samplname, corresponding to the runwd provided.
+#' @param samplename (optional) If flowmat contains multiple samples, provide the samplename, 
+#' corresponding to the flow working directory provided.
 #' @param ... passed onto to_flow
 #'
 #'
@@ -48,7 +49,10 @@ if(FALSE){
 #' 
 #' @export
 #' @examples \dontrun{
-#' rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
+#' 
+#' # 
+#' rerun(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
+#' 
 #' }
 rerun <- function(x, ...) {
   

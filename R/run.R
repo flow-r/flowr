@@ -3,16 +3,24 @@
 #' Run automated Pipelines
 #'
 #' @description
-#' Run complete pipelines, by wrapping several steps into one convinient function:
-#' NOTE: please use flowr version: 0.9.8.9010
+#' Run complete pipelines, by wrapping several steps into one 
+#' convinient function.
 #' 
-#' Taking \code{sleep_pipe} as a example.
+#' NOTE: please use flowr version 0.9.8.9010 or higher.
+#' 
+#' In summary, this function performs the following steps:
+#' 
 #' \itemize{
-#'   \item Use \link{fetch_pipes} to get paths to a Rscript, flowdef file and optionally a configuration file
-#'   with various default options used.
-#'   \item Create a flowmat (using the function defined in the Rscript)
-#'   \item Create a `flow` object, using flowmat created and flowdef (as fetched using fetch_pipes)
-#'   \item Submit the flow to the cluster (using \link{submit_flow})
+#' \item the argument \code{x} defines the name of the pipeline. 
+#' Say, for example \code{sleep_pipe}.
+#'  \item \link{fetch_pipes}: finds the pipeline definition 
+#'  (\code{sleep_pipe.R}, \code{sleep_pipe.def} and
+#'  \code{sleep_pipe.conf} files)
+#'  \item \code{sleep_pipe(\dots)}: Create all the required commands 
+#'  (\code{flowmat})
+#'   \item \link{to_flow}: Use \code{flowmat} and 
+#'   \code{sleep_pipe.def} to create a flow object.
+#'   \item \link{submit_flow}: Submit the flow to the cluster.
 #' }
 #'
 #' @param x name of the pipeline to run. This is a function called to create a flow_mat.
@@ -113,8 +121,8 @@ run <- function(x,
 									 module_cmds = module_cmds,
 									 flow_run_path = flow_run_path)
 		
-		## submit the flow
-		message("\n##--- submitting....")
+		# submit the flow
+		message("\n--> submitting ...")
 		fobj = submit_flow(fobj, execute = execute)
 	
 	}else{
