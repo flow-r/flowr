@@ -229,8 +229,8 @@ calc_fontsize <- function(x, verbose = opts_flow$get("verbose")){
 	## get height of the window
 	h = dev.size("px")[2]
 	
-	cex =  0.2 + 0.001*h + 3*x
-	cex_detail = 0.6*cex
+	cex =  0.3 + 0.001*h + 3*x
+	cex_detail = 0.7*cex
 	
 	if(verbose > 1)
 		message("window size: ", h, "px cex: ", cex)
