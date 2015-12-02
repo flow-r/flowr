@@ -10,8 +10,8 @@ rerun(x, ...)
 
 \method{rerun}{character}(x, ...)
 
-\method{rerun}{flow}(x, mat, def, start_from, execute = TRUE, kill = TRUE,
-  select, ignore, verbose = opts_flow$get("verbose"), ...)
+\method{rerun}{flow}(x, mat, def, start_from, samplename, execute = TRUE,
+  kill = TRUE, select, ignore, verbose = opts_flow$get("verbose"), ...)
 }
 \arguments{
 \item{x}{flow working directory}
@@ -22,19 +22,22 @@ rerun(x, ...)
 
 \item{def}{(optional) flowdef fetched from previous submission if missing.  For more information regarding the format refer to \link{to_flowdef}}
 
-\item{start_from}{which job to start from, this is a job name.}
+\item{start_from}{(required) which job to start from, this is a job name.}
+
+\item{samplename}{(optional) If flowmat contains multiple samples, provide the samplename, 
+corresponding to the flow working directory provided.}
 
 \item{execute}{[logical] whether to execute or not}
 
 \item{kill}{(optional) logical indicating whether to kill the jobs from the previous execution of flow.}
 
-\item{select}{select a subset of jobs to rerun [character vector]}
+\item{select}{(optional) select a subset of jobs to rerun [character vector]}
 
-\item{ignore}{ignore a subset of jobs to rerun [character vector]}
+\item{ignore}{(optional) ignore a subset of jobs to rerun [character vector]}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{opts_flow$get("verbose")}] [1]}
+\code{opts_flow$get("verbose")}}
 }
 \description{
 \itemize{
@@ -63,7 +66,10 @@ regarding previous job ids and their status is not lost.
 }
 \examples{
 \dontrun{
-rerun_flow(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
+
+# 
+rerun(wd = wd, fobj = fobj, execute = TRUE, kill = TRUE)
+
 }
 }
 
