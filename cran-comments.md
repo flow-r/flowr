@@ -1,8 +1,9 @@
 ## Test env
-local OSX install: 3.2
-centos: 5
-centos: 6
-ubuntu: 11
+local OSX install: R 3.2
+centos: 5; R 3.2
+centos: 6; R 3.2
+ubuntu: 11; R 3.2
+ubuntu: R Under development (unstable) (2015-09-28 r69437)
 
 
 ## R CMD check results
