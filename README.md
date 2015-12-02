@@ -21,7 +21,6 @@
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 -->
 
-
 ## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
 
 **Latest documentation: [docs.flowr.space](http://docs.flowr.space)**
@@ -58,6 +57,14 @@ are to be executed in a (work)flow.
 	flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
 	- Now consider the run has 10 samples, all of them would be procesed in
 	 parallel, spawning **thousands of cores**.
+
+
+<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
+
+### Example
+[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
+
+
 
 ### A few lines, to get started
 
@@ -103,6 +110,7 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 ### Acknowledgements
 
 -   Jianhua Zhang
+-   Andy Futreal
 -   Samir Amin
 -   Roger Moye
 -   Kadir Akdemir
