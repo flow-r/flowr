@@ -64,25 +64,25 @@ Here is a table with the commands we would like to run ( or `flow mat` ).
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 10 && sleep 2;echo hello                                 
-sample1      sleep        sleep 11 && sleep 8;echo hello                                 
-sample1      sleep        sleep 11 && sleep 17;echo hello                                
+sample1      sleep        sleep 10 && sleep 2;echo 'hello'                               
+sample1      sleep        sleep 11 && sleep 8;echo 'hello'                               
+sample1      sleep        sleep 11 && sleep 17;echo 'hello'                              
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    
 sample1      merge        cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged 
-sample1      size         du -sh sample1_merged; echo MY shell: $SHELL                   
+sample1      size         du -sh sample1_merged; echo 'MY shell:' $SHELL                 
 
 Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](/docs.html#flow-definition). 
 
 
 
-jobname      sub_type   prev_jobs    dep_type   queue    memory_reserved  walltime    cpu_reserved  platform    jobid
+jobname      sub_type   prev_jobs    dep_type   queue   memory_reserved   walltime    cpu_reserved  platform    jobid
 -----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
-sleep        scatter    none         none       short               2000  1:00                   1  local           1
-create_tmp   scatter    sleep        serial     short               2000  1:00                   1  local           2
-merge        serial     create_tmp   gather     short               2000  1:00                   1  local           3
-size         serial     merge        serial     short               2000  1:00                   1  local           4
+sleep        scatter    none         none       short   2000              1:00                   1  local           1
+create_tmp   scatter    sleep        serial     short   2000              1:00                   1  local           2
+merge        serial     create_tmp   gather     short   2000              1:00                   1  local           3
+size         serial     merge        serial     short   2000              1:00                   1  local           4
 
 <div class="alert alert-info" role="alert">
 **Note:** Each row in a flow mat relates to one job. Jobname column is used to link flow definition with flow mat.
@@ -295,14 +295,14 @@ flowr described above.
 
 samplename   jobname      cmd                                                            
 -----------  -----------  ---------------------------------------------------------------
-sample1      sleep        sleep 10 && sleep 2;echo hello                                 
-sample1      sleep        sleep 11 && sleep 8;echo hello                                 
-sample1      sleep        sleep 11 && sleep 17;echo hello                                
+sample1      sleep        sleep 10 && sleep 2;echo 'hello'                               
+sample1      sleep        sleep 11 && sleep 8;echo 'hello'                               
+sample1      sleep        sleep 11 && sleep 17;echo 'hello'                              
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_1                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_2                    
 sample1      create_tmp   head -c 100000 /dev/urandom > sample1_tmp_3                    
 sample1      merge        cat sample1_tmp_1 sample1_tmp_2 sample1_tmp_3 > sample1_merged 
-sample1      size         du -sh sample1_merged; echo MY shell: $SHELL                   
+sample1      size         du -sh sample1_merged; echo 'MY shell:' $SHELL                 
 
 ## 2. Flow definition
 
@@ -348,12 +348,12 @@ Here is an example of a typical [flow_def](https://raw.githubusercontent.com/sah
 
 
 
-jobname      sub_type   prev_jobs    dep_type   queue    memory_reserved  walltime    cpu_reserved  platform    jobid
+jobname      sub_type   prev_jobs    dep_type   queue   memory_reserved   walltime    cpu_reserved  platform    jobid
 -----------  ---------  -----------  ---------  ------  ----------------  ---------  -------------  ---------  ------
-sleep        scatter    none         none       short               2000  1:00                   1  local           1
-create_tmp   scatter    sleep        serial     short               2000  1:00                   1  local           2
-merge        serial     create_tmp   gather     short               2000  1:00                   1  local           3
-size         serial     merge        serial     short               2000  1:00                   1  local           4
+sleep        scatter    none         none       short   2000              1:00                   1  local           1
+create_tmp   scatter    sleep        serial     short   2000              1:00                   1  local           2
+merge        serial     create_tmp   gather     short   2000              1:00                   1  local           3
+size         serial     merge        serial     short   2000              1:00                   1  local           4
 
 
 
