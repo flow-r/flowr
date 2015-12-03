@@ -29,7 +29,7 @@ You may download a PDF version of this manual [here](manual.pdf)
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.9.2</p>
+<p><strong>Version:</strong> 0.9.9.4</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
@@ -80,63 +80,75 @@ funr</p>
 <div>## method for class 'character'
 to_flow(x, def, grp_col, jobname_col, cmd_col, ...)</div>
 <div>## method for class 'flowmat'
-to_flow(x, def, grp_col, jobname_col, cmd_col, flowname, flow_run_path, platform, containerize&nbsp;=&nbsp;TRUE, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, qobj, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div>
+to_flow(x, def, flowname, grp_col, jobname_col, cmd_col, submit&nbsp;=&nbsp;FALSE, execute&nbsp;=&nbsp;FALSE, containerize&nbsp;=&nbsp;TRUE, platform, flow_run_path, qobj, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div>
 <div>## method for class 'data.frame'
 to_flow(x, ...)</div>
 <div>## method for class 'list'
-to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;"", verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div></code></pre>
+to_flow(x, def, flowname, flow_run_path, desc, qobj, module_cmds&nbsp;=&nbsp;opts_flow$get("module_cmds"), verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div></code></pre>
 
 <h4>Arguments</h4>
 <dl class="rd-dl">
   <dt>x</dt>
-  <dd class="rd-dd">path (char. vector) to flow_mat, a data.frame or a list.</dd>
+  <dd class="rd-dd">this can either to a filename, a data.frame or a list. 
+In case it is a file name, it should be a tsv file representing a flow_mat. See <a href=#to_flowmat>to_flowmat</a> for details</dd>
   <dt>...</dt>
   <dd class="rd-dd">Supplied to specific functions like <a href=#to_flow>to_flow.data.frame</a></dd>
   <dt>def</dt>
-  <dd class="rd-dd">A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow</dd>
+  <dd class="rd-dd">a flow definition. Basically a table with resource requirements and mapping of the jobs in this flow.
+See <a href=#to_flowdef>to_flowdef</a> for details on the format.</dd>
   <dt>grp_col</dt>
-  <dd class="rd-dd">column name used to split x (flow_mat) into multiple flows [samplename]</dd>
+  <dd class="rd-dd">name of the grouping column in the supplied flow_mat.
+See <a href=#to_flow>to_flow</a> for details. Default value is [samplename].</dd>
   <dt>jobname_col</dt>
-  <dd class="rd-dd">column name with job names. [jobname]</dd>
+  <dd class="rd-dd">name of the job name columnd in flow_mat. Defalt value is [jobname].</dd>
   <dt>cmd_col</dt>
-  <dd class="rd-dd">column name with commands. [cmd]</dd>
+  <dd class="rd-dd">name of the command column name in flow_mat. Default value is [cmd].</dd>
   <dt>flowname</dt>
-  <dd class="rd-dd">name of the flow [flowname]</dd>
-  <dt>flow_run_path</dt>
-  <dd class="rd-dd">base path to be used for this flow. 
-flowr would create a new time-stamped folder in this base path and 
-use it for logs, scripts etc. 
-The default is retrived using [<code>opts_flow$get("flow_run_path")</code>].</dd>
-  <dt>platform</dt>
-  <dd class="rd-dd">character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flowdef. (optional)</dd>
-  <dt>containerize</dt>
-  <dd class="rd-dd">if the flowmat has multiple samples, 
-it might be better and cleaner to create a containerize all of them
-in a new date-stamped folder. [TRUE]</dd>
+  <dd class="rd-dd">name of the flow, this is used as part of the execution foldername.
+A good simple identifier, which does not support any special characters. 
+Names may use characters (a-z) and numbers (0-9), using underscore (_) as a word seperator.
+Default value is  [flowname].</dd>
   <dt>submit</dt>
   <dd class="rd-dd">after creating a flow object, should flowr 
-also use <a href=#submit_flow>submit_flow</a> to perform a dry-run OR real submission. [FALSE]
-See below for details.</dd>
+also use <a href=#submit_flow>submit_flow</a> to perform a dry-run OR real submission.
+See below for details. Default value is [FALSE]</dd>
   <dt>execute</dt>
   <dd class="rd-dd">when calling <a href=#submit_flow>submit_flow</a>, 
-should it execute it [TRUE] or perform a dry-run [FALSE]. See below for details.</dd>
+should flowr execute the flow or perform a dry-run. See below for details. Default value is [FALSE].</dd>
+  <dt>containerize</dt>
+  <dd class="rd-dd">if the flowmat has multiple samples, 
+flowr creates a creates a new date-stamped folder, and includes all
+flows in this batch inside it. 
+This is keeps the logs clean, and containerizes each batch.
+To disable this behavious set this to FALSE, default is [TRUE].</dd>
+  <dt>platform</dt>
+  <dd class="rd-dd">a specifying the platform to use, possible values are local, lsf, torque, moab, sge and slurm
+This over-rides the platform column in the flowdef. (optional)</dd>
+  <dt>flow_run_path</dt>
+  <dd class="rd-dd">base path to be used for execution of this flow. 
+flowr would create a new time-stamped folder in this base path and 
+use it for logs, scripts etc. 
+The default is retrived using <code>opts_flow$get("flow_run_path")</code>.</dd>
   <dt>qobj</dt>
-  <dd class="rd-dd">Depreciated, modify <a href = http://docs.flowr.space/docs.html#cluster-support>cluster templates</a> instead.  A object of class <a href=#queue>queue</a>.</dd>
+  <dd class="rd-dd">Depreciated, modify cluster templates as explained on 
+<a href = http://docs.flowr.space/install.html#hpcc_support_overview>docs.flowr.space</a>.
+An object of class <a href=#queue>queue</a>.</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
   <dt>desc</dt>
   <dd class="rd-dd">Advanced Use. final flow name.</dd>
   <dt>module_cmds</dt>
-  <dd class="rd-dd">A character vector of additional commands, which will be prepended to each script of the flow.</dd>
+  <dd class="rd-dd">A character vector of additional commands, which will be prepended to each script of the flow. 
+Default is retreived using <code>opts_flow$get("module_cmds")</code>.</dd>
 </dl>
 
   <h4>Details</h4>
 
   <p class="rd-p">The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
-This is a minimum three column matrix with three columns: samplename, jobname and cmd</p>
+This is a minimum three column table with columns: samplename, jobname and cmd.
+See <a href=#to_flowmat>to_flowmat</a> for details.</p>
 
 
   <h4>Value</h4>
@@ -236,21 +248,42 @@ to_flowmat(x, ...)</div>
 
 
 <h4>Examples</h4>
-<pre class="r"><code>## Use this link for a few examples:
-## http://docs.flowr.space/flowr/tutorial.html#define_modules
+<pre class="r"><code># Use this link for a few examples:
+# http://docs.flowr.space/tutorial.html#define_modules
 
-## create a vector of shell commands
-cmds = c("sleep 1", "sleep 2")
-## create a named list
-lst = list("sleep" = cmds)
-## create a flowmat
+# create a flow mat, starting with a list of commands.
+cmd_sleep = c("sleep 1", "sleep 2")
+cmd_echo = c("echo 'hello'", "echo 'hello'")
+
+# create a named list
+lst = list("sleep" = cmd_sleep, "echo" = cmd_echo)
 flowmat = to_flowmat(lst, samplename = "samp")
 
-## Use flowmat to create a skeleton flowdef
+
+
+# read in a tsv; check and confirm format
+ex = file.path(system.file(package = "flowr"), "pipelines")
+
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+
+# if your column names are different than defaults, explicitly specify them.
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"), jobname_col = "jobname")
+
+# check if a object is a flowmat
+is.flowmat(flowmat)
+
+
+
+# create a flowdef, from this flowmat
 flowdef = to_flowdef(flowmat)
 
-## use both (flowmat and flowdef) to create a flow
+# create a flow object using flowmat and flowdef
 fobj = to_flow(flowmat, flowdef)
+
+# extract a flowmat from a flow (here the samplename also contains the name of the flow)
+flowmat2 = to_flowmat(fobj)
+
+
 
 ## submit the flow to the cluster (execute=TRUE) or do a dry-run (execute=FALSE)
 
@@ -265,7 +298,7 @@ kill(fobj3)</code></pre>
 
 ## to_flowdef
 
-<h3>Flow Definition defines how to stich pieces of the (work)flow into a flow.</h3>
+<h3>Flow Definition defines how to stich steps into a (work)flow.</h3>
 
 <p class="rd-p">This function enables creation of a skeleton flow definition with several default values, using a 
 flowmat.
@@ -353,7 +386,7 @@ to_flowdef(x, ...)</div>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
 </dl>
 
   <h4>Format</h4>
@@ -404,8 +437,8 @@ a <strong>single</strong> node [1]
 
   <h4>Details</h4>
 
-  <p class="rd-p"><strong>NOTE:</strong> Guessing is a experimental feature, please check the definition carefully, 
-and its provided to help and not replace best your best judgement. <br></p>
+  <p class="rd-p"><strong>NOTE:</strong> Guessing is an experimental feature, please check the definition carefully. 
+it is provided to help but not replace your best judgement. <br></p>
 
   <p class="rd-p">Optionally, one may provide the previous jobs and flowr can try guessing the appropriate 
 submission and dependency types. If there are multiple commands, default is submitting them as 
@@ -414,6 +447,37 @@ its assumed that all of the previous need to complete, suggesting a gather type 
 
 
 
+<h4>Examples</h4>
+<pre class="r"><code># see ?to_flow for more examples
+
+# read in a tsv; check and confirm format
+ex = file.path(system.file(package = "flowr"), "pipelines")
+
+# read in a flowdef from file
+flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
+
+# check if this a flowdef
+is.flowdef(flowdef)
+
+# use a flowmat, to create a sample flowdef
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+to_flowdef(flowmat)
+
+# change the platform
+to_flowdef(flowmat, platform = "lsf")
+
+# change the queue name
+def = to_flowdef(flowmat, 
+ platform = "lsf", 
+ queue = "long")
+plot_flow(def)
+
+# guess submission and dependency types
+def2 = to_flowdef(flowmat, 
+ platform = "lsf", 
+ queue = "long", 
+ guess = TRUE)
+plot_flow(def2)</code></pre>
 
 
 
@@ -439,7 +503,7 @@ check(x, verbose&nbsp;=&nbsp;opts_flow$get("verbose"), ...)</div></code></pre>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
 </dl>
 
   <h4>Details</h4>
@@ -611,7 +675,7 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]</
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
   <dt>out_format</dt>
   <dd class="rd-dd">passed onto knitr:::kable. supports: markdown, rst, html... [markdown]</dd>
   <dt>...</dt>
@@ -682,7 +746,7 @@ it here; fot custom platoforms.</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
   <dt>jobid_col</dt>
   <dd class="rd-dd">Advanced use. The column name in flow_details.txt file used to fetch jobids to kill</dd>
 </dl>
@@ -750,7 +814,7 @@ corresponding to the flow working directory provided.</dd>
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
 </dl>
 
   <h4>Details</h4>
@@ -886,10 +950,10 @@ Additionally it creates a shortcut to the <code>flowr</code> helper script in <c
   <dt>flow_base_path</dt>
   <dd class="rd-dd">The base of flowr configuration and execution folders.</dd>
   <dt>flow_run_path</dt>
-  <dd class="rd-dd">base path to be used for this flow. 
+  <dd class="rd-dd">base path to be used for execution of this flow. 
 flowr would create a new time-stamped folder in this base path and 
 use it for logs, scripts etc. 
-The default is retrived using [<code>opts_flow$get("flow_run_path")</code>].</dd>
+The default is retrived using <code>opts_flow$get("flow_run_path")</code>.</dd>
   <dt>flow_conf_path</dt>
   <dd class="rd-dd">Flowr configuration folder, used by <a href=#fetch>fetch_conf</a>.</dd>
   <dt>flow_pipe_path</dt>
@@ -1017,7 +1081,7 @@ By default <a href=#fetch>fetch_pipes</a> and <a href=#fetch>fetch_conf</a> sear
   <dt>verbose</dt>
   <dd class="rd-dd">A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the <a href=#verbose>verbose</a> page for more details.
-[<code>opts_flow$get("verbose")</code>] [1]</dd>
+<code>opts_flow$get("verbose")</code></dd>
   <dt>last_only</dt>
   <dd class="rd-dd">fetch_pipes():. If multiple pipelines match the pattern, return the last one. [TRUE]</dd>
   <dt>silent</dt>
