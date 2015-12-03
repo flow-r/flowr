@@ -14,7 +14,7 @@ navpills: |
   <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 copyright: Licence MIT
-source: github.com/sahilseth/flowr/tree/gh-pages/index.Rmd
+source: "github.com/sahilseth/flowr/tree/gh-pages/index.Rmd"
 ---
 
 
