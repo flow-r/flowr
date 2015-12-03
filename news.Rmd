@@ -18,6 +18,7 @@ brand: |-
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
+source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 ---
 
 <br>
