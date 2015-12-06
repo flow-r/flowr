@@ -29,7 +29,7 @@
 #' @examples
 #' \dontrun{
 #' submit_flow(fobj = fobj, ... = ...)}
-submit_flow <- function(x, verbose = get_opts("verbose"), ...) {
+submit_flow <- function(x, verbose = opts_flow$get("verbose"), ...) {
   if(verbose > 1)
     message("input x is ", class(x))
   UseMethod("submit_flow")
@@ -39,7 +39,7 @@ submit_flow <- function(x, verbose = get_opts("verbose"), ...) {
 
 #' @rdname submit_flow
 #' @export
-submit_flow.list <- function(x, verbose = get_opts("verbose"), ...){
+submit_flow.list <- function(x, verbose = opts_flow$get("verbose"), ...){
   fobjs = lapply(x, function(y)
     submit_flow(y, ...)
   )
@@ -58,7 +58,7 @@ parse_prevjobids <- function(x){
 #' @importFrom utils txtProgressBar
 #' @export
 submit_flow.flow <- function(x,
-                             verbose = get_opts("verbose"),
+                             verbose = opts_flow$get("verbose"),
                              execute = FALSE,
                              uuid,
                              plot = TRUE,
@@ -88,7 +88,7 @@ submit_flow.flow <- function(x,
   ##names(x@jobs) <- jobnames
   ### ---------- Error handling
   if(execute)
-    message("--> Flow is being processed.",
+    message("\n--> Flow is being processed.",
             sprintf(" Track it from cmd line using:\nflowr status x=%s\n",
                     x@flow_path),
             sprintf("OR from R using:\nstatus(x='%s')",
@@ -147,9 +147,9 @@ submit_flow.flow <- function(x,
   if(execute){
     x@status <- "submitted"
   }else{
-    message("--> Dry Run Successful!\n",
-            "--> You may check this folder for consistency. ",
-            "--> Also you may submit again with execute=TRUE\n",
+    message("\n--> Dry Run Successful!",
+            "\n--> You may check this folder for consistency. ",
+            "\n--> Also you may submit again with execute=TRUE\n",
             x@flow_path)
   }
   

@@ -57,7 +57,7 @@ check.flowmat <- function(x, ...){
 #' @rdname check
 #' @importFrom params kable
 #' @export
-check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
+check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
 
 	dep_types = c("none", "serial", "gather", "burst")
 	sub_types = c("serial", "scatter")
@@ -144,6 +144,8 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 	
 	if(!is.null(x$nodes))
 		x$nodes = as.character(x$nodes)
+
+	x$memory_reserved = as.character(x$memory_reserved)
 	
 	#print(x)
 	## check all previous jobs defined in names
@@ -184,7 +186,7 @@ check.flowdef <- function(x, verbose = get_opts("verbose"), ...){
 ##      serial  --(burst)--> scatter
 check_dep_sub_type <- function(dep, sub,
 													p.dep, p.sub,
-													verbose = get_opts("verbose")){
+													verbose = opts_flow$get("verbose")){
 	v = verbose
 	p.dep = ifelse(length(p.dep) == 0, "none", p.dep)
 	p.sub = ifelse(length(p.sub) == 0, "none", p.sub)

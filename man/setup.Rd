@@ -4,18 +4,20 @@
 \alias{setup}
 \title{Setup and initialize flowr}
 \usage{
-setup(bin = "~/bin", flow_base_path = get_opts("flow_base_path"),
-  flow_run_path = get_opts("flow_run_path"),
-  flow_conf_path = get_opts("flow_conf_path"),
-  flow_pipe_path = get_opts("flow_pipe_paths"))
+setup(bin = "~/bin", flow_base_path = opts_flow$get("flow_base_path"),
+  flow_run_path = opts_flow$get("flow_run_path"),
+  flow_conf_path = opts_flow$get("flow_conf_path"),
+  flow_pipe_path = opts_flow$get("flow_pipe_paths"))
 }
 \arguments{
 \item{bin}{path to bin folder}
 
 \item{flow_base_path}{The base of flowr configuration and execution folders.}
 
-\item{flow_run_path}{Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
-[\code{~/flowr/runs}].}
+\item{flow_run_path}{base path to be used for execution of this flow. 
+flowr would create a new time-stamped folder in this base path and 
+use it for logs, scripts etc. 
+The default is retrived using \code{opts_flow$get("flow_run_path")}.}
 
 \item{flow_conf_path}{Flowr configuration folder, used by \link{fetch_conf}.}
 

@@ -9,9 +9,9 @@
 	packageStartupMessage("Flowr: streamlining workflows")
 	
 	fls = unique(unlist(sapply(c("flowr"), fetch_conf)))
-	suppressMessages(load_opts(fls, check = FALSE))
+	suppressMessages(opts_flow$load(fls, check = FALSE))
 	
-	if(get_opts('verbose') > 1)
+	if(opts_flow$get('verbose') > 1)
 		packageStartupMessage("\nverbose level: 2 (debug mode)\nfollowing files are being loaded:\n", paste(fls, "\n"))
 
 }

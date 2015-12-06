@@ -22,9 +22,11 @@ to_flowdet <- function(x, ...) {
 
 
 #' @rdname to_flowdet
+#' @importFrom tools file_path_as_absolute
 #' @export
 to_flowdet.rootdir <- function(x, ...){
 	## --- get all the cmd files
+  x = file_path_as_absolute(x)
 	files_cmd <- list.files(x, pattern = "cmd", full.names = TRUE, recursive = TRUE)
 	if(length(files_cmd) == 0)
 		stop(error("no.shell"))

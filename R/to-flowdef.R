@@ -8,7 +8,7 @@
 #' @aliases flowdef to_flowdef definition
 #' 
 #' @title
-#' Flow Definition defines how to stich pieces of the (work)flow into a flow.
+#' Flow Definition defines how to stich steps into a (work)flow.
 #'
 #' @description 
 #' This function enables creation of a skeleton flow definition with several default values, using a 
@@ -104,7 +104,8 @@
 #' @param queue Cluster queue to be used
 #' @param platform platform of the cluster: lsf, sge, moab, torque, slurm etc.
 #' @param memory_reserved amount of memory required.
-#' @param cpu_reserved number of cpu's required
+#' @param cpu_reserved number of cpu's required. [1]
+#' @param nodes if you tool can use multiple nodes, you may reserve multiple nodes for it. [1]
 #' @param walltime amount of walltime required
 #' @param guess should the function, guess submission and dependency types. See details. 
 #' @inheritParams to_flow
@@ -112,8 +113,8 @@
 #'
 #' @details 
 #' 
-#' \strong{NOTE:} Guessing is a experimental feature, please check the definition carefully, 
-#' and its provided to help and not replace best your best judgement. <br>
+#' \strong{NOTE:} Guessing is an experimental feature, please check the definition carefully. 
+#' it is provided to help but not replace your best judgement. <br>
 #' 
 #' Optionally, one may provide the previous jobs and flowr can try guessing the appropriate 
 #' submission and dependency types. If there are multiple commands, default is submitting them as 
@@ -123,6 +124,41 @@
 #' @importFrom params kable
 #' 
 #' @export
+#' 
+#' @examples
+#' # see ?to_flow for more examples
+#' 
+#' # read in a tsv; check and confirm format
+#' ex = file.path(system.file(package = "flowr"), "pipelines")
+#' 
+#' # read in a flowdef from file
+#' flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
+#' 
+#' # check if this a flowdef
+#' is.flowdef(flowdef)
+#' 
+#' # use a flowmat, to create a sample flowdef
+#' flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+#' to_flowdef(flowmat)
+#' 
+#' # change the platform
+#' to_flowdef(flowmat, platform = "lsf")
+#' 
+#' # change the queue name
+#' def = to_flowdef(flowmat, 
+#'  platform = "lsf", 
+#'  queue = "long")
+#' plot_flow(def)
+#' 
+#' # guess submission and dependency types
+#' def2 = to_flowdef(flowmat, 
+#'  platform = "lsf", 
+#'  queue = "long", 
+#'  guess = TRUE)
+#' plot_flow(def2)
+#' 
+#'
+#' 
 to_flowdef <- function(x, ...){
   #message("input x is ", class(x)[1])
   UseMethod("to_flowdef")
@@ -189,11 +225,12 @@ guess_sub_dep <- function(mat, def){
     # get current jobname, previous jobname(s)
     # as well as current and previous commands
     jobnm = def$jobname[i]
+    message("--> working on ", jobnm)
     ncmds = nrow(subset(mat, mat$jobname == jobnm))
-    prev_job = subset(def, mat$jobname == jobnm)$prev_jobs
+    prev_job = subset(def, def$jobname == jobnm)$prev_jobs
     
     # get number of commands in each of the previous steps
-    prevmat = subset(mat, jobname %in% prev_job)
+    prevmat = subset(mat, mat$jobname %in% prev_job)
     npcmds = sapply(split.data.frame(prevmat, prevmat$jobname), nrow)
     
     d_sub_type <- detect_sub_type(ncmds = ncmds)
@@ -201,6 +238,7 @@ guess_sub_dep <- function(mat, def){
     
     data.frame(sub_type = d_sub_type, dep_type = d_dep_type, stringsAsFactors = FALSE)
   })
+  
   tmp = do.call(rbind, lst)
   
   def$sub_type = tmp$sub_type
@@ -222,7 +260,7 @@ to_flowdef.flowmat <- function(x,
                                nodes = "1",
                                walltime = "1:00",
                                guess = FALSE,
-                               verbose = get_opts("verbose"), ...){
+                               verbose = opts_flow$get("verbose"), ...){
   
   if(verbose)
     message("Creating a skeleton flow definition")
@@ -256,13 +294,19 @@ to_flowdef.flowmat <- function(x,
   
   # use sub and dep detection, if prev_jobs is given:
   if(guess){
-    message("guessing submission and dependency types, experimental...")
+    message("> guessing submission and dependency types, this feature is experimental...")
     def <- guess_sub_dep(x, def)
   }
   
   return(def)
 }
 
+
+#' @export
+to_flowdef.data.frame = to_flowdef.flowmat
+
+#' @export
+to_flowdef.tbl_df = to_flowdef.flowmat
 
 
 #' @rdname to_flowdef
@@ -296,6 +340,7 @@ to_flowdef.flow <- function(x, ...){
 #' @importFrom utils write.table
 #' @export
 to_flowdef.character <- function(x, ...){
+  
   if(!missing(x)){
     mat <- read_sheet(x)
     mat = to_flowmat(mat)

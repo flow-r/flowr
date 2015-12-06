@@ -6,10 +6,10 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(x, platform, def, conf, wd = get_opts("flow_run_path"),
+run(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
   flow_run_path = wd, rerun_wd, start_from, execute = FALSE, ...)
 
-run_pipe(x, platform, def, conf, wd = get_opts("flow_run_path"),
+run_pipe(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
   flow_run_path = wd, rerun_wd, start_from, execute = FALSE, ...)
 }
 \arguments{
@@ -34,16 +34,24 @@ run_pipe(x, platform, def, conf, wd = get_opts("flow_run_path"),
 \item{...}{passed onto the pipeline function as specified in x}
 }
 \description{
-Run complete pipelines, by wrapping several steps into one convinient function:
-NOTE: please use flowr version: 0.9.8.9010
+Run complete pipelines, by wrapping several steps into one 
+convinient function.
 
-Taking \code{sleep_pipe} as a example.
+NOTE: please use flowr version 0.9.8.9010 or higher.
+
+In summary, this function performs the following steps:
+
 \itemize{
-  \item Use \link{fetch_pipes} to get paths to a Rscript, flowdef file and optionally a configuration file
-  with various default options used.
-  \item Create a flowmat (using the function defined in the Rscript)
-  \item Create a `flow` object, using flowmat created and flowdef (as fetched using fetch_pipes)
-  \item Submit the flow to the cluster (using \link{submit_flow})
+\item the argument \code{x} defines the name of the pipeline. 
+Say, for example \code{sleep_pipe}.
+ \item \link{fetch_pipes}: finds the pipeline definition 
+ (\code{sleep_pipe.R}, \code{sleep_pipe.def} and
+ \code{sleep_pipe.conf} files)
+ \item \code{sleep_pipe(\dots)}: Create all the required commands 
+ (\code{flowmat})
+  \item \link{to_flow}: Use \code{flowmat} and 
+  \code{sleep_pipe.def} to create a flow object.
+  \item \link{submit_flow}: Submit the flow to the cluster.
 }
 }
 \examples{

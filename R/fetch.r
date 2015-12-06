@@ -57,7 +57,7 @@
 #' \code{flow_run_path TAB my_awesome_path}, where \code{TAB} is a tab character, since these are tab 
 #' seperated files.
 #' 
-#' Also, at any time you can run, \link{load_opts}; to load custom options.
+#' Also, at any time you can run, \link{opts_flow$load}; to load custom options.
 #' 
 #' @importFrom tools file_path_sans_ext
 #' @importFrom utils tail
@@ -70,7 +70,7 @@
 #' ## let us find a default conf file
 #' conf = fetch_conf("flowr.conf");conf
 #' ## load this
-#' load_opts(conf)
+#' opts_flow$load(conf)
 #' 
 #' ## this returns a list, which prints pretty
 #' pip = fetch_pipes("sleep_pipe")
@@ -78,7 +78,8 @@
 #' pip$pipe
 #' pip$def
 #' 
-fetch <- function(x, places, urls, verbose = get_opts("verbose")){
+fetch <- function(x, places, urls, 
+                  verbose = opts_flow$get("verbose")){
 	if(is.null(verbose))
 		verbose = FALSE
 	y = sapply(places, list.files, pattern = paste0(x, "$"),
@@ -95,9 +96,9 @@ fetch <- function(x, places, urls, verbose = get_opts("verbose")){
 fetch_pipes <- function(x,
 												places,
 												last_only = FALSE,
-												urls = get_opts("flowr_pipe_urls"),
+												urls = opts_flow$get("flowr_pipe_urls"),
 												silent = FALSE,
-												verbose = get_opts("verbose"),
+												verbose = opts_flow$get("verbose"),
 												ask = TRUE){
 	if(missing(places)){
 		places = c(
@@ -105,7 +106,7 @@ fetch_pipes <- function(x,
 			system.file(package = "flowr", "inst/pipelines"),
 			system.file(package = "ngsflows", "pipelines"),
 			system.file(package = "ngsflows", "inst/pipelines"),
-			get_opts("flow_pipe_paths"),
+			strsplit(opts_flow$get("flow_pipe_paths"), ",")[[1]],
 			getwd())
 	}
 
@@ -116,7 +117,7 @@ fetch_pipes <- function(x,
 	
 	ext = tools::file_ext(x)
 	if(!ext == ""){
-		warning("Its best to supply only the name of the pipeline, without the extension. ", 
+		warning("> It is best to supply only the name of the pipeline, without the extension. ", 
 						"We add a .R extention before searching. Also, this name also corresponds, ",
 						"to the R function.")
 	}else{
@@ -153,7 +154,7 @@ fetch_pipes <- function(x,
 
 	if(last_only){
 		if(nrow(pipes) > 1)
-			message("\nFound multiple pipelines with the same name, will use the last from above list")
+			message("> Found multiple pipelines with the same name, will use the last from above list")
 		pipes = tail(pipes, 1)
 	}
 
@@ -180,7 +181,7 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
 			system.file(package = "flowr", "inst/conf"),
 			system.file(package = "ngsflows", "conf"),
 			system.file(package = "ngsflows", "inst/conf"),
-			get_opts("flow_conf_path"), getwd())
+			opts_flow$get("flow_conf_path"), getwd())
 	}
 	
 	ext = tools::file_ext(x)

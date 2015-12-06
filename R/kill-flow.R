@@ -75,7 +75,7 @@ kill.character <- function(x, force = FALSE, ...){
 #' @export
 kill.flow <- function(x,
 	kill_cmd,
-	verbose = get_opts("verbose"),
+	verbose = opts_flow$get("verbose"),
 	jobid_col = "job_sub_id", ...){
 
 	if(missing(kill_cmd)){

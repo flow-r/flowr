@@ -49,20 +49,20 @@ chk_fq <- function(fqs1, fqs2){
 
 #' @rdname bwa
 #' @export
-#' @importFrom flowr check_args get_opts to_flowmat
+#' @importFrom flowr check_args opts_flow$get to_flowmat
 bwa.backtrack <- function(
   
   fqs1, 
   fqs2,
   paired_end, ## auto detect it fastq2, is available
-  samplename = get_opts("samplename"),
-  bwa_exe = get_opts("bwa_exe"), 
-  ref_bwa = get_opts("ref_bwa"),
-  bwa_aln_opts = get_opts("bwa_aln_opts"),
-  cpu_bwa_aln = get_opts("cpu_bwa_aln"),
-  bwa_sampe_opts = get_opts("bwa_sampe_opts"),
-  bwa_samse_opts = get_opts("bwa_samse_opts"),
-  samtools_exe = get_opts("samtools_exe")){
+  samplename = opts_flow$get("samplename"),
+  bwa_exe = opts_flow$get("bwa_exe"), 
+  ref_bwa = opts_flow$get("ref_bwa"),
+  bwa_aln_opts = opts_flow$get("bwa_aln_opts"),
+  cpu_bwa_aln = opts_flow$get("cpu_bwa_aln"),
+  bwa_sampe_opts = opts_flow$get("bwa_sampe_opts"),
+  bwa_samse_opts = opts_flow$get("bwa_samse_opts"),
+  samtools_exe = opts_flow$get("samtools_exe")){
   
   
   ## --- some generic steps which may be done in case of 
@@ -136,11 +136,11 @@ bwa.backtrack <- function(
 #' @export
 picard_merge <- function(x, 
                          mergedbam,
-                         samplename = get_opts("samplename"),
-                         java_exe = get_opts("java_exe"),
-                         java_mem = get_opts("java_mem"),
-                         java_tmp = get_opts("java_tmp"),
-                         picard_jar = get_opts("picard_jar")){
+                         samplename = opts_flow$get("samplename"),
+                         java_exe = opts_flow$get("java_exe"),
+                         java_mem = opts_flow$get("java_mem"),
+                         java_tmp = opts_flow$get("java_tmp"),
+                         picard_jar = opts_flow$get("picard_jar")){
   
   ## -----  check if any of the params are null
   #   params = lapply(names(formals()), function(zzz) get(zzz))
@@ -162,15 +162,15 @@ picard_merge <- function(x,
 #' @export
 #' @importFrom tools file_path_sans_ext
 picard_rg <- function(x, 
-                      samplename = get_opts("samplename"),
-                      lane = get_opts("rg_lane"),
+                      samplename = opts_flow$get("samplename"),
+                      lane = opts_flow$get("rg_lane"),
                       ## convert these into get option also, only for this flow
-                      seq_platform = get_opts("rg_platform"),
-                      center = get_opts("rg_center"),
-                      java_exe = get_opts("java_exe"),
-                      java_mem = get_opts("java_mem"),
-                      java_tmp = get_opts("java_tmp"),
-											picard_jar = get_opts("picard_jar")
+                      seq_platform = opts_flow$get("rg_platform"),
+                      center = opts_flow$get("rg_center"),
+                      java_exe = opts_flow$get("java_exe"),
+                      java_mem = opts_flow$get("java_mem"),
+                      java_tmp = opts_flow$get("java_tmp"),
+											picard_jar = opts_flow$get("picard_jar")
 ){
   
   
@@ -215,7 +215,7 @@ picard_rg <- function(x,
 #' @export
 fastq_bam_bwa <- function(fqs1, fqs2,
                           outfile,
-                          samplename = get_opts("samplename")){
+                          samplename = opts_flow$get("samplename")){
   
   
   ## --- all subsequent steps would use this samplename

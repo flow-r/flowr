@@ -9,7 +9,7 @@
 \alias{to_flowdef.character}
 \alias{to_flowdef.flow}
 \alias{to_flowdef.flowmat}
-\title{Flow Definition defines how to stich pieces of the (work)flow into a flow.}
+\title{Flow Definition defines how to stich steps into a (work)flow.}
 \format{This is a tab separated file, with a minimum of 4 columns:<br>
 
 \emph{required columns}:<br>
@@ -50,7 +50,7 @@ to_flowdef(x, ...)
 \method{to_flowdef}{flowmat}(x, sub_type, dep_type, prev_jobs,
   queue = "short", platform = "torque", memory_reserved = "2000",
   cpu_reserved = "1", nodes = "1", walltime = "1:00", guess = FALSE,
-  verbose = get_opts("verbose"), ...)
+  verbose = opts_flow$get("verbose"), ...)
 
 \method{to_flowdef}{flow}(x, ...)
 
@@ -77,7 +77,9 @@ is.flowdef(x)
 
 \item{memory_reserved}{amount of memory required.}
 
-\item{cpu_reserved}{number of cpu's required}
+\item{cpu_reserved}{number of cpu's required. [1]}
+
+\item{nodes}{if you tool can use multiple nodes, you may reserve multiple nodes for it. [1]}
 
 \item{walltime}{amount of walltime required}
 
@@ -85,7 +87,7 @@ is.flowdef(x)
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+\code{opts_flow$get("verbose")}}
 }
 \description{
 This function enables creation of a skeleton flow definition with several default values, using a 
@@ -139,12 +141,47 @@ A (10)   ----> B (10)  -----> C (1) -----> D (3)
 }
 }
 \details{
-\strong{NOTE:} Guessing is a experimental feature, please check the definition carefully, 
-and its provided to help and not replace best your best judgement. <br>
+\strong{NOTE:} Guessing is an experimental feature, please check the definition carefully. 
+it is provided to help but not replace your best judgement. <br>
 
 Optionally, one may provide the previous jobs and flowr can try guessing the appropriate 
 submission and dependency types. If there are multiple commands, default is submitting them as 
 scatter, else as serial. Further, if previous job has multiple commands and current job has single;
 its assumed that all of the previous need to complete, suggesting a gather type dependency.
+}
+\examples{
+# see ?to_flow for more examples
+
+# read in a tsv; check and confirm format
+ex = file.path(system.file(package = "flowr"), "pipelines")
+
+# read in a flowdef from file
+flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))
+
+# check if this a flowdef
+is.flowdef(flowdef)
+
+# use a flowmat, to create a sample flowdef
+flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+to_flowdef(flowmat)
+
+# change the platform
+to_flowdef(flowmat, platform = "lsf")
+
+# change the queue name
+def = to_flowdef(flowmat, 
+ platform = "lsf", 
+ queue = "long")
+plot_flow(def)
+
+# guess submission and dependency types
+def2 = to_flowdef(flowmat, 
+ platform = "lsf", 
+ queue = "long", 
+ guess = TRUE)
+plot_flow(def2)
+
+
+
 }
 

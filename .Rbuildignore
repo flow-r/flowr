@@ -21,3 +21,15 @@ cran\-comments\.md
 ## ignore test files and folders
 tests/testthat/Rplots.pdf
 tests/testthat/sleep_pipe*
+
+## ignore the pdfs
+flowr_manual.pdf
+flowr_pkg_ref.pdf
+
+# vignettes
+vignettes/*.html
+vignettes/*.R
+vignettes/*.md
+vignettes/*_files
+
+

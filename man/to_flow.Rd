@@ -16,51 +16,70 @@ is.flow(x)
 
 \method{to_flow}{character}(x, def, grp_col, jobname_col, cmd_col, ...)
 
-\method{to_flow}{flowmat}(x, def, grp_col, jobname_col, cmd_col, flowname,
-  flow_run_path, platform, containerize = TRUE, submit = FALSE,
-  execute = FALSE, qobj, verbose = get_opts("verbose"), ...)
+\method{to_flow}{flowmat}(x, def, flowname, grp_col, jobname_col, cmd_col,
+  submit = FALSE, execute = FALSE, containerize = TRUE, platform,
+  flow_run_path, qobj, verbose = opts_flow$get("verbose"), ...)
 
 \method{to_flow}{data.frame}(x, ...)
 
 \method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj,
-  module_cmds = "", verbose = get_opts("verbose"), ...)
+  module_cmds = opts_flow$get("module_cmds"),
+  verbose = opts_flow$get("verbose"), ...)
 }
 \arguments{
-\item{x}{path (char. vector) to flow_mat, a data.frame or a list.}
+\item{x}{this can either to a filename, a data.frame or a list. 
+In case it is a file name, it should be a tsv file representing a flow_mat. See \link{to_flowmat} for details}
 
-\item{...}{Supplied to specific functions like \code{to_flow.data.frame}}
+\item{...}{Supplied to specific functions like \link{to_flow.data.frame}}
 
-\item{def}{A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow}
+\item{def}{a flow definition. Basically a table with resource requirements and mapping of the jobs in this flow.
+See \link{to_flowdef} for details on the format.}
 
-\item{grp_col}{column name used to split x (flow_mat). [samplename]}
+\item{grp_col}{name of the grouping column in the supplied flow_mat.
+See \link{to_flow} for details. Default value is [samplename].}
 
-\item{jobname_col}{column name with job names. [jobname]}
+\item{jobname_col}{name of the job name columnd in flow_mat. Defalt value is [jobname].}
 
-\item{cmd_col}{column name with commands. [cmd]}
+\item{cmd_col}{name of the command column name in flow_mat. Default value is [cmd].}
 
-\item{flowname}{name of the flow [flowname]}
+\item{flowname}{name of the flow, this is used as part of the execution foldername.
+A good simple identifier, which does not support any special characters. 
+Names may use characters (a-z) and numbers (0-9), using underscore (_) as a word seperator.
+Default value is  [flowname].}
 
-\item{flow_run_path}{Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
-[\code{~/flowr/runs}].}
+\item{submit}{after creating a flow object, should flowr 
+also use \link{submit_flow} to perform a dry-run OR real submission.
+See below for details. Default value is [FALSE]}
 
-\item{platform}{character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-This over-rides the platform column in flowdef. (optional)}
+\item{execute}{when calling \link{submit_flow}, 
+should flowr execute the flow or perform a dry-run. See below for details. Default value is [FALSE].}
 
-\item{containerize}{flowr could create a new folder and pull all flows in them, keep the process clean}
+\item{containerize}{if the flowmat has multiple samples, 
+flowr creates a creates a new date-stamped folder, and includes all
+flows in this batch inside it. 
+This is keeps the logs clean, and containerizes each batch.
+To disable this behavious set this to FALSE, default is [TRUE].}
 
-\item{submit}{Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]}
+\item{platform}{a specifying the platform to use, possible values are local, lsf, torque, moab, sge and slurm
+This over-rides the platform column in the flowdef. (optional)}
 
-\item{execute}{Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]}
+\item{flow_run_path}{base path to be used for execution of this flow. 
+flowr would create a new time-stamped folder in this base path and 
+use it for logs, scripts etc. 
+The default is retrived using \code{opts_flow$get("flow_run_path")}.}
 
-\item{qobj}{Depreciated, modify \href{http://docs.flowr.space/docs.html#cluster-support}{cluster templates} instead.  A object of class \link{queue}.}
+\item{qobj}{Depreciated, modify cluster templates as explained on 
+\href{http://docs.flowr.space/install.html#hpcc_support_overview}{docs.flowr.space}.
+An object of class \link{queue}.}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+\code{opts_flow$get("verbose")}}
 
-\item{desc}{Advanced Use. final flow name, please don't change.}
+\item{desc}{Advanced Use. final flow name.}
 
-\item{module_cmds}{A character vector of additional commands, which will be prepended to each script of the flow.}
+\item{module_cmds}{A character vector of additional commands, which will be prepended to each script of the flow. 
+Default is retreived using \code{opts_flow$get("module_cmds")}.}
 }
 \value{
 Returns a flow object. If execute=TRUE, fobj is rich with information about where and how
@@ -81,7 +100,8 @@ Use a set of shell commands (flow mat) and flow definiton to create \link{flow} 
 }
 \details{
 The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
-This is a minimum three column matrix with three columns: samplename, jobname and cmd
+This is a minimum three column table with columns: samplename, jobname and cmd.
+See \link{to_flowmat} for details.
 }
 \examples{
 ## Use this link for a few elaborate examples:

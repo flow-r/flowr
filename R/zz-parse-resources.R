@@ -3,7 +3,7 @@
 
 
 
-set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
+opts_flow$set(time_format = "%a %b %e %H:%M:%S CDT %Y")
 
 # parse LSF output files
 # @param x file
@@ -15,8 +15,8 @@ set_opts(time_format = "%a %b %e %H:%M:%S CDT %Y")
 parse_lsf_out <- function(x,
 	scale_time = 1/3600,
 	n = 100,
-	time_format = get_opts("time_format"),
-	verbose = get_opts('verbose')){
+	time_format = opts_flow$get("time_format"),
+	verbose = opts_flow$get('verbose')){
 	
 	if(verbose > 2)
 		message("reading: ", x)
@@ -116,7 +116,7 @@ get_resources_lsf <- function(wd,
 															cores = 4, 
 															pattern = "out$",
 															plot = FALSE,
-															verbose = get_opts("verbose")){
+															verbose = opts_flow$get("verbose")){
 
 	if (!requireNamespace("reshape2", quietly = TRUE)) {
 		stop("reshape2 needed for this function to work. Please install it.",

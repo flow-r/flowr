@@ -53,8 +53,8 @@ error <- function(x, ...){
 
 	}else	if(x == "prev_job.wo.dep_type") {
 		y = c("There are rows in flowdef where a dependency type is not specified, ",
-					"but dependency type is specified",
-					"This is incompatible, either specify both or none. ",
+					"but dependency type is specified.",
+					"\nThis is incompatible, either specify both or none. ",
 					"Possible values for dependency_type are: serial, gather, burst.")
 
 	}else	if(x == "dep_type.wo.prev_job") {

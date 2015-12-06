@@ -15,26 +15,26 @@ parse_jobids <- function(jobids, platform){
 	##  parse into: -->>> 40947
 	## if there is a . in the middle, get stuff before it
 	if(platform=="torque")
-		jobids <- gsub(get_opts("flow_parse_torque"),"\\1", jobids)
+		jobids <- gsub(opts_flow$get("flow_parse_torque"),"\\1", jobids)
 
 	## --- LSF
 	## --- Example:
 	## Job <4809> is submitted to queue <transfer>.
 	##  parse into: --->>> 4809
 	if(platform=="lsf")
-		jobids <- gsub(get_opts("flow_parse_lsf"),"\\1", jobids)
+		jobids <- gsub(opts_flow$get("flow_parse_lsf"),"\\1", jobids)
 
 	## --- moab
 	## --- Example (has empty lines):
 	## parse into: --->>> 97724
 	if(platform == "moab")
-		jobids = gsub(get_opts("flow_parse_moab"), "\\1", jobids)
+		jobids = gsub(opts_flow$get("flow_parse_moab"), "\\1", jobids)
 
 	if(platform == "sge")
-		jobids = gsub(get_opts("flow_parse_sge"), "\\1", jobids)
+		jobids = gsub(opts_flow$get("flow_parse_sge"), "\\1", jobids)
 
 	if(platform == "slurm")
-		jobids = gsub(get_opts("flow_parse_slurm"), "\\1", jobids)
+		jobids = gsub(opts_flow$get("flow_parse_slurm"), "\\1", jobids)
 
 	## ""      "98337"
 	## --- output has multiple rows, split them

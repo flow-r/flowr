@@ -6,11 +6,11 @@
 \alias{submit_flow.list}
 \title{Submit a flow to the cluster}
 \usage{
-submit_flow(x, verbose = get_opts("verbose"), ...)
+submit_flow(x, verbose = opts_flow$get("verbose"), ...)
 
-\method{submit_flow}{list}(x, verbose = get_opts("verbose"), ...)
+\method{submit_flow}{list}(x, verbose = opts_flow$get("verbose"), ...)
 
-\method{submit_flow}{flow}(x, verbose = get_opts("verbose"),
+\method{submit_flow}{flow}(x, verbose = opts_flow$get("verbose"),
   execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1, ...)
 }
 \arguments{

@@ -63,7 +63,7 @@ get_wds <- function(x){
 #' }
 status <- function(x, 
 									 use_cache = FALSE,
-									 verbose = get_opts("verbose"),
+									 verbose = opts_flow$get("verbose"),
 									 out_format = "markdown", ...){
 	## get the total jobs
 	#wds = list.files(path = dirname(x), pattern = basename(x), full.names = TRUE)
@@ -71,9 +71,10 @@ status <- function(x,
 	if(missing(x))
 		stop("Please provide a path to a flow wd. x='my-awesome-flowpath'")
 	
-	## if a flow object it specified
-	if(is.flow(x))
-		get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...)
+	# if a flow object it specified
+	if(is.flow(x)){
+	  return(get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...))
+	}
 	
 	wds = get_wds(x)
 	lst = lapply(wds, function(wd){
@@ -160,11 +161,14 @@ get_status.character <- function(x, verbose, use_cache, out_format, ...){
 	if(verbose > 1)
 		message("getting to_flowdet")
 	fl = file.path(x, "flow_details.txt")
+	
 	if(use_cache == TRUE & file.exists(fl)){
 		flow_det = read_sheet(fl);
 		if(verbose > 1)
 			message("skipped to_flowdet")
+		
 	}else{
+	  # if x is a character
 		flow_det = to_flowdet.rootdir(x)
 	}
 	

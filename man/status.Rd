@@ -8,7 +8,7 @@
 \alias{status}
 \title{Monitor status of flow(s)}
 \usage{
-status(x, use_cache = FALSE, verbose = get_opts("verbose"),
+status(x, use_cache = FALSE, verbose = opts_flow$get("verbose"),
   out_format = "markdown", ...)
 
 get_status(x, ...)
@@ -27,7 +27,7 @@ and assumes no new jobs were submitted in the flow(s) being monitored. [FALSE]}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+\code{opts_flow$get("verbose")}}
 
 \item{out_format}{passed onto knitr:::kable. supports: markdown, rst, html... [markdown]}
 

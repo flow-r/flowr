@@ -10,7 +10,7 @@ check(x, ...)
 
 \method{check}{flowmat}(x, ...)
 
-\method{check}{flowdef}(x, verbose = get_opts("verbose"), ...)
+\method{check}{flowdef}(x, verbose = opts_flow$get("verbose"), ...)
 }
 \arguments{
 \item{x}{a flowdef or flowmat object}
@@ -19,7 +19,7 @@ check(x, ...)
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+\code{opts_flow$get("verbose")}}
 }
 \description{
 Check consistency of flowdef and flowmat, using various rules.

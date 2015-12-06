@@ -10,7 +10,7 @@ kill(x, ...)
 
 \method{kill}{character}(x, force = FALSE, ...)
 
-\method{kill}{flow}(x, kill_cmd, verbose = get_opts("verbose"),
+\method{kill}{flow}(x, kill_cmd, verbose = opts_flow$get("verbose"),
   jobid_col = "job_sub_id", ...)
 }
 \arguments{
@@ -25,7 +25,7 @@ it here; fot custom platoforms.}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-[\code{get_opts("verbose")}] [1]}
+\code{opts_flow$get("verbose")}}
 
 \item{jobid_col}{Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill}
 }

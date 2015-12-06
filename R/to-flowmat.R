@@ -15,21 +15,42 @@
 #' 
 #' @examples 
 #' 
-#' ## Use this link for a few examples:
-#' ## http://docs.flowr.space/flowr/tutorial.html#define_modules
+#' # Use this link for a few examples:
+#' # http://docs.flowr.space/tutorial.html#define_modules
 #' 
-#' ## create a vector of shell commands
-#' cmds = c("sleep 1", "sleep 2")
-#' ## create a named list
-#' lst = list("sleep" = cmds)
-#' ## create a flowmat
+#' # create a flow mat, starting with a list of commands.
+#' cmd_sleep = c("sleep 1", "sleep 2")
+#' cmd_echo = c("echo 'hello'", "echo 'hello'")
+#' 
+#' # create a named list
+#' lst = list("sleep" = cmd_sleep, "echo" = cmd_echo)
 #' flowmat = to_flowmat(lst, samplename = "samp")
 #' 
-#' ## Use flowmat to create a skeleton flowdef
+#' 
+#' 
+#' # read in a tsv; check and confirm format
+#' ex = file.path(system.file(package = "flowr"), "pipelines")
+#' 
+#' flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
+#' 
+#' # if your column names are different than defaults, explicitly specify them.
+#' flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"), jobname_col = "jobname")
+#' 
+#' # check if a object is a flowmat
+#' is.flowmat(flowmat)
+#' 
+#' 
+#' 
+#' # create a flowdef, from this flowmat
 #' flowdef = to_flowdef(flowmat)
 #' 
-#' ## use both (flowmat and flowdef) to create a flow
+#' # create a flow object using flowmat and flowdef
 #' fobj = to_flow(flowmat, flowdef)
+#' 
+#' # extract a flowmat from a flow (here the samplename also contains the name of the flow)
+#' flowmat2 = to_flowmat(fobj)
+#' 
+#' 
 #' 
 #' ## submit the flow to the cluster (execute=TRUE) or do a dry-run (execute=FALSE)
 #' \dontrun{
@@ -123,29 +144,29 @@ as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
 	}else if(is.character(x)){
 		if(!file.exists(x))
 			stop("file does not exists: ", x)
-		message("mat seems to be a file, reading it...")
-		x <- read_sheet(x, id_column = "jobname")
+		message("> mat seems to be a file, reading it...")
+		x <- read_sheet(x, id_column = "jobname", quote = "")
 	}
 	
 	
 	if(missing(grp_col)){
 		grp_col = "samplename"
 		if(grp_col %in% colnames(x))
-			message("Using `", grp_col, "` as the grouping column")
+			message("--> Using `", grp_col, "` as the grouping column")
 		else
 			stop("grouping column not specified, and the default 'samplename' is absent in the input x.")
 	}
 	if(missing(jobname_col)){
 		jobname_col = "jobname"
 		if(jobname_col %in% colnames(x))
-			message("Using `", jobname_col, "` as the jobname column")
+			message("--> Using `", jobname_col, "` as the jobname column")
 		else
 			stop("jobname column not specified, and the default 'jobname' is absent in the input x.")
 	}
 	if(missing(cmd_col)){
 		cmd_col = "cmd"
 		if(cmd_col %in% colnames(x))
-			message("Using `", cmd_col, "` as the cmd column")
+			message("--> Using `", cmd_col, "` as the cmd column")
 		else
 			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
 	}

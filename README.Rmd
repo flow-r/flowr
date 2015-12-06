@@ -78,10 +78,10 @@ are to be executed in a (work)flow.
 ``` {r, eval=FALSE}
 ## Official stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
-install.packages("flowr")
+install.packages("flowr",  repos = "http://cran.rstudio.com")
 
-# or a latest version from DRAT
-install.packages("flowr", repos="http://sahilseth.github.io/DRAT")
+# or a latest version from DRAT, provide cran for dependencies
+install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.

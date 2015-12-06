@@ -12,28 +12,56 @@
 #' @description
 #' Use a set of shell commands (flow mat) and flow definiton to create \link{flow} object.
 #'
-#' @param x path (char. vector) to flow_mat, a data.frame or a list.
-#' @param def A flow definition table. Basically a table with resource requirements and mapping of the jobs in this flow
-#' @param platform character vector, specifying the platform to use. local, lsf, torque, moab, sge, slurm, ...
-#' This over-rides the platform column in flowdef. (optional)
-#' @param grp_col column name used to split x (flow_mat). [samplename]
-#' @param jobname_col column name with job names. [jobname]
-#' @param cmd_col column name with commands. [cmd]
-#' @param flowname name of the flow [flowname]
-#' @param flow_run_path Path to a folder. Main operating folder for this flow. [\code{get_opts("flow_run_path")}]
-#'  [\code{~/flowr/runs}].
-#' @param desc Advanced Use. final flow name, please don't change.
-#' @param containerize flowr could create a new folder and pull all flows in them, keep the process clean
-#'
-#' @param ... Supplied to specific functions like \code{to_flow.data.frame}
-#'
-#' @param submit Use submit_flow on flow object this function returns. TRUE/FALSE. [FALSE]
-#' @param execute Use submit_flow on flow object this function returns. TRUE/FALSE, an paramter to submit_flow(). [FALSE]
-#' @param qobj Depreciated, modify \href{http://docs.flowr.space/docs.html#cluster-support}{cluster templates} instead.  A object of class \link{queue}.
+#' @param x this can either to a filename, a data.frame or a list. 
+#' In case it is a file name, it should be a tsv file representing a flow_mat. See \link{to_flowmat} for details
+#' @param def a flow definition. Basically a table with resource requirements and mapping of the jobs in this flow.
+#' See \link{to_flowdef} for details on the format.
+#' 
+#' @param platform a specifying the platform to use, possible values are local, lsf, torque, moab, sge and slurm
+#' This over-rides the platform column in the flowdef. (optional)
+#' 
+#' @param grp_col name of the grouping column in the supplied flow_mat.
+#' See \link{to_flow} for details. Default value is [samplename].
+#' @param jobname_col name of the job name columnd in flow_mat. Defalt value is [jobname].
+#' @param cmd_col name of the command column name in flow_mat. Default value is [cmd].
+#' 
+#' @param flowname name of the flow, this is used as part of the execution foldername.
+#' A good simple identifier, which does not support any special characters. 
+#' Names may use characters (a-z) and numbers (0-9), using underscore (_) as a word seperator.
+#' Default value is  [flowname].
+#' 
+#' @param flow_run_path base path to be used for execution of this flow. 
+#' flowr would create a new time-stamped folder in this base path and 
+#' use it for logs, scripts etc. 
+#' The default is retrived using \code{opts_flow$get("flow_run_path")}.
+#' 
+#' @param desc Advanced Use. final flow name.
+#' 
+#' @param submit after creating a flow object, should flowr 
+#' also use \link{submit_flow} to perform a dry-run OR real submission.
+#' See below for details. Default value is [FALSE]
+#' @param execute when calling \link{submit_flow}, 
+#' should flowr execute the flow or perform a dry-run. See below for details. Default value is [FALSE].
+#' 
+#' @param containerize if the flowmat has multiple samples, 
+#' flowr creates a creates a new date-stamped folder, and includes all
+#' flows in this batch inside it. 
+#' This is keeps the logs clean, and containerizes each batch.
+#' To disable this behavious set this to FALSE, default is [TRUE].
+#' 
+#' @param module_cmds A character vector of additional commands, which will be prepended to each script of the flow. 
+#' Default is retreived using \code{opts_flow$get("module_cmds")}.
+#' 
+#' @param ... Supplied to specific functions like \link{to_flow.data.frame}
+#' 
+#' @param qobj Depreciated, modify cluster templates as explained on 
+#' \href{http://docs.flowr.space/install.html#hpcc_support_overview}{docs.flowr.space}.
+#' An object of class \link{queue}.
+#' 
 #' @param verbose A numeric value indicating the amount of messages to produce.
 #'  Values are integers varying from 0, 1, 2, 3, .... Please refer to the \link{verbose} page for more details.
-#' [\code{get_opts("verbose")}] [1]
-#' @param module_cmds A character vector of additional commands, which will be prepended to each script of the flow. 
+#' \code{opts_flow$get("verbose")}
+#' 
 #'
 #' @examples
 #' ## Use this link for a few elaborate examples:
@@ -70,7 +98,8 @@
 #' 
 #'
 #' @details The parameter x can be a path to a flow_mat, or a data.frame (as read by read_sheet).
-#' This is a minimum three column matrix with three columns: samplename, jobname and cmd
+#' This is a minimum three column table with columns: samplename, jobname and cmd.
+#' See \link{to_flowmat} for details.
 #'
 #'
 #'
@@ -123,17 +152,22 @@ to_flow.character <- function(x, def,
 #' @rdname to_flow
 #' @export
 to_flow.flowmat <- function(x, def,
+                            
+                            flowname,
+                            
                             grp_col,
                             jobname_col,
                             cmd_col,
-                            flowname,
-                            flow_run_path,
-                            platform,
-                            containerize = TRUE,
+
                             submit = FALSE,
                             execute = FALSE,
+                            containerize = TRUE,
+                            platform,
+                            flow_run_path,
+                            
                             qobj, 
-                            verbose = get_opts("verbose"),
+                            verbose = opts_flow$get("verbose"),
+                            
                             ...){
   
   ## --- change all the input columns into character
@@ -144,7 +178,7 @@ to_flow.flowmat <- function(x, def,
                  jobname_col = jobname_col,
                  cmd_col = cmd_col)
 
-  message(">        Reading and checking flow def ...")
+  message("> reading and checking flow def ...")
   def = as.flowdef(def)
   
   # --- defaults
@@ -154,13 +188,13 @@ to_flow.flowmat <- function(x, def,
   }
   
   if (missing(flow_run_path)) {
-    flow_run_path = get_opts("flow_run_path")
+    flow_run_path = opts_flow$get("flow_run_path")
     message("> Using flow_run_path default: ", flow_run_path);
   }
   
   
   if(verbose)
-    message(">        Checking flow definition and flow matrix for consistency...")
+    message("> checking flow definition and flow matrix for consistency...")
   
   # ---  COMPARE flowdef and flowmat jobnames
   msg = c("--> flowdef jobs: ", paste(def$jobname, collapse = " "),
@@ -208,7 +242,7 @@ to_flow.flowmat <- function(x, def,
     
     x2 = subset(x, x$samplename == samp)
     if(verbose)
-      message(">        Working on... ", samp)
+      message(">  working on... ", samp)
     
     ## Compare flowdef and flowmat, AGAIN
     ## in case of more complex flows like fastq_mutect
@@ -264,7 +298,7 @@ proc_jobs <- function(x,
                       qobj,
                       def,
                       desc,
-                      verbose = get_opts("verbose")
+                      verbose = opts_flow$get("verbose")
                       
 ){
   
@@ -330,13 +364,17 @@ proc_jobs <- function(x,
 #' @rdname to_flow
 #' @importFrom utils packageVersion
 #' @importFrom params kable
-to_flow.list <- function(x, def, 
+to_flow.list <- function(x, def,
+                         
                          flowname, 
                          flow_run_path, 
                          desc, 
                          qobj, 
-                         module_cmds = '',
-                         verbose = get_opts("verbose"),...){
+                         
+                         module_cmds = opts_flow$get("module_cmds"),
+                         
+                         verbose = opts_flow$get("verbose"), ...){
+  
   ## --- qobj, missing only works for arguments
   # 	if(is.flowmat(x[[1]])){
   # 		warning("to_flow supports a list of commands as a input not list of flowmats.")
@@ -354,8 +392,11 @@ to_flow.list <- function(x, def,
   })
   
   fobj <- flow(jobs = jobs,
-               desc = desc, name = flowname,
+               desc = desc, 
+               name = flowname,
+               
                mode = "scheduler",
+               
                module_cmds = module_cmds,
                version = as.character(packageVersion("flowr")),
                flow_run_path = flow_run_path)

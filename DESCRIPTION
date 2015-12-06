@@ -6,11 +6,11 @@ Description: This framework allows you to design and implement complex
     been built keeping in mind the needs of bioinformatics workflows. However, it is
     easily extendable to any field where a series of steps (shell commands) are to
     be executed in a (work)flow.
-Version: 0.9.8.9019
+Version: 0.9.9.5
 Depends:
     R (>= 3.0.2),
     methods,
-    params  (>= 0.2.8),
+    params  (>= 0.3),
     utils
 Imports:
     diagram,
