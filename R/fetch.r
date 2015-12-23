@@ -161,7 +161,7 @@ fetch_pipes <- function(x,
 	if(verbose > 1 & !silent)
 		if(length(r) == 0)
 			warning(error("no.pipe"), paste(x, collapse = "\n"))
-	invisible(pipes)
+	return(pipes)
 
 }
 
