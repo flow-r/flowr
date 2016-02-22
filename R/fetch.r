@@ -80,94 +80,94 @@
 #' 
 fetch <- function(x, places, urls, 
                   verbose = opts_flow$get("verbose")){
-	if(is.null(verbose))
-		verbose = FALSE
-	y = sapply(places, list.files, pattern = paste0(x, "$"),
-		full.names = TRUE)
-	y = as.character(unlist(y))
-	if(verbose > 1) 
-		message(y)
-	return(y)
+  if(is.null(verbose))
+    verbose = FALSE
+  y = sapply(places, list.files, pattern = paste0(x, "$"),
+             full.names = TRUE)
+  y = as.character(unlist(y))
+  if(verbose > 1) 
+    message(y)
+  return(y)
 }
 
 #' @rdname fetch
 #'
 #' @export
 fetch_pipes <- function(x,
-												places,
-												last_only = FALSE,
-												urls = opts_flow$get("flowr_pipe_urls"),
-												silent = FALSE,
-												verbose = opts_flow$get("verbose"),
-												ask = TRUE){
-	if(missing(places)){
-		places = c(
-			system.file(package = "flowr", "pipelines"),
-			system.file(package = "flowr", "inst/pipelines"),
-			system.file(package = "ngsflows", "pipelines"),
-			system.file(package = "ngsflows", "inst/pipelines"),
-			strsplit(opts_flow$get("flow_pipe_paths"), ",")[[1]],
-			getwd())
-	}
-
-	if(missing(x)){
-		message("Since no search pattern was supplied, here is the complete list of available pipelines:")
-		x = ".*"
-	}
-	
-	ext = tools::file_ext(x)
-	if(!ext == ""){
-		warning("> It is best to supply only the name of the pipeline, without the extension. ", 
-						"We add a .R extention before searching. Also, this name also corresponds, ",
-						"to the R function.")
-	}else{
-		ext = ".R" ## default extension of all pipelines.
-	}
-	
-
-	## in case of multiple files, use the last one
-	r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
-	
-	## seemed travis was repeating some of them
-	## seen here: http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#available-pipelines
-	r = unique(r)
-	
-	#r = tail(r, 1)
-	def = gsub("R$", "def", r)
-	def = ifelse(file.exists(def), def, NA)
-	
-	conf = gsub("R$", "conf", r)
-	conf = ifelse(file.exists(conf), conf, NA)
-	
-	
-	pipes = data.frame(name = file_path_sans_ext(basename(r)), 
-										 def = def, 
-										 conf = conf, 
-										 pipe = r, stringsAsFactors = FALSE)
-
-	pipe_print = pipes;
-	pipe_print$def = basename(as.character(pipe_print$def))
-	pipe_print$conf = basename(as.character(pipe_print$conf))
-	
-	if(verbose > 0 & !silent) 
-		message(paste(kable(pipe_print), collapse = "\n"))
-
-	if(last_only){
-		if(nrow(pipes) > 1)
-			message("> Found multiple pipelines with the same name, will use the last from above list")
-		pipes = tail(pipes, 1)
-	}
-
-	if(verbose > 1 & !silent)
-		if(length(r) == 0)
-			warning(error("no.pipe"), paste(x, collapse = "\n"))
-	return(pipes)
-
+                        places,
+                        last_only = FALSE,
+                        urls = opts_flow$get("flowr_pipe_urls"),
+                        silent = FALSE,
+                        verbose = opts_flow$get("verbose"),
+                        ask = TRUE){
+  if(missing(places)){
+    places = c(
+      system.file(package = "flowr", "pipelines"),
+      system.file(package = "flowr", "inst/pipelines"),
+      system.file(package = "ngsflows", "pipelines"),
+      system.file(package = "ngsflows", "inst/pipelines"),
+      strsplit(opts_flow$get("flow_pipe_paths"), ",")[[1]],
+      getwd())
+  }
+  
+  if(missing(x)){
+    message("Since no search pattern was supplied, here is the complete list of available pipelines:")
+    x = ".*"
+  }
+  
+  ext = tools::file_ext(x)
+  if(!ext == ""){
+    warning("> It is best to supply only the name of the pipeline, without the extension. ", 
+            "We add a .R extention before searching. Also, this name also corresponds, ",
+            "to the R function.")
+  }else{
+    ext = ".R" ## default extension of all pipelines.
+  }
+  
+  
+  ## in case of multiple files, use the last one
+  r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
+  
+  ## seemed travis was repeating some of them
+  ## seen here: http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#available-pipelines
+  r = unique(r)
+  
+  #r = tail(r, 1)
+  def = gsub("R$", "def", r)
+  def = ifelse(file.exists(def), def, NA)
+  
+  conf = gsub("R$", "conf", r)
+  conf = ifelse(file.exists(conf), conf, NA)
+  
+  
+  pipes = data.frame(name = file_path_sans_ext(basename(r)), 
+                     def = def, 
+                     conf = conf, 
+                     pipe = r, stringsAsFactors = FALSE)
+  
+  pipe_print = pipes;
+  pipe_print$def = basename(as.character(pipe_print$def))
+  pipe_print$conf = basename(as.character(pipe_print$conf))
+  
+  if(verbose > 0 & !silent) 
+    message(paste(kable(pipe_print), collapse = "\n"))
+  
+  if(last_only){
+    if(nrow(pipes) > 1)
+      message("> Found multiple pipelines with the same name, will use the last from above list")
+    pipes = tail(pipes, 1)
+  }
+  
+  if(verbose > 1 & !silent)
+    if(length(r) == 0)
+      warning(error("no.pipe"), paste(x, collapse = "\n"))
+  return(pipes)
+  
 }
 
 
 load_pipe <- function(x){
-	#aln_bwa_merge
+  #aln_bwa_merge
 }
 
 
@@ -175,35 +175,36 @@ load_pipe <- function(x){
 #' 
 #' @export
 fetch_conf <- function(x = "flowr.conf", places, ...){
-	if(missing(places)){
-		places = c(
-			system.file(package = "flowr", "conf"),
-			system.file(package = "flowr", "inst/conf"),
-			system.file(package = "ngsflows", "conf"),
-			system.file(package = "ngsflows", "inst/conf"),
-			opts_flow$get("flow_conf_path"), getwd())
-	}
-	
-	ext = tools::file_ext(x)
-	if(ext == "")
-		x = paste0(x, ".conf")
-
-	x = paste0(x, "$") ## x should be a full file name
-	fetch(x, places = places, ...)
+  if(missing(places)){
+    places = c(
+      file.path(path.expand("~"), ".flowr"),
+      system.file(package = "flowr", "conf"),
+      system.file(package = "flowr", "inst/conf"),
+      system.file(package = "ngsflows", "conf"),
+      system.file(package = "ngsflows", "inst/conf"),
+      opts_flow$get("flow_conf_path"), getwd())
+  }
+  
+  ext = tools::file_ext(x)
+  if(ext == "")
+    x = paste0(x, ".conf")
+  
+  x = paste0(x, "$") ## x should be a full file name
+  fetch(x, places = places, ...)
 }
 
 
 search_conf <- function(...){
-	.Deprecated("fetch_conf")
-	fetch_conf(...)
+  .Deprecated("fetch_conf")
+  fetch_conf(...)
 }
 
 ## testing....
 
 
 avail_pipes <- function(){
-	#urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
-	#urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
-
+  #urls = "https://api.github.com/repositories/19354942/contents/inst/examples?recursive=1"
+  #urls = "https://api.github.com/repos/sahilseth/flowr/git/trees/master?recursive=1"
+  
 }
 
