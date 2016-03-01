@@ -89,7 +89,7 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 ### Resources
 - For a quick overview, you may browse through,
  these [introductory slides](http://sahilseth.github.io/slides/flowrintro).
-- The [overview](http://docs.flowr.space/docs.html) provides additional details regarding
+- The [overview](http://docs.flowr.space/overview.html) provides additional details regarding
 the ideas and concepts used in flowr
 - We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
 new pipeline
