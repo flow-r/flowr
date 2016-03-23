@@ -36,16 +36,17 @@ tl;dr (**summary of changes**)
 
 - Better handling of multiple flows in terms of running and re-running.
 - Nicer and cleaner messages.
-
+- Add two additional lines in `flowr.conf` (`modules_cmds` and `local_cores`), after upgrading the package.
+Everything else is compatible with previous versions.
 
 **additions/changes to `flowr.conf` file**
 
-- **New:** option local_cores, which determines (max) number of cores to use when running local jobs.
-- **New:**: Now you can add a `module_cmds` variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:
+- **New**: option local_cores, which determines (max) number of cores to use when running local jobs.
 - **New**: `flow_pipe_paths` now supports multiple paths, seperated by comma. The `fetch_pipes()` would split the vector at commas.
 
-
 - **IMP**: New version needs additional components in the `flowr.conf` file
+
+- **New**: Now you can add a `module_cmds` variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:
 
 ```diff
 # version >= 0.9.8.9004
@@ -77,11 +78,11 @@ flowr status x=.
 
 **addition/changes to `run()` and `rerun()` functions**
 
-- **New**: run function now accepts a custom configuration [`conf`], parameter. See `help(flowr::run)` for detail.
-The conf file would specify various parameters used for that pipeline.
-- **New**: `run()` re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (trial feature).
+- **New**: run function now accepts a custom configuration [`conf`], parameter. See `help(flowr::run)` for more details. This enables one, to specify custom parameters used for that pipeline.
 - **New**: Now `rerun()` supports multiple folders. Basically, one may specify a parent folder which has multiple flowr runs and ask it to re-run **ALL** of them again, from a specific intermediate step.
 - **New**: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean and debugging life easier.
+
+- **New**: `run()` now supports, re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (experimental feature).
 
 
 **other changes**
