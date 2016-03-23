@@ -119,7 +119,10 @@ plot_flow(fobj)     # ?plot_flow for more information
 plot_flow(flowdef) # plot_flow works on flow definition as well
 ```
 
-![Flow chart describing process for example 1](flowr_overview_files/figure-html/plotit-1.png) 
+<div class="figure">
+<img src="flowr_overview_files/figure-html/plotit-1.png" alt="Flow chart describing process for example 1"  />
+<p class="caption">Flow chart describing process for example 1</p>
+</div>
 
 Refer to [plot_flow's help section](http://docs.flowr.space/rd.html#plot_flow) for more details.
 
@@ -415,7 +418,7 @@ Relationship between steps A and B is best defined as `serial`. Step A (A1 throu
 
 
 
-![](flowr_overview_files/figure-html/plot_one_one-1.png) 
+![](flowr_overview_files/figure-html/plot_one_one-1.png)
 
 ## Many to One (gather)
 
@@ -478,7 +481,7 @@ D         scatter    C           burst
 plot_flow(ex2def)
 ```
 
-![](flowr_overview_files/figure-html/plot_abcd-1.png) 
+![](flowr_overview_files/figure-html/plot_abcd-1.png)
 
 <div class="alert alert-info" role="alert">
 There is a darker more prominent shadow to indicate 

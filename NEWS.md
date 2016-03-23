@@ -23,9 +23,14 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 <br>
 
-flowr 0.9.9.2 (cherries)
+flowr 0.9.XX
 ----------------------------------------------
-> 2015-11-20
+> Current
+
+
+flowr 0.9.9.5 (cherries)
+----------------------------------------------
+> 2015-12-03
 
 tl;dr (**summary of changes**)
 
