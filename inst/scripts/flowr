@@ -68,8 +68,11 @@ flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=sta
 # ------------------------------------ parse args, and run ----------------------------------
 # parse all arugments using the funr()
 # then run the required function, with specified paramaters
-out = funr(args = commandArgs(trailingOnly = TRUE), script_name = "flowr", help_text = help_text)
+out = funr(args = commandArgs(trailingOnly = TRUE), 
+           script_name = "flowr", help_text = help_text)
 
+class(out)[1]
+print(out)
 # parse the output nicely using render_funr
 funr::render_funr(out)
 

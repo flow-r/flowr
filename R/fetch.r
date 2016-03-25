@@ -125,7 +125,7 @@ fetch_pipes <- function(x,
   }
   
   
-  ## in case of multiple files, use the last one
+  # in case of multiple files, use the last one
   r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
   
   ## seemed travis was repeating some of them
@@ -149,6 +149,10 @@ fetch_pipes <- function(x,
   pipe_print$def = basename(as.character(pipe_print$def))
   pipe_print$conf = basename(as.character(pipe_print$conf))
   
+  if(verbose > 0 & !silent)
+    if(length(r) == 0)
+      stop(error("no.pipe"), paste(x, collapse = "\n"))
+
   if(verbose > 0 & !silent) 
     message(paste(kable(pipe_print), collapse = "\n"))
   
@@ -158,11 +162,7 @@ fetch_pipes <- function(x,
     pipes = tail(pipes, 1)
   }
   
-  if(verbose > 1 & !silent)
-    if(length(r) == 0)
-      warning(error("no.pipe"), paste(x, collapse = "\n"))
   return(pipes)
-  
 }
 
 
