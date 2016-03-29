@@ -115,7 +115,7 @@ fetch_pipes <- function(x,
   }
   
   if(verbose)
-    message("> searching for pipes in the following places: \n", paste(na.omit(places), collapse = "\n"), "\n")
+    message("> searching for pipes in the following places: \n  ", paste(na.omit(places), collapse = "\n  "), "\n")
   
   if(missing(x)){
     message("> since no search pattern was supplied, here is the complete list of available pipelines:")
@@ -126,16 +126,25 @@ fetch_pipes <- function(x,
   
   ext = tools::file_ext(x)
   if(!ext == ""){
+    # removing extension
+    x = gsub(paste0(ext, "$"), "", x)
     warning("> It is best to supply only the name of the pipeline, without the extension. ", 
             "We add a .R extention before searching. Also, this name also corresponds, ",
             "to the R function.")
   }else{
-    ext = ".R" ## default extension of all pipelines.
+    ext = ".R" # default extension of all pipelines.
   }
   
+  # first check if its a full path
+  fl = paste0(x, ext)
+  if(file.exists(fl))
+    r = fl
+  else
+    r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
   
-  # in case of multiple files, use the last one
-  r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
+  if(length(r) == 0){
+    #message("> no pipeline found. Downloading from github, not implemented yet.")
+  }
   
   ## seemed travis was repeating some of them
   ## seen here: http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#available-pipelines
@@ -162,7 +171,7 @@ fetch_pipes <- function(x,
   #print(nrow(pipes))
   #print(pipes)
   if(nrow(pipes) == 0)
-    stop("> Could not find a pipeline called '", x, "'. Run 'flowr fetch_pipes' to see the full list.\n")
+    stop("> could not find a pipeline called '", x, "'. Run 'flowr fetch_pipes' to see the full list.\n")
     #stop(error("no.pipe"), paste(x, collapse = "\n"))
 
   
@@ -179,7 +188,7 @@ fetch_pipes <- function(x,
     pipes = tail(pipes, 1)
   }
   
-  return(pipes)
+  invisible(pipes)
 }
 
 
@@ -194,12 +203,13 @@ load_pipe <- function(x){
 fetch_conf <- function(x = "flowr.conf", places, ...){
   if(missing(places)){
     places = c(
-      file.path(path.expand("~"), ".flowr"),
       system.file(package = "flowr", "conf"),
       system.file(package = "flowr", "inst/conf"),
       system.file(package = "ngsflows", "conf"),
       system.file(package = "ngsflows", "inst/conf"),
-      opts_flow$get("flow_conf_path"), getwd())
+      file.path(path.expand("~"), "flowr/conf/flowr.conf"),
+      opts_flow$get("flow_conf_path"), 
+      getwd())
   }
   
   ext = tools::file_ext(x)

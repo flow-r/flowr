@@ -85,7 +85,8 @@ run <- function(x,
   
   ## --- source the file and get the main function from it
   source(pip$pipe, TRUE)
-  func = get(x) ## find function of the original name
+  # find function of the original name
+  func = get(basename(x)) 
   
   
   message("\n> loading confs....")
