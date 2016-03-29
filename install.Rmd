@@ -91,7 +91,7 @@ Initially, we can test this locally, and later on a specific HPCC platform.
 ## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(pipe='sleep_pipe', platform='local', execute=TRUE)
+run(x='sleep_pipe', platform='local', execute=TRUE)
 ```
 
 If this completes successfully, we can try this on a computing cluster; where this would submit

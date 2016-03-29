@@ -179,7 +179,7 @@ Please use &#39;flowr -h function&#39; to obtain further information about the u
 <pre><code>## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(pipe=&#39;sleep_pipe&#39;, platform=&#39;local&#39;, execute=TRUE)</code></pre>
+run(x=&#39;sleep_pipe&#39;, platform=&#39;local&#39;, execute=TRUE)</code></pre>
 <p>If this completes successfully, we can try this on a computing cluster; where this would submit a few interconnected jobs.</p>
 <p>Several platforms are supported out of the box (torque, moab, sge, slurm and lsf), you may use the platform variable to switch between platforms.</p>
 <pre><code>flowr run pipe=sleep_pipe platform=lsf execute=TRUE
