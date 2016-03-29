@@ -11,10 +11,12 @@
 # ------------------------------------ install libraries ----------------------------------
 # check if flowr, funr is not installed and install it
 options(repos = c("CRAN" = "http://cran.rstudio.com", DRAT = "http://sahilseth.github.io/drat"))
+if(!require(params, quietly = TRUE)) 
+  install.packages("params")
 if(!require(funr, quietly = TRUE)) 
-	install.packages("funr")
-if(!require(flowr, quietly = TRUE)) 
-	install.packages("flowr")
+  install.packages("funr")
+if(!suppressPackageStartupMessages(require(flowr, quietly = TRUE))) 
+  install.packages("flowr")
 
 # ------------------------------------ load libraries ----------------------------------
 suppressWarnings(suppressMessages(library(funr, verbose = FALSE, quietly = TRUE, warn.conflicts = FALSE)))
@@ -71,8 +73,8 @@ flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=sta
 out = funr(args = commandArgs(trailingOnly = TRUE), 
            script_name = "flowr", help_text = help_text)
 
-class(out)[1]
-print(out)
+#class(out)[1]
+#print(out)
 # parse the output nicely using render_funr
 funr::render_funr(out)
 

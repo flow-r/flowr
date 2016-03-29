@@ -1,3 +1,10 @@
+#' ---
+#' 
+#' ---
+#' 
+#' Description:
+#' This script is used by read the docs, and has been depreciated now.
+
 
 install.packages("drat", repos = "http://cran.rstudio.com")
 library(drat)

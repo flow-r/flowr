@@ -1,5 +1,13 @@
 #!/usr/bin/env Rscript
 
+#' ---
+#' 
+#' ---
+#' 
+#' Description:
+#' This script is used by packagedocs
+
+
 message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
 if(!require(drat))
@@ -103,7 +111,8 @@ render("install.Rmd", output_format = pd_expand)
 check_output("install.html")
 
 message("rendering RD files ....", getwd())
-dir.create(file.path(code_path, "inst/staticdocs"))
+if(!file.exists(file.path(code_path, "inst/staticdocs")))
+  dir.create(file.path(code_path, "inst/staticdocs"))
 #devtools::load_all("~/Dropbox/public/github_packagedocs/")
 #debug(packagedocs:::get_rd_data)
 #debug(rd_template)
@@ -140,6 +149,6 @@ if(FALSE){
 
 
 # copy the PDFs to github, to make them easier to see:
-file.copy(c("flowr_manual.pdf", "flowr_pkg_ref.pdf"), code_path)
+file.copy(c("flowr_manual.pdf", "flowr_pkg_ref.pdf"), code_path, overwrite = TRUE)
 setwd(code_path)
 

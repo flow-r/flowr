@@ -100,6 +100,7 @@ fetch_pipes <- function(x,
                         silent = FALSE,
                         verbose = opts_flow$get("verbose"),
                         ask = TRUE){
+  
   if(missing(places)){
     places = c(
       system.file(package = "flowr", "pipelines"),
@@ -108,10 +109,18 @@ fetch_pipes <- function(x,
       system.file(package = "ngsflows", "inst/pipelines"),
       strsplit(opts_flow$get("flow_pipe_paths"), ",")[[1]],
       getwd())
+    
+    # remove missing paths
+    places = places[!places == ""]
   }
   
+  if(verbose)
+    message("> searching for pipes in the following places: \n", paste(na.omit(places), collapse = "\n"), "\n")
+  
   if(missing(x)){
-    message("Since no search pattern was supplied, here is the complete list of available pipelines:")
+    message("> since no search pattern was supplied, here is the complete list of available pipelines:")
+            # "You need to specify the name of the pipeline to run, like this:\n")
+            # "\nflowr run x=sleep_pipe\n")
     x = ".*"
   }
   
@@ -145,19 +154,27 @@ fetch_pipes <- function(x,
                      conf = conf, 
                      pipe = r, stringsAsFactors = FALSE)
   
+  # for a pipeline, def is ESSENTIAL
+  pipes = subset(pipes, !is.na(def))
+
+  # no pipe!
+  # if(verbose > 0 & !silent)
+  #print(nrow(pipes))
+  #print(pipes)
+  if(nrow(pipes) == 0)
+    stop("> Could not find a pipeline called '", x, "'. Run 'flowr fetch_pipes' to see the full list.\n")
+    #stop(error("no.pipe"), paste(x, collapse = "\n"))
+
+  
   pipe_print = pipes;
   pipe_print$def = basename(as.character(pipe_print$def))
   pipe_print$conf = basename(as.character(pipe_print$conf))
   
-  if(verbose > 0 & !silent)
-    if(length(r) == 0)
-      stop(error("no.pipe"), paste(x, collapse = "\n"))
-
   if(verbose > 0 & !silent) 
     message(paste(kable(pipe_print), collapse = "\n"))
   
   if(last_only){
-    if(nrow(pipes) > 1)
+    if(nrow(pipes) > 1 & x != ".*")
       message("> Found multiple pipelines with the same name, will use the last from above list")
     pipes = tail(pipes, 1)
   }
