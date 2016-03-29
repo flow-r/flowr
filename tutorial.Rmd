@@ -323,7 +323,7 @@ flow definition and R function remains intact.
 Refer to help section on [run](rd.html#run) for more details.
 
 <div class="alert alert-info" role="alert">
-**Tip:** 
+**Tip**:
 Its important to note, that in this example we are using R functions, but any other language can be used to create a tab-delimited flowmat file, and submitted using `submit_flow` command.
 </div>
 

@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2015-12-03" />
+    <meta name="date" content="2016-03-29" />
   
   <!---  <title>flowr</title> --->
   
@@ -20,7 +20,7 @@
   
   
 
-    <script src="assets/jquery-1.11.0/jquery.min.js"></script>
+    <script src="assets/jquery-1.11.3/jquery.min.js"></script>
   <link href="assets/bootstrap-3.3.2/css/bootstrap.min.css" rel="stylesheet" />
   <script src="assets/bootstrap-3.3.2/js/bootstrap.min.js"></script>
   <script src="assets/bootstrap-3.3.2/shim/html5shiv.min.js"></script>
@@ -125,7 +125,8 @@
             <div class="col-md-3" id="sidebar-col">
         <div id="toc">
           <ul>
-          <li><a href="#flowr-0.9.9.2-cherries">flowr 0.9.9.2 (cherries)</a></li>
+          <li><a href="#flowr-0.9.xx">flowr 0.9.XX</a></li>
+          <li><a href="#flowr-0.9.9.5-cherries">flowr 0.9.9.5 (cherries)</a></li>
           <li><a href="#flowr-0.9.8-blueberries">flowr 0.9.8 (blueberries)</a></li>
           <li><a href="#flowr-0.9.7-apples">flowr 0.9.7 (apples)</a></li>
           <li><a href="#flowr-0.9.6.13">flowr 0.9.6.13</a></li>
@@ -139,22 +140,29 @@
       
 <div id="content-top"></div>
 <p><br></p>
-<div id="flowr-0.9.9.2-cherries" class="section level2">
-<h2>flowr 0.9.9.2 (cherries)</h2>
+<div id="flowr-0.9.xx" class="section level2">
+<h2>flowr 0.9.XX</h2>
 <blockquote>
-<p>2015-11-20</p>
+<p>Current</p>
+</blockquote>
+</div>
+<div id="flowr-0.9.9.5-cherries" class="section level2">
+<h2>flowr 0.9.9.5 (cherries)</h2>
+<blockquote>
+<p>2015-12-03</p>
 </blockquote>
 <p>tl;dr (<strong>summary of changes</strong>)</p>
 <ul>
 <li>Better handling of multiple flows in terms of running and re-running.</li>
 <li>Nicer and cleaner messages.</li>
+<li>Add two additional lines in <code>flowr.conf</code> (<code>modules_cmds</code> and <code>local_cores</code>), after upgrading the package. Everything else is compatible with previous versions.</li>
 </ul>
 <p><strong>additions/changes to <code>flowr.conf</code> file</strong></p>
 <ul>
-<li><strong>New:</strong> option local_cores, which determines (max) number of cores to use when running local jobs.</li>
-<li><strong>New:</strong>: Now you can add a <code>module_cmds</code> variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:</li>
+<li><strong>New</strong>: option local_cores, which determines (max) number of cores to use when running local jobs.</li>
 <li><p><strong>New</strong>: <code>flow_pipe_paths</code> now supports multiple paths, seperated by comma. The <code>fetch_pipes()</code> would split the vector at commas.</p></li>
 <li><p><strong>IMP</strong>: New version needs additional components in the <code>flowr.conf</code> file</p></li>
+<li><p><strong>New</strong>: Now you can add a <code>module_cmds</code> variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:</p></li>
 </ul>
 <pre class="diff"><code># version &gt;= 0.9.8.9004
 # max number of cores to use when running on a local server
@@ -178,10 +186,10 @@ module_cmds &#39;&#39;
 flowr status x=.</code></pre>
 <p><strong>addition/changes to <code>run()</code> and <code>rerun()</code> functions</strong></p>
 <ul>
-<li><strong>New</strong>: run function now accepts a custom configuration [<code>conf</code>], parameter. See <code>help(flowr::run)</code> for detail. The conf file would specify various parameters used for that pipeline.</li>
-<li><strong>New</strong>: <code>run()</code> re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (trial feature).</li>
+<li><strong>New</strong>: run function now accepts a custom configuration [<code>conf</code>], parameter. See <code>help(flowr::run)</code> for more details. This enables one, to specify custom parameters used for that pipeline.</li>
 <li><strong>New</strong>: Now <code>rerun()</code> supports multiple folders. Basically, one may specify a parent folder which has multiple flowr runs and ask it to re-run <strong>ALL</strong> of them again, from a specific intermediate step.</li>
-<li><strong>New</strong>: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean and debugging life easier.</li>
+<li><p><strong>New</strong>: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean and debugging life easier.</p></li>
+<li><p><strong>New</strong>: <code>run()</code> now supports, re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (experimental feature).</p></li>
 </ul>
 <p><strong>other changes</strong></p>
 <ul>
@@ -386,7 +394,7 @@ jobname prev.sub_type --&gt; dep_type --&gt; sub_type: relationship
       <div class="col-md-6">
       	<p class = "pull-left">
               	<left>
-        &copy; Licence MIT, 2015
+        &copy; Licence MIT, 2016
       	</left>
               	</p>
       	</div>
