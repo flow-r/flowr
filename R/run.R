@@ -94,12 +94,13 @@ run <- function(x,
   confs = c(fetch_conf("flowr.conf"),
             fetch_conf("ngsflows.conf"),
             pip$conf)
-  print(kable(as.data.frame(confs)))
-  opts_flow$load(confs, verbose = FALSE, check = FALSE)
   
   if(!missing(conf))
-    opts_flow$load(conf, verbose = FALSE, check = FALSE)
+    confs = c(confs, conf)
   
+  print(kable(as.data.frame(confs)))
+  opts_flow$load(confs, verbose = FALSE, check = FALSE)
+
   message("\n> creating flowmat....")
   ## crate a flowmat
   args <- list(...)
