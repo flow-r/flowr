@@ -84,7 +84,7 @@ run <- function(x,
   
   
   ## --- source the file and get the main function from it
-  source(pip$pipe, TRUE)
+  source(pip$pipe, TRUE); # may load addional conf
   # find function of the original name
   func = get(basename(x)) 
   
@@ -118,7 +118,7 @@ run <- function(x,
     fobj = to_flow(x = out$flowmat,
                    def = def,
                    platform = platform,
-                   flowname = x,
+                   flowname = basename(x),
                    module_cmds = module_cmds,
                    flow_run_path = flow_run_path)
     
