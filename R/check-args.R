@@ -43,8 +43,9 @@ check_args <- function(ignore, select){
 		args = args[args %in% select]
 	
 	miss = sapply(args, function(var){
-		val = get(var, env)
-		if(is.null(val))
+	  
+		val = try(get(var, env), silent = TRUE)
+		if(is.null(val) | missing(var))
 		  return(var)
 		else
 		  return(NULL)
@@ -53,17 +54,17 @@ check_args <- function(ignore, select){
 	
 	if ( !is.null(miss) ){
 		message("Checking arguments for function: ", fn, "\n")
-		message("value of following variables is null: '", paste(names(miss), collapse = ", "))
+		message("value of following variables is null: ", paste(names(miss), collapse = ", "))
 		stop("There are several options to fix this:
 				 1. Use opts_flow$set(variable1 = 'value', var1 = 'value') format to define these variables.
 				 2. If this function was called directly, you may simply supply these arguments to this function.
 				 3. Add these parameters to configuration files.
-				 Two such examples are: ngsflows.conf and flowr.conf which reside in ~/flowr/conf folder < or equivalent >. ",
-				 "Typically one would add generic options in flowr.conf and ngs specific options in ngsflows.conf. ", 
+				 One such example is flowr.conf which resides in ~/flowr/conf folder < or equivalent >. ",
 				 "Additionally, options very specific to a single pipeline in may be put in <mypipeline>.conf. ",
 				 "The file <mypipeline>.conf sits in the same place as the pipeline itself. ",
 				 "Try fetch_pipes() for examples and help(fetch_pipes) for more details.")
 	}
+	
 	lst <- lapply(args, get, env)
 	names(lst) = args
 	invisible(lst)
