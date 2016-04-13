@@ -80,7 +80,7 @@ out = funr(args = commandArgs(trailingOnly = TRUE),
 # parse the output nicely using render_funr
 funr::render_funr(out)
 
-
+#print(detect_home())
 
 
 
