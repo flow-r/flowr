@@ -1,7 +1,5 @@
-#!/usr/bin/env Rscript
-
 #' ---
-#' 
+#' output: html_document
 #' ---
 #' 
 #' Description:
@@ -10,6 +8,7 @@
 #' run this script to update the docs.
 #' The last step is to commit the change to gh-pages branch.
 
+#rmarkdown::render("~/Dropbox/public/github_flow/misc/build.R")
 
 message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
@@ -20,9 +19,9 @@ library(drat)
 repo = addRepo("sahilseth")
 
 #devtools::install_github("sahilseth/ngsflows")
-if(!require(ngsflows))
-  install.packages("ngsflows")
-library(ngsflows)
+if(!require(ultraseq))
+  install.packages("ultraseq")
+library(ultraseq)
 
 library(staticdocs)
 library(packagedocs)
@@ -30,9 +29,8 @@ require(flowr)
 require(knitr)
 
 
-
 if(Sys.info()['sysname'] == "Darwin"){
-  outwd = "~/Dropbox/public/github_flowrpages"
+  outwd = "~/Dropbox/public/flow-r/flowrpages"
   code_path <- "~/Dropbox/public/github_flow"
 }else{
   outwd = "gh-pages"
