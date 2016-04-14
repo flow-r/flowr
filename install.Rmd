@@ -178,6 +178,26 @@ Here are some helpful guides and details on the platforms:
 
 [Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
 
+
+## flowr configuration file
+
+**This needs expansion**
+
+flowr has a configuration file, with parameters regarding default paths, verboseness etc. 
+flowr loads this default configuration from the package installation. 
+In addition, to customize the parameters, simply create a tab-delimited file called `~/.flowr`. 
+An example of this file is available [here](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf)
+
+**Addtional files loaded if available**:
+
+-  (flow installation)/flowr.conf
+-  (ngsflows installation)/ngsflows.conf
+- `~/flowr/conf/flowr.conf`
+- `~/.flowr`
+      
+      
+
+
 # Troubleshooting & FAQs
 
 ## Errors in job submission

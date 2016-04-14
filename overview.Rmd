@@ -30,27 +30,27 @@ source: "github.com/sahilseth/flowr/tree/devel/vignettes/flowr_overview.Rmd"
 ---
 
 
-```{r libs, echo = FALSE, message = FALSE}
+```{r load_libs, echo = FALSE, message = FALSE}
 library(knitr)
 library(flowr)
 ```
 
+
+
 # Get started
 
-
-
-```{r, message=FALSE}
+```{r load_flowr, message=FALSE}
 library(flowr)
 ```
 
-```{r eval=FALSE}
+```{r setup, eval=FALSE}
 setup()
 ```
 
 This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
 For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
 
-```{r, echo=FALSE, eval=FALSE}
+```{r echo=FALSE, eval=FALSE}
 #We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory.
 
 ```
@@ -74,7 +74,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 ## Toy example
 
 
-```{r, message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
+```{r message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE}
 library(DiagrammeR)
 mermaid("
 graph LR
@@ -111,7 +111,7 @@ kable(flow_mat)
 Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: [flow_def](/docs.html#flow-definition). 
 
 
-```{r, message=FALSE, echo=FALSE}
+```{r message=FALSE, echo=FALSE}
 kable(flow_def)
 ```
 
@@ -126,7 +126,7 @@ We use the two files descirbed above and stich them to create a `flow object`
 (which contains all the information we need for cluster submission). 
 
 
-```{r, message=FALSE}
+```{r message=FALSE}
 ex = file.path(system.file(package = "flowr"), "pipelines")
 flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
 flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))

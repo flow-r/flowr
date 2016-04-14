@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2016-03-29" />
+    <meta name="date" content="2016-04-14" />
   
   <!---  <title>flowr</title> --->
   
@@ -129,6 +129,7 @@
           <li><a href="#test">Test</a></li>
           <li><a href="#advanced-configuration">Advanced Configuration</a><ul>
           <li><a href="#hpcc-support-overview">HPCC Support Overview</a></li>
+          <li><a href="#flowr-configuration-file">flowr configuration file</a></li>
           </ul></li>
           <li><a href="#troubleshooting-faqs">Troubleshooting &amp; FAQs</a><ul>
           <li><a href="#errors-in-job-submission">Errors in job submission</a></li>
@@ -246,6 +247,18 @@ qsub --help</code></pre>
 </ul>
 <p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 </div>
+<div id="flowr-configuration-file" class="section level2">
+<h2>flowr configuration file</h2>
+<p><strong>This needs expansion</strong></p>
+<p>flowr has a configuration file, with parameters regarding default paths, verboseness etc. flowr loads this default configuration from the package installation. In addition, to customize the parameters, simply create a tab-delimited file called <code>~/.flowr</code>. An example of this file is available <a href="https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf">here</a></p>
+<p><strong>Addtional files loaded if available</strong>:</p>
+<ul>
+<li>(flow installation)/flowr.conf</li>
+<li>(ngsflows installation)/ngsflows.conf</li>
+<li><code>~/flowr/conf/flowr.conf</code></li>
+<li><code>~/.flowr</code></li>
+</ul>
+</div>
 </div>
 <div id="troubleshooting-faqs" class="section level1">
 <h1>Troubleshooting &amp; FAQs</h1>
@@ -315,7 +328,7 @@ load_opts(&quot;flowr.conf&quot;) ## visit sahilseth.github.io/params for more d
 <p>Confirm that the dependency parameter is specified correctly in the submission scripts:</p>
 <pre><code>wd=~/flowr/runs/sleep_pipe-samp1-20150923-11-20-39-dfvhp5CK ## path to the most recent submission
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
-<div id="flowr-configuration-file" class="section level4">
+<div id="flowr-configuration-file-1" class="section level4">
 <h4>Flowr Configuration file</h4>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: Flowr shows too much OR too little information.</p>
