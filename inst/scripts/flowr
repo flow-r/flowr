@@ -82,6 +82,6 @@ funr::render_funr(out)
 
 #print(detect_home())
 
-
+cat("\n")
 
 
