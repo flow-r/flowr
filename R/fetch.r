@@ -205,8 +205,8 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
     places = c(
       system.file(package = "flowr", "conf"),
       system.file(package = "flowr", "inst/conf"),
-      system.file(package = "ngsflows", "conf"),
-      system.file(package = "ngsflows", "inst/conf"),
+      # system.file(package = "ngsflows", "conf"),
+      # system.file(package = "ngsflows", "inst/conf"),
       file.path(path.expand("~"), "flowr/conf/flowr.conf"),
       opts_flow$get("flow_conf_path"), 
       getwd())
