@@ -131,7 +131,7 @@ render("flowr_manual.Rmd")
 ## stuff for MAC ONLY
 if(Sys.info()['sysname'] == "Darwin"){
   system("open index.html")
-  setwd("~/Dropbox/public/github_flowrpages")
+  setwd("~/Dropbox/public/flow-r/flowrpages")
   system("rm flowr_pkg_ref.pdf;R CMD Rd2pdf --no-preview -o flowr_pkg_ref.pdf ~/Dropbox/public/github_flow")
   system("git commit -a -m 'update website'")
   system("git push")
