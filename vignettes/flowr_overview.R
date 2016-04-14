@@ -1,18 +1,18 @@
-## ----libs, echo = FALSE, message = FALSE---------------------------------
+## ----load_libs, echo = FALSE, message = FALSE----------------------------
 library(knitr)
 library(flowr)
 
-## ---- message=FALSE------------------------------------------------------
+## ----load_flowr, message=FALSE-------------------------------------------
 library(flowr)
 
-## ----eval=FALSE----------------------------------------------------------
+## ----setup, eval=FALSE---------------------------------------------------
 #  setup()
 
-## ---- echo=FALSE, eval=FALSE---------------------------------------------
+## ----echo=FALSE, eval=FALSE----------------------------------------------
 #  #We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory.
 #  
 
-## ---- message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE----
+## ----message=FALSE, echo=FALSE, fig.height=1.5, fig.width=5, eval=FALSE----
 #  library(DiagrammeR)
 #  mermaid("
 #  graph LR
@@ -29,10 +29,10 @@ flow_def = as.flowdef(file.path(ex, "sleep_pipe.def"))
 ## ----echo=FALSE----------------------------------------------------------
 kable(flow_mat)
 
-## ---- message=FALSE, echo=FALSE------------------------------------------
+## ----message=FALSE, echo=FALSE-------------------------------------------
 kable(flow_def)
 
-## ---- message=FALSE------------------------------------------------------
+## ----message=FALSE-------------------------------------------------------
 ex = file.path(system.file(package = "flowr"), "pipelines")
 flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
 flowdef = as.flowdef(file.path(ex, "sleep_pipe.def"))

@@ -3,8 +3,9 @@
 .RData
 
 .DS_Store
-vignettes/.DS_Store
 
+vignettes/.DS_Store
+vignettes/*.html
 
 README.html
 

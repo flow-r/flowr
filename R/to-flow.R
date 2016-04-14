@@ -232,7 +232,7 @@ to_flow.flowmat <- function(x, def,
   samps = unique(x$samplename)
   if (length(samps) > 1 & containerize){
     flow_run_path = file.path(flow_run_path, get_unique_id(flowname))
-    if(verbose)
+    if(verbose & submit)
       message(">         Containerizing ...", 
               "\n--> Detected multiple samples. Subsetting flowmat, would containerize this submission...", 
               "\n--> Using folder: ", flow_run_path)
