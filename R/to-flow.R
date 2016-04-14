@@ -288,7 +288,7 @@ to_flow.flowmat <- function(x, def,
 #' @export
 to_flow.data.frame = function(x, ...){
   # if a data.frame is supplied instead of a flowmat class
-  to_flow(as.flowmat(x))
+  to_flow(as.flowmat(x), ...)
 }
 
 
