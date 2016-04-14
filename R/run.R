@@ -91,9 +91,12 @@ run <- function(x,
   
   message("\n> loading confs....")
   ## load default options for the pipeline
-  confs = c(fetch_conf("flowr.conf"),
-            fetch_conf("ngsflows.conf"),
-            pip$conf)
+  confs = c(
+    file.path(path.expand("~"), ".flowr.conf"),
+    fetch_conf("flowr.conf"),
+    # fetch_conf("ngsflows.conf"),
+    pip$conf)
+  confs = na.omit(confs)
   
   if(!missing(conf))
     confs = c(confs, conf)
@@ -115,7 +118,7 @@ run <- function(x,
     def = as.flowdef(pip$def)
   
   if(missing(rerun_wd)){
-    ## create a flow object
+    # create a flow object
     fobj = to_flow(x = out$flowmat,
                    def = def,
                    platform = platform,
