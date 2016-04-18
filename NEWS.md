@@ -25,7 +25,7 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 flowr 0.9.10 (dates)
 ----------------------------------------------
-> 2016-04-15
+> 2016-04-18
 
 tl;dr (**summary of changes**)
 

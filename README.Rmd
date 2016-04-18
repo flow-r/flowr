@@ -27,7 +27,7 @@ navpills: |
 
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
-[![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
+[![cran](http://www.r-pkg.org/badges/version/flowr)](https://cran.r-project.org/package=flowr)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
@@ -42,7 +42,7 @@ navpills: |
 
 
 
-This framework allows you to design and implement complex pipelines, and
+Flowr framework allows you to design and implement complex pipelines, and
 deploy them on your institution's computing cluster. This has been built
 keeping in mind the needs of bioinformatics workflows. However, it is
 easily extendable to any field where a series of steps (shell commands)
@@ -60,6 +60,10 @@ are to be executed in a (work)flow.
 - **Lean** and **Portable**, with easy installation
 - **Fine grain** control over resources (CPU, memory, walltime, etc.) of each step.
 
+### Example
+[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](https://github.com/flow-r/fastq_bam)
+
+<!---
 - Example: 
 	- A typical case in next-generation sequencing involves processing of tens of
    [fastqs](http://en.wikipedia.org/wiki/FASTQ_format) for a sample,
@@ -72,6 +76,8 @@ are to be executed in a (work)flow.
 	flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
 	- Now consider the run has 10 samples, all of them would be procesed in
 	 parallel, spawning **thousands of cores**.
+--->
+
 
 ### A few lines, to get started
 
