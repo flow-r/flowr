@@ -10,7 +10,7 @@ output:
     toc_depth: 4
 vignette: >
   %\VignetteIndexEntry{Installation, Configuration and FAQs}
-  %\VignetteEngine{rmarkdown::render}
+  %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 packagedocs:
     toc: true
