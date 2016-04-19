@@ -1,17 +1,27 @@
-#!/usr/bin/env Rscript
+#' ---
+#' output: html_document
+#' ---
+#' 
+#' Description:
+#' This script is used by packagedocs.
+#' After making a change to the vignettes in flowr, 
+#' run this script to update the docs.
+#' The last step is to commit the change to gh-pages branch.
+
+#rmarkdown::render("~/Dropbox/public/github_flow/misc/build.R")
 
 message("installing required packages....", getwd())
 options(repos = c(CRAN = "http://cran.rstudio.com"))
 if(!require(drat))
-	install.packages("drat")
+  install.packages("drat")
 
 library(drat)
 repo = addRepo("sahilseth")
 
 #devtools::install_github("sahilseth/ngsflows")
-if(!require(ngsflows))
-	install.packages("ngsflows")
-library(ngsflows)
+if(!require(ultraseq))
+  install.packages("ultraseq")
+library(ultraseq)
 
 library(staticdocs)
 library(packagedocs)
@@ -19,17 +29,16 @@ require(flowr)
 require(knitr)
 
 
-
 if(Sys.info()['sysname'] == "Darwin"){
-	outwd = "~/Dropbox/public/github_flowrpages"
-	code_path <- "~/Dropbox/public/github_flow"
+  outwd = "~/Dropbox/public/flow-r/flowrpages"
+  code_path <- "~/Dropbox/public/github_flow"
 }else{
-	outwd = "gh-pages"
-	code_path <- "../"
+  outwd = "gh-pages"
+  code_path <- "../"
 }
 
 if(!file.exists(outwd))
-	dir.create(outwd, recursive = TRUE)
+  dir.create(outwd, recursive = TRUE)
 
 ## ---------------------------
 
@@ -60,10 +69,10 @@ setwd(outwd)
 
 theme="flatly"
 theme = list(htmltools::htmlDependency(name = "bootswatch",
-													version = "3.3.5",
-													src = "assets/bootswatch-3.3.5",
-													#system.file("html_assets/bootswatch", theme, package = "packagedocs"),
-													stylesheet = "bootstrap.css"))
+                                       version = "3.3.5",
+                                       src = "assets/bootswatch-3.3.5",
+                                       #system.file("html_assets/bootswatch", theme, package = "packagedocs"),
+                                       stylesheet = "bootstrap.css"))
 
 # set some options
 pd <- package_docs(lib_dir = "assets", toc = FALSE, template = "template.html", extra_dependencies = theme)
@@ -76,7 +85,7 @@ knitr::opts_knit$set(root.dir = normalizePath("."))
 
 message("Copying RMD files ....", getwd())
 fls = c(
-#  "README.Rmd" = "index.Rmd",
+  #  "README.Rmd" = "index.Rmd",
   "NEWS.md" = "news.Rmd",
   "vignettes/flowr_overview.Rmd" = "overview.Rmd",
   "vignettes/flowr_install.Rmd" = "install.Rmd",
@@ -103,7 +112,8 @@ render("install.Rmd", output_format = pd_expand)
 check_output("install.html")
 
 message("rendering RD files ....", getwd())
-dir.create(file.path(code_path, "inst/staticdocs"))
+if(!file.exists(file.path(code_path, "inst/staticdocs")))
+  dir.create(file.path(code_path, "inst/staticdocs"))
 #devtools::load_all("~/Dropbox/public/github_packagedocs/")
 #debug(packagedocs:::get_rd_data)
 #debug(rd_template)
@@ -120,26 +130,26 @@ render("flowr_manual.Rmd")
 
 ## stuff for MAC ONLY
 if(Sys.info()['sysname'] == "Darwin"){
-	system("open index.html")
-	setwd("~/Dropbox/public/github_flowrpages")
-	system("rm flowr_pkg_ref.pdf;R CMD Rd2pdf --no-preview -o flowr_pkg_ref.pdf ~/Dropbox/public/github_flow")
-	system("git commit -a -m 'update website'")
-	system("git push")
+  system("open index.html")
+  setwd("~/Dropbox/public/flow-r/flowrpages")
+  system("rm flowr_pkg_ref.pdf;R CMD Rd2pdf --no-preview -o flowr_pkg_ref.pdf ~/Dropbox/public/github_flow")
+  system("git commit -a -m 'update website'")
+  system("git push")
 }
 
 ## ---- create a PDF manual as well
 if(FALSE){
-	#setwd("~/Dropbox/public/github_flowrpages/flowr")
-	rd = "../../github_flow/man/to_flow.Rd"
-	require(tools)
-	Rd2latex(rd, out = "rd/to_flow.tex")
-	library(pander)
-	system("pandoc -f html -t markdown rd.html > rd2.md")
-	render("pdf.Rmd", pdf_document())
+  #setwd("~/Dropbox/public/github_flowrpages/flowr")
+  rd = "../../github_flow/man/to_flow.Rd"
+  require(tools)
+  Rd2latex(rd, out = "rd/to_flow.tex")
+  library(pander)
+  system("pandoc -f html -t markdown rd.html > rd2.md")
+  render("pdf.Rmd", pdf_document())
 }
 
 
 # copy the PDFs to github, to make them easier to see:
-file.copy(c("flowr_manual.pdf", "flowr_pkg_ref.pdf"), code_path)
+file.copy(c("flowr_manual.pdf", "flowr_pkg_ref.pdf"), code_path, overwrite = TRUE)
 setwd(code_path)
 

@@ -3,7 +3,12 @@
 .RData
 
 .DS_Store
+
 vignettes/.DS_Store
+vignettes/*.html
+vignettes/*.md
+vignettes/*.R
+vignettes/*_files
 
 
 README.html

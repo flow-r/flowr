@@ -29,23 +29,38 @@ read_fobj <- function(x){
 
 
 #' write files desribing this flow
+#'
 #' @param x path to write to
 #' @param fobj flow object
 #' @param summ a status summary.
 #' @param flow_det a flow details data.frame
+#' @param flow_mat flow matrix (of commands)
+#' @param flow_def flow definiion
 #' @param plot logical, plot or not
-write_flow_details <- function(x, fobj, summ, flow_det, plot = FALSE){
+write_flow_details <- function(x, 
+                               fobj, 
+                               summ, 
+                               flow_det, 
+                               flow_mat,
+                               flow_def,
+                               plot = FALSE){
 
 	if(!missing(summ))
-		try(write_sheet(summ, file.path(x, "flow_status.txt")), silent = TRUE)
+		try(write_sheet(summ, file.path(x, "flow_status.txt"), ext = "tsv"), silent = TRUE)
 
 	if(!missing(flow_det))
-		try(write_sheet(flow_det, file.path(x, "flow_details.txt")), silent = TRUE)
+		try(write_sheet(flow_det, file.path(x, "flow_details.txt"), ext = "tsv"), silent = TRUE)
 
 	if(!missing(fobj))
 		try(saveRDS(fobj, file = file.path(x, "flow_details.rds")), silent = TRUE)
 
-	if(plot & !missing(fobj)){
+  if(!missing(flow_mat))
+    try(write_sheet(flow_mat, file.path(x, "flow_details.mat"), ext = "tsv"), silent = TRUE)
+
+  if(!missing(flow_def))
+    try(write_sheet(flow_def, file.path(x, "flow_details.def"), ext = "tsv"), silent = TRUE)
+  
+  if(plot & !missing(fobj)){
 		if(length(fobj@jobs) > 2)
 			try(
 				plot_flow(fobj, detailed = TRUE, pdf = TRUE, type = '1',

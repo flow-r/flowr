@@ -11,10 +11,12 @@
 # ------------------------------------ install libraries ----------------------------------
 # check if flowr, funr is not installed and install it
 options(repos = c("CRAN" = "http://cran.rstudio.com", DRAT = "http://sahilseth.github.io/drat"))
+if(!require(params, quietly = TRUE)) 
+  install.packages("params")
 if(!require(funr, quietly = TRUE)) 
-	install.packages("funr")
-if(!require(flowr, quietly = TRUE)) 
-	install.packages("flowr")
+  install.packages("funr")
+if(!suppressPackageStartupMessages(require(flowr, quietly = TRUE))) 
+  install.packages("flowr")
 
 # ------------------------------------ load libraries ----------------------------------
 suppressWarnings(suppressMessages(library(funr, verbose = FALSE, quietly = TRUE, warn.conflicts = FALSE)))
@@ -49,32 +51,37 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 # directory for each flow. This is used to monitor, kill and re-run the flow.
 # wd=<path to a flowr execution folder>
 
-# get status on a batch of sample: 
-# (all flows with 'sleep_pipe' in their name are checked and their status is shown)
+# get status on a batch of samples: 
+# for example, in the following case all flows with 'sleep_pipe' 
+# in their name are checked and their status is shown
 flowr status x=~/flowr/runs/sleep_pipe*
-## Use parent folder to get summary of all the flowr
+# To get a summary of a set of flows, use the parent folder.
+# basically skip the flow name.
 flowr status x=~/flowr/runs
 
-# kill the flow
+# to kill the flow
 flowr kill x=~/flowr/runs/sleep_pipe*
-## if their are multiple flows, need to to be sure
+# if there are multiple flows, one needs to force this killing.
 flowr kill x=~/flowr/runs/sleep_pipe* force=TRUE
 
-# rerun a flow
-flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=start_from
+# to rerun a flow
+flowr rerun x=~/flowr/runs/sleep_pipe-samp1-20150921-11-51-31-F3VftKBp rerun=merge
 "
 
 
 # ------------------------------------ parse args, and run ----------------------------------
 # parse all arugments using the funr()
 # then run the required function, with specified paramaters
-out = funr(args = commandArgs(trailingOnly = TRUE), script_name = "flowr", help_text = help_text)
+out = funr(args = commandArgs(trailingOnly = TRUE), 
+           script_name = "flowr", help_text = help_text)
 
+#class(out)[1]
+#print(out)
 # parse the output nicely using render_funr
 funr::render_funr(out)
 
+#print(detect_home())
 
-
-
+cat("\n")
 
 

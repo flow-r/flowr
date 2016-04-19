@@ -4,7 +4,7 @@
 \alias{write_flow_details}
 \title{write files desribing this flow}
 \usage{
-write_flow_details(x, fobj, summ, flow_det, plot = FALSE)
+write_flow_details(x, fobj, summ, flow_det, flow_mat, flow_def, plot = FALSE)
 }
 \arguments{
 \item{x}{path to write to}
@@ -14,6 +14,10 @@ write_flow_details(x, fobj, summ, flow_det, plot = FALSE)
 \item{summ}{a status summary.}
 
 \item{flow_det}{a flow details data.frame}
+
+\item{flow_mat}{flow matrix (of commands)}
+
+\item{flow_def}{flow definiion}
 
 \item{plot}{logical, plot or not}
 }

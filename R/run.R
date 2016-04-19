@@ -66,72 +66,77 @@
 #' 
 #' }
 run <- function(x,
-	platform,
-	def, conf, 
-	wd = opts_flow$get("flow_run_path"),
-	flow_run_path = wd,
-	rerun_wd, start_from,
-	execute = FALSE,  ...){
+                platform,
+                def, conf, 
+                wd = opts_flow$get("flow_run_path"),
+                flow_run_path = wd,
+                rerun_wd, start_from,
+                execute = FALSE,  ...){
+  
+  #print(opts_flow$get("flow_run_path"))
+  ## find a Rscript with name {{x}}.R
+  
+  message("\n> fetching pipeline... ")
+  pip = fetch_pipes(x, last_only = TRUE)
+  
+  if(missing(x))
+    stop("Please choose a pipeline to run, from the above list.")
+  
+  
+  ## --- source the file and get the main function from it
+  source(pip$pipe, TRUE); # may load addional conf
+  # find function of the original name
+  func = get(basename(x)) 
+  
+  
+  message("\n> loading confs....")
+  ## load default options for the pipeline
+  confs = c(
+    file.path(path.expand("~"), ".flowr.conf"),
+    fetch_conf("flowr.conf"),
+    # fetch_conf("ngsflows.conf"),
+    pip$conf)
+  confs = na.omit(confs)
+  
+  if(!missing(conf))
+    confs = c(confs, conf)
+  
+  print(kable(as.data.frame(confs)))
+  opts_flow$load(confs, verbose = FALSE, check = FALSE)
 
-	#print(opts_flow$get("flow_run_path"))
-	## find a Rscript with name {{x}}.R
-
-	message("\n> fetching pipeline... ")
-	pip = fetch_pipes(x, last_only = TRUE)
-
-	if(missing(x))
-		stop("Please choose a pipeline to run, from the above list.")
-
-
-	## --- source the file and get the main function from it
-	source(pip$pipe, TRUE)
-	func = get(x) ## find function of the original name
-
-
-	message("\n> loading confs....")
-	## load default options for the pipeline
-	confs = c(fetch_conf("flowr.conf"),
-		fetch_conf("ngsflows.conf"),
-		pip$conf)
-	print(kable(as.data.frame(confs)))
-	opts_flow$load(confs, verbose = FALSE, check = FALSE)
-	
-	if(!missing(conf))
-	  opts_flow$load(conf, verbose = FALSE, check = FALSE)
-
-	message("\n> creating flowmat....")
-	## crate a flowmat
-	args <- list(...)
-	out = do.call(func, args)
-
-	## fetched from the latest conf file ONLY
-	module_cmds = opts_flow$get("module_cmds")
-	
-	message("\n> stitching a flow object....")
-	## get a flowdef
-	if(missing(def))
-		def = as.flowdef(pip$def)
-	
-	if(missing(rerun_wd)){
-		## create a flow object
-		fobj = to_flow(x = out$flowmat,
-									 def = def,
-									 platform = platform,
-									 flowname = x,
-									 module_cmds = module_cmds,
-									 flow_run_path = flow_run_path)
-		
-		# submit the flow
-		message("\n--> submitting ...")
-		fobj = submit_flow(fobj, execute = execute)
-	
-	}else{
-		
-		fobj = rerun(x = rerun_wd, mat = out$flowmat, def = def, start_from = start_from, execute = execute)
-		
-	}
-	
-	invisible(fobj)
+  message("\n> creating flowmat....")
+  ## crate a flowmat
+  args <- list(...)
+  out = do.call(func, args)
+  
+  ## fetched from the latest conf file ONLY
+  module_cmds = opts_flow$get("module_cmds")
+  
+  message("\n> stitching a flow object....")
+  ## get a flowdef
+  if(missing(def))
+    def = as.flowdef(pip$def)
+  
+  if(missing(rerun_wd)){
+    # create a flow object
+    fobj = to_flow(x = out$flowmat,
+                   def = def,
+                   platform = platform,
+                   flowname = basename(x),
+                   module_cmds = module_cmds,
+                   flow_run_path = flow_run_path)
+    
+    # submit the flow
+    message("\n--> submitting ...")
+    fobj = submit_flow(fobj, execute = execute)
+    
+  }else{
+    
+    fobj = rerun(x = rerun_wd, mat = out$flowmat, def = def, start_from = start_from, execute = execute)
+    
+  }
+  
+  invisible(fobj)
 }
 
 
@@ -141,29 +146,29 @@ run_pipe <- run
 
 
 if(FALSE){
-
-	debug(run_pipe)
-	run_pipe("sleep_pipe", samplename = "samp2")
-
+  
+  debug(run_pipe)
+  run_pipe("sleep_pipe", samplename = "samp2")
+  
 }
 
 ## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
 .run <- function(x = "sleep", type = "example", platform, flowmat, def, execute = FALSE, ...){
-	.Deprecated("run")
-	library(flowr)
-	message("\n\nPerforming initial setup....")
-	setup()
-	message("Running example on platform:\t\t\t", platform)
-	if(is.character(x))
-		if(x == "sleep")
-			fobj <- .run_sleep(platform = platform, ...)
-
-	## x is the name of the function
-
-
-	tmp <- submit_flow(fobj, execute = execute)
-	return("Done !")
+  .Deprecated("run")
+  library(flowr)
+  message("\n\nPerforming initial setup....")
+  setup()
+  message("Running example on platform:\t\t\t", platform)
+  if(is.character(x))
+    if(x == "sleep")
+      fobj <- .run_sleep(platform = platform, ...)
+  
+  ## x is the name of the function
+  
+  
+  tmp <- submit_flow(fobj, execute = execute)
+  return("Done !")
 }
 
 

@@ -23,24 +23,70 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 <br>
 
-flowr 0.9.9.2 (cherries)
+flowr 0.9.10 (dates)
 ----------------------------------------------
-> 2015-11-20
+> 2016-04-18
+
+tl;dr (**summary of changes**)
+
+- Flowr Rscript gets further enhancements, taking advantage of improved [funr](https://github.com/sahilseth/funr)
+- `run` function now accepts paths.
+
+```
+# 'cherries' version
+cd <path to pipelines>
+flowr x=mypipline
+
+# 'dates' version
+flowr x=<path to pipelines>/mypipline
+```
+
+- Previously, flowr expected a specific structure, now using `~/.flowr.conf`, 
+one may specify their own structure - enabling flexibility.
+
+```
+# 'cherries' version
+~/flowr
+├── conf
+│   ├── flowr.conf
+├── pipelines
+│   ├── sleep_pipe.R
+├── runs
+
+# 'dates' version (backward compatible)
+~/.flowr.conf
+
+# this file controls the location of these folders:
+flow_base_path	~/flowr
+flow_conf_path	{{flow_base_path}}/conf  ## custom configuration files
+flow_run_path	~/flowr/runs  ## home of all executed flows, you may change this
+flow_pipe_paths	~/flowr/pipelines,<add new paths...>
+```
+
+- a few bug fixes in [to_flow](https://github.com/sahilseth/flowr/issues/66)
+- several other cosmetic changes to messages 
+
+
+
+flowr 0.9.9.5 (cherries)
+----------------------------------------------
+> 2015-12-03
 
 tl;dr (**summary of changes**)
 
 - Better handling of multiple flows in terms of running and re-running.
 - Nicer and cleaner messages.
-
+- Add two additional lines in `flowr.conf` (`modules_cmds` and `local_cores`), after upgrading the package.
+Everything else is compatible with previous versions.
 
 **additions/changes to `flowr.conf` file**
 
-- **New:** option local_cores, which determines (max) number of cores to use when running local jobs.
-- **New:**: Now you can add a `module_cmds` variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:
+- **New**: option local_cores, which determines (max) number of cores to use when running local jobs.
 - **New**: `flow_pipe_paths` now supports multiple paths, seperated by comma. The `fetch_pipes()` would split the vector at commas.
 
-
 - **IMP**: New version needs additional components in the `flowr.conf` file
+
+- **New**: Now you can add a `module_cmds` variable to the config file, and this will be prefixed in all script of the pipeline. An example could be:
 
 ```diff
 # version >= 0.9.8.9004
@@ -72,11 +118,11 @@ flowr status x=.
 
 **addition/changes to `run()` and `rerun()` functions**
 
-- **New**: run function now accepts a custom configuration [`conf`], parameter. See `help(flowr::run)` for detail.
-The conf file would specify various parameters used for that pipeline.
-- **New**: `run()` re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (trial feature).
+- **New**: run function now accepts a custom configuration [`conf`], parameter. See `help(flowr::run)` for more details. This enables one, to specify custom parameters used for that pipeline.
 - **New**: Now `rerun()` supports multiple folders. Basically, one may specify a parent folder which has multiple flowr runs and ask it to re-run **ALL** of them again, from a specific intermediate step.
 - **New**: Flowr creates a new folder if there are multiple samples in the flowmat; basically containerizes the run, keeping the logs clean and debugging life easier.
+
+- **New**: `run()` now supports, re-running as well. i.e. One would generate a new set of commands etc. but execute in the previous folder; possibly from a inter-mediate step (experimental feature).
 
 
 **other changes**

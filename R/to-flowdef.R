@@ -312,6 +312,7 @@ to_flowdef.tbl_df = to_flowdef.flowmat
 #' @rdname to_flowdef
 #' @export
 to_flowdef.flow <- function(x, ...){
+  
   slts = c(jobname = "name",
            prev_jobs = 'previous_job',
            dep_type = "dependency_type",
@@ -323,15 +324,19 @@ to_flowdef.flow <- function(x, ...){
            cpu_reserved = "cpu",
            status = "status",
            platform = "platform")
+  
   tmp <- lapply(x@jobs, function(y){
     y = slots_as_list(y)[slts]
     y$previous_job = paste(y$previous_job, collapse = ",")
     unlist(y)
   })
+  
   def = data.frame(do.call(rbind, tmp), stringsAsFactors = FALSE)
+  
   colnames(def) = names(slts)
+  
   #kable(def)
-  def = as.flowdef(def)
+  def = as.flowdef(def, ...)
   return(def)
 }
 

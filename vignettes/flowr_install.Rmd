@@ -91,7 +91,7 @@ Initially, we can test this locally, and later on a specific HPCC platform.
 ## This may take about a minute or so.
 flowr run x=sleep_pipe platform=local execute=TRUE
 ## corresponding R command:
-run(pipe='sleep_pipe', platform='local', execute=TRUE)
+run(x='sleep_pipe', platform='local', execute=TRUE)
 ```
 
 If this completes successfully, we can try this on a computing cluster; where this would submit
@@ -177,6 +177,26 @@ Here are some helpful guides and details on the platforms:
 	- Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
 
 [Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
+
+
+## flowr configuration file
+
+**This needs expansion**
+
+flowr has a configuration file, with parameters regarding default paths, verboseness etc. 
+flowr loads this default configuration from the package installation. 
+In addition, to customize the parameters, simply create a tab-delimited file called `~/.flowr`. 
+An example of this file is available [here](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf)
+
+**Addtional files loaded if available**:
+
+-  (flow installation)/flowr.conf
+-  (ngsflows installation)/ngsflows.conf
+- `~/flowr/conf/flowr.conf`
+- `~/.flowr`
+      
+      
+
 
 # Troubleshooting & FAQs
 

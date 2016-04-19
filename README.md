@@ -13,7 +13,7 @@
 
 
 [![Build Status](https://travis-ci.org/sahilseth/flowr.svg?branch=master)](https://travis-ci.org/sahilseth/flowr)
-[![cran](http://www.r-pkg.org/badges/version/flowr)](http://cran.rstudio.com/web/packages/flowr/index.html)
+[![cran](http://www.r-pkg.org/badges/version/flowr)](https://cran.r-project.org/package=flowr)
 [![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
@@ -21,13 +21,14 @@
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 -->
 
+
 ## [![docs.flowr.space](https://raw.githubusercontent.com/sahilseth/flowr/devel/vignettes/files/logo.png) Streamlining Computing workflows](http://docs.flowr.space)
 
 **Latest documentation: [docs.flowr.space](http://docs.flowr.space)**
 
 
 
-This framework allows you to design and implement complex pipelines, and
+Flowr framework allows you to design and implement complex pipelines, and
 deploy them on your institution's computing cluster. This has been built
 keeping in mind the needs of bioinformatics workflows. However, it is
 easily extendable to any field where a series of steps (shell commands)
@@ -45,6 +46,10 @@ are to be executed in a (work)flow.
 - **Lean** and **Portable**, with easy installation
 - **Fine grain** control over resources (CPU, memory, walltime, etc.) of each step.
 
+### Example
+[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](https://github.com/flow-r/fastq_bam)
+
+<!---
 - Example: 
 	- A typical case in next-generation sequencing involves processing of tens of
    [fastqs](http://en.wikipedia.org/wiki/FASTQ_format) for a sample,
@@ -57,13 +62,7 @@ are to be executed in a (work)flow.
 	flowr would handle the **surge**, reserving 500, 50 or 1; when needed.
 	- Now consider the run has 10 samples, all of them would be procesed in
 	 parallel, spawning **thousands of cores**.
-
-
-<iframe width="640" height="480" src="https://www.youtube.com/embed/szDNFioBdPo?rel=0&amp;showinfo=0;autoplay=1;start=29" frameborder="0" volume="0"></iframe>
-
-### Example
-[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
-
+--->
 
 
 ### A few lines, to get started
@@ -72,10 +71,10 @@ are to be executed in a (work)flow.
 ```r
 ## Official stable release from CRAN (updated every other month)
 ## visit docs.flowr.space/install for more details
-install.packages("flowr")
+install.packages("flowr",  repos = "http://cran.rstudio.com")
 
-# or a latest version from DRAT
-install.packages("flowr", repos="http://sahilseth.github.io/DRAT")
+# or a latest version from DRAT, provide cran for dependencies
+install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
 
 library(flowr) ## load the library
 setup() ## copy flowr bash script; and create a folder flowr under home.
@@ -110,7 +109,6 @@ Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/is
 ### Acknowledgements
 
 -   Jianhua Zhang
--   Andy Futreal
 -   Samir Amin
 -   Roger Moye
 -   Kadir Akdemir
