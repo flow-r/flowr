@@ -35,17 +35,17 @@ tl;dr (**summary of changes**)
 ```
 # 'cherries' version
 cd <path to pipelines>
-flowr x=mypipline
+flowr x=mypipeline
 
 # 'dates' version
-flowr x=<path to pipelines>/mypipline
+flowr x=<path to pipelines>/mypipeline
 ```
 
 - Previously, flowr expected a specific structure, now using `~/.flowr.conf`, 
 one may specify their own structure - enabling flexibility.
 
 ```
-# 'cherries' version
+# 'cherries' version: a fixed directory structure was recommended:
 ~/flowr
 ├── conf
 │   ├── flowr.conf
@@ -53,18 +53,18 @@ one may specify their own structure - enabling flexibility.
 │   ├── sleep_pipe.R
 ├── runs
 
-# 'dates' version (backward compatible)
+# 'dates' version: one may change the default paths to run, config files etc using 
 ~/.flowr.conf
 
 # this file controls the location of these folders:
-flow_base_path	~/flowr
-flow_conf_path	{{flow_base_path}}/conf  ## custom configuration files
-flow_run_path	~/flowr/runs  ## home of all executed flows, you may change this
-flow_pipe_paths	~/flowr/pipelines,<add new paths...>
+flow_base_path	~/flowr # flowr home
+flow_conf_path	{{flow_base_path}}/conf  # path to configuration files, not required if using ~/.flowr.conf
+flow_run_path	~/flowr/runs  # default home of all executed flows, you may change this
+flow_pipe_paths	~/flowr/pipelines,<add new paths...> # multiple paths can be specified using ","
 ```
 
 - a few bug fixes in [to_flow](https://github.com/sahilseth/flowr/issues/66)
-- several other cosmetic changes to messages 
+- several other minor changes to messages, errors and warnings.
 
 
 

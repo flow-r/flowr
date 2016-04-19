@@ -124,7 +124,7 @@ render_rd("rd_skeleton.Rmd", "flowr", code_path,
 check_output("rd.html")
 
 # create pdf manual
-render("flowr_manual.Rmd")
+#render("flowr_manual.Rmd")
 
 
 
