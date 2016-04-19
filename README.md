@@ -47,7 +47,7 @@ are to be executed in a (work)flow.
 - **Fine grain** control over resources (CPU, memory, walltime, etc.) of each step.
 
 ### Example
-[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](http://rpubs.com/sahiilseth/flowr_fq_bam)
+[![ex_fq_bam](http://docs.flowr.space/files/ex_fq_bam.png)](https://github.com/flow-r/fastq_bam)
 
 <!---
 - Example: 
@@ -88,7 +88,7 @@ flowr run x=sleep_pipe platform=local execute=TRUE
 ### Resources
 - For a quick overview, you may browse through,
  these [introductory slides](http://sahilseth.github.io/slides/flowrintro).
-- The [overview](http://docs.flowr.space/docs.html) provides additional details regarding
+- The [overview](http://docs.flowr.space/overview.html) provides additional details regarding
 the ideas and concepts used in flowr
 - We have a [tutorial](http://docs.flowr.space/tutorial.html) which can walk you through creating a
 new pipeline
