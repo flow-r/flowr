@@ -23,9 +23,49 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 <br>
 
-flowr 0.9.XX
+flowr 0.9.10 (dates)
 ----------------------------------------------
-> Current
+> 2016-04-18
+
+tl;dr (**summary of changes**)
+
+- Flowr Rscript gets further enhancements, taking advantage of improved [funr](https://github.com/sahilseth/funr)
+- `run` function now accepts paths.
+
+```
+# 'cherries' version
+cd <path to pipelines>
+flowr x=mypipline
+
+# 'dates' version
+flowr x=<path to pipelines>/mypipline
+```
+
+- Previously, flowr expected a specific structure, now using `~/.flowr.conf`, 
+one may specify their own structure - enabling flexibility.
+
+```
+# 'cherries' version
+~/flowr
+├── conf
+│   ├── flowr.conf
+├── pipelines
+│   ├── sleep_pipe.R
+├── runs
+
+# 'dates' version (backward compatible)
+~/.flowr.conf
+
+# this file controls the location of these folders:
+flow_base_path	~/flowr
+flow_conf_path	{{flow_base_path}}/conf  ## custom configuration files
+flow_run_path	~/flowr/runs  ## home of all executed flows, you may change this
+flow_pipe_paths	~/flowr/pipelines,<add new paths...>
+```
+
+- a few bug fixes in [to_flow](https://github.com/sahilseth/flowr/issues/66)
+- several other cosmetic changes to messages 
+
 
 
 flowr 0.9.9.5 (cherries)
