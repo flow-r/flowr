@@ -35,10 +35,10 @@ tl;dr (**summary of changes**)
 ```
 # 'cherries' version
 cd <path to pipelines>
-flowr x=mypipline
+flowr x=mypipeline
 
 # 'dates' version
-flowr x=<path to pipelines>/mypipline
+flowr x=<path to pipelines>/mypipeline
 ```
 
 - Previously, flowr expected a specific structure, now using `~/.flowr.conf`, 
