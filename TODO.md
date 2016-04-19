@@ -6,3 +6,11 @@
 - add tests for read in files
 
 - images in website are bad!
+- 
+
+## adding docker:
+
+
+jobid=$(docker run -d '')
+
+docker wait $jobid run -d
