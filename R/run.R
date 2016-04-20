@@ -71,6 +71,7 @@ run <- function(x,
                 wd = opts_flow$get("flow_run_path"),
                 flow_run_path = wd,
                 rerun_wd, start_from,
+                uuid,
                 execute = FALSE,  ...){
   
   #print(opts_flow$get("flow_run_path"))
@@ -128,7 +129,7 @@ run <- function(x,
     
     # submit the flow
     message("\n--> submitting ...")
-    fobj = submit_flow(fobj, execute = execute)
+    fobj = submit_flow(fobj, execute = execute, uuid = uuid)
     
   }else{
     
