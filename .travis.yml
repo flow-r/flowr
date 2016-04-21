@@ -17,7 +17,8 @@ script:
 
 after_success:
   - ./pkg-build.sh install_github jimhester/covr
-  - Rscript -e 'covr::codecov()'
+  - R=$(./pkg-build.sh r_path)
+  - $R -e 'covr::codecov()'
 
 after_failure:
   - ./pkg-build.sh dump_logs
