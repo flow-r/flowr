@@ -37,7 +37,7 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
     dir.create (wd, recursive=TRUE, showWarnings=FALSE);
   
   ## --- get the CWD/PWD for all submissions
-  jobj@cwd <- file.path(dirname(wd), "tmp") ## FLOWBASE
+  jobj@cwd <- file.path(dirname(wd), "tmp") # FLOWBASE
   
   ## --- if serial, MERGE all commands in ONE file
   if(jobj@submission_type %in% c("serial") & length(jobj@cmds) > 1){
