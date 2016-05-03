@@ -59,7 +59,7 @@
 #' 
 #' Also, at any time you can run, \link{opts_flow$load}; to load custom options.
 #' 
-#' @importFrom tools file_path_sans_ext
+#' @importFrom tools file_path_sans_ext file_path_as_absolute
 #' @importFrom utils tail
 #' @importFrom params kable
 #' @export
@@ -119,8 +119,8 @@ fetch_pipes <- function(x,
   
   if(missing(x)){
     message("> since no search pattern was supplied, here is the complete list of available pipelines:")
-            # "You need to specify the name of the pipeline to run, like this:\n")
-            # "\nflowr run x=sleep_pipe\n")
+    # "You need to specify the name of the pipeline to run, like this:\n")
+    # "\nflowr run x=sleep_pipe\n")
     x = ".*"
   }
   
@@ -138,7 +138,7 @@ fetch_pipes <- function(x,
   # first check if its a full path
   fl = paste0(x, ext)
   if(file.exists(fl))
-    r = fl
+    r = file_path_as_absolute(fl)
   else
     r = fetch(paste0("^", x, ext, "$"), places = places, urls = urls, verbose = FALSE)
   
@@ -165,15 +165,15 @@ fetch_pipes <- function(x,
   
   # for a pipeline, def is ESSENTIAL
   pipes = subset(pipes, !is.na(def))
-
+  
   # no pipe!
   # if(verbose > 0 & !silent)
   #print(nrow(pipes))
   #print(pipes)
   if(nrow(pipes) == 0)
     stop("> could not find a pipeline called '", x, "'. Run 'flowr fetch_pipes' to see the full list.\n")
-    #stop(error("no.pipe"), paste(x, collapse = "\n"))
-
+  #stop(error("no.pipe"), paste(x, collapse = "\n"))
+  
   
   pipe_print = pipes;
   pipe_print$def = basename(as.character(pipe_print$def))
