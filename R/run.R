@@ -102,7 +102,7 @@ run <- function(x,
     confs = c(confs, conf)
   
   print(kable(as.data.frame(confs)))
-  opts_flow$load(confs, verbose = FALSE, check = FALSE)
+  opts_flow$load(confs, verbose = FALSE, check = TRUE)
 
   message("\n> creating flowmat....")
   ## crate a flowmat
