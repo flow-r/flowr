@@ -107,6 +107,7 @@ submit_flow.flow <- function(x,
     flow_def = to_flowdef(x, verbose = 0)
     flow_mat = to_flowmat(x, verbose = 0)
     write_flow_details(x@flow_path, 
+                       fobj = x,
                        plot = plot, 
                        flow_def = flow_def, 
                        flow_mat = flow_mat)
