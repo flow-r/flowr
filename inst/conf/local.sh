@@ -18,8 +18,8 @@ echo 'BGN at' `date`
 ## --- command to run comes here (flow_mat)
 {{{CMD}}}
 
-echo 'END at' `date`
-
 exitstat=$?
+
+echo 'END at' `date`
 echo $exitstat > {{{TRIGGER}}}
 exit $exitstat
