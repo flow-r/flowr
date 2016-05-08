@@ -87,7 +87,8 @@ status <- function(x,
       message("Using cache for speed, skipping checking jobs, which were previously marked complete...")
     
     x = read_fobj(wd)
-    lst = get_status(x, out_format = out_format, verbose = verbose, use_cache = use_cache, ...)
+    lst = get_status(x, out_format = out_format, verbose = verbose, 
+                     use_cache = use_cache, ...)
   })
   invisible(lst)
 }
@@ -179,6 +180,7 @@ get_status.character <- function(x, verbose, use_cache, out_format, ...){
   invisible(list(summary = summ, status = status))
 }
 
+
 #' @rdname status
 #' @export
 get_status.data.frame <- function(x, verbose, use_cache, progress = TRUE, ...){
@@ -194,9 +196,10 @@ get_status.data.frame <- function(x, verbose, use_cache, progress = TRUE, ...){
   if(show_progress)
     pb <- txtProgressBar(min = 1, max = nrow(x), style = 3)
   
-  get_code <-  function(i){
-    if(show_progress)
-      pb$up(i)
+  get_exit_code <-  function(i){
+    
+    if(show_progress) pb$up(i)
+    
     fl = x$trigger[i]
     ## skip reading the code
     code = x$exit_code[i]
@@ -207,6 +210,8 @@ get_status.data.frame <- function(x, verbose, use_cache, progress = TRUE, ...){
     if( code == 0 & use_cache){
       return(0)
     }
+    if(is.na(fl))
+      return(NA)
     if(file.exists(fl)){
       tmp <- as.numeric(scan(fl, what = "character", quiet = TRUE))
       code <- ifelse(length(tmp) > 0, tmp, -1) ## -1 mean not completed
@@ -216,11 +221,11 @@ get_status.data.frame <- function(x, verbose, use_cache, progress = TRUE, ...){
     }
   }
   
-  exit_code <- lapply(1:nrow(x), get_code)
+  #debug(get_exit_code)
+  exit_code <- lapply(1:nrow(x), get_exit_code) 
   exit_code = unlist(exit_code)
   
-  if(show_progress)
-    close(pb)
+  if(show_progress)  close(pb)
   
   x$started = !is.na(exit_code)
   x$exit_code = exit_code
