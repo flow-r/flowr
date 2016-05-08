@@ -147,6 +147,7 @@ assert_status <- function(fobj, status){
   msg2 = c("We need a flow with status: ", status, "\n",
            "however, status of this flow is: ", fobj@status)
   
+  # evaluate status category
   if(status_cat(fobj@status) < status_cat(status))
     stop(c(msg1, "\n", msg2))
   

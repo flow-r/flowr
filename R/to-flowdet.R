@@ -61,9 +61,6 @@ to_flowdet.character <- function(x, ...){
 #' @export
 to_flowdet.flow <- function(x, ...){
   
-  # detect the status of fobj
-  #assert_status(x, "dry-run")
-  
   fobj = x
   ret <- lapply(1:length(fobj@jobs), function(i){
     to_flowdet(fobj@jobs[[i]])

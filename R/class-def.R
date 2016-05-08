@@ -368,7 +368,7 @@ flow <- function(
   jobs = list(new("job")),
   name = "newflow",
   desc = "my_super_flow",
-  mode = c("scheduler","trigger","R"),
+  mode = c("scheduler","local"),
   flow_run_path = opts_flow$get("flow_run_path"),
   trigger_path = "",
   flow_path = "",

@@ -79,6 +79,11 @@ rerun.character <- function(x, ...){
     if(is.character(fobj))
       stop("x does not seems to be a correct path to the flow submission, missing flow_details.rds")
     
+    # assume platform of the last job is the final platform
+    f.platform = tail(fobj@jobs, 1)[[1]]@platform
+    if(f.platform == "local" & fobj@status == "created")
+      stop("Currently rerun of killed local jobs is not supported.")
+    
     args = list(...)
     if(any(names(args) %in% c("flowmat", "flowdef", "flow_mat", "flow_def")))
       stop("some arguments not recognized\n",

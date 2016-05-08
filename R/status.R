@@ -87,8 +87,14 @@ status <- function(x,
       message("Using cache for speed, skipping checking jobs, which were previously marked complete...")
     
     x = read_fobj(wd)
-    lst = get_status(x, out_format = out_format, verbose = verbose, 
-                     use_cache = use_cache, ...)
+    
+    # handle a case for local
+    if(status_cat(x@status) < status_cat("dry-run"))
+      lst = get_status(wd, out_format = out_format, verbose = verbose, 
+                       use_cache = use_cache, ...)
+    else
+      lst = get_status(x, out_format = out_format, verbose = verbose, 
+                       use_cache = use_cache, ...)
   })
   invisible(lst)
 }
@@ -125,6 +131,7 @@ final_status <- function(x){
 #' @rdname status
 #' @export
 get_status.flow <- function(x, verbose, use_cache, out_format, ...){
+  
   
   ## --- get initial flow_det from the flow object
   flow_det = to_flowdet(x)
