@@ -74,27 +74,29 @@ to_flowdet.flow <- function(x, ...){
 to_flowdet.job <- function(x){
   
   # get the script to run
+  x@name
   cmds = x@script
-  cmds = ifelse(length(cmds) == 0, NA, cmds)
-  
+  if(length(cmds) == 0) cmds = NA
+
   triggers = try(x@trigger)
-  triggers = ifelse(length(triggers) == 0, NA, triggers)
+  if(length(triggers) == 0) triggers = NA
 
   deps = x@dependency
   deps = sapply(deps, paste, collapse = ";")
   prev = x@previous_job ## works for single type jobs
   prev = paste(prev, collapse = ";")
   #ifelse(prev != "") prev = paste(prev, 1:length(fobj@jobs[[prev]]@id), sep = "_")
+
   job_no = 1:length(cmds)
   job_id = paste(x@jobname, job_no, sep = "_")
   
   # HPCC ids and exit codes
   ids = x@id ## jobid for submission
-  ids = ifelse(length(ids) == 0, NA, ids)
+  if(length(ids) == 0) ids = NA
   
   exit_codes = x@exit_code
-  exit_codes = ifelse(length(exit_codes) == 0, NA, exit_codes)
-  
+  if(length(exit_codes) == 0) exit_codes = NA
+
   job_det = data.frame(
     jobname = x@jobname,
     jobnm = x@name,
