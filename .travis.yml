@@ -6,8 +6,8 @@ sudo: required
 
 before_install:
   - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
-- chmod 755 pkg-build.sh
-- ./pkg-build.sh bootstrap
+  - chmod 755 pkg-build.sh
+  - ./pkg-build.sh bootstrap
 
 install:
   - ./pkg-build.sh install_deps
@@ -20,11 +20,11 @@ after_failure:
 
 notifications:
   email:
-  on_success: change
-on_failure: change
+    on_success: change
+    on_failure: change
 
 env:
   matrix:
-  - RVERSION=oldrel
-- RVERSION=release
-- RVERSION=devel
+    - RVERSION=oldrel
+   - RVERSION=release
+    - RVERSION=devel
