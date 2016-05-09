@@ -89,10 +89,15 @@ status <- function(x,
     x = read_fobj(wd)
     
     if(is.flow(x)){
-    # handle a case for local, and when flow was not submitted
+      # handle a case for local, and when flow was not submitted
+      # if status is 'created' etc, use the working dir to extract trigger files.
       if(status_cat(x@status) < status_cat("dry-run"))
         lst = get_status(wd, out_format = out_format, verbose = verbose, 
                          use_cache = use_cache, ...)
+      else
+        lst = get_status(x, out_format = out_format, verbose = verbose, 
+                         use_cache = use_cache, ...)
+
     }else{
       lst = get_status(x, out_format = out_format, verbose = verbose, 
                        use_cache = use_cache, ...)
