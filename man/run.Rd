@@ -25,7 +25,7 @@ run_pipe(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
 
 \item{flow_run_path}{passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs}
 
-\item{rerun_wd}{if you need to run, supply the previous working dir}
+\item{rerun_wd}{if you need to re-run, supply the previous working dir}
 
 \item{start_from}{the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.}
 

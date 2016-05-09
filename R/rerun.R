@@ -82,7 +82,7 @@ rerun.character <- function(x, ...){
     # assume platform of the last job is the final platform
     f.platform = tail(fobj@jobs, 1)[[1]]@platform
     if(f.platform == "local" & fobj@status == "created")
-      stop("Currently rerun of killed local jobs is not supported.")
+      stop("Currently rerun of killed or processing local jobs is not supported.")
     
     args = list(...)
     if(any(names(args) %in% c("flowmat", "flowdef", "flow_mat", "flow_def")))
