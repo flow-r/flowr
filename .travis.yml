@@ -26,5 +26,5 @@ notifications:
 env:
   matrix:
     - RVERSION=oldrel
-   - RVERSION=release
+    - RVERSION=release
     - RVERSION=devel
