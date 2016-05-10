@@ -18,6 +18,7 @@ echo 'BGN at' `date`
 ## --- command to run comes here (flow_mat)
 {{{CMD}}}
 
+
 exitstat=$?
 
 echo 'END at' `date`
