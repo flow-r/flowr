@@ -85,6 +85,9 @@ kill.flow <- function(x,
 
 	check_args()
 	
+	if(status_cat(x@status) < status_cat("submitted"))
+	  stop("This flow was has not executed, nothing to kill.")
+	
 	flow_det = to_flowdet(x)
 
 	wd = x@flow_path

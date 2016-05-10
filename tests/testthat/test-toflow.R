@@ -7,7 +7,7 @@
 
 verbose = FALSE
 
-set_opts(verbose = 0)
+opts_flow$set(verbose = 0)
 
 context("\n\nTesting running a pipeline from scratch")
 
@@ -123,12 +123,12 @@ for(plat in plats){
 		
 		## create flowdet
 		expect_is(to_flowdet(fobj_dry), "data.frame")
-		expect_error(to_flowdet(fobj), "fobj: no execution details")
+		#expect_error(to_flowdet(fobj), "fobj: no execution details")
 	})
 	
 	test_that("flow is killable", {
 		## killing
-		expect_error(kill(fobj), "fobj: no execution details")
+		expect_error(kill(fobj), "This flow was has not executed, nothing to kill.")
 	})
 	
 	test_that("flow is re-runnable", {
