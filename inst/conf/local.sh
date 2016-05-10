@@ -21,7 +21,6 @@ echo 'BGN at' `date`
 
 exitstat=$?
 
-echo 'END at' `date`
 echo $exitstat > {{{TRIGGER}}}
 echo 'END at' `date`
 
