@@ -4,7 +4,7 @@
 #BSUB -o {{{STDOUT}}}                                   # output is sent to logfile, stdout + stderr by default
 #BSUB -e {{{STDERR}}}                                   # output is sent to logfile, stdout + stderr by default
 #BSUB -q {{{QUEUE}}}                                    # Job queue
-#BSUB -W {{{WALLTIME}}}                                 # Walltime in minutes
+#BSUB -W {{{WALLTIME}}}                                 # Walltime in hours (usually for LSF). Please consult your sysadmin.
 #BSUB -M {{{MEMORY}}}                                   # Memory requirements in Kbytes
 #BSUB –n {{{CPU}}}                                      # CPU reserved
 #BSUB -R span[ptile={{{CPU}}}]                          # CPU reserved, all reserved on same node

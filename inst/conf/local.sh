@@ -1,7 +1,7 @@
 
 
 ## ------------------------------ n o t e s -------------------------##
-## All variables specified above are replaced on the fly. 
+## All variables specified above are replaced on the fly.
 ## Most of them come from the flow_definition file.
 ## This is a core component of how flowr interacts with the cluster.
 ## Please refer to the platform manual, before editing this file.
@@ -22,4 +22,6 @@ exitstat=$?
 
 echo 'END at' `date`
 echo $exitstat > {{{TRIGGER}}}
+echo 'END at' `date`
+
 exit $exitstat
