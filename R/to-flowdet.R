@@ -70,7 +70,7 @@ to_flowdet.flow <- function(x, ...){
   return(flow_details)
 }
 
-#' get flowdetails for every job
+# get flowdetails for every job
 to_flowdet.job <- function(x){
   
   # get the script to run
