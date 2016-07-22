@@ -283,7 +283,7 @@ For example we have a pipeline consisting of alignment using bwa (aln1, aln2, sa
 We would create three files: 
 
 ```
-fastq_bam_bwa.R      ## A R script, with sleep_pipe(), which creates a flowmat
+fastq_bam_bwa.R      ## A R script, with fastq_bam_bwa(), which creates a flowmat
 fastq_bam_bwa.conf   ## An *optional* tab-delim conf file, defining default params
 fastq_bam_bwa.def    ## A tab-delimited flow definition file
 ```
