@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2016-04-19" />
+    <meta name="date" content="2016-07-22" />
   
   <!---  <title>flowr</title> --->
   
@@ -224,7 +224,7 @@ kable(flowmat)</code></pre>
 <pre class="r"><code>## create a skeleton flow definition
 def = to_flowdef(flowmat) 
 suppressMessages(plot_flow(def))</code></pre>
-<p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" title="" alt="" width="624" /></p>
+<p><img src="tutorial_files/figure-html/plot_skeleton_def-1.png" width="624" /></p>
 <div class="alert alert-info" role="alert">
 <p>The default skeleton takes a very conservative approach, creating all submissions as <strong>serial</strong> and all dependencies as <strong>gather</strong>. This ensures robustness, compromising efficiency. So customize this to make it super efficient.</p>
 </div>
@@ -317,7 +317,7 @@ kable(def)</code></pre>
 </tr>
 </tbody>
 </table>
-<p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" title="" alt="" width="624" /></p>
+<p><img src="tutorial_files/figure-html/plot_tweaked_def-1.png" width="624" /></p>
 <div class="alert alert-info" role="alert">
 <p><strong>Tip</strong> Alternatively, one may write this to a file (<strong>write_sheet(def, “sleep_pipe.def”)</strong>), make changes in a text editor and read it again (<strong>as.flowdef(“sleep_pipe.def”)</strong>.</p>
 </div>

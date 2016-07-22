@@ -6,7 +6,7 @@
 
     <meta name="author" content="Sahil Seth" />
   
-    <meta name="date" content="2016-04-19" />
+    <meta name="date" content="2016-07-22" />
   
   <!---  <title>flowr</title> --->
   
@@ -169,7 +169,10 @@ fetch_pipes     Checking what modules and pipelines are available; flowr fetch_p
 Please use &#39;flowr -h function&#39; to obtain further information about the usage of a specific function.</code></pre>
 <div id="toy-example" class="section level2">
 <h2>Toy example</h2>
-<p><img src="files/toy.png" alt="" /></p>
+<div class="figure">
+<img src="files/toy.png" />
+
+</div>
 <p>Consider, a simple example where we have <strong>three</strong> instances of linux’s <code>sleep</code> command. After its completion <strong>three</strong> tmp files are created with some random data. Then, a merging step follows, combining the tmp files into one big file. Next, we use <code>du</code> to calculate the size of the merged file.</p>
 <div class="alert alert-info" role="alert">
 <p><strong>NGS context</strong> This is quite similar in structure to a typical workflow from where a series of alignment and sorting steps may take place on the raw fastq files. Followed by merging of the resulting bam files into one large file per-sample and further downstream processing.</p>
@@ -629,7 +632,7 @@ flow_def = as.flowdef(file.path(ex, &quot;sleep_pipe.def&quot;))</code></pre>
                  relationship
                   ONE-to-ONE</code></pre>
 <p>Relationship between steps A and B is best defined as <code>serial</code>. Step A (A1 through A10) is submitted as scatter. Further, <span class="math inline"><em>i</em><sup><em>t</em></sup><em>h</em></span> jobs of B depends on <span class="math inline"><em>i</em><sup><em>t</em></sup><em>h</em></span> jobs of A. i.e. B1 requires A1 to complete; B2 requires A2 and so on. Also, we note that defining dependency as serial, makes sure that B does not wait for all elements of A to complete.</p>
-<p><img src="overview_files/figure-html/plot_one_one-1.png" title="" alt="" width="624" /></p>
+<p><img src="overview_files/figure-html/plot_one_one-1.png" width="624" /></p>
 </div>
 <div id="many-to-one-gather" class="section level2">
 <h2>Many to One (gather)</h2>
@@ -695,7 +698,7 @@ kable(ex2def[, 1:4])</code></pre>
 </tbody>
 </table>
 <pre class="r"><code>plot_flow(ex2def)</code></pre>
-<p><img src="overview_files/figure-html/plot_abcd-1.png" title="" alt="" width="624" /></p>
+<p><img src="overview_files/figure-html/plot_abcd-1.png" width="624" /></p>
 <div class="alert alert-info" role="alert">
 <p>There is a darker more prominent shadow to indicate scatter steps.</p>
 </div>

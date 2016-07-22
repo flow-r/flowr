@@ -30,7 +30,7 @@ You may download a PDF version of this manual [here](manual.pdf)
 <h1>Streamlining Design and Deployment of Complex Workflows</h1>
 
 <p><strong>Authors:</strong> <a href="mailto:me@sahilseth.com">Sahil Seth</a> [aut, cre]</p>
-<p><strong>Version:</strong> 0.9.10</p>
+<p><strong>Version:</strong> 0.9.10.9016</p>
 <p><strong>License:</strong> MIT + file LICENSE</p>
 
 <h4>Description</h4>
