@@ -81,14 +81,14 @@ flowopts = new.env()
 opts_flow = new_opts(flowopts)
 
 
-#' @aliases params
+#' @aliases flowopts
 #' @export
 get_opts <- function(...){
   message("Its better to use: opts_flow$get instead")
 	opts_flow$get(...)
 }
 
-#' @aliases params
+#' @aliases flowopts
 #' @export
 set_opts <- function(...){
   message("Its better to use: opts_flow$set instead")
@@ -105,7 +105,7 @@ opts_flow$load <- function(...){
   
 }
 
-#' @aliases params
+#' @aliases flowopts
 #' @export
 load_opts <- function(...){
   message("Its better to use: opts_flow$load instead")

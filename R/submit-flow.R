@@ -103,6 +103,17 @@ submit_flow.flow <- function(x,
     dir.create(file.path(x@flow_path,"tmp"),
                showWarnings=FALSE, recursive=TRUE)
   
+  if(dump){
+    flow_def = to_flowdef(x, verbose = 0)
+    flow_mat = to_flowmat(x, verbose = 0)
+    write_flow_details(x@flow_path, 
+                       fobj = x,
+                       plot = plot, 
+                       flow_def = flow_def, 
+                       flow_mat = flow_mat)
+  }
+  
+  
   ## -----   loop on jobs
   ## parse dependency from the previous
   ## then send it along to submit_job
@@ -117,7 +128,7 @@ submit_flow.flow <- function(x,
   for(i in from:to){
     if(verbose > 0 & to > from)
       pb$up(i)
-    ## ------ check if there are any dependencies
+    # ------ check if there are any dependencies
     previous_job <- x@jobs[[i]]@previous_job
     if(verbose > 1) 
       message("----> Working on job ", i, " with previous job: ", previous_job)
@@ -132,10 +143,10 @@ submit_flow.flow <- function(x,
       x@jobs[[i]]@dependency <- split(previds, row(previds))
     }
     
-    ## ------ submit the job, get updates job object
+    # ------ submit the job, get updates job object
     x@jobs[[i]] <- submit_job(jobj = x@jobs[[i]],
                               fobj = x,
-                              execute=execute,
+                              execute = execute,
                               job_id=i,
                               verbose = verbose, ...)
   }
@@ -162,6 +173,7 @@ submit_flow.flow <- function(x,
                        flow_def = flow_def, 
                        flow_mat = flow_mat)
   }
+  
   invisible(x)
 }
 

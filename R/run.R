@@ -27,7 +27,7 @@
 #' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
 #' @param wd an alias to flow_run_path
-#' @param rerun_wd if you need to run, supply the previous working dir
+#' @param rerun_wd if you need to re-run, supply the previous working dir
 #' @param start_from the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.
 #' @param conf a tab-delimited configuration file with path to tools and default parameters. See \link{fetch_pipes}.
 #' @param platform what platform to use, overrides flowdef
@@ -102,7 +102,7 @@ run <- function(x,
     confs = c(confs, conf)
   
   print(kable(as.data.frame(confs)))
-  opts_flow$load(confs, verbose = FALSE, check = FALSE)
+  opts_flow$load(confs, verbose = FALSE, check = TRUE)
 
   message("\n> creating flowmat....")
   ## crate a flowmat
