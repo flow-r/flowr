@@ -32,4 +32,4 @@ vignettes/*.R
 vignettes/*.md
 vignettes/*_files
 
-
+inst/scripts/show_linkage.R
