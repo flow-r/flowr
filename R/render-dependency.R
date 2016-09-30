@@ -47,8 +47,8 @@ render_dependency.lsf <- function(x, index, ...){
 		dep <- sprintf("-w '%s' -ti",
 									 paste(unlist(x@dependency), collapse = " && "))
 	}else if(dep_type == "serial"){
-		dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]],
-																		collapse=" && "))
+		dep <- sprintf("-w '%s' -ti", 
+		               paste(x@dependency[[index]], collapse=" && "))
 	}else if(dep_type == "burst"){
 		index=1
 		dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]],
@@ -57,20 +57,23 @@ render_dependency.lsf <- function(x, index, ...){
 	return(dep)
 }
 
+render_dependency.test = render_dependency.lsf
+
+# http://docs.adaptivecomputing.com/9-0-1/MWM/Content/topics/moabWorkloadManager/topics/jobAdministration/jobdependencies.html
+# @samin, change dependency format for moab
+
 render_dependency.moab <- function(x, index, ...){
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
 		dep = sprintf("-l depend=afterok:%s",
 									paste(unlist(x@dependency), collapse = ":"))
 	}else if(dep_type == "serial"){
-		dep <- sprintf("-l %s", paste(" depend=afterok:",
-																	x@dependency[[index]],
-																	sep="", collapse=":"))
+		dep <- sprintf("-l depend=afterok:%s", 
+		               paste(x@dependency[[index]], collapse=":"))
 	}else if(dep_type == "burst"){
 		index=1
-		dep <- sprintf("-l %s",paste(" depend=afterok:",
-																 x@dependency[[index]], sep="",
-																 collapse=":"))
+		dep <- sprintf("-l %s", 
+		               paste(x@dependency[[index]], collapse=":"))
 	}else{dep = ""}
 	return(dep)
 }
