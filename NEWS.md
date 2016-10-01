@@ -23,6 +23,15 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 <br>
 
+flowr 0.9.10.9017
+----------------------------------------------
+> 2016-10-01
+
+* bugfix in `render-dependency.R` script
+    * corrected `moab` dependency function, *render_dependency.moab* to correctly format dependency arguments in MSUB script, e.g., `#MSUB -l depend=afterok:960775:960854` instead of `#MSUB -l  depend=afterok:960775: depend=afterok:960854`
+    * https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R#L60
+* bugfix for `render_dependency.sge` function same as for `moab`: Untested
+
 flowr 0.9.10 (dates)
 ----------------------------------------------
 > 2016-04-18
