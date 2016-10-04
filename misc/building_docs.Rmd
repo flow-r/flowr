@@ -3,6 +3,7 @@ title: "Building Docs"
 output: html_document
 ---
 
+# this is now retired, use build.R instead
 
 ```{r}
 devtools::install("~/Dropbox/public/github_readthedocs")
