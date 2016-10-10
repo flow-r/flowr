@@ -63,11 +63,13 @@ render_dependency.moab <- function(x, index, ...){
 		dep = sprintf("-l depend=afterok:%s",
 									paste(unlist(x@dependency), collapse = ":"))
 	}else if(dep_type == "serial"){
-		dep <- sprintf("-l depend=afterok:%s", paste(x@dependency[[index]],
+		dep <- sprintf("-l %s", paste(" depend=afterok:",
+																	x@dependency[[index]],
 																	sep="", collapse=":"))
 	}else if(dep_type == "burst"){
 		index=1
-		dep <- sprintf("-l depend=afterok:%s",paste(x@dependency[[index]], sep="",
+		dep <- sprintf("-l %s",paste(" depend=afterok:",
+																 x@dependency[[index]], sep="",
 																 collapse=":"))
 	}else{dep = ""}
 	return(dep)
@@ -79,11 +81,13 @@ render_dependency.sge <- function(x, index, ...){
 		dep = sprintf("-W depend=afterok:%s",
 									paste(unlist(x@dependency), collapse = ":"))
 	}else if(dep_type == "serial"){
-		dep <- sprintf("-W depend=afterok:%s", paste(x@dependency[[index]],
+		dep <- sprintf("-W %s", paste(" depend=afterok:",
+																	x@dependency[[index]],
 																	sep="", collapse=":"))
 	}else if(dep_type == "burst"){
 		index=1
-		dep <- sprintf("-W depend=afterok:%s",paste(x@dependency[[index]], sep="",
+		dep <- sprintf("-W %s",paste(" depend=afterok:",
+																 x@dependency[[index]], sep="",
 																 collapse=":"))
 	}else{dep = ""}
 	return(dep)
@@ -106,3 +110,7 @@ render_dependency.slurm <- function(x, index, ...){
 	}else{dep = ""}
 	return(dep)
 }
+
+
+
+
