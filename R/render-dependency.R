@@ -98,7 +98,7 @@ render_dependency.sge <- function(x, index, ...){
 render_dependency.slurm <- function(x, index, ...){
 	dep_type = x@dependency_type
 	if(dep_type == 'gather'){
-		dep = sprintf("--dependency==afterok:%s",
+		dep = sprintf("--dependency=afterok:%s",
 									paste(unlist(x@dependency), collapse = ":"))
 	}else if(dep_type == "serial"){ ## collapse jobs at a specific index
 		dep <- sprintf("--dependency=afterok:%s", 
