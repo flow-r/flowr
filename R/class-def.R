@@ -118,7 +118,7 @@ setClass("flow", representation(jobs = "list",
 #' @examples
 #' qobj <- queue(platform='lsf')
 queue <- function(object,
-                  platform = c('local', 'lsf', 'torque', 'sge', 'moab', 'test'),
+                  platform = c('local', 'lsf', 'torque', 'sge', 'moab', 'test', 'slurm'),
                   ## --- format is a advanced option, use with caution
                   format = "",
                   
@@ -239,7 +239,22 @@ queue <- function(object,
                   extra_opts = extra_opts,
                   server=server)
     
-  }else{
+  }else if (platform=="slurm"){
+    # if (missing(format))
+    #   format="${SUBMIT_EXE} -J ${JOBNAME} -N {NODES} -n ${CPU} -D ${CWD} -e ${STDOUT} -o ${STDOUT} -p ${QUEUE} -t ${WALLTIME} --mem=${MEMORY} ${DEPENDENCY} ${EXTRA_OPTS} ${CMD}"
+    if(missing(submit_exe))
+      submit_exe = "sbatch"
+    
+    object <- new("slurm", submit_exe=submit_exe,queue=queue,
+                  nodes=nodes, cpu=cpu, jobname=jobname,
+                  dependency=dependency, walltime=walltime,
+                  memory=memory,
+                  cwd=cwd, stderr=stderr,
+                  stdout=stdout, email=email,platform=platform,
+                  #format=format,
+                  extra_opts = extra_opts,
+                  server=server)
+  }else {
     object <- new('queue', submit_exe=submit_exe,
                   queue=queue,
                   nodes=nodes, memory=memory,

@@ -323,6 +323,11 @@ proc_jobs <- function(x,
   d_nodes = unlist(def2$nodes)
   d_jobid = unlist(def2$jobid)
   
+  d_extra_opts = unlist(def2$extra_opts)
+  # If "extra_opts" is missing, set to ""
+  if( is.null(d_extra_opts) )
+    d_extra_opts = ""  
+  
   if (!inherits(qobj, "queue")){
     qobj <- queue(platform = unlist(def2$platform), verbose = FALSE)
   }else{
@@ -356,7 +361,8 @@ proc_jobs <- function(x,
              cpu = d_cpu, queue = d_queue,
              walltime = d_walltime,
              nodes = d_nodes,
-             memory = d_memory)
+             memory = d_memory,
+             extra_opts = d_extra_opts)
   return(jobj)
 }
 

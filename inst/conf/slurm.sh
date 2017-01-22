@@ -1,23 +1,15 @@
 #!/bin/bash
 #SBATCH -J {{{JOBNAME}}}
 #SBATCH -N {{{NODES}}}
-#SBATCH --chdir {{{CWD}}}
+#SBATCH -n {{{CPU}}}
+#SBATCH -D {{{CWD}}}
 #SBATCH --error={{{STDOUT}}}
 #SBATCH --output={{{STDOUT}}}
-#SBATCH account {{{QUEUE}}}
+#SBATCH --partition={{{QUEUE}}}
 #SBATCH --time={{{WALLTIME}}} 
-#SBATCH --mem= {{{MEMORY}}}
-#SBATCH -n {{{CPU}}}
-#SBATCH --cpus-per-task {{{CPU}}}
+#SBATCH --mem={{{MEMORY}}}
 #SBATCH {{{DEPENDENCY}}}
 #SBATCH {{{EXTRA_OPTS}}}
-#SBATCH --exclusive 
-
-
-## example from
-## https://www.hpc2n.umu.se/node/738
-## more details in: https://computing.llnl.gov/tutorials/moab/man/srun.txt
-## srun ./my_program
 
 
 ## ------------------------------ n o t e s -------------------------##
