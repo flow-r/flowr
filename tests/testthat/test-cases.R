@@ -11,8 +11,8 @@ opts_flow$set(verbose = 0)
 
 #context("\n\nTesting a few cases")
 
-#wd = system.file("extdata/test_cases", package = "flowr")
-wd = "~/Dropbox2/Dropbox/public/github_flow/inst/extdata/test_cases"
+wd = system.file("extdata/test_cases", package = "flowr")
+#wd = "~/Dropbox2/Dropbox/public/github_flow/inst/extdata/test_cases"
 #wd = "~/Dropbox/public/github_flow/inst/extdata/test_cases"
 library(flowr)
 
