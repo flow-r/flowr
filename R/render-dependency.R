@@ -62,39 +62,41 @@ render_dependency.test = render_dependency.lsf
 # @samin, change dependency format for moab
 
 render_dependency.moab <- function(x, index, ...){
-  dep_type = x@dependency_type
-  if(dep_type == 'gather'){
-    dep = sprintf("-l depend=afterok:%s",
-                  paste(unlist(x@dependency), collapse = ":"))
-    
-  }else if(dep_type == "serial"){
-    dep <- sprintf("-l depend=afterok:%s", paste(x@dependency[[index]],
-                         sep="", collapse=":"))
-    
-  }else if(dep_type == "burst"){
-    index=1
-    dep <- sprintf("-l depend=afterok:%s", paste(x@dependency[[index]], sep="",
-                         collapse=":"))
-  }else{dep = ""}
-  return(dep)
+
+	dep_type = x@dependency_type
+	if(dep_type == 'gather'){
+		dep = sprintf("-l depend=afterok:%s",
+									paste(unlist(x@dependency), collapse = ":"))
+	}else if(dep_type == "serial"){
+		dep <- sprintf("-l %s", paste(" depend=afterok:",
+																	x@dependency[[index]],
+																	sep="", collapse=":"))
+	}else if(dep_type == "burst"){
+		index=1
+		dep <- sprintf("-l %s",paste(" depend=afterok:",
+																 x@dependency[[index]], sep="",
+																 collapse=":"))
+	}else{dep = ""}
+	return(dep)
 }
 
 render_dependency.sge <- function(x, index, ...){
-  dep_type = x@dependency_type
-  if(dep_type == 'gather'){
-    dep = sprintf("-W depend=afterok:%s",
-                  paste(unlist(x@dependency), collapse = ":"))
-  }else if(dep_type == "serial"){
-    dep <- sprintf("-W %s", paste(" depend=afterok:",
-                                  x@dependency[[index]],
-                                  sep="", collapse=":"))
-  }else if(dep_type == "burst"){
-    index=1
-    dep <- sprintf("-W %s",paste(" depend=afterok:",
-                                 x@dependency[[index]], sep="",
-                                 collapse=":"))
-  }else{dep = ""}
-  return(dep)
+	dep_type = x@dependency_type
+	if(dep_type == 'gather'){
+		dep = sprintf("-W depend=afterok:%s",
+									paste(unlist(x@dependency), collapse = ":"))
+	}else if(dep_type == "serial"){
+		dep <- sprintf("-W %s", paste(" depend=afterok:",
+																	x@dependency[[index]],
+																	sep="", collapse=":"))
+	}else if(dep_type == "burst"){
+		index=1
+		dep <- sprintf("-W %s",paste(" depend=afterok:",
+																 x@dependency[[index]], sep="",
+																 collapse=":"))
+	}else{dep = ""}
+	return(dep)
+>>>>>>> Revert "bugfix for moab scheduler job dependency format"
 }
 
 
@@ -124,6 +126,3 @@ render_dependency.slurm <- function(x, index, ...){
 
 
 
-
-
-# END
