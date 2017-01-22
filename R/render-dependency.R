@@ -96,7 +96,6 @@ render_dependency.sge <- function(x, index, ...){
 																 collapse=":"))
 	}else{dep = ""}
 	return(dep)
->>>>>>> Revert "bugfix for moab scheduler job dependency format"
 }
 
 
