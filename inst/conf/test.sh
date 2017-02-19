@@ -6,7 +6,7 @@
 #BSUB -q {{{QUEUE}}}                                    # Job queue
 #BSUB -W {{{WALLTIME}}}                                 # Walltime in hours (usually for LSF). Please consult your sysadmin.
 #BSUB -M {{{MEMORY}}}                                   # Memory requirements in Kbytes
-#BSUB –n {{{CPU}}}                                      # CPU reserved
+#BSUB -n {{{CPU}}}                                      # CPU reserved
 #BSUB -R span[ptile={{{CPU}}}]                          # CPU reserved, all reserved on same node
 #BSUB -R rusage[mem={{{MEMORY}}}]                       # memory reserved
 #BSUB -r                                                # make the jobs re-runnable
