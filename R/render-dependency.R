@@ -18,7 +18,8 @@ render_dependency.local <- function(...){
   return("")
 }
 
-## http://docs.adaptivecomputing.com/torque/4-1-4/Content/topics/commands/qsub.htm
+# http://docs.adaptivecomputing.com/torque/4-1-4/Content/topics/commands/qsub.htm
+
 render_dependency.torque <- function(x, index, ...){
   dep_type = x@dependency_type
   
@@ -26,14 +27,14 @@ render_dependency.torque <- function(x, index, ...){
     dep = sprintf("-W depend=afterok:%s",
                   paste(unlist(x@dependency), collapse = ":"))
   }else if(dep_type == "serial"){
-    dep <- sprintf("-W %s", paste(" depend=afterok:",
-                                  x@dependency[[index]],
-                                  sep="", collapse=":"))
+    dep <- sprintf("-W depend=afterok:%s", 
+                   paste(x@dependency[[index]],sep="", collapse=":"))
+  
   }else if(dep_type == "burst"){
     index=1
-    dep <- sprintf("-W %s",paste(" depend=afterok:",
-                                 x@dependency[[index]], sep="",
-                                 collapse=":"))
+    dep <- sprintf("-W  depend=afterok:%s", 
+                   paste(x@dependency[[index]], sep="", collapse=":"))
+    
   }else{dep = ""}
   return(dep)
 }
@@ -47,7 +48,7 @@ render_dependency.lsf <- function(x, index, ...){
     dep <- sprintf("-w '%s' -ti",
                    paste(unlist(x@dependency), collapse = " && "))
   }else if(dep_type == "serial"){
-     dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]], collapse=" && "))
+    dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]], collapse=" && "))
   }else if(dep_type == "burst"){
     index=1
     dep <- sprintf("-w '%s' -ti", paste(x@dependency[[index]],
@@ -62,38 +63,43 @@ render_dependency.test = render_dependency.lsf
 # @samin, change dependency format for moab
 
 render_dependency.moab <- function(x, index, ...){
-
-	dep_type = x@dependency_type
-	if(dep_type == 'gather'){
-		dep = sprintf("-l depend=afterok:%s",
-									paste(unlist(x@dependency), collapse = ":"))
-	}else if(dep_type == "serial"){
-		dep <- sprintf("-l %s", paste(" depend=afterok:",
-																	x@dependency[[index]],
-																	sep="", collapse=":"))
-	}else if(dep_type == "burst"){
-		index=1
-		dep <- sprintf("-l %s",paste(" depend=afterok:",
-																 x@dependency[[index]], sep="",
-																 collapse=":"))
-	}else{dep = ""}
-	return(dep)
+  
+  dep_type = x@dependency_type
+  if(dep_type == 'gather'){
+    dep = sprintf("-l depend=afterok:%s",
+                  paste(unlist(x@dependency), collapse = ":"))
+  }else if(dep_type == "serial"){
+    dep <- sprintf("-l depend=afterok:%s", paste(x@dependency[[index]],
+                                                 sep="", collapse=":"))
+  }else if(dep_type == "burst"){
+    index=1
+    dep <- sprintf("-l depend=afterok: %s",paste(x@dependency[[index]], sep="",
+                                                 collapse=":"))
+  }else{dep = ""}
+  return(dep)
 }
 
 render_dependency.sge <- function(x, index, ...){
   dep_type = x@dependency_type
+  
+  # wait for all previous jobs
+  # MSUB -l depend=afterok:960775:960854
   if(dep_type == 'gather'){
     dep = sprintf("-W depend=afterok:%s",
                   paste(unlist(x@dependency), collapse = ":"))
+  
+  # one for each previous job
+  # MSUB -l depend=afterok:960775
+  # MSUB -l depend=afterok:960854
   }else if(dep_type == "serial"){
-    dep <- sprintf("-W %s", paste(" depend=afterok:",
-                                  x@dependency[[index]],
-                                  sep="", collapse=":"))
+    dep <- sprintf("-W depend=afterok:%s", 
+                   paste(x@dependency[[index]], sep="", collapse=":"))
+  
+  # MSUB -l depend=afterok:960775
   }else if(dep_type == "burst"){
     index=1
-    dep <- sprintf("-W %s",paste(" depend=afterok:",
-                                 x@dependency[[index]], sep="",
-                                 collapse=":"))
+    dep <- sprintf("-W depend=afterok:%s",
+                   paste(x@dependency[[index]], sep="", collapse=":"))
   }else{dep = ""}
   return(dep)
 }
@@ -101,19 +107,19 @@ render_dependency.sge <- function(x, index, ...){
 
 ## this has not been tested !
 render_dependency.slurm <- function(x, index, ...){
-	dep_type = x@dependency_type
-	if(dep_type == 'gather'){
-		dep = sprintf("--dependency=afterok:%s",
-									paste(unlist(x@dependency), collapse = ":"))
-	}else if(dep_type == "serial"){ ## collapse jobs at a specific index
-		dep <- sprintf("--dependency=afterok:%s", 
-									 paste(x@dependency[[index]], sep="", collapse=":"))
-	}else if(dep_type == "burst"){
-		index=1 ## ALL of them would see index 1
-		dep <- sprintf("--dependency=afterok:%s",
-									 paste(x@dependency[[index]], sep="", collapse=":"))
-	}else{dep = ""}
-	return(dep)
+  dep_type = x@dependency_type
+  if(dep_type == 'gather'){
+    dep = sprintf("--dependency=afterok:%s",
+                  paste(unlist(x@dependency), collapse = ":"))
+  }else if(dep_type == "serial"){ ## collapse jobs at a specific index
+    dep <- sprintf("--dependency=afterok:%s", 
+                   paste(x@dependency[[index]], sep="", collapse=":"))
+  }else if(dep_type == "burst"){
+    index=1 ## ALL of them would see index 1
+    dep <- sprintf("--dependency=afterok:%s",
+                   paste(x@dependency[[index]], sep="", collapse=":"))
+  }else{dep = ""}
+  return(dep)
 }
 
 
