@@ -1,0 +1,26 @@
+#!/bin/bash
+
+mycache="${1:-TRUE}"
+mypattern="${2:-}"
+myrundir="${3:-"$HOME"/flowr/runs/}"
+
+if [ "$mycache" == "-h" ] || [ "$mycache" == "--help" ] || [[ ! "$mycache" =~ ^(TRUE|FALSE)$ ]]; then
+	echo -e "\nWrapper for flowr status command\n"
+	echo "Usage: $(basename $0) <TRUE/FASLE> <workdir> <dirname_pattern>"
+	echo -e "TRUE (default) or FALSE to use_cache (faster) or not; default workdir is at "$HOME"/flowr/runs/ \n"
+	echo "Example: $(basename $0) FALSE /scratch/flowr batch1"
+	echo -e "\nwild card character must be escaped as below"
+	echo "Example: $(basename $0) FALSE /scratch/flowr \*"
+
+	printf "\nYou've supplied: %s %s %s %s\n\n" "$(basename $0)" "$mycache" "$mypattern" "$myrundir"
+else
+	echo -e "\n############################## flowr status at $(date +%d%b%y_%H%M%S%Z) ##############################"
+
+	printf "Running command: flowr status use_cache=%s x=%s/%s\n\n" "$mycache" "$myrundir" "$mypattern"
+
+	flowr status use_cache="$mycache" x="$myrundir""$mypattern"
+
+	printf "\n#### END ####\n"
+fi
+
+#END
