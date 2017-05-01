@@ -24,6 +24,9 @@ parse_jobids <- function(jobids, platform){
 	if(platform=="lsf")
 		jobids <- gsub(opts_flow$get("flow_parse_lsf"),"\\1", jobids)
 
+	if(platform == "test")
+	  jobids = jobids
+	
 	## --- moab
 	## --- Example (has empty lines):
 	## parse into: --->>> 97724
@@ -35,6 +38,7 @@ parse_jobids <- function(jobids, platform){
 
 	if(platform == "slurm")
 		jobids = gsub(opts_flow$get("flow_parse_slurm"), "\\1", jobids)
+
 
 	## ""      "98337"
 	## --- output has multiple rows, split them

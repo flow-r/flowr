@@ -45,12 +45,14 @@ setClass("job", representation(cmds = "character",
          contains = "queue") ## a string of cmd to run
 
 setClass("local", contains = "job")
+setClass("test", contains = "job")
 setClass("torque", contains = "job")
 setClass("pbs", contains = "job")
 setClass("lsf", contains = "job")
 setClass("sge", contains = "job")
 setClass("moab", contains = "job")
 setClass("slurm", contains = "job")
+
 
 
 #' @rdname flow
@@ -116,7 +118,7 @@ setClass("flow", representation(jobs = "list",
 #' @examples
 #' qobj <- queue(platform='lsf')
 queue <- function(object,
-                  platform = c('local', 'lsf', 'torque', 'sge', 'moab'),
+                  platform = c('local', 'lsf', 'torque', 'sge', 'moab', 'test', 'slurm'),
                   ## --- format is a advanced option, use with caution
                   format = "",
                   
@@ -178,6 +180,7 @@ queue <- function(object,
                   #format=format,
                   extra_opts = extra_opts,
                   server=server)
+ 
   }else if (platform=="lsf"){
     ## restrict cores to one node
     ## bsub -q myqueue -J myjob -o myout -e myout -n cpu -cwd mywd -m mem -W 02:00 < script.sh
@@ -199,6 +202,7 @@ queue <- function(object,
                   #format=format,
                   extra_opts = extra_opts,
                   server=server)
+    
   }else if (platform=="local"){
     if(missing(submit_exe))
       submit_exe = "bash"
@@ -209,6 +213,18 @@ queue <- function(object,
                   cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
                   jobname=jobname,#format=format,
                   server=server)
+    
+  }else if (platform=="test"){
+    if(missing(submit_exe))
+      submit_exe = "bash"
+    
+    object <- new("test", submit_exe=submit_exe,queue=queue,
+                  nodes=nodes, memory=memory,
+                  cpu=cpu,dependency=dependency,walltime=walltime,
+                  cwd=cwd,stderr=stderr,stdout=stdout,email=email,platform=platform, extra_opts = extra_opts,
+                  jobname=jobname,#format=format,
+                  server=server)
+    
   }else if (platform %in% c("moab")){
     if (missing(format))
       format="${SUBMIT_EXE} -N ${JOBNAME} -l nodes=${NODES}:ppn=${CPU} -l walltime=${WALLTIME} -l mem=${MEMORY} -S /bin/bash -d ${CWD} -V -o ${STDOUT} -m ae -M ${EMAIL} -j oe -r y -V ${EXTRA_OPTS} ${CMD} ${DEPENDENCY}"
@@ -223,7 +239,22 @@ queue <- function(object,
                   extra_opts = extra_opts,
                   server=server)
     
-  }else{
+  }else if (platform=="slurm"){
+    # if (missing(format))
+    #   format="${SUBMIT_EXE} -J ${JOBNAME} -N {NODES} -n ${CPU} -D ${CWD} -e ${STDOUT} -o ${STDOUT} -p ${QUEUE} -t ${WALLTIME} --mem=${MEMORY} ${DEPENDENCY} ${EXTRA_OPTS} ${CMD}"
+    if(missing(submit_exe))
+      submit_exe = "sbatch"
+    
+    object <- new("slurm", submit_exe=submit_exe,queue=queue,
+                  nodes=nodes, cpu=cpu, jobname=jobname,
+                  dependency=dependency, walltime=walltime,
+                  memory=memory,
+                  cwd=cwd, stderr=stderr,
+                  stdout=stdout, email=email,platform=platform,
+                  #format=format,
+                  extra_opts = extra_opts,
+                  server=server)
+  }else {
     object <- new('queue', submit_exe=submit_exe,
                   queue=queue,
                   nodes=nodes, memory=memory,

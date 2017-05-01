@@ -6,7 +6,7 @@ Description: This framework allows you to design and implement complex
     been built keeping in mind the needs of bioinformatics workflows. However, it is
     easily extendable to any field where a series of steps (shell commands) are to
     be executed in a (work)flow.
-Version: 0.9.10.9016
+Version: 0.9.10.9021.1
 Depends:
     R (>= 3.0.2),
     methods,
@@ -20,9 +20,10 @@ Suggests:
     reshape2,
     knitr,
     ggplot2,
-    openxlsx,
     testthat,
     funr
+Enhances:
+  openxlsx
 VignetteBuilder: knitr
 URL: https://github.com/sahilseth/flowr
 BugReports: https://github.com/sahilseth/flowr/issues
