@@ -24,15 +24,12 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 <br>
 
 
-flowr 0.9.10.9021.1
+flowr 0.9.10.9022
 ----------------------------------------------
 > 2017-04-30
 
-* bugfix in `render-dependency.R` script, originally fixed in #74, 4de3429beaba8077dff5a18c92fa61f11464f691
-	- Fixed typo at line 76: space between `afterok: <jobid>` is not allowed and was failing with error, *moab cannot submit job - cannot create requested dependency*. Corrected to `depend=afterok:%s",paste(x@dependency[[index]]...`
-    * corrected `moab` dependency function, *render_dependency.moab* to correctly format dependency arguments in MSUB script, e.g., `#MSUB -l depend=afterok:960775:960854` instead of `#MSUB -l  depend=afterok:960775: depend=afterok:960854`
-    * https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R#L60
-* bugfix for `render_dependency.sge` function same as for `moab`: Untested
+* bugfix in for `moab` and `sge` schedulers (see #74 for details)
+
 
 flowr 0.9.10 (dates)
 ----------------------------------------------
