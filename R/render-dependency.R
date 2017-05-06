@@ -73,7 +73,7 @@ render_dependency.moab <- function(x, index, ...){
                                                  sep="", collapse=":"))
   }else if(dep_type == "burst"){
     index=1
-    dep <- sprintf("-l depend=afterok: %s",paste(x@dependency[[index]], sep="",
+    dep <- sprintf("-l depend=afterok:%s",paste(x@dependency[[index]], sep="",
                                                  collapse=":"))
   }else{dep = ""}
   return(dep)
