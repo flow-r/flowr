@@ -81,12 +81,27 @@ to_flowdet.job <- function(x){
   triggers = try(x@trigger)
   if(length(triggers) == 0) triggers = NA
 
+  # resolve dependency structure
   deps = x@dependency
-  deps = sapply(deps, paste, collapse = ";")
-  prev = x@previous_job ## works for single type jobs
+
+  # case no dependency NULL
+  if(is.null(unlist(deps))){
+    deps = NA
+  }else{
+    # in case each step has multiple (like a list)
+    deps = lapply(deps, paste, collapse = ";")
+    # make sure its a vector
+    deps = unlist(deps)
+  }
+  
+  #deps = ifelse(is.null(unlist(deps)), NA, unlist(deps))
+  
+  
+  prev = x@previous_job # works for single type jobs
   prev = paste(prev, collapse = ";")
   #ifelse(prev != "") prev = paste(prev, 1:length(fobj@jobs[[prev]]@id), sep = "_")
 
+  
   job_no = 1:length(cmds)
   job_id = paste(x@jobname, job_no, sep = "_")
   
@@ -104,12 +119,12 @@ to_flowdet.job <- function(x){
     job_sub_id = ids,
     job_id = job_id, 
     prev = prev,
-    dependency = ifelse(is.null(unlist(deps)), NA, unlist(deps)),
+    dependency = deps,
     status = x@status,
     exit_code = exit_codes,
     cmd = cmds,
     trigger = triggers, 
-    stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE, row.names = NULL)
   
   return(job_det)
 }
