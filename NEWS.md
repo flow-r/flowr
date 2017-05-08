@@ -23,6 +23,14 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 <br>
 
+
+flowr 0.9.10.9022
+----------------------------------------------
+> 2017-04-30
+
+* bugfix in for `moab` and `sge` schedulers (see #74 for details)
+
+
 flowr 0.9.10 (dates)
 ----------------------------------------------
 > 2016-04-18
