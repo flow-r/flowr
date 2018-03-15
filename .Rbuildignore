@@ -7,7 +7,6 @@
 .travis2.yml
 .travis.yml
 
-
 misc
 inst/extdata/*
 inst/staticdocs
@@ -17,6 +16,7 @@ README\.Rmd
 README\.html
 TODO\.md
 cran\-comments\.md
+CONTRIBUTING.md
 
 ## ignore test files and folders
 tests/testthat/Rplots.pdf
