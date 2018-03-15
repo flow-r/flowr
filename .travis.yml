@@ -5,6 +5,7 @@ language: r
 cache: packages
 warnings_are_errors: false
 
+r_packages: openxlsx, ggplot2
 
 r:
   - oldrel
