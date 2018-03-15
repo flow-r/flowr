@@ -1,0 +1,12 @@
+# https://docs.travis-ci.com/user/languages/r/
+language: r
+
+# cache dep packages
+cache: packages
+warnings_are_errors: false
+
+
+r:
+  - oldrel
+  - release
+  - devel
