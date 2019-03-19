@@ -97,12 +97,13 @@ kill.flow <- function(x,
 									log)
 	
 	## redirect STDERR as well if silent
+	n_cmds = length(cmds)
 	if(verbose < 2)
 		cmds = paste0(cmds, "  2>&1")
-	message("killing ", length(cmds), " jobs, please wait... See kill_jobs.out in the wd for more details.")
+	message("killing ", n_cmds, " jobs, please wait... See kill_jobs.out in the wd for more details.")
 	
-	
-	pb <- txtProgressBar(style = 3, min = 1, max = length(cmds))
+	if(length(cmds) > 1)
+	  pb <- txtProgressBar(style = 3, min = 1, max = length(cmds))
 	tmp <- lapply(1:length(cmds), function(i){
 		#for(i in 1:length(cmds)) {
 		if(verbose > 2) 
@@ -111,7 +112,8 @@ kill.flow <- function(x,
 		if(length(cmds) > 1)
 			pb$up(i)
 	})
-	close(pb)
+	if(length(cmds) > 1)
+	  close(pb)
 	
 # 	tmp <- pbsapply(cmds, function(cmd){
 # 		Sys.sleep(1)
