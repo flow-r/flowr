@@ -80,7 +80,8 @@ to_flowmat.list <- function(x, samplename, ...){
     stop("supply a named object to to_flowmat")
   
   ret <- lapply(1:length(x), function(i){
-    cmd = x[[i]]
+    # in case glue or something similar is supplied, conv to character
+    cmd = as.character(x[[i]])
     jobname = names(x[i])
     data.frame(jobname, cmd, stringsAsFactors = FALSE)
   })
@@ -88,8 +89,12 @@ to_flowmat.list <- function(x, samplename, ...){
   # we are facing some issues in new R, 
   # Error in data.frame(samplename = samplename, ret, row.names = NULL, stringsAsFactors = FALSE) : 
   # arguments imply differing number of rows: 1, 2
-  #ret = data.frame(samplename = samplename, ret, row.names = NULL, stringsAsFactors = FALSE)		
-  ret = cbind(samplename = samplename, ret)
+  #ret = data.frame(samplename = samplename, ret, row.names = NULL, stringsAsFactors = FALSE)
+  # if a single samplename is supplied, explicitily repeat it
+  if(length(samplename) < nrow(ret))
+    samplename = rep(samplename, nrow(ret))
+  
+  ret = cbind(samplename = as.character(samplename), ret, stringsAsFactors = FALSE)
   attr(ret, "class") <- c("flowmat", "data.frame")
   return(ret)
   
