@@ -87,6 +87,11 @@ to_flowdet.job <- function(x){
   # case no dependency NULL
   if(is.null(unlist(deps))){
     deps = NA
+  }else if(x@submission_type & x@dependency_type){
+    # each of these jobs needs to wait for ALL of the above to finish
+    # fix for R 3.5.2
+    deps = lapply(unlist(deps), paste, collapse = ";")
+    deps = unlist(deps)
   }else{
     # in case each step has multiple (like a list)
     deps = lapply(deps, paste, collapse = ";")
@@ -95,7 +100,6 @@ to_flowdet.job <- function(x){
   }
   
   #deps = ifelse(is.null(unlist(deps)), NA, unlist(deps))
-  
   
   prev = x@previous_job # works for single type jobs
   prev = paste(prev, collapse = ";")
