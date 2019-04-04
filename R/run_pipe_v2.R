@@ -23,38 +23,39 @@
 #'   \item \link{submit_flow}: Submit the flow to the cluster.
 #' }
 #'
-#' @param x name of the pipeline to run. This is a function called to create a flow_mat.
-#' @param def flow definition
 #' @param flow_run_path passed onto to_flow. Default it picked up from flowr.conf. Typically this is ~/flowr/runs
-#' @param wd an alias to flow_run_path
 #' @param rerun_wd if you need to re-run, supply the previous working dir
 #' @param start_from the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.
-#' @param conf a tab-delimited configuration file with path to tools and default parameters. See \link{fetch_pipes}.
 #' @param platform what platform to use, overrides flowdef
 #' @param execute TRUE/FALSE
+#' @param pipe_func name of the pipeline function in `pipe_src`
+#' @param pipe_src path to pipeline script
+#' @param flow_def flow definition file
+#' @param flow_conf flow conf file with various parameters used by the flow
+#' @param flowname name for the flow for submission.
 #' @param ... passed onto the pipeline function as specified in x
-#'
 #'
 #' @export
 #' @importFrom params load_opts read_sheet write_sheet
 #'
-#' @aliases run_flow
 #' 
 run_pipe_v2 <- function(
   pipe_func,
   pipe_src,
   flow_def, 
   flow_conf,
+  flowname,
+  platform,
   flow_run_path = opts_flow$get("flow_run_path"),
   rerun_wd, 
   start_from,
-  execute = FALSE,  ...){
+  execute = FALSE, ...){
   
   # --- source the file and get the main function from it
   if(!file.exists(pipe_src))
     stop("pls check pipe_src")
   source(pipe_src, TRUE)
-
+  
   message("\n> loading confs....")
   ## load default options for the pipeline
   confs = c(
@@ -62,11 +63,11 @@ run_pipe_v2 <- function(
     fetch_conf("flowr.conf"),
     flow_conf)
   confs = na.omit(confs)
-  if(!missing(conf))
-    confs = c(confs, conf)
+  if(!missing(flow_conf))
+    confs = c(confs, flow_conf)
   print(kable(as.data.frame(confs)))
   opts_flow$load(confs, verbose = FALSE, check = TRUE)
-
+  
   message("\n> creating flowmat....")
   # crate a flowmat
   out = pipe_src(...)
@@ -75,13 +76,13 @@ run_pipe_v2 <- function(
   module_cmds = opts_flow$get("module_cmds")
   
   message("\n> stitching a flow object....")
-
+  
   if(missing(rerun_wd)){
     # create a flow object
     fobj = to_flow(x = out$flowmat,
                    def = flow_def,
                    platform = platform,
-                   flowname = basename(x),
+                   flowname = flowname,
                    module_cmds = module_cmds,
                    flow_run_path = flow_run_path)
     
