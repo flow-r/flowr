@@ -30,4 +30,3 @@ Additionally it creates a shortcut to the \code{flowr} helper script in \code{~/
 \details{
 Will add more to this, to identify cluster and aid in other things.
 }
-

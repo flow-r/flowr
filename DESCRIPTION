@@ -6,7 +6,7 @@ Description: This framework allows you to design and implement complex
     been built keeping in mind the needs of bioinformatics workflows. However, it is
     easily extendable to any field where a series of steps (shell commands) are to
     be executed in a (work)flow.
-Version: 0.9.10.9022
+Version: 0.9.10.9027
 Depends:
     R (>= 3.0.2),
     methods,
@@ -23,10 +23,12 @@ Suggests:
     funr
 Enhances:
     ggplot2,
-    openxlsx
+    openxlsx,
+    pacman,
+    cowplot
 VignetteBuilder: knitr
 URL: https://github.com/sahilseth/flowr
 BugReports: https://github.com/sahilseth/flowr/issues
 Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
 License: MIT + file LICENSE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1

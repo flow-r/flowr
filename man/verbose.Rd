@@ -53,4 +53,3 @@ def = as.flowdef(fl, verbose = 2)
 # 	4: D	serial --> burst --> scatter rel: one:many
 }
 \keyword{datasets}
-

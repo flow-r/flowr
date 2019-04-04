@@ -26,4 +26,3 @@ In future plot_flow may be able to accept a flowdef only.
 create_jobs_mat(x = x)}
 }
 \keyword{internal}
-

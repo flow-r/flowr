@@ -12,4 +12,3 @@ get_wds(x)
 \description{
 Get all the (sub)directories in a folder
 }
-

@@ -254,6 +254,7 @@ to_flow.flowmat <- function(x, def,
     
     ## --- fetch samplename from the flowr_mat
     cmd.list = split.data.frame(x2, x2$jobname)
+    # get_samplename
     desc = paste(flowname, samp, sep = "-")
     fobj = to_flow(x = cmd.list,
                    def = def,
@@ -289,6 +290,11 @@ to_flow.flowmat <- function(x, def,
 to_flow.data.frame = function(x, ...){
   # if a data.frame is supplied instead of a flowmat class
   to_flow(as.flowmat(x), ...)
+}
+
+
+get_samplename <- function(fobj){
+  gsub(paste0(fobj@name, "-"), "", fobj@desc)
 }
 
 

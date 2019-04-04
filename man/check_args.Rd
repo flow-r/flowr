@@ -18,4 +18,3 @@ are NULL
 \details{
 This function has now been moved to params package.
 }
-

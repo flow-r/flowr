@@ -168,6 +168,14 @@ rerun.flow <- function(x, mat, def,
       message("--> now we have: ", nrow(mat), " rows")
       if(nrow(mat) == 0)
         stop("--> no jobs left after subsetting ...")
+    }else if(missing(samplename) & unique(mat$samplename) > 1){
+      message("multiple samplenames present in flowmat, subsetting")
+      samplename = get_samplename(fobj)
+      samp = samplename  
+      mat = subset(mat, mat$samplename == samp)
+      message("--> now we have: ", nrow(mat), " rows")
+      if(nrow(mat) == 0)
+        stop("--> no jobs left after subsetting ...")
     }
   }
   

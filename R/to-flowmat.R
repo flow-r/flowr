@@ -66,51 +66,60 @@
 #'
 #' @export
 to_flowmat <- function(x, ...) {
-	UseMethod("to_flowmat")
+  UseMethod("to_flowmat")
 }
 
 
 #' @rdname to_flowmat
 #' @export
 to_flowmat.list <- function(x, samplename, ...){
-	if(missing(samplename))
-		stop("to_flowmat needs a samplename !")
-
-	if(is.null(names(x)))
-		stop("supply a named object to to_flowmat")
-
-	ret <- lapply(1:length(x), function(i){
-		cmd = x[[i]]
-		jobname = names(x[i])
-		data.frame(jobname, cmd, stringsAsFactors = FALSE)
-	})
-	ret = do.call(rbind, ret)
-	ret = data.frame(samplename = samplename, ret, row.names = NULL, stringsAsFactors = FALSE)		
-	attr(ret, "class") <- c("flowmat", "data.frame")
-	return(ret)
-
+  if(missing(samplename))
+    stop("to_flowmat needs a samplename !")
+  
+  if(is.null(names(x)))
+    stop("supply a named object to to_flowmat")
+  
+  ret <- lapply(1:length(x), function(i){
+    # in case glue or something similar is supplied, conv to character
+    cmd = as.character(x[[i]])
+    jobname = names(x[i])
+    data.frame(jobname, cmd, stringsAsFactors = FALSE)
+  })
+  ret = do.call(rbind, ret)
+  # we are facing some issues in new R, 
+  # Error in data.frame(samplename = samplename, ret, row.names = NULL, stringsAsFactors = FALSE) : 
+  # arguments imply differing number of rows: 1, 2
+  #ret = data.frame(samplename = samplename, ret, row.names = NULL, stringsAsFactors = FALSE)
+  # if a single samplename is supplied, explicitily repeat it
+  if(length(samplename) < nrow(ret))
+    samplename = rep(samplename, nrow(ret))
+  
+  ret = cbind(samplename = as.character(samplename), ret, stringsAsFactors = FALSE)
+  attr(ret, "class") <- c("flowmat", "data.frame")
+  return(ret)
+  
 }
 
 #' @rdname to_flowmat
 #' @export
 to_flowmat.data.frame <- function(x, ...){
-	attr(x, "class") <- c("flowmat", "data.frame")
-	message("Looks good, just check...")
-	return(x)
+  attr(x, "class") <- c("flowmat", "data.frame")
+  message("Looks good, just check...")
+  return(x)
 }
 
 
 #' @rdname to_flowmat
 #' @export
 to_flowmat.flow <- function(x, ...){
-	## -- get all the commands as rows
-	lst = lapply(x@jobs, function(y){
-		cmd = list(y@cmds)
-		names(cmd) = y@name
-		to_flowmat(x = cmd, samplename = x@desc)
-	})
-	mat = do.call(rbind, lst)
-	return(mat)
+  ## -- get all the commands as rows
+  lst = lapply(x@jobs, function(y){
+    cmd = list(y@cmds)
+    names(cmd) = y@name
+    to_flowmat(x = cmd, samplename = x@desc)
+  })
+  mat = do.call(rbind, lst)
+  return(mat)
 }
 
 
@@ -126,76 +135,76 @@ to_flowmat.flow <- function(x, ...){
 #'
 #' @export
 as.flowmat <- function(x, grp_col, jobname_col, cmd_col, ...){
-	## ---- assuming x is a file
-	
-	## go from more specific to LESS
-	
-	if(is.flowmat(x)){
-		return(check(x))
-
-	}else if(is.data.frame(x)){
-		## prevent issues with factors
-		x[] <- lapply(x, as.character)
-		
-	}else if(is.list(x)){
-		message("x seems to be a list, binding all by rows")
-		x = do.call(rbind, x)
-		
-	}else if(is.character(x)){
-		if(!file.exists(x))
-			stop("file does not exists: ", x)
-		message("> mat seems to be a file, reading it...")
-		x <- read_sheet(x, id_column = "jobname", quote = "")
-	}
-	
-	
-	if(missing(grp_col)){
-		grp_col = "samplename"
-		if(grp_col %in% colnames(x))
-			message("--> Using `", grp_col, "` as the grouping column")
-		else
-			stop("grouping column not specified, and the default 'samplename' is absent in the input x.")
-	}
-	if(missing(jobname_col)){
-		jobname_col = "jobname"
-		if(jobname_col %in% colnames(x))
-			message("--> Using `", jobname_col, "` as the jobname column")
-		else
-			stop("jobname column not specified, and the default 'jobname' is absent in the input x.")
-	}
-	if(missing(cmd_col)){
-		cmd_col = "cmd"
-		if(cmd_col %in% colnames(x))
-			message("--> Using `", cmd_col, "` as the cmd column")
-		else
-			stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
-	}
-	
-	## check col are single length column
-	assert_character(grp_col, 1)
-	assert_character(jobname_col, 1)
-	assert_character(cmd_col, 1)
-	
-	## ---- renaming columns to make it easier for subsequent.
-	x[, "jobname"] = x[, jobname_col]
-	x[, "cmd"] = x[, cmd_col]
-	x[, "samplename"] = x[, grp_col]
-	
-	## check rows
-	if(nrow(x) == 0)
-		stop("flowmat empty\nIt seems there are no rows in flowmat, please check and try again.")
-	
-	## --- add class flowmat, suggests that this has been checked
-	class(x) <- c("flowmat", "data.frame")
-	x = check(x)
-	return(x)
+  ## ---- assuming x is a file
+  
+  ## go from more specific to LESS
+  
+  if(is.flowmat(x)){
+    return(check(x))
+    
+  }else if(is.data.frame(x)){
+    ## prevent issues with factors
+    x[] <- lapply(x, as.character)
+    
+  }else if(is.list(x)){
+    message("x seems to be a list, binding all by rows")
+    x = do.call(rbind, x)
+    
+  }else if(is.character(x)){
+    if(!file.exists(x))
+      stop("file does not exists: ", x)
+    message("> mat seems to be a file, reading it...")
+    x <- read_sheet(x, id_column = "jobname", quote = "")
+  }
+  
+  
+  if(missing(grp_col)){
+    grp_col = "samplename"
+    if(grp_col %in% colnames(x))
+      message("--> Using `", grp_col, "` as the grouping column")
+    else
+      stop("grouping column not specified, and the default 'samplename' is absent in the input x.")
+  }
+  if(missing(jobname_col)){
+    jobname_col = "jobname"
+    if(jobname_col %in% colnames(x))
+      message("--> Using `", jobname_col, "` as the jobname column")
+    else
+      stop("jobname column not specified, and the default 'jobname' is absent in the input x.")
+  }
+  if(missing(cmd_col)){
+    cmd_col = "cmd"
+    if(cmd_col %in% colnames(x))
+      message("--> Using `", cmd_col, "` as the cmd column")
+    else
+      stop("cmd column not specified, and the default 'cmd' is absent in the input x.")
+  }
+  
+  ## check col are single length column
+  assert_character(grp_col, 1)
+  assert_character(jobname_col, 1)
+  assert_character(cmd_col, 1)
+  
+  ## ---- renaming columns to make it easier for subsequent.
+  x[, "jobname"] = x[, jobname_col]
+  x[, "cmd"] = x[, cmd_col]
+  x[, "samplename"] = x[, grp_col]
+  
+  ## check rows
+  if(nrow(x) == 0)
+    stop("flowmat empty\nIt seems there are no rows in flowmat, please check and try again.")
+  
+  ## --- add class flowmat, suggests that this has been checked
+  class(x) <- c("flowmat", "data.frame")
+  x = check(x)
+  return(x)
 }
 
 
 #' @rdname to_flowmat
 #' @export
 is.flowmat <- function(x){
-	class(x)[1] == "flowmat"
+  class(x)[1] == "flowmat"
 }
 
 
@@ -203,17 +212,17 @@ is.flowmat <- function(x){
 
 ## not used, use char instead
 to_flowmat.character <- function(x, ...){
-	message("Assuming x is a path to a file, using as.flowmat")
-	.Deprecated("as.flowmat")
-	as.flowmat(x)
+  message("Assuming x is a path to a file, using as.flowmat")
+  .Deprecated("as.flowmat")
+  as.flowmat(x)
 }
 
 .to_flowmat.character <- function(x, ...){
-	.Deprecated("to_flowmat.list", msg = "Supply a named list instead of a vector.")
-	ret <- lapply(1:length(x), function(i){
-		cmd = x[i]
-		jobname = names(x[i])
-		data.frame(jobname, cmd, stringsAsFactors = FALSE)
-	})
-	do.call(rbind, ret)
+  .Deprecated("to_flowmat.list", msg = "Supply a named list instead of a vector.")
+  ret <- lapply(1:length(x), function(i){
+    cmd = x[i]
+    jobname = names(x[i])
+    data.frame(jobname, cmd, stringsAsFactors = FALSE)
+  })
+  do.call(rbind, ret)
 }

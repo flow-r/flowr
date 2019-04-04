@@ -17,4 +17,3 @@ platform specific templates.
 
 This is a wrapper around \link{whisker.render}
 }
-

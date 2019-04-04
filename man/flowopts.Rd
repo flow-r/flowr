@@ -3,13 +3,13 @@
 \docType{data}
 \name{flowopts}
 \alias{flowopts}
+\alias{opts_flow}
+\alias{set_opts}
 \alias{get_opts}
 \alias{load_opts}
-\alias{opts_flow}
+\alias{opts_flow$set}
 \alias{opts_flow$get}
 \alias{opts_flow$load}
-\alias{opts_flow$set}
-\alias{set_opts}
 \title{Default options/params used in flowr and ngsflows}
 \format{\code{opts_flow}}
 \usage{
@@ -82,4 +82,3 @@ opts_flow$get()
 \link{fetch} \link[params]{params} \link[params]{read_sheet}
 }
 \keyword{datasets}
-

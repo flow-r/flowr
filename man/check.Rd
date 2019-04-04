@@ -2,8 +2,8 @@
 % Please edit documentation in R/check.R
 \name{check}
 \alias{check}
-\alias{check.flowdef}
 \alias{check.flowmat}
+\alias{check.flowdef}
 \title{Check consistency of flowdef and flowmat}
 \usage{
 check(x, ...)
@@ -48,4 +48,3 @@ jobname	prev.sub_type --> dep_type --> sub_type: relationship
 10: printreads_a	scatter --> serial --> scatter rel: complex one:one
 }
 }
-

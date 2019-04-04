@@ -16,4 +16,3 @@ submit_run(x, wd, max_processing = 7)
 \description{
 Submit several flow objects, limit the max running concurrently
 }
-
