@@ -87,10 +87,10 @@ to_flowdet.job <- function(x){
   # case no dependency NULL
   if(is.null(unlist(deps))){
     deps = NA
-  }else if(x@submission_type & x@dependency_type){
+  }else if(x@submission_type == "scatter" & x@dependency_type == "gather"){
     # each of these jobs needs to wait for ALL of the above to finish
     # fix for R 3.5.2
-    deps = lapply(unlist(deps), paste, collapse = ";")
+    deps = paste(unlist(deps), collapse = ";");deps
     deps = unlist(deps)
   }else{
     # in case each step has multiple (like a list)
@@ -98,6 +98,7 @@ to_flowdet.job <- function(x){
     # make sure its a vector
     deps = unlist(deps)
   }
+  deps
   
   #deps = ifelse(is.null(unlist(deps)), NA, unlist(deps))
   
