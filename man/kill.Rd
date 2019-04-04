@@ -56,4 +56,3 @@ kill(x='fastq_haplotyper*')
 kill(x='fastq_haplotyper*', force = TRUE)
 }
 }
-

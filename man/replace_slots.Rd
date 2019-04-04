@@ -15,4 +15,3 @@ replace_slots(object, ...)
 replace slots in a S4 object
 }
 \keyword{internal}
-

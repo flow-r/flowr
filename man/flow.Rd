@@ -2,12 +2,12 @@
 % Please edit documentation in R/class-def.R
 \docType{class}
 \name{flow-class}
-\alias{flow}
 \alias{flow-class}
+\alias{flow}
 \title{Describing the flow class}
 \usage{
-flow(jobs = list(new("job")), name = "newflow", desc = "my_super_flow",
-  mode = c("scheduler", "local"),
+flow(jobs = list(new("job")), name = "newflow",
+  desc = "my_super_flow", mode = c("scheduler", "local"),
   flow_run_path = opts_flow$get("flow_run_path"), trigger_path = "",
   flow_path = "", version = "0.0", status = "created",
   module_cmds = opts_flow$get("module_cmds"), execute = "")
@@ -68,4 +68,3 @@ submit_flow(fobj)
 submit_flow(fobj, execute = TRUE)
 }
 }
-

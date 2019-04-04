@@ -2,8 +2,8 @@
 % Please edit documentation in R/submit-flow.R
 \name{submit_flow}
 \alias{submit_flow}
-\alias{submit_flow.flow}
 \alias{submit_flow.list}
+\alias{submit_flow.flow}
 \title{Submit a flow to the cluster}
 \usage{
 submit_flow(x, verbose = opts_flow$get("verbose"), ...)
@@ -11,7 +11,8 @@ submit_flow(x, verbose = opts_flow$get("verbose"), ...)
 \method{submit_flow}{list}(x, verbose = opts_flow$get("verbose"), ...)
 
 \method{submit_flow}{flow}(x, verbose = opts_flow$get("verbose"),
-  execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1, ...)
+  execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1,
+  ...)
 }
 \arguments{
 \item{x}{a \code{object} of class \code{flow}.}
@@ -44,4 +45,3 @@ of jobs with flow instance and cannot monitor, kill or re-run the flow.
 \dontrun{
 submit_flow(fobj = fobj, ... = ...)}
 }
-

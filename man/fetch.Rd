@@ -2,8 +2,8 @@
 % Please edit documentation in R/fetch.r
 \name{fetch}
 \alias{fetch}
-\alias{fetch_conf}
 \alias{fetch_pipes}
+\alias{fetch_conf}
 \title{Two generic functions to search for pipelines and configuration files.}
 \usage{
 fetch(x, places, urls, verbose = opts_flow$get("verbose"))
@@ -93,4 +93,3 @@ pip$def
 \seealso{
 \link{flowopts}
 }
-

@@ -28,4 +28,3 @@ submit_job(jobj = jobj, fobj = fobj, execute = FALSE,
 verbose = TRUE, wd = wd, job_id = job_id)
 }
 }
-

@@ -2,9 +2,9 @@
 % Please edit documentation in R/to-flowdet.R
 \name{to_flowdet}
 \alias{to_flowdet}
+\alias{to_flowdet.rootdir}
 \alias{to_flowdet.character}
 \alias{to_flowdet.flow}
-\alias{to_flowdet.rootdir}
 \title{Create a flow's submission detail file}
 \usage{
 to_flowdet(x, ...)
@@ -31,4 +31,3 @@ Incase a parent folder with multiple flows is provided information regarding job
 if x is char. assumed a path, check if flow object exists in it and read it.
 If there is no flow object, try using a simpler function
 }
-

@@ -13,4 +13,3 @@ error(x, ...)
 function to handle all error descriptions
 }
 \keyword{internal}
-

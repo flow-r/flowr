@@ -24,4 +24,3 @@ This would create a folder in home called 'flows'.
 \dontrun{
 test_queue(q_obj = q_obj, ... = ...)}
 }
-
