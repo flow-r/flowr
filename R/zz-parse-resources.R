@@ -65,21 +65,21 @@ parse_lsf_out <- function(x,
   return(dat)
 }
 
-# Extract resources used by each job of a flow
+#' Extract resources used by each job of a flow
 # 
-# get_resources currenty this only works on LSF
-# @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
-# @param odir Output directory to save the results
-# @param \dots other arguments sent to \link{get_resources_lsf}
-# 
-# @details If \code{x} is a parent level folder, 
-# then resources are summarized for all its child folders.
-# 
-# @export
-# 
-# @examples \dontrun{
-# get_resources(x = x, odir = ~/tmp)
-# }
+#' get_resources currenty this only works on LSF
+#' @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
+#' @param odir Output directory to save the results
+#' @param \dots other arguments sent to \link{get_resources_lsf}
+#' 
+#' @details If \code{x} is a parent level folder, 
+#' then resources are summarized for all its child folders.
+#' 
+#' @export
+#' 
+#' @examples \dontrun{
+#' get_resources(x = x, odir = ~/tmp)
+#' }
 get_resources <- function(x, odir, ...){
   ## Suggested packages
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -96,7 +96,6 @@ get_resources <- function(x, odir, ...){
 
 
 
-#' get_resources_lsf
 #' get_resources_lsf
 #' 
 #' @inheritParams get_resources
@@ -163,14 +162,14 @@ get_resources_lsf <- function(wd,
                        measure.vars = c("avg_mem", "max_mem", "max_swap", "cpu_time", "bgn_time", "end_time"))
   #dat$cpu_time = as.numeric(dat$cpu_time)
   if(plot){
-    library(cowplot)
+    pacman::p_load("cowplot")
     #mytheme <- ggplot2::theme_bw() +
     p <- with(dat, {ggplot2::ggplot(dat, ggplot2::aes(x = jobname, y = value)) +
         ggplot2::geom_boxplot() + 
         ggplot2::geom_jitter(col = "grey", alpha = 0.3)})
     p <- p + ggplot2::facet_wrap(~variable, scales = "free_y")
-    p <- p +ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
-    save_plot(sprintf("%s/resources_utilized.pdf", wd), p, base_width = 12, base_height = 8)
+    p <- p + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
+    cowplot::save_plot(sprintf("%s/resources_utilized.pdf", wd), p, base_width = 12, base_height = 8)
   }
   return(dat)
 }
@@ -178,6 +177,8 @@ get_resources_lsf <- function(wd,
 
 if(FALSE){
   # ** example ------
+  
+  reshape2::dcast(df, jobnm+job_no+job_sub_id+job_id ~ variable, value.var = "value")
 }
 
 # nocov end
