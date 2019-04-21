@@ -57,7 +57,7 @@ submit_job <- function (jobj, fobj, job_id, execute = FALSE, verbose = FALSE, ..
   #jobj@stderr <- file.path(wd, jobj@jobname)
   #jobj@stdout <- file.path(wd, jobj@jobname)
   
-  ## ---- do this for all commands (in case of scatter)
+  # ---- do this for all commands (in case of scatter)
   jobids <- sapply(1:length(jobj@cmds), function(i){
     ## ---   make a long job name to capture the run
     obj <- jobj;

@@ -87,7 +87,10 @@ to_flowdet.job <- function(x){
   # case no dependency NULL
   if(is.null(unlist(deps))){
     deps = NA
-  }else if(x@submission_type == "scatter" & x@dependency_type == "gather"){
+    
+    # if dependency type is gather, it needs to wait for ALL of them to finish
+  }else if(x@dependency_type == "gather"){
+    # x@submission_type == "scatter" & 
     # each of these jobs needs to wait for ALL of the above to finish
     # fix for R 3.5.2
     deps = paste(unlist(deps), collapse = ";");deps
