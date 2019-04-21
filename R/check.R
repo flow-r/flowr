@@ -96,7 +96,9 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
   
   ## check if some jobs are put as dependencies but not properly defined
   ## prevjob_exists()
-  x$prev_jobs = gsub("\\.|NA", "none", x$prev_jobs)
+  # x$prev_jobs = gsub("\\.|NA", "none", x$prev_jobs)
+  # only replace NA with none; now .!
+  x$prev_jobs = gsub("NA", "none", x$prev_jobs)
   x$prev_jobs = ifelse(x$prev_jobs=="", "none", x$prev_jobs)
   x$prev_jobs = ifelse(is.na(x$prev_jobs), "none", x$prev_jobs)
   
