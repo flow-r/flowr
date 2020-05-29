@@ -96,7 +96,6 @@ set_opts <- function(...){
 }
 
 # redefine opts_flow$load
-
 opts_flow$load <- function(...){
   params::load_opts(..., envir = flowopts)
   
