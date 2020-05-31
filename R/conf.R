@@ -104,6 +104,7 @@ opts_flow$load <- function(...){
   
 }
 
+
 #' @aliases flowopts
 #' @export
 load_opts <- function(...){
