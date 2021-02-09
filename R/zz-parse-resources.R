@@ -22,6 +22,7 @@ parse_lsf_out <- function(x,
     message("reading: ", x)
   
   if(!file.exists(x)){
+    
     cpu_time=bgn_time=end_time=avg_mem=max_mem=max_swap=host=cores=NA
     
   }else{
@@ -34,13 +35,25 @@ parse_lsf_out <- function(x,
     cpu_time = try(gsub("\\s|sec\\.", "", strsplit(grep("CPU time", text, value = TRUE), ":")[[1]][2]))
     cpu_time = as.numeric(cpu_time) * scale_time
     bgn_time = try(gsub("BGN at ", "", grep("^BGN at", text, value = TRUE)))
-    bgn_time = try(as.character(strptime(bgn_time, format = time_format)))
+    bgn_time = try(strptime(bgn_time, format = time_format))
     end_time = try(gsub("END at ", "", grep("^END at", text, value = TRUE)))
-    end_time = try(as.character(strptime(end_time, format = time_format)))
+    end_time = try(strptime(end_time, format = time_format))
     
-    avg_mem = try(gsub("\\s| MB", "", strsplit(grep("Average Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
-    max_mem = try(gsub("\\s| MB", "", strsplit(grep("Max Memory", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
-    max_swap = try(gsub("\\s| MB", "", strsplit(grep("Max Swap", text, value = TRUE), ":")[[1]][2]), silent = TRUE)
+    # get line for avg memory
+    patterns = c(avg_mem = "Average Memory", 
+                 max_mem = "Max Memory",
+                 max_swap = "Max Swap")
+    get_mem <- function(text, pattern, type){
+      mem = trimws(strsplit(grep(pattern, text, value = TRUE), ":")[[1]][2])
+      unit = strsplit(mem, " ")[[1]][2]
+      mem = as.numeric(trimws(gsub(unit, "", mem)))
+      list(mem = mem, unit = unit, type = type)
+    }
+    
+    lst_mem = lapply(seq_along(patterns), function(i){
+      get_mem(text, patterns[i], names(patterns)[i])
+    })# %>% do.call(rbind, .)
+    names(lst_mem) = names(patterns)
     
     host = gsub(".*host <([a-z0-9]*)>.*", "\\1", grep("host <.*>", text, value = TRUE))
     cores = gsub(".*ptile=(.*)\\].*", "\\1", grep("ptile=", text, value = TRUE))
@@ -49,20 +62,30 @@ parse_lsf_out <- function(x,
   #warnings()
   #message(cpu_time)
   dat = suppressWarnings(data.frame(
-    cpu_time = cpu_time,
+    cpu_time = as.numeric(cpu_time),
     bgn_time = bgn_time,
     end_time = end_time,
-    avg_mem = as.numeric(avg_mem),
-    max_mem = as.numeric(max_mem),
-    max_swap = as.numeric(max_swap),
+    avg_mem = lst_mem$avg_mem$mem,
+    max_mem = lst_mem$max_mem$mem,
+    max_swap = lst_mem$max_swap$mem,
     host = host,
     cores = cores, 
     stringsAsFactors = FALSE))
   
-  ## incase the flow was re-run, it may have multiple bgn and end times
+  # incase the flow was re-run, it may have multiple bgn and end times
+  # we will pick the last one
   dat = tail(dat, 1)
   
   return(dat)
+}
+
+if(FALSE){
+  
+  # ** example -----
+  x = "/rsrch3/home/iacs/sseth/flows/SS/sarco/mda/wex/ponm/runs/pon_m-20190420-00-06-46-5e1YkNUZ/pon_m-WEX-1004-N-20190420-00-06-46-7zoAKfcd/001.mutect/mutect_cmd_1.out"
+  df = parse_lsf_out(x)
+  class(df$bgn_time)
+  
 }
 
 #' Extract resources used by each job of a flow
@@ -171,7 +194,11 @@ get_resources_lsf <- function(wd,
     p <- p + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 30, hjust = 1))
     cowplot::save_plot(sprintf("%s/resources_utilized.pdf", wd), p, base_width = 12, base_height = 8)
   }
-  return(dat)
+  readr::write_rds(mat_res, file.path(wd, "flow_resources_wd.rds"))
+  readr::write_rds(dat, file.path(wd, "flow_resources.rds"))
+  readr::write_tsv(dat, file.path(wd, "flow_resources.tsv"))
+  
+  invisible(mat_res)
 }
 
 

@@ -96,7 +96,6 @@ set_opts <- function(...){
 }
 
 # redefine opts_flow$load
-
 opts_flow$load <- function(...){
   params::load_opts(..., envir = flowopts)
   
@@ -104,6 +103,7 @@ opts_flow$load <- function(...){
   opts_flow$set(verbose = as.numeric(opts_flow$get("verbose")))
   
 }
+
 
 #' @aliases flowopts
 #' @export

@@ -16,7 +16,6 @@
 
 
 
-
 ## ------------------------------ n o t e s -------------------------##
 ## All variables specified above are replaced on the fly. 
 ## Most of them come from the flow_definition file.
@@ -24,7 +23,24 @@
 ## Please refer to the platform manual, before editing this file
 ## ------------------------------------------------------------------##
 
+
 ## --- DO NOT EDIT from below here---- ##
+target="default_target.txt"
+redo=FALSE
+# https://stackoverflow.com/questions/16826657/how-to-exit-a-shell-script-if-targeted-file-doesnt-exist
+
+check_target()
+{
+  if [[ -f $target ]] ; then
+    echo "file ${target} already exists."
+    if [ $redo = "TRUE" ] ; then
+      echo "  However, redo requested, proceeding ..."
+    else
+        exit 0
+    fi
+  fi
+}
+
 ## following will always overwrite previous output file, if any. See https://github.com/sahilseth/flowr/issues/13
 set +o noclobber
 

@@ -201,7 +201,9 @@ rerun.flow <- function(x, mat, def,
   # flow_run_path: does not matter, since in the next step we would use flow_path
   fobj2 <- to_flow(x = mat, def = def, 
                    flowname = fobj@name, 
-                   flow_run_path = fobj@flow_run_path, ...)
+                   flow_run_path = fobj@flow_run_path, 
+                   module_cmds = fobj@module_cmds,
+                   ...)
   
   #knitr::kable(rerun)
   fobj2@status = "rerun"
