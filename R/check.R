@@ -66,19 +66,19 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
   
   check_args()
   
-  if(verbose)
+  if(verbose > 0)
     message("--> checking if required columns are present...")
   if (any(!need_cols  %in% colnames(x)))
     stop(c(error("flowdef: missing required columns"),
            paste(need_cols, collapse = " ")))
   
-  if(verbose)
+  if(verbose > 0)
     message("--> checking if resources columns are present...")
   if (any(!opt_cols  %in% colnames(x)))
     stop(c(error("flowdef: missing resource columns", msg = stop), 
            paste(opt_cols, collapse = ", ")))
   
-  if(verbose)
+  if(verbose > 0)
     message("--> checking if dependency column has valid names...")
   if (sum(!x$dep_type %in% dep_types))
     stop("dep_type: invalid\n",
@@ -86,7 +86,7 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
          paste(x$dep_type, collapse = " "),
          ".\nAnd they can be one of ", paste(dep_types, collapse = ", "))
   
-  if(verbose)
+  if(verbose > 0)
     message("--> checking if submission column has valid names...")
   if (sum(!x$sub_type %in% sub_types)){
     stop("sub_type: invalid\n",
@@ -104,7 +104,7 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
   
   prev_jobs = unlist(strsplit(x$prev_jobs[!(x$prev_jobs == "none")], ","))
   
-  if(verbose)
+  if(verbose > 0)
     message("--> checking for missing rows in def...")
   miss_jobs = prev_jobs[!prev_jobs %in% x$jobname]
   if (length(miss_jobs) > 0){
@@ -115,7 +115,7 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
   ## check if dep is none, but prev jobs defined
   
   ## --- check if there are rows where prev_job specied but dep NOT specified
-  if(verbose)
+  if(verbose > 0)
     message("--> checking for extra rows in def...")
   
   extra_rows = (x$dep_type == "none" & x$prev_jobs != "none")

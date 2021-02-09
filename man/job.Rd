@@ -4,10 +4,18 @@
 \alias{job}
 \title{Describing details of the job object}
 \usage{
-job(cmds = "", name = "myjob", q_obj = new("queue"),
-  previous_job = "", cpu = 1, memory, walltime,
-  submission_type = c("scatter", "serial"), dependency_type = c("none",
-  "gather", "serial", "burst"), ...)
+job(
+  cmds = "",
+  name = "myjob",
+  q_obj = new("queue"),
+  previous_job = "",
+  cpu = 1,
+  memory,
+  walltime,
+  submission_type = c("scatter", "serial"),
+  dependency_type = c("none", "gather", "serial", "burst"),
+  ...
+)
 }
 \arguments{
 \item{cmds}{the commands to run}

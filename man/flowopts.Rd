@@ -11,7 +11,11 @@
 \alias{opts_flow$get}
 \alias{opts_flow$load}
 \title{Default options/params used in flowr and ngsflows}
-\format{\code{opts_flow}}
+\format{
+\code{opts_flow}
+
+An object of class \code{list} of length 5.
+}
 \usage{
 flowopts
 

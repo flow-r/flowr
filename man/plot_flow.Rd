@@ -4,6 +4,7 @@
 \alias{plot_flow}
 \alias{plot_flow.list}
 \alias{plot_flow.flow}
+\alias{plot}
 \alias{plot_flow.character}
 \alias{plot_flow.flowdef}
 \alias{plot.flowdef}
@@ -18,11 +19,9 @@ plot_flow(x, ...)
 
 \method{plot_flow}{character}(x, ...)
 
-\method{plot_flow}{flowdef}(x, detailed = TRUE, type = c("1", "2"),
-  pdf = FALSE, pdffile, ...)
+\method{plot_flow}{flowdef}(x, detailed = TRUE, type = c("1", "2"), pdf = FALSE, pdffile, ...)
 
-\method{plot}{flowdef}(x, detailed = TRUE, type = c("1", "2"),
-  pdf = FALSE, pdffile, ...)
+\method{plot}{flowdef}(x, detailed = TRUE, type = c("1", "2"), pdf = FALSE, pdffile, ...)
 
 \method{plot}{flow}(x, ...)
 }

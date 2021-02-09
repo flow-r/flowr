@@ -10,8 +10,13 @@ kill(x, ...)
 
 \method{kill}{character}(x, force = FALSE, ...)
 
-\method{kill}{flow}(x, kill_cmd, verbose = opts_flow$get("verbose"),
-  jobid_col = "job_sub_id", ...)
+\method{kill}{flow}(
+  x,
+  kill_cmd,
+  verbose = opts_flow$get("verbose"),
+  jobid_col = "job_sub_id",
+  ...
+)
 }
 \arguments{
 \item{x}{either path to flow wd or object of class \link{flow}}

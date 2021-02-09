@@ -10,7 +10,8 @@
 \alias{as.flowdef}
 \alias{is.flowdef}
 \title{Flow Definition defines how to stich steps into a (work)flow.}
-\format{This is a tab separated file, with a minimum of 4 columns:<br>
+\format{
+This is a tab separated file, with a minimum of 4 columns:<br>
 
 \emph{required columns}:<br>
 \itemize{
@@ -43,14 +44,26 @@ your institutions guide to specify these.
 a \strong{single} node [1]
 \item{\code{walltime}} maximum time allowed for a step, usually in a HH:MM or HH:MM:SS format. [1:00]
 \item{\code{queue}} the queue to use for job submission [short]
-}}
+}
+}
 \usage{
 to_flowdef(x, ...)
 
-\method{to_flowdef}{flowmat}(x, sub_type, dep_type, prev_jobs,
-  queue = "short", platform = "torque", memory_reserved = "2000",
-  cpu_reserved = "1", nodes = "1", walltime = "1:00",
-  guess = FALSE, verbose = opts_flow$get("verbose"), ...)
+\method{to_flowdef}{flowmat}(
+  x,
+  sub_type,
+  dep_type,
+  prev_jobs,
+  queue = "short",
+  platform = "torque",
+  memory_reserved = "2000",
+  cpu_reserved = "1",
+  nodes = "1",
+  walltime = "1:00",
+  guess = FALSE,
+  verbose = opts_flow$get("verbose"),
+  ...
+)
 
 \method{to_flowdef}{flow}(x, ...)
 

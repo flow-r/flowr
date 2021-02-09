@@ -6,11 +6,31 @@
 \alias{run_pipe}
 \title{Run automated Pipelines}
 \usage{
-run(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
-  flow_run_path = wd, rerun_wd, start_from, execute = FALSE, ...)
+run(
+  x,
+  platform,
+  def,
+  conf,
+  wd = opts_flow$get("flow_run_path"),
+  flow_run_path = wd,
+  rerun_wd,
+  start_from,
+  execute = FALSE,
+  ...
+)
 
-run_pipe(x, platform, def, conf, wd = opts_flow$get("flow_run_path"),
-  flow_run_path = wd, rerun_wd, start_from, execute = FALSE, ...)
+run_pipe(
+  x,
+  platform,
+  def,
+  conf,
+  wd = opts_flow$get("flow_run_path"),
+  flow_run_path = wd,
+  rerun_wd,
+  start_from,
+  execute = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{name of the pipeline to run. This is a function called to create a flow_mat.}

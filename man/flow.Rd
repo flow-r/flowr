@@ -6,11 +6,19 @@
 \alias{flow}
 \title{Describing the flow class}
 \usage{
-flow(jobs = list(new("job")), name = "newflow",
-  desc = "my_super_flow", mode = c("scheduler", "local"),
-  flow_run_path = opts_flow$get("flow_run_path"), trigger_path = "",
-  flow_path = "", version = "0.0", status = "created",
-  module_cmds = opts_flow$get("module_cmds"), execute = "")
+flow(
+  jobs = list(new("job")),
+  name = "newflow",
+  desc = "my_super_flow",
+  mode = c("scheduler", "local"),
+  flow_run_path = opts_flow$get("flow_run_path"),
+  trigger_path = "",
+  flow_path = "",
+  version = "0.0",
+  status = "created",
+  module_cmds = opts_flow$get("module_cmds"),
+  execute = ""
+)
 }
 \arguments{
 \item{jobs}{\code{list}: A list of jobs to be included in this flow}

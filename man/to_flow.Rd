@@ -16,15 +16,36 @@ is.flow(x)
 
 \method{to_flow}{character}(x, def, grp_col, jobname_col, cmd_col, ...)
 
-\method{to_flow}{flowmat}(x, def, flowname, grp_col, jobname_col, cmd_col,
-  submit = FALSE, execute = FALSE, containerize = TRUE, platform,
-  flow_run_path, qobj, verbose = opts_flow$get("verbose"), ...)
+\method{to_flow}{flowmat}(
+  x,
+  def,
+  flowname,
+  grp_col,
+  jobname_col,
+  cmd_col,
+  submit = FALSE,
+  execute = FALSE,
+  containerize = TRUE,
+  platform,
+  flow_run_path,
+  qobj,
+  verbose = opts_flow$get("verbose"),
+  ...
+)
 
 \method{to_flow}{data.frame}(x, ...)
 
-\method{to_flow}{list}(x, def, flowname, flow_run_path, desc, qobj,
+\method{to_flow}{list}(
+  x,
+  def,
+  flowname,
+  flow_run_path,
+  desc,
+  qobj,
   module_cmds = opts_flow$get("module_cmds"),
-  verbose = opts_flow$get("verbose"), ...)
+  verbose = opts_flow$get("verbose"),
+  ...
+)
 }
 \arguments{
 \item{x}{this can either to a filename, a data.frame or a list. 
