@@ -15,6 +15,7 @@ env:
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
