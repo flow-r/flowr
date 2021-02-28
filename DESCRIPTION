@@ -8,9 +8,9 @@ Description: This framework allows you to design and implement complex
     be executed in a (work)flow.
 Version: 0.9.10.9031
 Depends:
-    R (>= 3.0.2),
+    R (>= 3.3),
     methods,
-    params  (>= 0.3),
+    params  (>= 0.7),
     utils
 Imports:
     diagram,

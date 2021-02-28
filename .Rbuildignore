@@ -4,6 +4,7 @@
 
 ## ignore travis files
 .travis_bak.yml
+.travis_bak2.yml
 .travis2.yml
 .travis.yml
 
