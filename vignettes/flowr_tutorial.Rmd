@@ -22,7 +22,7 @@ navpills: |
   <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
-  <a href="http://docs.flowr.space">
+  <a href="http://flow-r.github.io/flowr">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT

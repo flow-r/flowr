@@ -4,10 +4,13 @@
 \alias{setup}
 \title{Setup and initialize flowr}
 \usage{
-setup(bin = "~/bin", flow_base_path = opts_flow$get("flow_base_path"),
+setup(
+  bin = "~/bin",
+  flow_base_path = opts_flow$get("flow_base_path"),
   flow_run_path = opts_flow$get("flow_run_path"),
   flow_conf_path = opts_flow$get("flow_conf_path"),
-  flow_pipe_path = opts_flow$get("flow_pipe_paths"))
+  flow_pipe_path = opts_flow$get("flow_pipe_paths")
+)
 }
 \arguments{
 \item{bin}{path to bin folder}

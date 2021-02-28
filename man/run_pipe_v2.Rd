@@ -4,9 +4,19 @@
 \alias{run_pipe_v2}
 \title{Run automated Pipelines}
 \usage{
-run_pipe_v2(pipe_func, pipe_src, flow_def, flow_conf, flowname, platform,
-  flow_run_path = opts_flow$get("flow_run_path"), rerun_wd, start_from,
-  execute = FALSE, ...)
+run_pipe_v2(
+  pipe_func,
+  pipe_src,
+  flow_def,
+  flow_conf,
+  flowname,
+  platform,
+  flow_run_path = opts_flow$get("flow_run_path"),
+  rerun_wd,
+  start_from,
+  execute = FALSE,
+  ...
+)
 }
 \arguments{
 \item{pipe_func}{name of the pipeline function in `pipe_src`}

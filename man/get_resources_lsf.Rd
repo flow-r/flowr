@@ -4,8 +4,13 @@
 \alias{get_resources_lsf}
 \title{get_resources_lsf}
 \usage{
-get_resources_lsf(wd, cores = 4, pattern = "out$", plot = FALSE,
-  verbose = opts_flow$get("verbose"))
+get_resources_lsf(
+  wd,
+  cores = 4,
+  pattern = "out$",
+  plot = FALSE,
+  verbose = opts_flow$get("verbose")
+)
 }
 \arguments{
 \item{wd}{Path to a flow working directory}
@@ -19,7 +24,7 @@ get_resources_lsf
 }
 \examples{
 \dontrun{
-get_resources_lsf(wd = wd, cores = 4, pattern = out\\$)
+get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 }
 }
 \keyword{internal}

@@ -8,8 +8,13 @@
 \alias{get_status.data.frame}
 \title{Monitor status of flow(s)}
 \usage{
-status(x, use_cache = FALSE, verbose = opts_flow$get("verbose"),
-  out_format = "markdown", ...)
+status(
+  x,
+  use_cache = FALSE,
+  verbose = opts_flow$get("verbose"),
+  out_format = "markdown",
+  ...
+)
 
 get_status(x, ...)
 
@@ -17,8 +22,7 @@ get_status(x, ...)
 
 \method{get_status}{character}(x, verbose, use_cache, out_format, ...)
 
-\method{get_status}{data.frame}(x, verbose, use_cache, progress = TRUE,
-  ...)
+\method{get_status}{data.frame}(x, verbose, use_cache, progress = TRUE, ...)
 }
 \arguments{
 \item{x}{path to the flow root folder or a parent folder to summarize several flows.}

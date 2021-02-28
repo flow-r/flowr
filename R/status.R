@@ -163,7 +163,7 @@ get_status.flow <- function(x, verbose, use_cache, out_format, ...){
   write_flow_details(x = x@flow_path, summ = summ, flow_det = flow_det)
   
   #flow_det = try(update_flow_det(wd = x@flow_path, mat_cmd = mat_cmd))
-  invisible(list(summary = summ, status = status))
+  invisible(list(summary = summ, status = status, flow_path = x@flow_path))
 }
 
 #' @rdname status
@@ -373,7 +373,26 @@ create_flow_det <- function(fobj){
   return(file.path(fobj@flow_path))
 }
 
+#' to_df.status
+#' 
+#' convert the status to a df. To be called from R
+#'
+#' @param x folder with multiple runs
+#'
+#' @return a data.frame with status per dir.
+#' @export
+to_df.status <- function(x){
+  # x = "/rsrch3/scratch/iacs/sseth/flows/SS/tnbc/ms51_wex/ss_cl_het/runs2/."
+  stat = flowr::status(x)
 
+  df_summ = lapply(seq_along(stat), function(i){
+    message(i, " ", appendLF = F);x = stat[[i]];message(x$flow_path)
+    x$summary$flow_path_full = as.character(x$flow_path)
+    x$summary$flow_path = basename(x$summary$flow_path_full)
+  })
+  df_summ = rbind(df_summ)
+  df_summ
+}
 
 if(FALSE){
   x = "/scratch/iacs/ngs_runs/140917_SN746_0310_AC5GKGACXX/logs/"

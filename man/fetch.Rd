@@ -8,9 +8,15 @@
 \usage{
 fetch(x, places, urls, verbose = opts_flow$get("verbose"))
 
-fetch_pipes(x, places, last_only = FALSE,
-  urls = opts_flow$get("flowr_pipe_urls"), silent = FALSE,
-  verbose = opts_flow$get("verbose"), ask = TRUE)
+fetch_pipes(
+  x,
+  places,
+  last_only = FALSE,
+  urls = opts_flow$get("flowr_pipe_urls"),
+  silent = FALSE,
+  verbose = opts_flow$get("verbose"),
+  ask = TRUE
+)
 
 fetch_conf(x = "flowr.conf", places, ...)
 }

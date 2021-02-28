@@ -4,8 +4,7 @@
 \alias{write_flow_details}
 \title{write files desribing this flow}
 \usage{
-write_flow_details(x, fobj, summ, flow_det, flow_mat, flow_def,
-  plot = FALSE)
+write_flow_details(x, fobj, summ, flow_det, flow_mat, flow_def, plot = FALSE)
 }
 \arguments{
 \item{x}{path to write to}

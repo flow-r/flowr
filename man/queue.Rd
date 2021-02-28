@@ -6,12 +6,27 @@
 \alias{queue}
 \title{A \code{queue} object defines details regarding how a job is submitted}
 \usage{
-queue(object, platform = c("local", "lsf", "torque", "sge", "moab",
-  "test", "slurm"), format = "", queue = "long", walltime, memory,
-  cpu = 1, extra_opts = "", submit_exe, nodes = "1",
-  jobname = "name", email = Sys.getenv("USER"), dependency = list(),
-  server = "localhost", verbose = FALSE, cwd = "", stderr = "",
-  stdout = "", ...)
+queue(
+  object,
+  platform = c("local", "lsf", "torque", "sge", "moab", "test", "slurm"),
+  format = "",
+  queue = "long",
+  walltime,
+  memory,
+  cpu = 1,
+  extra_opts = "",
+  submit_exe,
+  nodes = "1",
+  jobname = "name",
+  email = Sys.getenv("USER"),
+  dependency = list(),
+  server = "localhost",
+  verbose = FALSE,
+  cwd = "",
+  stderr = "",
+  stdout = "",
+  ...
+)
 }
 \arguments{
 \item{object}{this is not used currenlty, ignore.}

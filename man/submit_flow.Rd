@@ -10,9 +10,16 @@ submit_flow(x, verbose = opts_flow$get("verbose"), ...)
 
 \method{submit_flow}{list}(x, verbose = opts_flow$get("verbose"), ...)
 
-\method{submit_flow}{flow}(x, verbose = opts_flow$get("verbose"),
-  execute = FALSE, uuid, plot = TRUE, dump = TRUE, .start_jid = 1,
-  ...)
+\method{submit_flow}{flow}(
+  x,
+  verbose = opts_flow$get("verbose"),
+  execute = FALSE,
+  uuid,
+  plot = TRUE,
+  dump = TRUE,
+  .start_jid = 1,
+  ...
+)
 }
 \arguments{
 \item{x}{a \code{object} of class \code{flow}.}

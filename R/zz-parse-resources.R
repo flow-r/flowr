@@ -132,6 +132,8 @@ get_resources <- function(x, odir, ...){
 #' 
 #' @export
 #' 
+#' @importFrom readr write_rds write_tsv
+#' 
 #' @examples \dontrun{
 #' get_resources_lsf(wd = wd, cores = 4, pattern = out\$)
 #' }

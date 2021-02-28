@@ -4,7 +4,9 @@
 \name{verbose}
 \alias{verbose}
 \title{Verbose levels, defining verboseness of messages}
-\format{An object of class \code{NULL} of length 0.}
+\format{
+An object of class \code{NULL} of length 0.
+}
 \usage{
 verbose
 }
