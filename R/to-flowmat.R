@@ -16,7 +16,7 @@
 #' @examples 
 #' 
 #' # Use this link for a few examples:
-#' # http://docs.flowr.space/tutorial.html#define_modules
+#' # http://flow-r.github.io/flowr/tutorial.html#define_modules
 #' 
 #' # create a flow mat, starting with a list of commands.
 #' cmd_sleep = c("sleep 1", "sleep 2")

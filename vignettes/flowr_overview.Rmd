@@ -22,7 +22,7 @@ navpills: |
   <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
-  <a href="http://docs.flowr.space">
+  <a href="http://flow-r.github.io/flowr">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
@@ -48,7 +48,7 @@ setup()
 ```
 
 This will copy the flowr helper script to `~/bin`. Please make sure that this folder is in your `$PATH` variable. 
-For more details refer to [setup's help section](http://docs.flowr.space/rd.html#setup).
+For more details refer to [setup's help section](http://flow-r.github.io/flowr/rd.html#setup).
 
 ```{r echo=FALSE, eval=FALSE}
 #We have a quite handy command-line-interface for flowr, which exposes all functions of the package to terminal. Such that we dont have to open a interactive R session each time. To make this work, run a setup function which copies the 'flowr' helper script to your `~/bin` directory.
@@ -137,18 +137,18 @@ fobj <- to_flow(x = flowmat,
                  platform = "lsf")      ## override platform mentioned in flow def
 ```
 
-Refer to [to_flow's help section](http://docs.flowr.space/rd.html#to_flow) for more details.
+Refer to [to_flow's help section](http://flow-r.github.io/flowr/rd.html#to_flow) for more details.
 
 ## Plot it
 
-We can use [plot_flow](http://docs.flowr.space/rd.html#plot_flow) to quickly visualize the flow; this really helps when developing complex workflows. 
+We can use [plot_flow](http://flow-r.github.io/flowr/rd.html#plot_flow) to quickly visualize the flow; this really helps when developing complex workflows. 
 
 ```{r plotit, fig.cap="Flow chart describing process for example 1", message=FALSE}
 plot_flow(fobj)     # ?plot_flow for more information
 plot_flow(flowdef) # plot_flow works on flow definition as well
 ```
 
-Refer to [plot_flow's help section](http://docs.flowr.space/rd.html#plot_flow) for more details.
+Refer to [plot_flow's help section](http://flow-r.github.io/flowr/rd.html#plot_flow) for more details.
 
 
 ## Dry Run
@@ -171,7 +171,7 @@ You may check this folder for consistency. Also you may re-run submit with execu
 ## Submit it
 
 Once, we have a flow we can submit it to the cluster using
-[submit_flow](http://docs.flowr.space/rd.html#submit_flow)
+[submit_flow](http://flow-r.github.io/flowr/rd.html#submit_flow)
 
 <div class="alert alert-info" role="alert">
 Submit to the cluster !
@@ -187,12 +187,12 @@ Flow has been submitted. Track it from terminal using:
 flowr status x=~/flowr/type1-20150520-15-18-46-sySOzZnE
 ```
 
-Refer to [submit_flow's help section](http://docs.flowr.space/rd.html#submit_flow) for more details.
+Refer to [submit_flow's help section](http://flow-r.github.io/flowr/rd.html#submit_flow) for more details.
 
 
 ## Check its status
 
-Next, you may use [status](http://docs.flowr.space/rd.html#status) to monitor the status of a flow.
+Next, you may use [status](http://flow-r.github.io/flowr/rd.html#status) to monitor the status of a flow.
 
 
 ```
@@ -229,7 +229,7 @@ Showing status of: ~/flowr/runs
 flows.
 </div>
 
-Refer to [status's help section](http://docs.flowr.space/rd.html#status) for more details.
+Refer to [status's help section](http://flow-r.github.io/flowr/rd.html#status) for more details.
 
 
 ## Kill it
@@ -262,7 +262,7 @@ To kill multiple flow, set force=TRUE:
 kill x='~/flowr/runs/sleep_pipe*' force = TRUE
 ```
 
-Refer to [kill's help section](http://docs.flowr.space/rd.html#kill) for more details.
+Refer to [kill's help section](http://flow-r.github.io/flowr/rd.html#kill) for more details.
 
 
 ## Re-run a flow
@@ -274,7 +274,7 @@ flowr also enables you to re-run a pipeline in case of hardware or software fail
 - **software failure**: either a change to flowmat or flowdef has been made: 
   `rerun x=flow_wdmat = new_flowmat def = new_flowdef start_from=<intermediate step>`
 
-Refer to [rerun's help section](http://docs.flowr.space/rd.html#rerun) for more details.
+Refer to [rerun's help section](http://flow-r.github.io/flowr/rd.html#rerun) for more details.
 
 
 
@@ -541,6 +541,6 @@ kable(plat)
 ```
 
 
-For more details, refer to the [configuration section](http://docs.flowr.space/install.html#cluster)
+For more details, refer to the [configuration section](http://flow-r.github.io/flowr/install.html#cluster)
 
 <script src = "files/googl.js"></script>

@@ -99,7 +99,7 @@ check.flowdef <- function(x, verbose = opts_flow$get("verbose"), ...){
   # x$prev_jobs = gsub("\\.|NA", "none", x$prev_jobs)
   # only replace NA with none; now .!
   x$prev_jobs = gsub("NA", "none", x$prev_jobs)
-  x$prev_jobs = ifelse(x$prev_jobs=="", "none", x$prev_jobs)
+  x$prev_jobs = ifelse(x$prev_jobs == "", "none", x$prev_jobs)
   x$prev_jobs = ifelse(is.na(x$prev_jobs), "none", x$prev_jobs)
   
   prev_jobs = unlist(strsplit(x$prev_jobs[!(x$prev_jobs == "none")], ","))
@@ -211,7 +211,7 @@ check_dep_sub_type <- function(dep, sub,
   }else if(p.sub == "serial" & sub == "scatter" & dep == "serial"){
     stop(c("detected relationship: one-to-many. ", 
            "To define this, one must have dependency type as burst. ",
-           "Refer to docs.flowr.space for further details."))
+           "Refer to flow-r.github.io/flowr for further details."))
   }else if(p.sub == "scatter" & sub == "scatter" & dep == "burst"){
     stop(c("\nDetected relationship: one-to-many. ", 
            "To define this, one must have previous sub_type as serial. ",

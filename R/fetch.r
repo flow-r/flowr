@@ -147,7 +147,7 @@ fetch_pipes <- function(x,
   }
   
   ## seemed travis was repeating some of them
-  ## seen here: http://docs.flowr.space/en/latest/rd/vignettes/build-pipes.html#available-pipelines
+  ## seen here: http://flow-r.github.io/flowr/en/latest/rd/vignettes/build-pipes.html#available-pipelines
   r = unique(r)
   
   #r = tail(r, 1)

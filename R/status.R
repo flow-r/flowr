@@ -387,12 +387,11 @@ to_df.status <- function(x){
 
   df_summ = lapply(seq_along(stat), function(i){
     message(i, " ", appendLF = F);x = stat[[i]];message(x$flow_path)
-    x$summary %>% 
-      mutate(flow_path_full = as.character(x$flow_path), 
-             flow_path = basename(flow_path_full))
-  }) %>% bind_rows() %>% as_tibble()
-  
-  
+    x$summary$flow_path_full = as.character(x$flow_path)
+    x$summary$flow_path = basename(x$summary$flow_path_full)
+  })
+  df_summ = rbind(df_summ)
+  df_summ
 }
 
 if(FALSE){

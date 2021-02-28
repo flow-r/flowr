@@ -22,7 +22,7 @@ navpills: |
   <li><a href='news.html'>News</a></li>
   <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
-  <a href="http://docs.flowr.space">
+  <a href="http://flow-r.github.io/flowr">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
@@ -315,10 +315,10 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh
 Possible issue: Flowr shows too much OR too little information.
 </div>
 
-There are several [verbose levels](http://docs.flowr.space/rd.html#verbose) available (0, 1, 2, 3, ...)
+There are several [verbose levels](http://flow-r.github.io/flowr/rd.html#verbose) available (0, 1, 2, 3, ...)
 
 One can change the verbose levels in this file (`~/flowr/conf/flowr.conf`) 
-and check [verbosity](http://docs.flowr.space/rd.html#verbose) section in the help pages for more details.
+and check [verbosity](http://flow-r.github.io/flowr/rd.html#verbose) section in the help pages for more details.
 
 
 

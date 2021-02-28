@@ -90,7 +90,7 @@ use it for logs, scripts etc.
 The default is retrived using \code{opts_flow$get("flow_run_path")}.}
 
 \item{qobj}{Depreciated, modify cluster templates as explained on 
-\href{http://docs.flowr.space/install.html#hpcc_support_overview}{docs.flowr.space}.
+\href{http://flow-r.github.io/flowr/install.html#hpcc_support_overview}{flow-r.github.io/flowr}.
 An object of class \link{queue}.}
 
 \item{verbose}{A numeric value indicating the amount of messages to produce.
@@ -126,7 +126,7 @@ See \link{to_flowmat} for details.
 }
 \examples{
 ## Use this link for a few elaborate examples:
-## http://docs.flowr.space/flowr/tutorial.html#define_modules
+## http://flow-r.github.io/flowr/flowr/tutorial.html#define_modules
 
 ex = file.path(system.file(package = "flowr"), "pipelines")
 flowmat = as.flowmat(file.path(ex, "sleep_pipe.tsv"))
