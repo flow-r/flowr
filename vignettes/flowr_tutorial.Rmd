@@ -37,7 +37,8 @@ library(flowr)
 # Creating input file(s)
 
 ```{r example1, cache = FALSE, echo=FALSE}
-read_chunk(system.file('pipelines', 'sleep_pipe.R', package = 'flowr'))
+s <- system.file('pipelines', 'sleep_pipe.R', package = 'flowr')
+read_chunk(s)
 ```
 
 Let us use the same example described in the overview section. We start by getting a set of commands we would like to run. 

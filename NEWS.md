@@ -29,6 +29,10 @@ flowr 0.9.11
 > 2019-04-01
 
 * bugfix in for `moab` and `sge` schedulers (see #74 for details)
+* bugfix in SBATCH params
+* bufix #91
+* add ability to parse LSF resource output
+* from @sbamin fix #73, #74, #83
 
 
 
