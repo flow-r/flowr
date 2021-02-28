@@ -10,7 +10,7 @@ Version: 0.9.10.9031
 Depends:
     R (>= 3.3),
     methods,
-    params  (>= 0.7),
+    params  (>= 0.6),
     utils
 Imports:
     diagram,
