@@ -15,5 +15,20 @@ ubuntu: R Under development (unstable)
   - uncomment the image
 - edit news to reflect new version
   - add date, new name etc
-  
+
+
+# checks:
+devtools::spell_check()
+devtools::check(manual = TRUE, remote = TRUE, incoming = TRUE)
+
+devtools::check_win_release(manual = TRUE)
+
+devtools::check_win_devel(manual = TRUE)
+
+# submit to cran
+devtools::submit_cran()
+
 -->
+
+
+

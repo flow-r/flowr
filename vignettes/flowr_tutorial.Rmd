@@ -20,13 +20,13 @@ navpills: |
   <li class="active"><a href='Tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
   <li><a href='news.html'>News</a></li>
-  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+  <li><a href='https://github.com/flow-r/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
   <a href="http://flow-r.github.io/flowr">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
-source: "github.com/sahilseth/flowr/tree/devel/vignettes/flowr_tutorial.Rmd"
+source: "github.com/flow-r/flowr/tree/devel/vignettes/flowr_tutorial.Rmd"
 ---
 
 ```{r libs_tut, echo = FALSE, message = FALSE}
@@ -38,7 +38,7 @@ library(flowr)
 
 ```{r example1, cache = FALSE, echo=FALSE}
 s <- system.file('pipelines', 'sleep_pipe.R', package = 'flowr')
-read_chunk(s)
+knitr::read_chunk(s)
 ```
 
 Let us use the same example described in the overview section. We start by getting a set of commands we would like to run. 
@@ -91,7 +91,7 @@ kable(flowmat)
 
 ## Creating Flow Definition
 
-We have a few steps in a pipeline; we would use a flow definition to descibe their flow. Flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function
+We have a few steps in a pipeline; we would use a flow definition to describe their flow. Flowr enables us to quickly create a skeleton flow definition using a flowmat, which we can then alter to suit our needs. A handy function
 `to_flowdef`, accepts a `flowmat` and creates a flow definition. 
 
 
@@ -109,10 +109,10 @@ We can make a few changes to make this pipeline a little more efficient. Briefly
 
 A few points to note:
 
-- Intial steps have no dependency, so their **previous_jobs** and **dependency_type** is **none**.
+- Initial steps have no dependency, so their **previous_jobs** and **dependency_type** is **none**.
 - Steps with multiple commands, which can be run in parallel are submitted as **scatter**.
 - Steps with single commands are submitted as **serial**.
-- Say two consective steps run on small pieces of data, we have a **serial**
+- Say two consecutive steps run on small pieces of data, we have a **serial**
 **one to one** relationship. Example, both **sleep** and **create_tmp** 
 are submitted as **scatter** and **create_tmp** has a dependency_type **serial**.
 - Finally if a step needs all the small pieces from a previous step, we use a **gather** type dependency.
@@ -182,7 +182,7 @@ wget $url/sleep_pipe.conf ## An *optional* tab-delim conf file, defining default
 ```
 
 The `sleep_pipe` calls the three other functions (**modules**); fetches flowmat from each, then rbinds them,
-creating a larger flowmat. You may refer to the [sleep_pipe.R](https://github.com/sahilseth/flowr/blob/master/inst/pipelines/sleep_pipe.R)
+creating a larger flowmat. You may refer to the [sleep_pipe.R](https://github.com/flow-r/flowr/blob/master/inst/pipelines/sleep_pipe.R)
 file for the source.
 
 ```{r define_modules, echo=TRUE}
@@ -262,7 +262,7 @@ picard_merge <- function(x,
 2. should always return a list arguments:
     - **flowmat** (required)   : contains all the commands to run
     - **outfiles** (recommended): could be used as an input to other tools
-3. can define all other default arguments such as paths to tools etc. in a seperate conf (tab-delimited) file.
+3. can define all other default arguments such as paths to tools etc. in a separate conf (tab-delimited) file.
   - Then use `opts_flow$get("param")` to use their value.
 
 ```
@@ -298,7 +298,7 @@ Notice how all files have the same basename; this is essential for the **run** f
 - When we call `run("fastq_bam_bwa", ....)` it tries to look for a .R file inside flowr's package, `~/flowr/pipelines` OR your current wd. 
 If there are multiple matches, later is chosen. 
 - Then, it finds and load default parameters from `fastq_bam_bwa.conf` (if available). 
-- Further, it calls the function `fastq_bam_bwa`, then stiches a flow using `fastq_bam_bwa.def` as the flow definition. 
+- Further, it calls the function `fastq_bam_bwa`, then stitches a flow using `fastq_bam_bwa.def` as the flow definition. 
 
 2. can have multiple flowdefs like fastq_bam_bwa_lsf.def, fastq_bam_bwa_lsf.def etc, where <basename>.def is used
  by default. But other are available for users to switch platforms quickly.
@@ -321,7 +321,7 @@ run('fastq_bam_bwa', def = 'path/myflowdef.def', conf='path/myconf.conf',....)
 This is quite useful for portability, since to use the same pipeline across institution/computing clusters one only needs to change the 
 flow definition and R function remains intact.
 
-Refer to help section on [run](rd.html#run) for more details.
+Refer to help section on [run](http://flow-r.github.io/flowr/rd.html#run) for more details.
 
 <div class="alert alert-info" role="alert">
 **Tip**:
@@ -329,11 +329,11 @@ Its important to note, that in this example we are using R functions, but any ot
 </div>
 
 
-## Nomeclature for parameters
+## Nomenclature for parameters
 
-Here is a good example: https://github.com/sahilseth/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf
+Here is a good example: https://github.com/flow-r/flowr/blob/master/inst/pipelines/fastq_bam_bwa.conf
 
-> (recommeded for increased compatibility)
+> (recommended for increased compatibility)
 
 1. all binaries end with **\_exe**
 2. all folders end with **\_dir**

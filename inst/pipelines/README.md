@@ -4,7 +4,7 @@ For detailed instructions refer to: http://rpubs.com/sahiilseth/flowr_fq_bam
 
 
 Assuming, you have three files in current wd OR `~/flowr/pipelines` and 
-flowr has been installed and tested (http://docs.flowr.space/install.html)
+flowr has been installed and tested (http://flow-r.github.io/flowr/install.html)
 
 ```
 cd ~/flowr/pipelines

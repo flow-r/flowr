@@ -90,8 +90,8 @@ if(FALSE){
 
 #' Extract resources used by each job of a flow
 # 
-#' get_resources currenty this only works on LSF
-#' @param x A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.
+#' get_resources currently this only works on LSF
+#' @param x A character vector of length 1. This may be a parent level folder with directories with multiple flow runs.
 #' @param odir Output directory to save the results
 #' @param \dots other arguments sent to \link{get_resources_lsf}
 #' 

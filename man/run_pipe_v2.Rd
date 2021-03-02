@@ -35,7 +35,7 @@ run_pipe_v2(
 
 \item{rerun_wd}{if you need to re-run, supply the previous working dir}
 
-\item{start_from}{the step to start a rerun from. Intitutively, this is ignored in a fresh run and only used in re-running a pipeline.}
+\item{start_from}{the step to start a rerun from. Intuitively, this is ignored in a fresh run and only used in re-running a pipeline.}
 
 \item{execute}{TRUE/FALSE}
 
@@ -43,7 +43,7 @@ run_pipe_v2(
 }
 \description{
 Run complete pipelines, by wrapping several steps into one 
-convinient function.
+convenient function.
 
 NOTE: please use flowr version 0.9.8.9010 or higher.
 

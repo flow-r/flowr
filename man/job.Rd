@@ -32,9 +32,9 @@ job(
 
 \item{walltime}{The amount of time reserved for this job. Format is unique to a platform. Typically it looks like 12:00 (12 hours reserved, say in LSF), in Torque etc. we often see measuring in seconds: 12:00:00}
 
-\item{submission_type}{submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.}
+\item{submission_type}{submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as separate jobs. Serial, they would combined into a single job and run one-by-one.}
 
-\item{dependency_type}{depedency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]}
+\item{dependency_type}{dependency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]}
 
 \item{...}{other passed onto object creation. Example: memory, walltime, cpu}
 }

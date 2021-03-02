@@ -6,11 +6,11 @@ Description: This framework allows you to design and implement complex
     been built keeping in mind the needs of bioinformatics workflows. However, it is
     easily extendable to any field where a series of steps (shell commands) are to
     be executed in a (work)flow.
-Version: 0.9.10.9031
+Version: 0.9.11
 Depends:
     R (>= 3.3),
     methods,
-    params  (>= 0.6),
+    params  (>= 0.7),
     utils
 Imports:
     diagram,
@@ -21,15 +21,18 @@ Suggests:
     reshape2,
     knitr,
     testthat,
-    funr
+    funr,
+    rmarkdown
 Enhances:
     ggplot2,
     openxlsx,
     pacman,
     cowplot
 VignetteBuilder: knitr
-URL: https://github.com/sahilseth/flowr
-BugReports: https://github.com/sahilseth/flowr/issues
+URL: https://github.com/flow-r/flowr
+BugReports: https://github.com/flow-r/flowr/issues
 Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
 License: MIT + file LICENSE
 RoxygenNote: 7.1.1
+Language: en-US
+

@@ -20,7 +20,7 @@ setup(
 \item{flow_run_path}{base path to be used for execution of this flow. 
 flowr would create a new time-stamped folder in this base path and 
 use it for logs, scripts etc. 
-The default is retrived using \code{opts_flow$get("flow_run_path")}.}
+The default is retrieved using \code{opts_flow$get("flow_run_path")}.}
 
 \item{flow_conf_path}{Flowr configuration folder, used by \link{fetch_conf}.}
 

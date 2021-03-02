@@ -32,7 +32,7 @@ plot_flow(x, ...)
 
 \item{detailed}{include submission and dependency types in the plot [TRUE]}
 
-\item{type}{1 is original, and 2 is a elipse with less details [1]}
+\item{type}{1 is original, and 2 is a ellipse with less details [1]}
 
 \item{pdf}{create a pdf instead of plotting interactively [FALSE]}
 

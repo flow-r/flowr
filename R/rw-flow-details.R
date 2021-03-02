@@ -28,7 +28,7 @@ read_fobj <- function(x){
 
 
 
-#' write files desribing this flow
+#' Write files describing this flow
 #'
 #' @param x path to write to
 #' @param fobj flow object

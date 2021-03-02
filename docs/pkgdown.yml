@@ -1,0 +1,9 @@
+pandoc: 2.11.4
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  flowr_install: flowr_install.html
+  flowr_overview: flowr_overview.html
+  flowr_tutorial: flowr_tutorial.html
+last_built: 2021-03-01T22:55Z
+

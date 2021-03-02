@@ -2,7 +2,7 @@
 % Please edit documentation in R/check-args.R
 \name{check_args}
 \alias{check_args}
-\title{Assert none of the arguemnts of a function are null.}
+\title{Assert none of the arguments of a function are null.}
 \usage{
 check_args(ignore, select)
 }

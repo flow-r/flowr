@@ -10,7 +10,7 @@ navpills: |
   <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
   <li><a href='news.html'>News</a></li>
-  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+  <li><a href='https://github.com/flow-r/flowr'>Github <i class='fa fa-github'></i></a></li>
 ---
 
 <!--brand: |-
@@ -108,7 +108,7 @@ flowr to_flow x=sleep_pipe.tsv def=sleep_pipe.def platform=local execute=TRUE
 flowr to_flow x=sleep_pipe.tsv def=sleep_pipe.def platform=lsf execute=TRUE
 ```
 
-**Example pipelines** [inst/pipelines](https://github.com/sahilseth/flowr/blob/devel/inst/pipelines)
+**Example pipelines** [inst/pipelines](https://github.com/flow-r/flowr/blob/devel/inst/pipelines)
 
 ### Resources
 - For a quick overview, you may browse through,
@@ -129,7 +129,7 @@ you may watch for changes using
 the [watch link above](https://help.github.com/articles/watching-repositories/).
 
 ### Feedback
-Please feel free to raise a [github issue](https://github.com/sahilseth/flowr/issues) with questions and comments.
+Please feel free to raise a [github issue](https://github.com/flow-r/flowr/issues) with questions and comments.
 
 ### Acknowledgements
 

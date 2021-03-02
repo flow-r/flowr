@@ -10,7 +10,7 @@
 #' @aliases flowr
 #'
 #' @description
-#' Use a set of shell commands (flow mat) and flow definiton to create \link{flow} object.
+#' Use a set of shell commands (flow mat) and flow definition to create \link{flow} object.
 #'
 #' @param x this can either to a filename, a data.frame or a list. 
 #' In case it is a file name, it should be a tsv file representing a flow_mat. See \link{to_flowmat} for details
@@ -22,18 +22,18 @@
 #' 
 #' @param grp_col name of the grouping column in the supplied flow_mat.
 #' See \link{to_flow} for details. Default value is [samplename].
-#' @param jobname_col name of the job name columnd in flow_mat. Defalt value is [jobname].
+#' @param jobname_col name of the job name column in flow_mat. Default value is [jobname].
 #' @param cmd_col name of the command column name in flow_mat. Default value is [cmd].
 #' 
 #' @param flowname name of the flow, this is used as part of the execution foldername.
 #' A good simple identifier, which does not support any special characters. 
-#' Names may use characters (a-z) and numbers (0-9), using underscore (_) as a word seperator.
+#' Names may use characters (a-z) and numbers (0-9), using underscore (_) as a word separator.
 #' Default value is  [flowname].
 #' 
 #' @param flow_run_path base path to be used for execution of this flow. 
 #' flowr would create a new time-stamped folder in this base path and 
 #' use it for logs, scripts etc. 
-#' The default is retrived using \code{opts_flow$get("flow_run_path")}.
+#' The default is retrieved using \code{opts_flow$get("flow_run_path")}.
 #' 
 #' @param desc Advanced Use. final flow name.
 #' 
@@ -47,10 +47,10 @@
 #' flowr creates a creates a new date-stamped folder, and includes all
 #' flows in this batch inside it. 
 #' This is keeps the logs clean, and containerizes each batch.
-#' To disable this behavious set this to FALSE, default is [TRUE].
+#' To disable this behavior set this to FALSE, default is [TRUE].
 #' 
 #' @param module_cmds A character vector of additional commands, which will be prepended to each script of the flow. 
-#' Default is retreived using \code{opts_flow$get("module_cmds")}.
+#' Default is retrieved using \code{opts_flow$get("module_cmds")}.
 #' 
 #' @param ... Supplied to specific functions like \link{to_flow.data.frame}
 #' 
@@ -222,7 +222,7 @@ to_flow.flowmat <- function(x, def,
     if(verbose){
       message("--> qobj supplied; this will override defaults from flow_definion OR platform variable")
       message("--> Use of qobj is for advanced use only. ",
-              "--> Use shell scripts provided here as a template: https://github.com/sahilseth/flowr/tree/master/inst/conf. ",
+              "--> Use shell scripts provided here as a template: https://github.com/flow-r/flowr/tree/master/inst/conf. ",
               "--> You may tweak and save them in ~/flowr/conf.")
     }
   }else{
@@ -413,7 +413,7 @@ to_flow.list <- function(x, def,
                version = as.character(packageVersion("flowr")),
                flow_run_path = flow_run_path)
   
-  ## --- check if submission or depedency types were guessed
+  ## --- check if submission or dependency types were guessed
   if (is.null(def$sub_type) | is.null(def$dep_type)){
     message("Submission/definition types were guessed.",
             "\nThis is really a experimental feature.",

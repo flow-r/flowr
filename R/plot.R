@@ -15,7 +15,7 @@
 #' @param detailed include submission and dependency types in the plot [TRUE]
 #' @param pdf create a pdf instead of plotting interactively [FALSE]
 #' @param pdffile output file name for the pdf file. [\code{flow_path/flow_details.pdf}]
-#' @param type 1 is original, and 2 is a elipse with less details [1]
+#' @param type 1 is original, and 2 is a ellipse with less details [1]
 #' @param ... experimental and only for advanced use.
 #'
 #' @export plot_flow

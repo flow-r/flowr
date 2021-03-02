@@ -38,7 +38,7 @@ setup <- function(bin = "~/bin",
   message("\n>copying default configuration files to: ", flow_conf_path, 
           ".\n>would skip if they already exist. ", 
           "\n>If you are upgrading, please check the conf files for version information:\n", 
-          "https://github.com/sahilseth/flowr/tree/master/inst/conf")
+          "https://github.com/flow-r/flowr/tree/master/inst/conf")
   tmp2 = try(file.copy(confs, flow_conf_path, overwrite = FALSE), silent = TRUE)
   
   message("\ncopying a simple pipeline to: ", flow_pipe_path[1])

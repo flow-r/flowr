@@ -50,7 +50,7 @@ These functions help in searching for specific files in the user's space.
 \item \strong{current wd}: \code{./}
 }
 
-\strong{NOTE:} If same pipeline is availabe in multiple places; intitutively, one from the later
+\strong{NOTE:} If same pipeline is available in multiple places; intuitively, one from the later
 folder would be selected. As such, giving priority to user's home, and current working 
 directories.
 
@@ -78,7 +78,7 @@ To redefine this value, one could create a new file called \strong{~/flowr/conf/
 add a line:
 
 \code{flow_run_path TAB my_awesome_path}, where \code{TAB} is a tab character, since these are tab 
-seperated files.
+separated files.
 
 Also, at any time you can run, \link{opts_flow$load}; to load custom options.
 }

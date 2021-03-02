@@ -43,7 +43,7 @@ flow instance. ['my_super_flow']}
 \item{module_cmds}{[advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
 Could be cmds like \code{`module load mytool1;module load mytool2`}}
 
-\item{execute}{executtion status of flow object. [FALSE]}
+\item{execute}{execution status of flow object. [FALSE]}
 }
 \description{
 Internal function (used by \link{to_flow}), which aids in creating a flow object.

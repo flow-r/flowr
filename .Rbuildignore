@@ -11,6 +11,7 @@
 misc
 inst/extdata/*
 inst/staticdocs
+docs
 
 ## ignoring extra markdown files
 README\.Rmd
@@ -34,3 +35,4 @@ vignettes/*.md
 vignettes/*_files
 
 inst/scripts/show_linkage.R
+^CRAN-RELEASE$

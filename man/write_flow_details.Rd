@@ -2,7 +2,7 @@
 % Please edit documentation in R/rw-flow-details.R
 \name{write_flow_details}
 \alias{write_flow_details}
-\title{write files desribing this flow}
+\title{Write files describing this flow}
 \usage{
 write_flow_details(x, fobj, summ, flow_det, flow_mat, flow_def, plot = FALSE)
 }
@@ -22,5 +22,5 @@ write_flow_details(x, fobj, summ, flow_det, flow_mat, flow_def, plot = FALSE)
 \item{plot}{logical, plot or not}
 }
 \description{
-write files desribing this flow
+Write files describing this flow
 }
