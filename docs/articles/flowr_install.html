@@ -92,7 +92,7 @@
             <h3 class="subtitle">Streamlining Workflows</h3>
                         <h4 class="author">Sahil Seth</h4>
             
-            <h4 class="date">2021-03-01</h4>
+            <h4 class="date">2021-03-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flow-r/flowr/blob/master/vignettes/flowr_install.Rmd"><code>vignettes/flowr_install.Rmd</code></a></small>
       <div class="hidden name"><code>flowr_install.Rmd</code></div>
@@ -187,22 +187,20 @@ man bsub
 qsub --help</code></pre>
 <p>Here are some helpful guides and details on the platforms:</p>
 <ul>
-<li>PBS: <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a>
+<li>PBS: <a href="https://en.wikipedia.org/wiki/Portable_Batch_System">wiki</a>
 </li>
-<li>Torque: <a href="http://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
+<li>Torque: <a href="https://en.wikipedia.org/wiki/TORQUE_Resource_Manager">wiki</a>
 <ul>
 <li>MD Anderson</li>
-<li>University of Houston: <a href="https://rcc.uh.edu/index.php/documentation/4-using-torque-to-submit-and-monitor-jobs" class="uri">https://rcc.uh.edu/index.php/documentation/4-using-torque-to-submit-and-monitor-jobs</a>
-</li>
 </ul>
 </li>
-<li>LSF <a href="http://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
+<li>LSF <a href="https://en.wikipedia.org/wiki/Platform_LSF">wiki</a>:
 <ul>
-<li>Also used at <a href="https://www.broadinstitute.org/gatk/guide/article?id=1311">Broad</a>
+<li>Also used at <a href="https://software.broadinstitute.org/gatk/guide/article?id=1311">Broad</a>
 </li>
 </ul>
 </li>
-<li>SGE <a href="http://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
+<li>SGE <a href="https://en.wikipedia.org/wiki/Sun_Grid_Engine">wiki</a>
 <ul>
 <li>A tutorial for <a href="https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine">Sun Grid Engine</a>
 </li>
@@ -220,7 +218,7 @@ qsub --help</code></pre>
 </ul>
 </li>
 </ul>
-<p><a href="http://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Comparison_of_cluster_software">Comparison_of_cluster_software</a></p>
 </div>
 <div id="flowr-configuration-file" class="section level2">
 <h2 class="hasAnchor">
@@ -327,7 +325,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <p>Possible issue: What all resources are supported in the flow definition?</p>
 </div>
 <p>The resource requirement columns of flow definition are passed along to the final (cluster) submission script. For example values in <code>cpu_reserved</code> column would be populated as <code>{{{CPU}}}</code> in the submission template.</p>
-<p>The following table provides a mapping between the flow definition columns and variables in the <a href="https://github.com/flow-r/flowr/blob/master/inst/conf">submission templates</a>:</p>
+<p>The following table provides a mapping between the flow definition columns and variables in the <a href="https://github.com/flow-r/flowr/tree/master/inst/conf">submission templates</a>:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">flowdef variable</th>
@@ -394,7 +392,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 </div>
 <p>Adding a new platform involves <a href="https://github.com/flow-r/flowr/issues/7">a few steps</a>, briefly we need to consider the following steps where changes would be necessary.</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/flow-r/flowr/blob/master/inst/conf">examples</a> are available as described in the previous section.</p></li>
+<li><p><strong>job submission</strong>: One needs to add a new template for the new platform. Several <a href="https://github.com/flow-r/flowr/tree/master/inst/conf">examples</a> are available as described in the previous section.</p></li>
 <li><p><strong>parsing job ids</strong>: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the <a href="https://github.com/flow-r/flowr/blob/master/R/parse-jobids.R">parse_jobids()</a> function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the <a href="https://github.com/flow-r/flowr/blob/master/inst/conf/flowr.conf">flowr config</a>.</p></li>
 <li><p><strong>render dependency</strong>: After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent jobs. This is handled by <a href="https://github.com/flow-r/flowr/blob/master/R/render-dependency.R">render_dependency.PLATFORM</a> functions.</p></li>
 <li><p><strong>recognize new platform</strong>: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the <a href="https://github.com/flow-r/flowr/blob/master/R/class-def.R">job class</a></p></li>
@@ -404,7 +402,7 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.sh</code></pre>
 <li>
 <strong>killing jobs</strong>: Just like submission flowr needs to know what command to use to kill jobs. This is defined in detect_kill_cmd function.</li>
 </ol>
-<p>There are several <a href="http://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/flow-r/flowr/issues/7">adding platforms</a></p>
+<p>There are several <a href="https://en.wikipedia.org/wiki/Job_scheduler">job scheduling</a> systems available and we try to support the major players. Adding support is quite easy if we have access to them. Your favourite not in the list? re-open this issue, with details on the platform: <a href="https://github.com/flow-r/flowr/issues/7">adding platforms</a></p>
 <div class="alert alert-warning" role="alert">
 <p>Possible issue: For other issues upload the error shown in the out files to <a href="https://github.com/flow-r/flowr/issues">github issues tracker</a>.</p>
 </div>

@@ -12,7 +12,7 @@ Possible issue: Need to add a new platform
 
 Adding a new platform involves [a few steps](https://github.com/flow-r/flowr/issues/7), briefly we need to consider the following steps where changes would be necessary.
 
-1. **job submission**: One needs to add a new template for the new platform. Several [examples](https://github.com/flow-r/flowr/blob/master/inst/conf) are available as described in the previous section.
+1. **job submission**: One needs to add a new template for the new platform. Several [examples](https://github.com/flow-r/flowr/tree/master/inst/conf) are available as described in the previous section.
 2. **parsing job ids**: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/flow-r/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/flow-r/flowr/blob/master/inst/conf/flowr.conf).
 
 3. **render dependency**: After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent

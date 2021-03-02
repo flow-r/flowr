@@ -254,7 +254,7 @@ separated files.</p>
     <pre class="examples"><div class='input'>
 <span class='co'>## let us find a default conf file</span>
 <span class='va'>conf</span> <span class='op'>=</span> <span class='fu'>fetch_conf</span><span class='op'>(</span><span class='st'>"flowr.conf"</span><span class='op'>)</span>;<span class='va'>conf</span>
-</div><div class='output co'>#&gt; [1] "/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpFWQhxq/temp_libpath9aa1144ac9cd/flowr/conf/flowr.conf"</div><div class='input'><span class='co'>## load this</span>
+</div><div class='output co'>#&gt; [1] "/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpHdvm58/temp_libpath136c71e459bfa/flowr/conf/flowr.conf"</div><div class='input'><span class='co'>## load this</span>
 <span class='va'>opts_flow</span><span class='op'>$</span><span class='fu'>load</span><span class='op'>(</span><span class='va'>conf</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Reading file, using 'V1' as id_column to remove empty rows.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: </span>
 #&gt; <span class='warning'></span>
@@ -267,14 +267,14 @@ separated files.</p>
 <span class='co'>## this returns a list, which prints pretty</span>
 <span class='va'>pip</span> <span class='op'>=</span> <span class='fu'>fetch_pipes</span><span class='op'>(</span><span class='st'>"sleep_pipe"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>&gt; searching for pipes in the following places: </span>
-#&gt; <span class='message'>  /private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpFWQhxq/temp_libpath9aa1144ac9cd/flowr/pipelines</span>
+#&gt; <span class='message'>  /private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpHdvm58/temp_libpath136c71e459bfa/flowr/pipelines</span>
 #&gt; <span class='message'>  ~/flowr/pipelines</span>
-#&gt; <span class='message'>  /Users/sahilseth/Dropbox2/Dropbox/public/flowr/flowr/docs/reference</span></div><div class='output co'>#&gt; <span class='message'>|name       |def            |conf |pipe                                                                                                                      |</span>
-#&gt; <span class='message'>|:----------|:--------------|:----|:-------------------------------------------------------------------------------------------------------------------------|</span>
-#&gt; <span class='message'>|sleep_pipe |sleep_pipe.def |NA   |/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpFWQhxq/temp_libpath9aa1144ac9cd/flowr/pipelines/sleep_pipe.R |</span></div><div class='input'><span class='va'>pip</span><span class='op'>$</span><span class='va'>name</span>
+#&gt; <span class='message'>  /Users/sahilseth/Dropbox2/Dropbox/public/flowr/flowr/docs/reference</span></div><div class='output co'>#&gt; <span class='message'>|name       |def            |conf |pipe                                                                                                                       |</span>
+#&gt; <span class='message'>|:----------|:--------------|:----|:--------------------------------------------------------------------------------------------------------------------------|</span>
+#&gt; <span class='message'>|sleep_pipe |sleep_pipe.def |NA   |/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpHdvm58/temp_libpath136c71e459bfa/flowr/pipelines/sleep_pipe.R |</span></div><div class='input'><span class='va'>pip</span><span class='op'>$</span><span class='va'>name</span>
 </div><div class='output co'>#&gt; [1] "sleep_pipe"</div><div class='input'><span class='va'>pip</span><span class='op'>$</span><span class='va'>pipe</span>
-</div><div class='output co'>#&gt; [1] "/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpFWQhxq/temp_libpath9aa1144ac9cd/flowr/pipelines/sleep_pipe.R"</div><div class='input'><span class='va'>pip</span><span class='op'>$</span><span class='va'>def</span>
-</div><div class='output co'>#&gt; [1] "/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpFWQhxq/temp_libpath9aa1144ac9cd/flowr/pipelines/sleep_pipe.def"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpHdvm58/temp_libpath136c71e459bfa/flowr/pipelines/sleep_pipe.R"</div><div class='input'><span class='va'>pip</span><span class='op'>$</span><span class='va'>def</span>
+</div><div class='output co'>#&gt; [1] "/private/var/folders/p_/f5_ccf2x3692drxr7ks5yj9h0000gp/T/RtmpHdvm58/temp_libpath136c71e459bfa/flowr/pipelines/sleep_pipe.def"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

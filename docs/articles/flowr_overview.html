@@ -92,7 +92,7 @@
             <h3 class="subtitle">Streamlining Workflows</h3>
                         <h4 class="author">Sahil Seth</h4>
             
-            <h4 class="date">2021-03-01</h4>
+            <h4 class="date">2021-03-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flow-r/flowr/blob/master/vignettes/flowr_overview.Rmd"><code>vignettes/flowr_overview.Rmd</code></a></small>
       <div class="hidden name"><code>flowr_overview.Rmd</code></div>
@@ -182,7 +182,7 @@ Please use 'flowr -h function' to obtain further information about the usage of 
 </tr>
 </tbody>
 </table>
-<p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="/docs.html#flow-definition">flow_def</a>.</p>
+<p>Further, we use an additional file specifying the relationship between the steps, and also other resource requirements: <a href="http://flow-r.github.io/flowr/tutorial.html#creating_flow_definition">flow_def</a>.</p>
 <table class="table">
 <colgroup>
 <col width="11%">
@@ -405,7 +405,7 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 <li>
 <code>jobname</code>: This corresponds to the name of the step. This should match exactly with the jobname column in flow_def table described below.</li>
 <li>
-<code>cmd</code>: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a <code>;</code> or <code><a href="https://rdrr.io/r/base/Logic.html">&amp;&amp;</a></code>, more on this <a href="http://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls">here</a>. Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.</li>
+<code>cmd</code>: A shell command to run. One can get quite creative here. These could be multiple shell commands separated by a <code>;</code> or <code><a href="https://rdrr.io/r/base/Logic.html">&amp;&amp;</a></code>, more on this <a href="https://stackoverflow.com/questions/3573742/difference-between-echo-hello-ls-vs-echo-hello-ls">here</a>. Though to keep this clean you may just wrap a multi-line command into a script and just source the bash script from here.</li>
 </ul>
 <p>Here is an example <a href="https://github.com/flow-r/flowr/blob/master/inst/pipelines/sleep_pipe.tsv">flow_mat</a> for the flowr described above.</p>
 <table class="table">
@@ -495,7 +495,7 @@ Really kill all of them ? kill again with force=TRUE</code></pre>
 </div>
 <p>Most cluster platforms accept these resource arguments. Essentially a file like <a href="https://github.com/flow-r/flowr/blob/master/inst/conf/torque.sh">this</a> is used as a template, and variables defined in curly braces ( ex. <code>{{{CPU}}}</code> ) are filled up using the flow definition file.</p>
 <div class="alert alert-warning" role="alert">
-<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/flow-r/flowr/blob/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.</p>
+<p>If these (resource requirements) columns are not included in the flow definition, their values should be explicitly defined in the <a href="https://github.com/flow-r/flowr/tree/master/inst/conf">submission template</a>. One may customize the templates as described in the <a href="#cluster-support">cluster support</a> section.</p>
 </div>
 <p>Here is an example of a typical <a href="https://raw.githubusercontent.com/sahilseth/flowr/master/inst/pipelines/sleep_pipe.def">flow_def</a> file.</p>
 <table class="table">

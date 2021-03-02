@@ -109,11 +109,11 @@ flowr to_flow x=sleep_pipe.tsv def=sleep_pipe.def platform=local execute=TRUE
 flowr to_flow x=sleep_pipe.tsv def=sleep_pipe.def platform=lsf execute=TRUE
 ```
 
-**Example pipelines** [inst/pipelines](https://github.com/flow-r/flowr/blob/devel/inst/pipelines)
+**Example pipelines** [inst/pipelines](https://github.com/flow-r/flowr/tree/master/inst/pipelines)
 
 ### Resources
 - For a quick overview, you may browse through,
- these [introductory slides](http://sahilseth.github.io/slides/flowrintro).
+ these [introductory slides](http://sahilseth.com/slides/flowrintro/).
 - The [overview](http://flow-r.github.io/flowr/overview.html) provides additional details regarding
 the ideas and concepts used in flowr
 - We have a [tutorial](http://flow-r.github.io/flowr/tutorial.html) which can walk you through creating a
@@ -121,7 +121,7 @@ new pipeline
 - Additionally, a subset of important functions are described in the [package reference](http://flow-r.github.io/flowr/rd.html)
 page
 - You may follow detailed instructions on [installing and configuring](http://flow-r.github.io/flowr/install.html)
-- You can use flow creator: https://sseth.shinyapps.io/flow_creator, a shiny app to aid in
+- You can use flow creator: https://sseth.shinyapps.io/flow_creator), a shiny app to aid in
 	designing a *shiny* new flow. This provides a good example of the concepts
 
 ### Updates
@@ -141,7 +141,7 @@ Please feel free to raise a [github issue](https://github.com/flow-r/flowr/issue
 -   Ethan Mao
 -   Henry Song
 -   An excellent resource for writing your own R packages:
-    [r-pkgs.org/](https://r-pkgs.org/)
+    [r-pkgs.org](https://r-pkgs.org/)
 
 <!--why this license http://kbroman.org/pkg_primer/pages/licenses.html -->
 <script src = "vignettes/files/googl.js"></script>

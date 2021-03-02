@@ -330,4 +330,4 @@ flowr 0.85
 
 Versioning:
 
-Loosely, following [fruits A-Z](http://www.greatgrubclub.com/a-z-fruit-veg#.Vk-gx4QzBRE).
+Loosely, following [fruits A-Z](https://www.wcrf-uk.org/eat-move-learn/learn-it/a-z-fruit-vegetables#E).
