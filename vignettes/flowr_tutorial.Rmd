@@ -36,8 +36,8 @@ library(flowr)
 
 # Creating input file(s)
 
-```{r example1, cache = FALSE, echo=FALSE}
-s <- system.file('pipelines', 'sleep_pipe.R', package = 'flowr')
+```{r example1, cache = FALSE, echo=FALSE, eval=FALSE}
+s <- file.path(system.file(package = 'flowr'), 'pipelines/sleep_pipe.R')
 knitr::read_chunk(s)
 ```
 
