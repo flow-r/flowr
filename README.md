@@ -25,7 +25,7 @@ navpills: |
 <meta name="twitter:description" content="flowr - Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
 <meta name="twitter:title" content="flowr — Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
 
-[![Build Status](https://github.com/sahilseth/params/workflows/R/badge.svg)](https://github.com/sahilseth/params/actions)
+[![Build Status](https://github.com/sahilseth/flowr/workflows/R-CMD-check/badge.svg)](https://github.com/sahilseth/flowr/actions)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](https://cran.r-project.org/package=flowr)
 <!--[![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)-->
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
