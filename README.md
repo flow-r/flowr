@@ -1,17 +1,4 @@
----
-output: 
-    html_document: 
-       keep_md: yes
-packagedocs:
-    toc: false
-navpills: |
-  <li><a href='docs.html'>Overview</a></li>
-  <li><a href='install.html'>Install</a></li>
-  <li><a href='tutorial.html'>Tutorial</a></li>
-  <li><a href='rd.html'>Help</a></li>
-  <li><a href='news.html'>News</a></li>
-  <li><a href='https://github.com/flow-r/flowr'>Github <i class='fa fa-github'></i></a></li>
----
+
 
 <!--brand: |-
   <a href="http://flow-r.github.io/flowr">
