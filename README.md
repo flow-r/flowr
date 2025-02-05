@@ -14,6 +14,8 @@
 
 [![Build Status](https://github.com/sahilseth/flowr/workflows/R-CMD-check/badge.svg)](https://github.com/sahilseth/flowr/actions)
 [![cran](http://www.r-pkg.org/badges/version/flowr)](https://cran.r-project.org/package=flowr)
+
+
 <!--[![codecov.io](http://codecov.io/github/sahilseth/flowr/coverage.svg?branch=devel)](http://codecov.io/github/sahilseth/flowr?branch=devel)-->
 ![downloads](http://cranlogs.r-pkg.org/badges/grand-total/flowr)
 
