@@ -3,12 +3,12 @@
 \name{get_resources}
 \alias{get_resources}
 \title{Extract resources used by each job of a flow
-get_resources currenty this only works on LSF}
+get_resources currently this only works on LSF}
 \usage{
 get_resources(x, odir, ...)
 }
 \arguments{
-\item{x}{A character vector of lenth 1. This may be a parent level folder with directories with multiple flow runs.}
+\item{x}{A character vector of length 1. This may be a parent level folder with directories with multiple flow runs.}
 
 \item{odir}{Output directory to save the results}
 
@@ -16,7 +16,7 @@ get_resources(x, odir, ...)
 }
 \description{
 Extract resources used by each job of a flow
-get_resources currenty this only works on LSF
+get_resources currently this only works on LSF
 }
 \details{
 If \code{x} is a parent level folder, 

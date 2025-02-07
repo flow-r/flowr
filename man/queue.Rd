@@ -29,7 +29,7 @@ queue(
 )
 }
 \arguments{
-\item{object}{this is not used currenlty, ignore.}
+\item{object}{this is not used currently, ignore.}
 
 \item{platform}{Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]}
 
@@ -73,15 +73,15 @@ Internal function (used by \link{to_flow}), to define the format used to submit 
 }
 \details{
 \strong{Resources}:
-Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
+Can be defined **once** using a \link{queue} object and recycled to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
 job level they overwrite the one supplied in \link{queue}
-Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
+Nodes: can be supplied to extend a job across multiple nodes. This is purely experimental and not supported.
 
 \strong{Server}:
 This a hook which may be implemented in future.
 
 \strong{Submission script}
-The 'platform' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
+The 'platform' variable defines the format, and submit_exe; however these two are available for someone to create a custom submission command.
 }
 \examples{
 qobj <- queue(platform='lsf')

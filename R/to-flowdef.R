@@ -8,7 +8,7 @@
 #' @aliases flowdef to_flowdef definition
 #' 
 #' @title
-#' Flow Definition defines how to stich steps into a (work)flow.
+#' Flow Definition defines how to stitch steps into a (work)flow.
 #'
 #' @description 
 #' This function enables creation of a skeleton flow definition with several default values, using a 
@@ -207,7 +207,7 @@ detect_dep_type <- function(ncmds, prev_job, npcmds){
     
   }else{
     message("Number of cmds: ", ncmds, " and previous cmds: ", npcmds)
-    message("Could not decide a depedency type; this was too confusing to me. Help from Stackoverflow/Github?")
+    message("Could not decide a dependency type; this was too confusing to me. Help from Stackoverflow/Github?")
     dep_type = "gather"
   }
   

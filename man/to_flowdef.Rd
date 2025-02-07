@@ -9,7 +9,7 @@
 \alias{to_flowdef.character}
 \alias{as.flowdef}
 \alias{is.flowdef}
-\title{Flow Definition defines how to stich steps into a (work)flow.}
+\title{Flow Definition defines how to stitch steps into a (work)flow.}
 \format{
 This is a tab separated file, with a minimum of 4 columns:<br>
 

@@ -24,7 +24,7 @@ to_flowdet(x, ...)
 Create a file describing details regarding jobs ids, submission scripts etc.
 }
 \details{
-The path provided should contain a flow_detaits.rds file (which is used to extract all the information). 
+The path provided should contain a flow_details.rds file (which is used to extract all the information). 
 
 Incase a parent folder with multiple flows is provided information regarding jobids is omitted.
 

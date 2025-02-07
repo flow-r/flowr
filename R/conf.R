@@ -16,13 +16,13 @@ flowopts = new.env()
 #' \itemize{
 #' \item \link[params]{get_opts} OR \code{opts_flow\$get()}: show all default options
 #' \item \link[params]{set_opts} OR \code{opts_flow\$set()}: set default options
-#' \item \link[params]{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab seperated text file
+#' \item \link[params]{load_opts} OR \code{opts_flow\$load()}: load options specified in a tab separated text file
 #' }
-#' For more details regarding these funtions refer to \href{http://sahilseth.com/params}{params} package.
+#' For more details regarding these functions refer to \href{http://sahilseth.com/params/}{params} package.
 #'
 #' @param ... \itemize{
 #' \item get: names of options to fetch
-#' \item set: a set of options in a name=value format seperated by commas
+#' \item set: a set of options in a name=value format separated by commas
 #' }
 #'
 #' @usage 

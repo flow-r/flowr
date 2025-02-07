@@ -19,7 +19,7 @@ assert_args_not_null <- function(...,
 }
 
 
-#' Assert none of the arguemnts of a function are null.
+#' Assert none of the arguments of a function are null.
 #'
 #' Checks all the arguments in the parent function and makes sure that none of them
 #' are NULL
@@ -75,7 +75,7 @@ assert_not_null <- function(x, .varname){
   if (missing(.varname))
     .varname = deparse(substitute(x))
   if (is.null(x))
-    stop("Variable ", .varname, " should not be null. You may directly supply it to the function OR add these to ngsflows.conf OR a seperate conf file and use load_opts()")
+    stop("Variable ", .varname, " should not be null. You may directly supply it to the function OR add these to ngsflows.conf OR a separate conf file and use load_opts()")
 }
 
 

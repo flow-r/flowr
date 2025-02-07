@@ -20,13 +20,13 @@ navpills: |
   <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
   <li><a href='news.html'>News</a></li>
-  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+  <li><a href='https://github.com/flow-r/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
   <a href="http://flow-r.github.io/flowr">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
-source: "github.com/sahilseth/flowr/tree/devel/vignettes/flowr_install.Rmd"
+source: "github.com/flow-r/flowr/tree/devel/vignettes/flowr_install.Rmd"
 ---
 
 ```{r echo=FALSE, message=FALSE}
@@ -42,14 +42,11 @@ Requirements:
 
 
 ```{r eval=FALSE}
-## for a latest official version (from CRAN)
+## for a latest released version (from CRAN)
 install.packages("flowr", repos = CRAN="http://cran.rstudio.com")
 
-## Latest stable release from DRAT (updated every other week); CRAN for dependencies
-install.packages("flowr", repos = c(CRAN="http://cran.rstudio.com", DRAT="http://sahilseth.github.io/drat"))
-
-## OR cutting edge devel version
-devtools::install_github("sahilseth/flowr", ref = "devel")
+## OR latest version
+devtools::install_github("sahilseth/flowr", ref = "master")
 
 ```
 
@@ -129,7 +126,7 @@ samp1_merged  samp1_tmp_1  samp1_tmp_2  samp1_tmp_3
 ```
 
 There are a few places where things may go wrong, you may follow the advanced configuration guide for more details.
-Feel free to post questions on [github issues page](https://github.com/sahilseth/flowr/issues).
+Feel free to post questions on [github issues page](https://github.com/flow-r/flowr/issues).
 
 
 # Advanced Configuration
@@ -141,11 +138,11 @@ Further, one may copy and edit them (and save to `~/flowr/conf`) in case some ch
 
 Here are links to latest templates on github:
 
-- [torque](https://github.com/sahilseth/flowr/blob/master/inst/conf/torque.sh)
-- [lsf](https://github.com/sahilseth/flowr/blob/master/inst/conf/lsf.sh)
-- [moab](https://github.com/sahilseth/flowr/blob/master/inst/conf/moab.sh)
-- [sge](https://github.com/sahilseth/flowr/blob/master/inst/conf/sge.sh)
-- [slurm](https://github.com/sahilseth/flowr/blob/master/inst/conf/slurm.sh), needs testing
+- [torque](https://github.com/flow-r/flowr/blob/master/inst/conf/torque.sh)
+- [lsf](https://github.com/flow-r/flowr/blob/master/inst/conf/lsf.sh)
+- [moab](https://github.com/flow-r/flowr/blob/master/inst/conf/moab.sh)
+- [sge](https://github.com/flow-r/flowr/blob/master/inst/conf/sge.sh)
+- [slurm](https://github.com/flow-r/flowr/blob/master/inst/conf/slurm.sh), needs testing
 
 
 **Not sure what platform you have?**
@@ -164,19 +161,20 @@ qsub --help
 
 Here are some helpful guides and details on the platforms:
 
-- PBS: [wiki](http://en.wikipedia.org/wiki/Portable_Batch_System)
-- Torque: [wiki](http://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
+- PBS: [wiki](https://en.wikipedia.org/wiki/Portable_Batch_System)
+- Torque: [wiki](https://en.wikipedia.org/wiki/TORQUE_Resource_Manager)
 	- MD Anderson
-	- [University of Houston](http://www.rcc.uh.edu/hpc-docs/49-using-torque-to-submit-and-monitor-jobs.html)
-- LSF [wiki](http://en.wikipedia.org/wiki/Platform_LSF):
-	- Harvard Medicla School uses: [LSF HPC 7](https://wiki.med.harvard.edu/Orchestra/IntroductionToLSF)
-	- Also used at [Broad](https://www.broadinstitute.org/gatk/guide/article?id=1311)
-- SGE [wiki](http://en.wikipedia.org/wiki/Sun_Grid_Engine)
+- LSF [wiki](https://en.wikipedia.org/wiki/Platform_LSF):
+	- Also used at [Broad](https://software.broadinstitute.org/gatk/guide/article?id=1311)
+- SGE [wiki](https://en.wikipedia.org/wiki/Sun_Grid_Engine)
 	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
 	- Another from [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html)
-	- Dependecy info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
+	- Dependency info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
+- [SLURM](https://slurm.schedmd.com/documentation.html):
+  	- quick start: [SLURM](https://slurm.schedmd.com/quickstart.html)
 
-[Comparison_of_cluster_software](http://en.wikipedia.org/wiki/Comparison_of_cluster_software)
+
+[Comparison_of_cluster_software](https://en.wikipedia.org/wiki/Comparison_of_cluster_software)
 
 
 ## flowr configuration file
@@ -186,9 +184,9 @@ Here are some helpful guides and details on the platforms:
 flowr has a configuration file, with parameters regarding default paths, verboseness etc. 
 flowr loads this default configuration from the package installation. 
 In addition, to customize the parameters, simply create a tab-delimited file called `~/.flowr`. 
-An example of this file is available [here](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf)
+An example of this file is available [here](https://github.com/flow-r/flowr/blob/master/inst/conf/flowr.conf)
 
-**Addtional files loaded if available**:
+**Additional files loaded if available**:
 
 -  (flow installation)/flowr.conf
 -  (ngsflows installation)/ngsflows.conf
@@ -211,7 +209,7 @@ Possible issue: Jobs are not getting submitted
 1. Check if the right platform was used for submission.
 2. Confirm (with your system admin) that you have the privilege to submit jobs.
 3. **Use a custom flowdef**: Many institutions have strict specification on the resource reservations. 
-Make sure that the queue, memory, walltime, etc. requiremets are specified properly
+Make sure that the queue, memory, walltime, etc. requirements are specified properly
 4. **Use a custom submission template**: There are several parameters in the submission script
 used to submit jobs to the cluster. You may customize this template to suit your needs.
 </div>
@@ -236,7 +234,7 @@ flowr run x=sleep_pipe execute=TRUE def=~/flowr/pipelines/sleep_pipe.def ## plat
 
 **4. Use a custom submission template**
 
-If you need to customize the HPCC submission template, copy the [file for your platform](https://github.com/sahilseth/flowr/tree/master/inst/conf) and make your desired changes. 
+If you need to customize the HPCC submission template, copy the [file for your platform](https://github.com/flow-r/flowr/tree/master/inst/conf) and make your desired changes. 
 For example the MOAB based cluster in our institution does **not** accept the `queue` argument, 
 so we need to comment it out.
 
@@ -272,7 +270,7 @@ extracts job IDs of submitted jobs.
 
 **1. Parsing job ids**
 
-Flowr parses job IDs to keep a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but it may show it in a slightly different fashion. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf).
+Flowr parses job IDs to keep a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/flow-r/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but it may show it in a slightly different fashion. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/flow-r/flowr/blob/master/inst/conf/flowr.conf).
 
 For example LSF may show a string such as:
 
@@ -302,7 +300,7 @@ Update the regex pattern and submit again.
 **2. Check dependency string**
 
 After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent
-jobs. This is handled by [render_dependency.PLATFORM](https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R) functions.
+jobs. This is handled by [render_dependency.PLATFORM](https://github.com/flow-r/flowr/blob/master/R/render-dependency.R) functions.
 
 Confirm that the dependency parameter is specified correctly in the submission scripts:
 
@@ -332,7 +330,7 @@ What all resources are supported in the flow definition?
 The resource requirement columns of flow definition are passed along to the final (cluster) submission script. 
 For example values in `cpu_reserved` column would be populated as `{{{CPU}}}` in the submission template.
 
-The following table provides a mapping between the flow definition columns and variables in the [submission templates](https://github.com/sahilseth/flowr/blob/master/inst/conf):
+The following table provides a mapping between the flow definition columns and variables in the [submission templates](https://github.com/flow-r/flowr/tree/master/inst/conf):
 
 
 ```{r build_pipe_flow_def_cols, echo=FALSE, message=FALSE}
@@ -350,14 +348,14 @@ kable(mat, col.names = c("flowdef variable", "submission template variable"))
 Possible issue: Need to add a new platform
 </div>
 
-Adding a new platform involves [a few steps](https://github.com/sahilseth/flowr/issues/7), briefly we need to consider the following steps where changes would be necessary.
+Adding a new platform involves [a few steps](https://github.com/flow-r/flowr/issues/7), briefly we need to consider the following steps where changes would be necessary.
 
-1. **job submission**: One needs to add a new template for the new platform. Several [examples](https://github.com/sahilseth/flowr/blob/master/inst/conf) are available as described in the previous section.
-2. **parsing job ids**: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/sahilseth/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/sahilseth/flowr/blob/master/inst/conf/flowr.conf).
+1. **job submission**: One needs to add a new template for the new platform. Several [examples](https://github.com/flow-r/flowr/tree/master/inst/conf) are available as described in the previous section.
+2. **parsing job ids**: flowr keeps a log of all submitted jobs, and also to pass them along as a dependency to subsequent jobs. This is taken care by the [parse_jobids()](https://github.com/flow-r/flowr/blob/master/R/parse-jobids.R) function. Each job scheduler shows the jobs id, when you submit a job, but each shows it in a slightly different pattern. To accommodate this one can use regular expressions as described in the relevant section of the [flowr config](https://github.com/flow-r/flowr/blob/master/inst/conf/flowr.conf).
 
 3. **render dependency**: After collecting job ids from previous jobs, flowr renders them as a dependency for subsequent
-jobs. This is handled by [render_dependency.PLATFORM](https://github.com/sahilseth/flowr/blob/master/R/render-dependency.R) functions.
-4. **recognize new platform**: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the [job class](https://github.com/sahilseth/flowr/blob/master/R/class-def.R)
+jobs. This is handled by [render_dependency.PLATFORM](https://github.com/flow-r/flowr/blob/master/R/render-dependency.R) functions.
+4. **recognize new platform**: Flowr needs to be made aware of the new platform, for this we need to add a new class using the platform name. This is essentially a wrapper around the [job class](https://github.com/flow-r/flowr/blob/master/R/class-def.R)
 
 Essentially this requires us to add a new line like: `setClass("torque", contains = "job")`.
 
@@ -366,17 +364,17 @@ Essentially this requires us to add a new line like: `setClass("torque", contain
 
 
 
-There are several [job scheduling](http://en.wikipedia.org/wiki/Job_scheduler) systems
+There are several [job scheduling](https://en.wikipedia.org/wiki/Job_scheduler) systems
 available and we try to support the major players. Adding support is
 quite easy if we have access to them. Your favourite not in the list?
 re-open this issue, with details on the platform:
-[adding platforms](https://github.com/sahilseth/flowr/issues/7)
+[adding platforms](https://github.com/flow-r/flowr/issues/7)
 
 
 
 <div class="alert alert-warning" role="alert">
 Possible issue: For other issues upload the error shown in the out files to 
-[github issues tracker](https://github.com/sahilseth/flowr/issues).
+[github issues tracker](https://github.com/flow-r/flowr/issues).
 </div>
 
 ```
@@ -387,40 +385,6 @@ cat $wd/002.create_tmp/create_tmp_cmd_1.out
 cat $wd/002.create_tmp/create_tmp_cmd_1.sh
 ```
 
-## Installation Error (DRAT)
-
-```
-install.packages("flowr", repos = "http://sahilseth.github.io/drat")
-
-ERROR: dependency ‘whisker’ is not available for package ‘params’
-* removing ‘/usr/local/lib/R/site-library/params’
-ERROR: dependencies ‘params’, ‘diagram’, ‘whisker’ are not available for package ‘flowr’
-* removing ‘/usr/local/lib/R/site-library/flowr’
-
-The downloaded source packages are in
-    ‘/tmp/RtmpykBS2r/downloaded_packages’
-Warning messages:
-1: In install.packages("flowr", repos = "http://sahilseth.github.io/drat") :
-  installation of package ‘params’ had non-zero exit status
-2: In install.packages("flowr", repos = "http://sahilseth.github.io/drat") :
-  installation of package ‘flowr’ had non-zero exit status
-```
-
-Issues is that whisker and params are not installed, and are not available in the DRAT repo.
-
-Solution 1:
-
-```{r eval=FALSE}
-install.packages("whisker")
-install.packages("diagram")
-install.packages("flowr", repos = "http://sahilseth.github.io/drat")
-```
-
-Solution 2:
-
-```{r eval=FALSE}
-install.packages("flowr", repos = c(CRAN = "http://cran.rstudio.com", DRAT = "http://sahilseth.github.io/drat"))
-```
 
 
 ## Installation Error (Github)

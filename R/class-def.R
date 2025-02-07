@@ -78,7 +78,7 @@ setClass("flow", representation(jobs = "list",
 #' @description 
 #' Internal function (used by \link{to_flow}), to define the format used to submit a job.
 #'
-#' @param object this is not used currenlty, ignore.
+#' @param object this is not used currently, ignore.
 #' @param platform Required and important. Currently supported values are 'lsf' and 'torque'. [Used by class job]
 #' @param queue the type of queue your group usually uses
 #' 'bsub' etc.
@@ -100,15 +100,15 @@ setClass("flow", representation(jobs = "list",
 #'
 #' @details
 #' \strong{Resources}:
-#' Can be defined **once** using a \link{queue} object and recylced to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
+#' Can be defined **once** using a \link{queue} object and recycled to all the jobs in a flow. If resources (like memory, cpu, walltime, queue) are supplied at the
 #' job level they overwrite the one supplied in \link{queue}
-#' Nodes: can be supplied ot extend a job across multiple nodes. This is purely experimental and not supported.
+#' Nodes: can be supplied to extend a job across multiple nodes. This is purely experimental and not supported.
 #' 
 #' \strong{Server}:
 #' This a hook which may be implemented in future.
 #' 
 #' \strong{Submission script}
-#' The 'platform' variable defines the format, and submit_exe; however these two are avaible for someone to create a custom submission command.
+#' The 'platform' variable defines the format, and submit_exe; however these two are available for someone to create a custom submission command.
 #' 
 #' @inheritParams job
 #' 
@@ -275,8 +275,8 @@ queue <- function(object,
 #' @param cmds the commands to run
 #' @param name name of the job
 #' @param q_obj queue object
-#' @param submission_type submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as seperate jobs. Serial, they would combined into a single job and run one-by-one.
-#' @param dependency_type depedency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]
+#' @param submission_type submission type: A character with values: scatter, serial. Scatter means all the 'cmds' would be run in parallel as separate jobs. Serial, they would combined into a single job and run one-by-one.
+#' @param dependency_type dependency type. One of none, gather, serial, burst. If previous_job is specified, then this would not be 'none'. [Required]
 #' @param cpu no of cpu's reserved
 #' @param previous_job character vector of previous job. If this is the first job, one can leave this empty, NA, NULL, '.', or ''. In future this could specify multiple previous jobs.
 #' @param memory The amount of memory reserved. Units depend on the platform used to process jobs
@@ -364,7 +364,7 @@ job <- function(cmds = "",
 #' @param flow_path \code{character}: A unique path identifying a flow instance, populated by \link{submit_flow}.
 #' @param status \code{character}: Status of the flow.
 #' @param version version of flowr used to create and execute this flow.
-#' @param execute executtion status of flow object. [FALSE]
+#' @param execute execution status of flow object. [FALSE]
 #' @param module_cmds [advanced use] a character vector of cmds which will be pre-pended to all script of this pipeline. 
 #' Could be cmds like \code{`module load mytool1;module load mytool2`}
 #' @export

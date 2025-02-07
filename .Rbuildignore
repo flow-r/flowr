@@ -4,12 +4,14 @@
 
 ## ignore travis files
 .travis_bak.yml
+.travis_bak2.yml
 .travis2.yml
 .travis.yml
 
 misc
 inst/extdata/*
 inst/staticdocs
+docs
 
 ## ignoring extra markdown files
 README\.Rmd
@@ -33,3 +35,4 @@ vignettes/*.md
 vignettes/*_files
 
 inst/scripts/show_linkage.R
+^CRAN-RELEASE$

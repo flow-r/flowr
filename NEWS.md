@@ -12,13 +12,13 @@ navpills: |
   <li><a href='tutorial.html'>Tutorial</a></li>
   <li><a href='rd.html'>Help</a></li>
   <li class="active"><a href='news.html'>News</a></li>
-  <li><a href='https://github.com/sahilseth/flowr'>Github <i class='fa fa-github'></i></a></li>
+  <li><a href='https://github.com/flow-r/flowr'>Github <i class='fa fa-github'></i></a></li>
 brand: |-
-  <a href="http://docs.flowr.space">
+  <a href="http://flow-r.github.io/flowr">
   <img src='files/logo_red.png' alt='flowr icon' width='50px' height='40px' style='margin-top: -20px;margin-bottom: -20px'>
   </a>
 copyright: Licence MIT
-source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
+source: "github.com/flow-r/flowr/tree/devel/NEWS.md"
 ---
 
 <br>
@@ -26,14 +26,14 @@ source: "github.com/sahilseth/flowr/tree/devel/NEWS.md"
 
 flowr 0.9.11
 ----------------------------------------------
-> 2019-04-01
+> 2021-03-01
 
+* added ability to toml files
 * bugfix in for `moab` and `sge` schedulers (see #74 for details)
 * bugfix in SBATCH params
-* bufix #91
+* bugfix #91
 * add ability to parse LSF resource output
-* from @sbamin fix #73, #74, #83
-
+* Several other bug fixes: from @sbamin fix #73, #74, #83
 
 
 flowr 0.9.10.9022
@@ -83,7 +83,7 @@ flow_run_path	~/flowr/runs  # default home of all executed flows, you may change
 flow_pipe_paths	~/flowr/pipelines,<add new paths...> # multiple paths can be specified using ","
 ```
 
-- a few bug fixes in [to_flow](https://github.com/sahilseth/flowr/issues/66)
+- a few bug fixes in [to_flow](https://github.com/flow-r/flowr/issues/66)
 - several other minor changes to messages, errors and warnings.
 
 
@@ -102,7 +102,7 @@ Everything else is compatible with previous versions.
 **additions/changes to `flowr.conf` file**
 
 - **New**: option local_cores, which determines (max) number of cores to use when running local jobs.
-- **New**: `flow_pipe_paths` now supports multiple paths, seperated by comma. The `fetch_pipes()` would split the vector at commas.
+- **New**: `flow_pipe_paths` now supports multiple paths, separated by comma. The `fetch_pipes()` would split the vector at commas.
 
 - **IMP**: New version needs additional components in the `flowr.conf` file
 
@@ -182,7 +182,7 @@ this uses information from other columns and summarizes whether a specific step 
 	Where the level may be 0, 1, 2.... 
 	Level 1 is good for most purposes, where as, 
 	level 0 is almost silent, producing messages 
-	only when neccessary.
+	only when necessary.
 	While level 2 is good when developing a new pipeline, additional details useful for debugging are 
 	provided by level 3.
 	
@@ -209,7 +209,7 @@ checking submission and dependency types...
 ```
 - rerun [0.9.7.9021]: 
 	- Previously one could specify a starting point from where a re-run flow
-	would initiate execution. Now one may also specify an arbitary number of 
+	would initiate execution. Now one may also specify an arbitrary number of 
 	of steps to re-run using select and ignore; which may need to run again.
 - job killing and submission now sport a progress bar:
 	- |============================================================      | 70%
@@ -239,7 +239,7 @@ flowr 0.9.7 (apples)
 - `check()`: Now works on flowdef and flowmat
 - as.flowmat(), as.flowdef(): easy ways to fetch and check these tables
 - `fetch()` along with `fetch_pipes()` and `fetch_conf()` simplify finding files
-- Reduce function overload, moving several functions a seperate `params` pkg
+- Reduce function overload, moving several functions a separate `params` pkg
 	- moved `read_sheet()`, `write_sheet()`
 	- moved `get_opts()`, `set_opts()`
 	- moved `.load_conf()` `load_conf()`
@@ -282,7 +282,7 @@ flowr 0.9.6.7
 	- Update Vignette with more examples
 	- squash issues in DESCRIPTION
 - [0.9.6.1]
-	- Added some vignettes for a simple and comples example
+	- Added some vignettes for a simple and complex example
 	- satiate CRAN checks
 
 flowr 0.9.5.1
@@ -309,7 +309,7 @@ flow_status.txt
 - add example pipelines
 - assign UUID to each job/flow. and use that to track them.
 - Work on test_queue()
-- Add recipies
+- Add recipes
 
 flowr 0.85
 ----------------------------------------------
@@ -330,4 +330,4 @@ flowr 0.85
 
 Versioning:
 
-Loosely, following [fruits A-Z](http://www.greatgrubclub.com/a-z-fruit-veg#.Vk-gx4QzBRE).
+Loosely, following [fruits A-Z](https://www.wcrf-uk.org/eat-move-learn/learn-it/a-z-fruit-vegetables#E).

@@ -18,7 +18,7 @@
 #' @param x either path to flow wd or object of class \link{flow}
 #' @param jobid_col Advanced use. The column name in 'flow_details.txt' file used to fetch jobids to kill
 #' @param kill_cmd The command used to kill. flowr tries to guess this commands, as defined in the detect_kill_cmd(). Supplying
-#' it here; fot custom platoforms.
+#' it here; for custom platforms.
 #' @param force You need to set force=TRUE, to kill multiple flows. This makes sure multiple flows are NOT killed by accident.
 #' @param ... not used
 #' @inheritParams to_flow
