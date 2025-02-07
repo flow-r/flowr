@@ -12,7 +12,8 @@
 <meta name="twitter:description" content="flowr - Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
 <meta name="twitter:title" content="flowr — Easy, scalable big data pipelines using hpcc (high performance computing cluster)">
 
-[![Build Status](https://github.com/sahilseth/flowr/workflows/R-CMD-check/badge.svg)](https://github.com/sahilseth/flowr/actions)
+[![R-CMD-check.yaml](https://github.com/flow-r/flowr/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/flow-r/flowr/actions/workflows/r-cmd-check.yml)
+
 [![cran](http://www.r-pkg.org/badges/version/flowr)](https://cran.r-project.org/package=flowr)
 
 
