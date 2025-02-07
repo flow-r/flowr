@@ -107,13 +107,12 @@ Returns a flow object. If execute=TRUE, fobj is rich with information about wher
 the flow was executed. It would include details like jobids, path to exact scripts run etc.
 To use kill_flow, to kill all the jobs one would need a rich flow object, with job ids present.
 
-\strong{Behaviour:}{
-What goes in, and what to expect in return?
-\itemize{
-\item submit=FALSE & execute=FALSE: Create and return a flow object
-\item submit=TRUE & execute=FALSE: dry-run, Create a flow object then, create a structured execution folder with all the commands
-\item submit=TRUE, execute=TRUE: Do all of the above and then, submit to cluster
-}
+\strong{Behaviour}: What goes in, and what to expect in return?
+
+\describe{
+\item{submit=FALSE & execute=FALSE:}{Create and return a flow object}
+\item{submit=TRUE & execute=FALSE:}{dry-run, Create a flow object then, create a structured execution folder with all the commands}
+\item{submit=TRUE, execute=TRUE:}{Do all of the above and then, submit to cluster}
 }
 }
 \description{

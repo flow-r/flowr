@@ -409,7 +409,7 @@ flow <- function(
   execute = ""){
   mode <- match.arg(mode)
   ## create a list of jobs if nore already
-  if (class(jobs) == "job") jobs = list(jobs)
+  if (inherits(jobs, "job")) jobs = list(jobs)
   jobnames <-  sapply(jobs, slot, "name")
   names(jobs) = jobnames
   object <- new("flow", jobs=jobs,

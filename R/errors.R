@@ -6,7 +6,7 @@ error <- function(x, ...){
 
 	assert_character(x, 1)
 
-	if(class(x) != "character")
+	if(!inherits(x, "character"))
 		return("")
 
 	## errors in rerun/kill/status

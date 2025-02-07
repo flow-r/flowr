@@ -71,7 +71,8 @@ to_flowdet.flow <- function(x, ...){
 }
 
 # get flowdetails for every job
-to_flowdet.job <- function(x){
+#' @export
+to_flowdet.job <- function(x, ...){
   
   # get the script to run
   x@name

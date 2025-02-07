@@ -108,11 +108,9 @@ flowmat.
 To customize the flowdef, one may supply parameters such as sub_type and dep_type upfront.
 As such, these params must be of the same length as number of unique jobs using in the flowmat.
 
-{
 Each row in this table refers to one step of the pipeline. 
 It describes the resources used by the step and also its relationship with other steps, 
 especially, the step immediately prior to it.
-} <br><br>
 
 \strong{Submission types:} 
 \emph{This refers to the sub_type column in flow definition.}<br>

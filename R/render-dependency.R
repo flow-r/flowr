@@ -14,12 +14,14 @@ render_dependency <- function(x, ...) {
 }
 
 
+#' @export
 render_dependency.local <- function(...){
   return("")
 }
 
 # http://docs.adaptivecomputing.com/torque/4-1-4/Content/topics/commands/qsub.htm
 
+#' @export
 render_dependency.torque <- function(x, index, ...){
   dep_type = x@dependency_type
   
@@ -41,6 +43,7 @@ render_dependency.torque <- function(x, index, ...){
 
 
 ## ti kills orphan jobs
+#' @export
 render_dependency.lsf <- function(x, index, ...){
   #message(index)
   dep_type = x@dependency_type
@@ -57,11 +60,13 @@ render_dependency.lsf <- function(x, index, ...){
   return(dep)
 }
 
+#' @export
 render_dependency.test = render_dependency.lsf
 
 # http://docs.adaptivecomputing.com/9-0-1/MWM/Content/topics/moabWorkloadManager/topics/jobAdministration/jobdependencies.html
 # @samin, change dependency format for moab
 
+#' @export
 render_dependency.moab <- function(x, index, ...){
   
   dep_type = x@dependency_type
@@ -79,6 +84,7 @@ render_dependency.moab <- function(x, index, ...){
   return(dep)
 }
 
+#' @export
 render_dependency.sge <- function(x, index, ...){
   dep_type = x@dependency_type
   
@@ -105,7 +111,7 @@ render_dependency.sge <- function(x, index, ...){
 }
 
 
-## this has not been tested !
+#' @export
 render_dependency.slurm <- function(x, index, ...){
   dep_type = x@dependency_type
   if(dep_type == 'gather'){

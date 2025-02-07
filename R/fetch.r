@@ -204,7 +204,7 @@ fetch_conf <- function(x = "flowr.conf", places, ...){
   if(missing(places)){
     places = c(
       system.file(package = "flowr", "conf"),
-      system.file(package = "flowr", "inst/conf"),
+      # system.file(package = "flowr", "inst/conf"),
       # system.file(package = "ngsflows", "conf"),
       # system.file(package = "ngsflows", "inst/conf"),
       file.path(path.expand("~"), "flowr/conf/flowr.conf"),

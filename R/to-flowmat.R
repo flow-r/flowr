@@ -211,6 +211,7 @@ is.flowmat <- function(x){
 ## --------------------- d e p r e c i a t e d        f u n c t i o n s ----------------------------- ##
 
 ## not used, use char instead
+#' @export
 to_flowmat.character <- function(x, ...){
   message("Assuming x is a path to a file, using as.flowmat")
   .Deprecated("as.flowmat")

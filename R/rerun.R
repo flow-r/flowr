@@ -223,6 +223,13 @@ rerun.flow <- function(x, mat, def,
 
 
 
+#' update.flow
+#'
+#' @param x flowr object
+#' @param child child
+#'
+#' @return flowr object
+#' @export
 update.flow <- function(x, child){
   
   child_jobs = jobnames(child)

@@ -111,7 +111,7 @@ assert_version <- function(fobj, min_ver){
   msg = c("This feature is only supported for flows submitted using flowr version: ", min_ver, " and up.")
   ver = try(fobj@version, silent = TRUE)
   
-  if(class(ver) == "try-error" | length(ver) == 0)
+  if(inherits(ver, "try-error") | length(ver) == 0)
     stop(msg)
   
   if(compareVersion(ver, min_ver) == -1)
