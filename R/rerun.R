@@ -230,7 +230,7 @@ rerun.flow <- function(x, mat, def,
 #'
 #' @return flowr object
 #' @export
-update.flow <- function(x, child){
+update.flow <- function(x, child, ...){
   
   child_jobs = jobnames(child)
   ## --- for each job in child update ids

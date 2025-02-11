@@ -124,7 +124,7 @@ step (number of sub-processes)
 A (10)   ----> B (10)  -----> C (1) -----> D (3)
 
 
- 
+   
 
 \itemize{
 \item \code{scatter}: submit all commands as parallel, independent jobs. 

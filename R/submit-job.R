@@ -188,7 +188,7 @@ create_queue_cmd=render_queue_cmd
 #' Internal function (used by submit_job), which creates a submission script using 
 #' platform specific templates.
 #'
-#' @description This is a wrapper around \link{whisker.render}
+#' @description This is a wrapper around \link{whisker::whisker.render}
 #' @param template template used
 #' @param data a list with variables to be used to fill in the template.
 #' @importFrom whisker whisker.render

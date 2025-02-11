@@ -4,7 +4,7 @@
 \alias{update.flow}
 \title{update.flow}
 \usage{
-\method{update}{flow}(x, child)
+\method{update}{flow}(x, child, ...)
 }
 \arguments{
 \item{x}{flowr object}

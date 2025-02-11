@@ -376,6 +376,7 @@ proc_jobs <- function(x,
 #' @rdname to_flow
 #' @importFrom utils packageVersion
 #' @importFrom params kable
+#' @export
 to_flow.list <- function(x, def,
                          
                          flowname, 

@@ -168,7 +168,7 @@ Here are some helpful guides and details on the platforms:
 	- Also used at [Broad](https://software.broadinstitute.org/gatk/guide/article?id=1311)
 - SGE [wiki](https://en.wikipedia.org/wiki/Sun_Grid_Engine)
 	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
-	- Another from [JHSPH](http://www.biostat.jhsph.edu/bit/cluster-usage.html)
+	- Another from [JHSPH](https://jhpce.jhu.edu/slurm/getting-started/)
 	- Dependency info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
 - [SLURM](https://slurm.schedmd.com/documentation.html):
   	- quick start: [SLURM](https://slurm.schedmd.com/quickstart.html)
