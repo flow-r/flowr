@@ -4,12 +4,14 @@
 \alias{update.flow}
 \title{update.flow}
 \usage{
-\method{update}{flow}(x, child, ...)
+\method{update}{flow}(object, child, ...)
 }
 \arguments{
-\item{x}{flowr object}
+\item{object}{flowr object}
 
 \item{child}{child}
+
+\item{...}{not used}
 }
 \value{
 flowr object

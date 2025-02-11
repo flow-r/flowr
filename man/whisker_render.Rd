@@ -15,5 +15,5 @@ whisker_render(template, data)
 Internal function (used by submit_job), which creates a submission script using 
 platform specific templates.
 
-This is a wrapper around \link{whisker::whisker.render}
+This is a wrapper around \link[whisker]{whisker.render}
 }

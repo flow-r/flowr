@@ -225,21 +225,22 @@ rerun.flow <- function(x, mat, def,
 
 #' update.flow
 #'
-#' @param x flowr object
+#' @param object flowr object
 #' @param child child
+#' @param ... not used
 #'
 #' @return flowr object
 #' @export
-update.flow <- function(x, child, ...){
+update.flow <- function(object, child, ...){
   
   child_jobs = jobnames(child)
   ## --- for each job in child update ids
   ## updat the whole job, and not just IDs
   for(j in child_jobs){
     #x@jobs[[j]]@id = child@jobs[[j]]@id
-    x@jobs[[j]] = child@jobs[[j]]
+    object@jobs[[j]] = child@jobs[[j]]
   }
-  return(x)
+  return(object)
   
 }
 
