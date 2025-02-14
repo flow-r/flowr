@@ -169,7 +169,7 @@ Here are some helpful guides and details on the platforms:
 - SGE [wiki](https://en.wikipedia.org/wiki/Sun_Grid_Engine)
 	- A tutorial for [Sun Grid Engine](https://sites.google.com/site/anshulkundaje/inotes/programming/clustersubmit/sun-grid-engine)
 	- Another from [JHSPH](https://jhpce.jhu.edu/slurm/getting-started/)
-	- Dependency info [here](https://wiki.duke.edu/display/SCSC/SGE+Job+Dependencies)
+	- Dependency info [here](https://qasca.wordpress.com/2014/07/02/sge-job-dependencies/)
 - [SLURM](https://slurm.schedmd.com/documentation.html):
   	- quick start: [SLURM](https://slurm.schedmd.com/quickstart.html)
 

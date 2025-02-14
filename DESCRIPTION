@@ -6,7 +6,7 @@ Description: This framework allows you to design and implement complex
     been built keeping in mind the needs of bioinformatics workflows. However, it is
     easily extendable to any field where a series of steps (shell commands) are to
     be executed in a (work)flow.
-Version: 0.9.13
+Version: 0.9.16
 Depends:
     R (>= 3.3),
     methods,
@@ -31,7 +31,7 @@ Enhances:
 VignetteBuilder: knitr
 URL: https://github.com/flow-r/flowr
 BugReports: https://github.com/flow-r/flowr/issues
-Authors@R: c(person("Sahil", "Seth", role = c("aut", "cre"), email = "me@sahilseth.com"))
+Authors@R: c(person(given="Sahil", family="Seth", role = c("aut","cre"), email="me@sahilseth.com"))
 License: MIT + file LICENSE
 RoxygenNote: 7.3.2
 Encoding: UTF-8
